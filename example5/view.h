@@ -23,6 +23,7 @@ private:
     GLint m_col_attr;
     GLint m_matrix_uniform;
     GLuint m_program;
+    unsigned int m_vao;
     unsigned int m_vbo;
     int m_frame = 0;
 

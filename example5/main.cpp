@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
             }
         }
         view.render();
-//        SDL_Delay(50);
+        SDL_Delay(1);
     }
     return 0;
 }

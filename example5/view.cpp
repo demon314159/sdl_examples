@@ -11,6 +11,7 @@ View::View()
     , m_col_attr(0)
     , m_matrix_uniform(0)
     , m_program(0)
+    , m_vao(0)
     , m_vbo(0)
     , m_frame(0)
 {
@@ -143,14 +144,20 @@ void View::initialize()
         printf("matrix is not a valid glsl variable\n");
         exit(0);
     }
+
     static const GLfloat vertices[] = {
-         0.0f,  0.707f,  1.0f, 0.0f, 0.0f,
-        -0.5f, -0.5f,   0.0f, 1.0f, 0.0f,
-         0.5f, -0.5f,   0.0f, 0.0f, 1.0f
+         0.0f,  0.707f, 0.0f,   1.0f, 0.0f, 0.0f,
+        -0.5f, -0.5f,   0.0f,   0.0f, 1.0f, 0.0f,
+         0.5f, -0.5f,   0.0f,   0.0f, 0.0f, 1.0f
     };
+
+    glGenVertexArrays(1, &m_vao);
+    glBindVertexArray(m_vao);
+
     glGenBuffers(1, &m_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
 }
 
 void View::render()
@@ -167,17 +174,12 @@ void View::render()
     tlv.h = h;
     SDL_RenderSetViewport(m_renderer, &tlv);
 
-
     glClear(GL_COLOR_BUFFER_BIT);
-
     glUseProgram(m_program);
     glEnableVertexAttribArray(m_pos_attr);
     glEnableVertexAttribArray(m_col_attr);
-    glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-    glVertexAttribPointer(m_pos_attr, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*) 0);
-    glVertexAttribPointer(m_col_attr, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), (void*) (2 * sizeof(GLfloat)));
-
-
+    glVertexAttribPointer(m_pos_attr, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*) 0);
+    glVertexAttribPointer(m_col_attr, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*) (3 * sizeof(GLfloat)));
     Matrix4x4 amatrix;
     amatrix.perspective(60.0f, 4.0f / 3.0f, 0.1f, 100.0f);
     amatrix.translate(0.0f, 0.0f, -2.0f);
