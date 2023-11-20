@@ -1,3 +1,6 @@
+//
+// view.h
+//
 
 #ifndef _VIEW_H_
 #define _VIEW_H_
@@ -68,7 +71,6 @@ private:
     unsigned int m_vbo;
     Qa* m_qa;
     int m_frame;
-
     int m_max_vertex_count;
     int m_aux_count;
     CadModel* m_aux_model;

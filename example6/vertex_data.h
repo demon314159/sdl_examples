@@ -1,3 +1,6 @@
+//
+// vertex_data.h
+//
 
 #ifndef _VERTEX_DATA_H_
 #define _VERTEX_DATA_H_

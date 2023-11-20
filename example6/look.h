@@ -1,3 +1,6 @@
+//
+// look.h
+//
 
 #ifndef _LOOK_H_
 #define _LOOK_H_
@@ -7,12 +10,10 @@
 class Look
 {
 public:
-    static float dimx;
-    static float dimh;
-    static float dimb;
-    static float dimt;
-    static PaintCan table_paint();
-    static PaintCan grid_paint();
+    static float cube_dimx;
+    static float cube_dimy;
+    static float cube_dimz;
+    static PaintCan cube_paint();
 };
 
 #endif // _LOOK_H_

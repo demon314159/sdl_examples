@@ -1,17 +1,18 @@
-
-// table.h
 //
-#ifndef _TABLE_H_
-#define _TABLE_H_
+// host.h
+//
+
+#ifndef _HOST_H_
+#define _HOST_H_
 
 #include "view.h"
 #include "navigate.h"
 
-class Table
+class Host
 {
 public:
-    Table(SDL_Window* window);
-    ~Table();
+    Host(SDL_Window* window);
+    ~Host();
     bool is_running() const;
     void resize(int w, int h);
     void initialize();
@@ -31,4 +32,4 @@ private:
     bool m_is_running;
 };
 
-#endif // _TABLE_H_
+#endif // _HOST_H_

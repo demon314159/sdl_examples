@@ -1,3 +1,6 @@
+//
+// qa.h
+//
 
 #ifndef _QA_H_
 #define _QA_H_
@@ -8,7 +11,6 @@
 #define QA_BEFORE_SWAP_BUFFERS 4
 #define QA_AFTER_SWAP_BUFFERS 5
 #define QA_AFTER_FINISH 6
-
 
 class Qa
 {

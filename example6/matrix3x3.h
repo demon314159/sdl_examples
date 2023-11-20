@@ -1,3 +1,7 @@
+//
+// matrix3x3.h
+//
+
 #ifndef _MATRIX3X3_H_
 #define _MATRIX3X3_H_
 
@@ -34,7 +38,6 @@ protected:
     static const int MATRIX_ROWS = 3;
     static const int MATRIX_COLS = 3;
     float m_v[MATRIX_ROWS * MATRIX_COLS];
-
     void copy(const Matrix3x3 &m);
 };
 

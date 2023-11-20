@@ -1,3 +1,7 @@
+//
+// matrix4x4.h
+//
+
 #ifndef _MATRIX4X4_H_
 #define _MATRIX4X4_H_
 
@@ -30,7 +34,6 @@ protected:
     static const int MATRIX_ROWS = 4;
     static const int MATRIX_COLS = 4;
     float m_v[MATRIX_ROWS * MATRIX_COLS];
-
     void copy(const Matrix4x4 &m);
 };
 

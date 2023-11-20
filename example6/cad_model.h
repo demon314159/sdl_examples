@@ -1,6 +1,7 @@
 //
 // cad_model.h
 //
+
 #if !defined(_CAD_MODEL_H_)
 #define _CAD_MODEL_H_
 
@@ -12,13 +13,10 @@
 #include "shape.h"
 #include "face.h"
 
-class Document;
-
 class CadModel
 {
 public:
     CadModel();
-    CadModel(Document* doc);
     CadModel(const CadModel& cad_model, float x = 0.0, float y = 0.0, float z = 0.0);
     CadModel(const Shape& s, const PaintCan& paint_can, float animation_id = 0.0);
     CadModel(const Shape& s);

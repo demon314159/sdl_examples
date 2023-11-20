@@ -1,3 +1,6 @@
+//
+// cube_shape.cpp
+//
 
 #include "cube_shape.h"
 #include <cstddef>
@@ -6,16 +9,16 @@ CubeShape::CubeShape(float dimx, float dimy, float dimz)
     : m_dimx(dimx)
     , m_dimy(dimy)
     , m_dimz(dimz)
-    , m_count_mode(true)
+    , m_size_known(false)
     , m_facet_count(0)
     , m_facet(NULL)
 {
-    define_shape();
-    m_count_mode = false;
+    define_shape();  // Pass 1 counts the facets to determine size
+    m_size_known = true;
     if (m_facet_count > 0) {
         m_facet = new Facet[m_facet_count];
         m_facet_count = 0;
-        define_shape();
+        define_shape();  // Pass 2 loads facets once size is known
     }
 }
 
@@ -54,7 +57,7 @@ void CubeShape::add_face(int v1, int v2, int v3, int v4, bool flip)
 
 void CubeShape::add_face(int v1, int v2, int v3, bool flip)
 {
-    if (!m_count_mode) {
+    if (m_size_known) {
         m_facet[m_facet_count].animation_id = 0.0;
         m_facet[m_facet_count].color = {1.0, 1.0, 1.0};
         if (flip) {

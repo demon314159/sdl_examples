@@ -1,3 +1,6 @@
+//
+// paint_can.h
+//
 
 #ifndef _PAINT_CAN_H_
 #define _PAINT_CAN_H_

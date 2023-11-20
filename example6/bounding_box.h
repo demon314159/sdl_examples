@@ -1,3 +1,6 @@
+//
+// bounding_box.h
+//
 
 #ifndef _BOUNDING_BOX_H_
 #define _BOUNDING_BOX_H_

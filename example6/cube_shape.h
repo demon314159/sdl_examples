@@ -1,3 +1,6 @@
+//
+// cube_shape.h
+//
 
 #ifndef _CUBE_SHAPE_H_
 #define _CUBE_SHAPE_H_
@@ -18,7 +21,7 @@ private:
     float m_dimx;
     float m_dimy;
     float m_dimz;
-    bool m_count_mode;
+    bool m_size_known;
     int m_facet_count;
     Facet *m_facet;
 

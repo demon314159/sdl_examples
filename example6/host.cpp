@@ -1,52 +1,53 @@
 //
-// table.cpp
+// host.cpp
 //
-#include "table.h"
 
-Table::Table(SDL_Window* window)
+#include "host.h"
+
+Host::Host(SDL_Window* window)
     : m_view(window)
     , m_navigate()
     , m_is_running(true)
 {
 }
 
-Table::~Table()
+Host::~Host()
 {
 }
 
-bool Table::is_running() const
+bool Host::is_running() const
 {
     return m_is_running;
 }
 
-void Table::resize(int w, int h)
+void Host::resize(int w, int h)
 {
     m_view.resize(w, h);
 }
 
-void Table::initialize()
+void Host::initialize()
 {
     m_view.initialize();
 }
 
-void Table::render()
+void Host::render()
 {
     m_view.render();
 }
 
-void Table::quit_event()
+void Host::quit_event()
 {
     m_is_running = false;
 }
 
-void Table::window_event(SDL_Event* e)
+void Host::window_event(SDL_Event* e)
 {
     if (e->window.event == SDL_WINDOWEVENT_RESIZED) {
         m_view.resize(e->window.data1, e->window.data2);
     }
 }
 
-void Table::key_press_event(SDL_Event* e)
+void Host::key_press_event(SDL_Event* e)
 {
     unsigned int a = e->key.keysym.scancode;
     bool shifted = (e->key.keysym.mod & KMOD_SHIFT) ? true : false;
@@ -90,11 +91,11 @@ void Table::key_press_event(SDL_Event* e)
     }
 }
 
-void Table::key_release_event(SDL_Event* e)
+void Host::key_release_event(SDL_Event* e)
 {
 }
 
-void Table::mouse_press_event(SDL_Event* e)
+void Host::mouse_press_event(SDL_Event* e)
 {
     if (e->button.button == SDL_BUTTON_MIDDLE) {
         m_view.zoom_home();
@@ -108,7 +109,7 @@ void Table::mouse_press_event(SDL_Event* e)
     }
 }
 
-void Table::mouse_navigate(int mx, int my)
+void Host::mouse_navigate(int mx, int my)
 {
     if (m_navigate.is_rotate()) {
         float degx, degy;
@@ -125,7 +126,7 @@ void Table::mouse_navigate(int mx, int my)
     }
 }
 
-void Table::mouse_release_event(SDL_Event* e)
+void Host::mouse_release_event(SDL_Event* e)
 {
     if (e->button.button == SDL_BUTTON_LEFT) {
         if (m_navigate.active())
@@ -138,13 +139,13 @@ void Table::mouse_release_event(SDL_Event* e)
     }
 }
 
-void Table::mouse_move_event(SDL_Event* e)
+void Host::mouse_move_event(SDL_Event* e)
 {
     if (m_navigate.active())
         mouse_navigate(e->motion.x, e->motion.y);
 }
 
-void Table::mouse_wheel_event(SDL_Event *e)
+void Host::mouse_wheel_event(SDL_Event *e)
 {
     int angle = e->wheel.y;
     if (angle > 0) {
