@@ -40,8 +40,7 @@ View::View(SDL_Window* window)
     , m_frame(0)
     , m_max_vertex_count(1024 * 1024)
     , m_aux_count(0)
-    , m_aux_model(new CadModel())
-    , m_change(true)
+    , m_toy(new Toy())
     , m_radius(2.0)
     , m_center({0.0, 0.0, 0.0})
     , m_width(INITIAL_WIDTH)
@@ -79,7 +78,6 @@ View::View(SDL_Window* window)
     }
     build_track();
     decorate_model();
-    m_change = false;
 }
 
 void View::build_track()
@@ -343,14 +341,6 @@ void View::render()
 #ifdef VERBOSE
     printf("View::render()\n");
 #endif
-//    if (m_change) {
-//        decorate_model();
-//        resize_calc();
-//        check_storage();
-//        copy_aux_facets();
-//        m_change = false;
-//    }
-
     m_qa->add_sample(QA_START_RENDER, SDL_GetPerformanceCounter(), m_frame);
 
 //    int tp = duration_cast<nanoseconds>(total_period).count();

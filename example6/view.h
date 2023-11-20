@@ -12,7 +12,7 @@
 
 #include "vertex_data.h"
 #include "matrix4x4.h"
-#include "track.h"
+#include "toy.h"
 #include "cad_model.h"
 #include "qa.h"
 
@@ -47,7 +47,6 @@ protected:
     void decorate_model();
     void check_storage();
     void copy_vertices();
-    void copy_changed_vertices();
     void sub_copy_facets(CadModel* model, VertexData* vertices, int& vix);
     void copy_aux_facets();
     void build_track();
@@ -63,18 +62,13 @@ private:
     GLint m_ani_attr;
     GLint m_mvp_matrix_uniform;
     GLint m_rot_matrix_uniform;
-    GLint m_car0_matrix_uniform;
-    GLint m_car1_matrix_uniform;
-    GLint m_car2_matrix_uniform;
-    GLint m_car3_matrix_uniform;
     unsigned int m_vao;
     unsigned int m_vbo;
     Qa* m_qa;
     int m_frame;
     int m_max_vertex_count;
     int m_aux_count;
-    CadModel* m_aux_model;
-    bool m_change;
+    Toy* m_toy;
     float m_radius;
     Float3 m_center;
     int m_width;
@@ -93,7 +87,6 @@ private:
     Matrix4x4 m_projection;
 
     bool add_shader_from_source_file(GLuint shader, const char* name);
-    void perspective(float fovy, float aspect, float near, float far);
     void print_program_log(GLuint program);
     void print_shader_log(GLuint shader);
 };
