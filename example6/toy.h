@@ -13,13 +13,14 @@ public:
     Toy();
     ~Toy();
 
-    CadModel* get_model() const;
+    CadModel* get_static_model() const;
+    void advance_animation(int nanoseconds);
 
 
 private:
-    CadModel* m_model;
+    CadModel* m_static_model;
 
-    void build_model();
+    void build_static_model();
 };
 
 #endif // _TOY_H_
