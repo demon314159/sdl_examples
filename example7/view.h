@@ -61,6 +61,7 @@ private:
     GLint m_ani_attr;
     GLint m_mvp_matrix_uniform;
     GLint m_rot_matrix_uniform;
+    GLint* m_toy_matrix_uniform;
     unsigned int m_vao;
     unsigned int m_vbo;
     Qa* m_qa;

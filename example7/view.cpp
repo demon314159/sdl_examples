@@ -28,12 +28,7 @@ View::View(SDL_Window* window)
     , m_ani_attr(0)
     , m_mvp_matrix_uniform(0)
     , m_rot_matrix_uniform(0)
-#ifdef NEVERMORE
-    , m_car0_matrix_uniform(0)
-    , m_car1_matrix_uniform(0)
-    , m_car2_matrix_uniform(0)
-    , m_car3_matrix_uniform(0)
-#endif
+    , m_toy_matrix_uniform(nullptr)
     , m_vao(0)
     , m_vbo(0)
     , m_qa(new Qa)
@@ -104,6 +99,9 @@ View::~View()
 #endif
     delete m_qa;
     delete m_toy;
+    if (m_toy_matrix_uniform != nullptr) {
+        delete m_toy_matrix_uniform;
+    }
     SDL_DestroyRenderer(m_renderer);
     SDL_GL_DeleteContext(m_context);
     SDL_Quit();
@@ -218,28 +216,19 @@ void View::initialize()
         printf("rot_matrix is not a valid glsl variable\n");
         exit(0);
     }
-#ifdef NEVERMORE
-    m_car0_matrix_uniform = glGetUniformLocation(m_program, "car0_matrix");
-    if (m_car0_matrix_uniform == -1) {
-        printf("car0_matrix is not a valid glsl variable\n");
-        exit(0);
+    int n = m_toy->get_matrix_uniforms();
+    if (n > 0) {
+        m_toy_matrix_uniform = new GLint[n];
+        for (int i = 0; i < n; i++) {
+            char id[256];
+            sprintf(id, "toy%d_matrix", i);
+            m_toy_matrix_uniform[i] = glGetUniformLocation(m_program, id);
+            if (m_toy_matrix_uniform[i] == -1) {
+                printf("'%s' is not a valid glsl variable\n", id);
+                exit(0);
+            }
+        }
     }
-    m_car1_matrix_uniform = glGetUniformLocation(m_program, "car1_matrix");
-    if (m_car1_matrix_uniform == -1) {
-        printf("car1_matrix is not a valid glsl variable\n");
-        exit(0);
-    }
-    m_car2_matrix_uniform = glGetUniformLocation(m_program, "car2_matrix");
-    if (m_car2_matrix_uniform == -1) {
-        printf("car2_matrix is not a valid glsl variable\n");
-        exit(0);
-    }
-    m_car3_matrix_uniform = glGetUniformLocation(m_program, "car3_matrix");
-    if (m_car3_matrix_uniform == -1) {
-        printf("car3_matrix is not a valid glsl variable\n");
-        exit(0);
-    }
-#endif
     glGenVertexArrays(1, &m_vao);
     glBindVertexArray(m_vao);
     glGenBuffers(1, &m_vbo);

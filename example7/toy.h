@@ -16,6 +16,7 @@ public:
     bool model_changed() const;
     void clear_model_changed();
     CadModel* get_model() const;
+    int get_matrix_uniforms() const;
 
     void advance(int nanoseconds);
 
