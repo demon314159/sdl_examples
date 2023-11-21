@@ -22,7 +22,7 @@ void main()
     } else {
         if (a_animation_id == 2.0) {
             gl_Position = mvp_matrix * cube_matrix * vec4(a_position, 1.0);
-            v_normal = rot_matrix * car0_matrix * vec4(billy, 0.0);
+            v_normal = rot_matrix * cube_matrix * vec4(billy, 0.0);
         } else if (a_animation_id == 1.0) {
             gl_Position = mvp_matrix * vec4(a_position, 1.0);
             v_normal = vec4(0.0, 0.0, 1.0, 0.0);

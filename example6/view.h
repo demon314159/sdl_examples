@@ -44,12 +44,11 @@ public:
 protected:
     bool init_shaders();
     void resize_calc();
-    void decorate_model();
+    void position_camera();
     void check_storage();
     void copy_vertices();
+    void copy_facets();
     void sub_copy_facets(CadModel* model, VertexData* vertices, int& vix);
-    void copy_aux_facets();
-    void build_track();
 
 private:
     SDL_Window* m_window;
@@ -67,7 +66,7 @@ private:
     Qa* m_qa;
     int m_frame;
     int m_max_vertex_count;
-    int m_aux_count;
+    int m_facet_count;
     Toy* m_toy;
     float m_radius;
     Float3 m_center;
@@ -81,7 +80,6 @@ private:
     float m_yrot;
     float m_xoff;
     float m_yoff;
-    Track* m_track;
     Matrix4x4 m_mvp_matrix;
     Matrix4x4 m_rot_matrix;
     Matrix4x4 m_projection;

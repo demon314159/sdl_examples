@@ -6,7 +6,6 @@
 #include "matrix4x4.h"
 #include "matrix3x3.h"
 #include "paint_can.h"
-#include "section.h"
 #include "cube_shape.h"
 #include "bounding_box.h"
 #include "look.h"
@@ -17,7 +16,6 @@
 #include <stdio.h>
 
 #define notVERBOSE
-#define TRACK_LANES 4
 
 View::View(SDL_Window* window)
     : m_window(window)
@@ -30,16 +28,18 @@ View::View(SDL_Window* window)
     , m_ani_attr(0)
     , m_mvp_matrix_uniform(0)
     , m_rot_matrix_uniform(0)
+#ifdef NEVERMORE
     , m_car0_matrix_uniform(0)
     , m_car1_matrix_uniform(0)
     , m_car2_matrix_uniform(0)
     , m_car3_matrix_uniform(0)
+#endif
     , m_vao(0)
     , m_vbo(0)
     , m_qa(new Qa)
     , m_frame(0)
     , m_max_vertex_count(1024 * 1024)
-    , m_aux_count(0)
+    , m_facet_count(0)
     , m_toy(new Toy())
     , m_radius(2.0)
     , m_center({0.0, 0.0, 0.0})
@@ -53,7 +53,6 @@ View::View(SDL_Window* window)
     , m_yrot(0.0)
     , m_xoff(0.0)
     , m_yoff(0.0)
-    , m_track(new Track(TRACK_LANES))
 {
 #ifdef VERBOSE
     printf("View::View(doc)\n");
@@ -76,31 +75,12 @@ View::View(SDL_Window* window)
         printf("Renderer Creation Error: %s\n", SDL_GetError());
         exit(0);
     }
-    build_track();
-    decorate_model();
+    position_camera();
 }
 
-void View::build_track()
+void View::position_camera()
 {
-    for (int i = 0; i < m_track->sections(); i++) {
-        CadModel cm = m_track->section(i)->cad_model();
-        m_aux_model->add(cm, 0.0, 0.0, 0.0);
-    }
-    for (int i = 0; i < m_track->cars(); i++) {
-        m_track->car(i)->set_lane(i);
-        CadModel car = m_track->car(i)->cad_model(i);
-        m_aux_model->add(car, 0.0, 0.0, 0.0);
-    }
-}
-
-void View::decorate_model()
-{
-    BoundingBox bb = m_aux_model->bounding_box();
-    float tablex = bb.vmax.v1 - bb.vmin.v1 + 4.0;
-    float tabley = Look::dimh / 20.0;
-    float tablez = bb.vmax.v3 - bb.vmin.v3 + 4.0;
-    CubeShape table(tablex, tabley, tablez);
-    CadModel tt(table, Look::table_paint(), 1.0);
+    BoundingBox bb = m_toy->get_model()->bounding_box();
 
     bb.vmin.v1 -= 2.0;
     bb.vmin.v3 -= 2.0;
@@ -123,8 +103,7 @@ View::~View()
     printf("View::~View()\n");
 #endif
     delete m_qa;
-    delete m_track;
-    delete m_aux_model;
+    delete m_toy;
     SDL_DestroyRenderer(m_renderer);
     SDL_GL_DeleteContext(m_context);
     SDL_Quit();
@@ -239,6 +218,7 @@ void View::initialize()
         printf("rot_matrix is not a valid glsl variable\n");
         exit(0);
     }
+#ifdef NEVERMORE
     m_car0_matrix_uniform = glGetUniformLocation(m_program, "car0_matrix");
     if (m_car0_matrix_uniform == -1) {
         printf("car0_matrix is not a valid glsl variable\n");
@@ -259,11 +239,25 @@ void View::initialize()
         printf("car3_matrix is not a valid glsl variable\n");
         exit(0);
     }
+#endif
     glGenVertexArrays(1, &m_vao);
     glBindVertexArray(m_vao);
     glGenBuffers(1, &m_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-    copy_aux_facets();
+    copy_facets();
+}
+
+void View::copy_facets()
+{
+    m_facet_count = 3 * m_toy->get_model()->facets();
+    if (m_facet_count > 0) {
+        VertexData* vertices = new VertexData[m_facet_count];
+        int vix = 0;
+        sub_copy_facets(m_toy->get_model(), vertices, vix);
+        // Transfer vertex data to VBO
+        glBufferData(GL_ARRAY_BUFFER, m_facet_count * sizeof(VertexData), vertices, GL_STATIC_DRAW);
+        delete [] vertices;
+    }
 }
 
 void View::sub_copy_facets(CadModel* model, VertexData* vertices, int& vix)
@@ -292,19 +286,6 @@ void View::sub_copy_facets(CadModel* model, VertexData* vertices, int& vix)
     }
 }
 
-void View::copy_aux_facets()
-{
-    m_aux_count = 3 * m_aux_model->facets();
-    if (m_aux_count > 0) {
-        VertexData* vertices = new VertexData[m_aux_count];
-        int vix = 0;
-        sub_copy_facets(m_aux_model, vertices, vix);
-        // Transfer vertex data to VBO
-        glBufferData(GL_ARRAY_BUFFER, m_aux_count * sizeof(VertexData), vertices, GL_STATIC_DRAW);
-        delete [] vertices;
-    }
-}
-
 void View::resize(int w, int h)
 {
 #ifdef VERBOSE
@@ -330,7 +311,7 @@ void View::resize_calc()
 
 void View::check_storage()
 {
-    int fc = 3 * m_aux_model->facets();
+    int fc = 3 * m_toy->get_model()->facets();
     if (m_max_vertex_count > fc)
         return;
     m_max_vertex_count = std::max(2 * m_max_vertex_count, 2 * fc);
@@ -346,7 +327,7 @@ void View::render()
 //    int tp = duration_cast<nanoseconds>(total_period).count();
     int tp = (33333333 * 3) / 25;
 
-    m_track->advance(tp);
+    m_toy->advance(tp);
 
     Matrix4x4 matrix;
     matrix.unity();
@@ -380,7 +361,7 @@ void View::render()
 
     glUniformMatrix4fv(m_mvp_matrix_uniform, 1, GL_TRUE, m_mvp_matrix.data());
     glUniformMatrix4fv(m_rot_matrix_uniform, 1, GL_TRUE, m_rot_matrix.data());
-
+#ifdef NEVERMORE
     if (m_track->cars() > 0) {
         int car_id = 0;
         Matrix4x4 car_matrix;
@@ -421,8 +402,9 @@ void View::render()
         car_matrix.rotate_az(m_track->car_pitch(car_id));
         glUniformMatrix4fv(m_car3_matrix_uniform, 1, GL_TRUE, car_matrix.data());
     }
+#endif
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    glDrawArrays(GL_TRIANGLES, 0, m_aux_count);
+    glDrawArrays(GL_TRIANGLES, 0, m_facet_count);
 
     glDisableVertexAttribArray(m_ani_attr);
     glDisableVertexAttribArray(m_norm_attr);
@@ -443,7 +425,7 @@ void View::translate_x(int x)
     float wx = m_aspect * (m_camz + m_radius) * q;
     float ratio = (float) x / fmax(1.0, (float) m_width);
     float dx = wx * ratio;
-    m_xoff += (      dx        );
+    m_xoff += (dx);
 }
 
 void View::translate_y(int y)
@@ -452,7 +434,7 @@ void View::translate_y(int y)
     float wy = (m_camz + m_radius) * q;
     float ratio = (float) y / fmax(1.0, (float) m_height);
     float dy = wy * ratio;
-    m_yoff -= (      dy        );
+    m_yoff -= (dy);
 }
 
 void View::translate_home()
@@ -460,7 +442,6 @@ void View::translate_home()
     m_xoff = 0.0;
     m_yoff = 0.0;
 }
-
 
 void View::rotate_ax(float degrees)
 {

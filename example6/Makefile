@@ -1,7 +1,7 @@
 
 HEADERS = view.h \
           pi.h \
-          table.h \
+          host.h \
           matrix4x4.h \
           matrix3x3.h \
           int3.h \
@@ -18,10 +18,11 @@ HEADERS = view.h \
           view.h \
           cube_shape.h \
           qa.h \
+          toy.h \
 
 OBJECTS = main.obj \
           view.obj \
-          table.obj \
+          host.obj \
           matrix4x4.obj \
           matrix3x3.obj \
           paint_can.obj \
@@ -30,6 +31,7 @@ OBJECTS = main.obj \
           cad_model.obj \
           cube_shape.obj \
           qa.obj \
+          toy.obj \
 
 LIBPATH = /libpath:c:/users/demon/sdl2/lib/x64 /libpath:c:/users/demon/glew/lib/Release/x64
 INCPATH = /Ic:/users/demon/sdl2/include /Ic:/users/demon/glew/include
@@ -39,7 +41,7 @@ CXX = cl
 LXX = link
 CXXFLAGS = /c
 LINKFLAGS = /SUBSYSTEM:CONSOLE
-TARGET = myapp.exe
+TARGET = play.exe
 
 %.obj: %.cpp $(DEPS)
 	$(CXX) $(CXXFLAGS) $(INCPATH) /Fo$@ $<
