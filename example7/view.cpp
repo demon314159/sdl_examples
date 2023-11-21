@@ -350,6 +350,13 @@ void View::render()
 
     glUniformMatrix4fv(m_mvp_matrix_uniform, 1, GL_TRUE, m_mvp_matrix.data());
     glUniformMatrix4fv(m_rot_matrix_uniform, 1, GL_TRUE, m_rot_matrix.data());
+
+    int n = m_toy->get_matrix_uniforms();
+    for (int i = 0; i < n; i++) {
+        glUniformMatrix4fv(m_toy_matrix_uniform[i], 1, GL_TRUE, m_toy->get_matrix(i).data());
+    }
+
+
 #ifdef NEVERMORE
     if (m_track->cars() > 0) {
         int car_id = 0;

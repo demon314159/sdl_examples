@@ -6,6 +6,7 @@
 #define _TOY_H_
 
 #include "cad_model.h"
+#include "matrix4x4.h"
 
 class Toy
 {
@@ -17,6 +18,7 @@ public:
     void clear_model_changed();
     CadModel* get_model() const;
     int get_matrix_uniforms() const;
+    Matrix4x4 get_matrix(int i) const;
 
     void advance(int nanoseconds);
 

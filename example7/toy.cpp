@@ -55,3 +55,29 @@ void Toy::build_model()
     m_model->add(bcm, 0.0, 0.0, -2.0);
 }
 
+Matrix4x4 Toy::get_matrix(int i) const
+{
+    Matrix4x4 mm;
+
+    mm.unity();
+    if (i == 0) {
+        mm.translate(-2.0, 0.0, 0.0);
+        mm.rotate_ax(45.0);
+        mm.translate(2.0, 0.0, 0.0);
+    } else if (i == 1) {
+        mm.translate(2.0, 0.0, 0.0);
+        mm.rotate_ay(45.0);
+        mm.translate(-2.0, 0.0, 0.0);
+    } else if (i == 2) {
+        mm.translate(0.0, 0.0, -2.0);
+        mm.rotate_az(45.0);
+        mm.translate(0.0, 0.0, 2.0);
+    }
+    return mm;
+//        Matrix4x4 car_matrix;
+//        Double3 cp = m_track->car_position(car_id);
+//        car_matrix.unity();
+//        car_matrix.translate(cp.v1, cp.v2, cp.v3);
+//        car_matrix.rotate_ay(m_track->car_yaw(car_id));
+//        car_matrix.rotate_az(m_track->car_pitch(car_id));
+}
