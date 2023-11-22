@@ -27,6 +27,9 @@ public:
 
 private:
     CadModel* m_model;
+    float m_animation_0_angle;
+    float m_animation_1_angle;
+    float m_animation_2_angle;
 
     void build_model();
 };

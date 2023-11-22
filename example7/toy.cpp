@@ -5,8 +5,15 @@
 #include "toy.h"
 #include "cube_shape.h"
 
+#define ANIMATION_0_SPEED 5.0
+#define ANIMATION_1_SPEED 10.0
+#define ANIMATION_2_SPEED 15.0
+
 Toy::Toy()
     : m_model(new CadModel())
+    , m_animation_0_angle(0.0)
+    , m_animation_1_angle(0.0)
+    , m_animation_2_angle(0.0)
 {
     build_model();
 }
@@ -28,6 +35,10 @@ int Toy::animation_matrices() const
 
 void Toy::advance(int nanoseconds)
 {
+    float ns = 1.0e-9 * (float) nanoseconds;
+    m_animation_0_angle += (ANIMATION_0_SPEED * ns);
+    m_animation_1_angle += (ANIMATION_1_SPEED * ns);
+    m_animation_2_angle += (ANIMATION_2_SPEED * ns);
 }
 
 void Toy::build_model()
@@ -47,15 +58,15 @@ Matrix4x4 Toy::get_animation_matrix(int i) const
     mm.unity();
     if (i == 0) {
         mm.translate(-2.0, 0.0, 0.0);
-        mm.rotate_ax(45.0);
+        mm.rotate_ax(m_animation_0_angle);
         mm.translate(2.0, 0.0, 0.0);
     } else if (i == 1) {
         mm.translate(2.0, 0.0, 0.0);
-        mm.rotate_ay(45.0);
+        mm.rotate_ay(m_animation_1_angle);
         mm.translate(-2.0, 0.0, 0.0);
     } else if (i == 2) {
         mm.translate(0.0, 0.0, -2.0);
-        mm.rotate_az(45.0);
+        mm.rotate_az(m_animation_2_angle);
         mm.translate(0.0, 0.0, 2.0);
     }
     return mm;
