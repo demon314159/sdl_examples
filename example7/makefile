@@ -17,7 +17,6 @@ HEADERS = view.h \
           cad_model.h \
           view.h \
           cube_shape.h \
-          qa.h \
           toy.h \
 
 OBJECTS = main.obj \
@@ -30,7 +29,6 @@ OBJECTS = main.obj \
           navigate.obj \
           cad_model.obj \
           cube_shape.obj \
-          qa.obj \
           toy.obj \
 
 LIBPATH = /libpath:c:/users/demon/sdl2/lib/x64 /libpath:c:/users/demon/glew/lib/Release/x64

@@ -5,8 +5,8 @@
 #include "toy.h"
 #include "cube_shape.h"
 
-#define ANIMATION_0_SPEED 5.0
-#define ANIMATION_1_SPEED 10.0
+#define ANIMATION_0_SPEED 180.0
+#define ANIMATION_1_SPEED 90.0
 #define ANIMATION_2_SPEED 15.0
 
 Toy::Toy()

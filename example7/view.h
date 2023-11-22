@@ -14,7 +14,6 @@
 #include "matrix4x4.h"
 #include "toy.h"
 #include "cad_model.h"
-#include "qa.h"
 
 #define INITIAL_HEIGHT 512
 #define INITIAL_WIDTH ((INITIAL_HEIGHT * 1920) / 1080)
@@ -64,7 +63,6 @@ private:
     GLint* m_animation_matrix_uniform;
     unsigned int m_vao;
     unsigned int m_vbo;
-    Qa* m_qa;
     int m_frame;
     int m_max_vertex_count;
     int m_facet_count;
@@ -84,6 +82,7 @@ private:
     Matrix4x4 m_mvp_matrix;
     Matrix4x4 m_rot_matrix;
     Matrix4x4 m_projection;
+    float m_last_count;
 
     bool add_shader_from_source_file(GLuint shader, const char* name);
     void print_program_log(GLuint program);

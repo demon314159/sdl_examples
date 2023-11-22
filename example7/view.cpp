@@ -31,7 +31,6 @@ View::View(SDL_Window* window)
     , m_animation_matrix_uniform(nullptr)
     , m_vao(0)
     , m_vbo(0)
-    , m_qa(new Qa)
     , m_frame(0)
     , m_max_vertex_count(1024 * 1024)
     , m_facet_count(0)
@@ -48,6 +47,7 @@ View::View(SDL_Window* window)
     , m_yrot(0.0)
     , m_xoff(0.0)
     , m_yoff(0.0)
+    , m_last_count(0.0)
 {
 #ifdef VERBOSE
     printf("View::View(doc)\n");
@@ -71,6 +71,9 @@ View::View(SDL_Window* window)
         exit(0);
     }
     position_camera();
+    unsigned long perf_count = SDL_GetPerformanceFrequency();
+    double aa = (double) SDL_GetPerformanceFrequency();
+    m_last_count = (float) SDL_GetPerformanceCounter();
 }
 
 void View::position_camera()
@@ -97,7 +100,6 @@ View::~View()
 #ifdef VERBOSE
     printf("View::~View()\n");
 #endif
-    delete m_qa;
     delete m_toy;
     if (m_animation_matrix_uniform != nullptr) {
         delete m_animation_matrix_uniform;
@@ -158,7 +160,7 @@ void View::initialize()
         printf("Error initializing GLEW: %s\n", glewGetErrorString(glew_error));
         exit(0);
     }
-    if (SDL_GL_SetSwapInterval(2) < 0) {
+    if (SDL_GL_SetSwapInterval(1) < 0) {
         printf("Warning: Unable to set VSync. SDL Error: %s\n", SDL_GetError());
     }
     glClearColor(1.0f, 0.682f, 0.259f, 1.0f); // yellow orange
@@ -311,13 +313,13 @@ void View::render()
 #ifdef VERBOSE
     printf("View::render()\n");
 #endif
-    m_qa->add_sample(QA_START_RENDER, SDL_GetPerformanceCounter(), m_frame);
-
-//    int tp = duration_cast<nanoseconds>(total_period).count();
-    int tp = (33333333 * 3) / 25;
-
+    float this_count = (float) SDL_GetPerformanceCounter();
+    float ftp = (this_count - m_last_count) * 1.0e9 / (float) SDL_GetPerformanceFrequency();
+    m_last_count = this_count;
+    int tp = round(ftp);
+    if (tp == 0)
+        return;
     m_toy->advance(tp);
-
     Matrix4x4 matrix;
     matrix.unity();
     matrix.translate(m_xoff, m_yoff, -m_camz - m_radius);
@@ -326,18 +328,13 @@ void View::render()
     matrix.translate(-m_center.v1, -m_center.v2, -m_center.v3);
     m_mvp_matrix = m_projection * matrix;
     m_rot_matrix = matrix;
-
-    m_qa->add_sample(QA_BEFORE_CLEAR, SDL_GetPerformanceCounter(), m_frame);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    m_qa->add_sample(QA_AFTER_CLEAR, SDL_GetPerformanceCounter(), m_frame);
-
     glUseProgram(m_program);
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
     glEnableVertexAttribArray(m_pos_attr);
     glEnableVertexAttribArray(m_col_attr);
     glEnableVertexAttribArray(m_norm_attr);
     glEnableVertexAttribArray(m_ani_attr);
-
     int stride = sizeof(VertexData);
     char* offset = 0;
     glVertexAttribPointer(m_pos_attr, 3, GL_FLOAT, GL_FALSE, stride, (void*) offset);
@@ -347,71 +344,21 @@ void View::render()
     glVertexAttribPointer(m_col_attr, 3, GL_FLOAT, GL_FALSE, stride, (void*) offset);
     offset += sizeof(Float3);
     glVertexAttribPointer(m_ani_attr, 1, GL_FLOAT, GL_FALSE, stride, (void*) offset);
-
     glUniformMatrix4fv(m_mvp_matrix_uniform, 1, GL_TRUE, m_mvp_matrix.data());
     glUniformMatrix4fv(m_rot_matrix_uniform, 1, GL_TRUE, m_rot_matrix.data());
-
     int n = m_toy->animation_matrices();
     for (int i = 0; i < n; i++) {
         glUniformMatrix4fv(m_animation_matrix_uniform[i], 1, GL_TRUE, m_toy->get_animation_matrix(i).data());
     }
-
-
-#ifdef NEVERMORE
-    if (m_track->cars() > 0) {
-        int car_id = 0;
-        Matrix4x4 car_matrix;
-        Double3 cp = m_track->car_position(car_id);
-        car_matrix.unity();
-        car_matrix.translate(cp.v1, cp.v2, cp.v3);
-        car_matrix.rotate_ay(m_track->car_yaw(car_id));
-        car_matrix.rotate_az(m_track->car_pitch(car_id));
-        glUniformMatrix4fv(m_car0_matrix_uniform, 1, GL_TRUE, car_matrix.data());
-    }
-    if (m_track->cars() > 1) {
-        int car_id = 1;
-        Matrix4x4 car_matrix;
-        Double3 cp = m_track->car_position(car_id);
-        car_matrix.unity();
-        car_matrix.translate(cp.v1, cp.v2, cp.v3);
-        car_matrix.rotate_ay(m_track->car_yaw(car_id));
-        car_matrix.rotate_az(m_track->car_pitch(car_id));
-        glUniformMatrix4fv(m_car1_matrix_uniform, 1, GL_TRUE, car_matrix.data());
-    }
-    if (m_track->cars() > 2) {
-        int car_id = 2;
-        Matrix4x4 car_matrix;
-        Double3 cp = m_track->car_position(car_id);
-        car_matrix.unity();
-        car_matrix.translate(cp.v1, cp.v2, cp.v3);
-        car_matrix.rotate_ay(m_track->car_yaw(car_id));
-        car_matrix.rotate_az(m_track->car_pitch(car_id));
-        glUniformMatrix4fv(m_car2_matrix_uniform, 1, GL_TRUE, car_matrix.data());
-    }
-    if (m_track->cars() > 3) {
-        int car_id = 3;
-        Matrix4x4 car_matrix;
-        Double3 cp = m_track->car_position(car_id);
-        car_matrix.unity();
-        car_matrix.translate(cp.v1, cp.v2, cp.v3);
-        car_matrix.rotate_ay(m_track->car_yaw(car_id));
-        car_matrix.rotate_az(m_track->car_pitch(car_id));
-        glUniformMatrix4fv(m_car3_matrix_uniform, 1, GL_TRUE, car_matrix.data());
-    }
-#endif
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glDrawArrays(GL_TRIANGLES, 0, m_facet_count);
-
     glDisableVertexAttribArray(m_ani_attr);
     glDisableVertexAttribArray(m_norm_attr);
     glDisableVertexAttribArray(m_col_attr);
     glDisableVertexAttribArray(m_pos_attr);
     glUseProgram(0);
-    m_qa->add_sample(QA_AFTER_SWAP_BUFFERS, SDL_GetPerformanceCounter(), m_frame);
     SDL_GL_SwapWindow(m_window);
-    m_qa->add_sample(QA_AFTER_SWAP_BUFFERS, SDL_GetPerformanceCounter(), m_frame);
     glFinish();
-    m_qa->add_sample(QA_AFTER_FINISH, SDL_GetPerformanceCounter(), m_frame);
     ++m_frame;
 }
 
