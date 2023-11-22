@@ -159,7 +159,7 @@ void View::initialize()
         printf("Error initializing GLEW: %s\n", glewGetErrorString(glew_error));
         exit(0);
     }
-    if (SDL_GL_SetSwapInterval(1) < 0) {
+    if (SDL_GL_SetSwapInterval(0) < 0) {
         printf("Warning: Unable to set VSync. SDL Error: %s\n", SDL_GetError());
     }
     glClearColor(1.0f, 0.682f, 0.259f, 1.0f); // yellow orange
