@@ -18,6 +18,15 @@ HEADERS = view.h \
           view.h \
           cube_shape.h \
           toy.h \
+          track.h \
+          anchor.h \
+          car.h \
+          curved_left_section.h \
+          curved_right_section.h \
+          double3.h \
+          rise_profile.h \
+          section.h \
+          straight_section.h \
 
 OBJECTS = main.obj \
           view.obj \
@@ -30,6 +39,13 @@ OBJECTS = main.obj \
           cad_model.obj \
           cube_shape.obj \
           toy.obj \
+          track.obj \
+          car.obj \
+          curved_left_section.obj \
+          curved_right_section.obj \
+          rise_profile.obj \
+          section.obj \
+          straight_section.obj \
 
 LIBPATH = /libpath:c:/users/demon/sdl2/lib/x64 /libpath:c:/users/demon/glew/lib/Release/x64
 INCPATH = /Ic:/users/demon/sdl2/include /Ic:/users/demon/glew/include

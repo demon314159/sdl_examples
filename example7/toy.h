@@ -15,6 +15,7 @@ public:
     #define ANIMATION_0_ID 2.0
     #define ANIMATION_1_ID 3.0
     #define ANIMATION_2_ID 4.0
+    #define ANIMATION_3_ID 5.0
 
     Toy();
     ~Toy();
@@ -30,6 +31,7 @@ private:
     float m_animation_0_angle;
     float m_animation_1_angle;
     float m_animation_2_angle;
+    float m_animation_3_angle;
 
     void build_model();
 };

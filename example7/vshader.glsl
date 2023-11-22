@@ -3,6 +3,7 @@ uniform mat4 rot_matrix;
 uniform mat4 animation_0_matrix;
 uniform mat4 animation_1_matrix;
 uniform mat4 animation_2_matrix;
+uniform mat4 animation_3_matrix;
 
 attribute vec3 a_position;
 attribute vec3 a_normal;
@@ -34,6 +35,9 @@ void main()
         } else if (a_animation_id == 4.0) {
             gl_Position = mvp_matrix * animation_2_matrix * vec4(a_position, 1.0);
             v_normal = rot_matrix * animation_2_matrix * vec4(billy, 0.0);
+        } else if (a_animation_id == 5.0) {
+            gl_Position = mvp_matrix * animation_3_matrix * vec4(a_position, 1.0);
+            v_normal = rot_matrix * animation_3_matrix * vec4(billy, 0.0);
 // end of animation_matrix stuff
 
         } else if (a_animation_id == 1.0) {
