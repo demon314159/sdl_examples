@@ -28,7 +28,7 @@ View::View(SDL_Window* window)
     , m_ani_attr(0)
     , m_mvp_matrix_uniform(0)
     , m_rot_matrix_uniform(0)
-    , m_toy_matrix_uniform(nullptr)
+    , m_animation_matrix_uniform(nullptr)
     , m_vao(0)
     , m_vbo(0)
     , m_qa(new Qa)
@@ -99,8 +99,8 @@ View::~View()
 #endif
     delete m_qa;
     delete m_toy;
-    if (m_toy_matrix_uniform != nullptr) {
-        delete m_toy_matrix_uniform;
+    if (m_animation_matrix_uniform != nullptr) {
+        delete m_animation_matrix_uniform;
     }
     SDL_DestroyRenderer(m_renderer);
     SDL_GL_DeleteContext(m_context);
@@ -216,14 +216,14 @@ void View::initialize()
         printf("rot_matrix is not a valid glsl variable\n");
         exit(0);
     }
-    int n = m_toy->get_matrix_uniforms();
+    int n = m_toy->animation_matrices();
     if (n > 0) {
-        m_toy_matrix_uniform = new GLint[n];
+        m_animation_matrix_uniform = new GLint[n];
         for (int i = 0; i < n; i++) {
             char id[256];
-            sprintf(id, "toy%d_matrix", i);
-            m_toy_matrix_uniform[i] = glGetUniformLocation(m_program, id);
-            if (m_toy_matrix_uniform[i] == -1) {
+            sprintf(id, "animation_%d_matrix", i);
+            m_animation_matrix_uniform[i] = glGetUniformLocation(m_program, id);
+            if (m_animation_matrix_uniform[i] == -1) {
                 printf("'%s' is not a valid glsl variable\n", id);
                 exit(0);
             }
@@ -351,9 +351,9 @@ void View::render()
     glUniformMatrix4fv(m_mvp_matrix_uniform, 1, GL_TRUE, m_mvp_matrix.data());
     glUniformMatrix4fv(m_rot_matrix_uniform, 1, GL_TRUE, m_rot_matrix.data());
 
-    int n = m_toy->get_matrix_uniforms();
+    int n = m_toy->animation_matrices();
     for (int i = 0; i < n; i++) {
-        glUniformMatrix4fv(m_toy_matrix_uniform[i], 1, GL_TRUE, m_toy->get_matrix(i).data());
+        glUniformMatrix4fv(m_animation_matrix_uniform[i], 1, GL_TRUE, m_toy->get_animation_matrix(i).data());
     }
 
 

@@ -1,8 +1,8 @@
 uniform mat4 mvp_matrix;
 uniform mat4 rot_matrix;
-uniform mat4 toy0_matrix;
-uniform mat4 toy1_matrix;
-uniform mat4 toy2_matrix;
+uniform mat4 animation_0_matrix;
+uniform mat4 animation_1_matrix;
+uniform mat4 animation_2_matrix;
 
 attribute vec3 a_position;
 attribute vec3 a_normal;
@@ -22,15 +22,20 @@ void main()
         gl_Position = mvp_matrix * vec4(a_position, 1.0);
         v_normal = rot_matrix * vec4(billy, 0.0);
     } else {
+
+// This should be generated automatically based on number of animation matrices
         if (a_animation_id == 2.0) {
-            gl_Position = mvp_matrix * toy0_matrix * vec4(a_position, 1.0);
-            v_normal = rot_matrix * toy0_matrix * vec4(billy, 0.0);
+            gl_Position = mvp_matrix * animation_0_matrix * vec4(a_position, 1.0);
+            v_normal = rot_matrix * animation_0_matrix * vec4(billy, 0.0);
         } else if (a_animation_id == 3.0) {
-            gl_Position = mvp_matrix * toy1_matrix * vec4(a_position, 1.0);
-            v_normal = rot_matrix * toy1_matrix * vec4(billy, 0.0);
+            gl_Position = mvp_matrix * animation_1_matrix * vec4(a_position, 1.0);
+            v_normal = rot_matrix * animation_1_matrix * vec4(billy, 0.0);
+
         } else if (a_animation_id == 4.0) {
-            gl_Position = mvp_matrix * toy2_matrix * vec4(a_position, 1.0);
-            v_normal = rot_matrix * toy2_matrix * vec4(billy, 0.0);
+            gl_Position = mvp_matrix * animation_2_matrix * vec4(a_position, 1.0);
+            v_normal = rot_matrix * animation_2_matrix * vec4(billy, 0.0);
+// end of animation_matrix stuff
+
         } else if (a_animation_id == 1.0) {
             gl_Position = mvp_matrix * vec4(a_position, 1.0);
             v_normal = vec4(0.0, 0.0, 1.0, 0.0);

@@ -8,22 +8,24 @@
 #include "cad_model.h"
 #include "matrix4x4.h"
 
+
 class Toy
 {
 public:
+    #define ANIMATION_0_ID 2.0
+    #define ANIMATION_1_ID 3.0
+    #define ANIMATION_2_ID 4.0
+
     Toy();
     ~Toy();
 
-    bool model_changed() const;
-    void clear_model_changed();
     CadModel* get_model() const;
-    int get_matrix_uniforms() const;
-    Matrix4x4 get_matrix(int i) const;
+    int animation_matrices() const;
+    Matrix4x4 get_animation_matrix(int i) const;
 
     void advance(int nanoseconds);
 
 private:
-    bool m_model_changed;
     CadModel* m_model;
 
     void build_model();
