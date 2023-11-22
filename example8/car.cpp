@@ -8,14 +8,10 @@
 #include "box_shape.h"
 #include "ring_shape.h"
 #include "cylinder_shape.h"
-
-#define ANI_ID_CAR_0 2.0
-#define ANI_ID_CAR_1 3.0
-#define ANI_ID_CAR_2 4.0
-#define ANI_ID_CAR_3 5.0
+#include "toy.h"
 
 Car::Car()
-    : m_speed(7.5)
+    : m_speed(10.0)
     , m_section(0)
     , m_lane(0)
     , m_distance(0.0)
@@ -71,16 +67,16 @@ CadModel Car::cad_model(int car_id) const
     float ani_id_car = 0.0;
     if (car_id == 0) {
         body_p = PaintCan(1.0, 0.25, 0.5);
-        ani_id_car = ANI_ID_CAR_0;
+        ani_id_car = ANIMATION_0_ID;
     } else if (car_id == 1) {
         body_p = PaintCan(0.5, 1.0, 0.25);
-        ani_id_car = ANI_ID_CAR_1;
+        ani_id_car = ANIMATION_1_ID;
     } else if (car_id == 2) {
         body_p = PaintCan(1.0, 0.5, 0.25);
-        ani_id_car = ANI_ID_CAR_2;
+        ani_id_car = ANIMATION_2_ID;
     } else if (car_id == 3) {
         body_p = PaintCan(0.5, 0.5, 1.0);
-        ani_id_car = ANI_ID_CAR_3;
+        ani_id_car = ANIMATION_3_ID;
     }
     CadModel vehicle;
     build_wheels(&vehicle, ani_id_car);
