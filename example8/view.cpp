@@ -6,7 +6,6 @@
 #include "matrix4x4.h"
 #include "matrix3x3.h"
 #include "paint_can.h"
-#include "cube_shape.h"
 #include "bounding_box.h"
 #include "look.h"
 #include "pi.h"

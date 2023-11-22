@@ -16,8 +16,10 @@ HEADERS = view.h \
           navigate.h \
           cad_model.h \
           view.h \
-          cube_shape.h \
           toy.h \
+          \
+          \
+          \
           track.h \
           anchor.h \
           car.h \
@@ -34,6 +36,11 @@ HEADERS = view.h \
           ring_shape.h \
           straight_track_shape.h \
           track_style.h \
+          \
+          \
+          \
+# note: all of the files after toy.h are there for toy.cpp only
+#       they can be removed if toy.cpp doesn't need them anymore
 
 OBJECTS = main.obj \
           view.obj \
@@ -44,8 +51,10 @@ OBJECTS = main.obj \
           look.obj \
           navigate.obj \
           cad_model.obj \
-          cube_shape.obj \
           toy.obj \
+          \
+          \
+          \
           track.obj \
           car.obj \
           curved_left_section.obj \
@@ -60,6 +69,11 @@ OBJECTS = main.obj \
           ring_shape.obj \
           straight_track_shape.obj \
           track_style.obj \
+          \
+          \
+          \
+# note: all of the files after toy.obj are there for toy.cpp only
+#       they can be removed if toy.cpp doesn't need them anymore
 
 LIBPATH = /libpath:c:/users/demon/sdl2/lib/x64 /libpath:c:/users/demon/glew/lib/Release/x64
 INCPATH = /Ic:/users/demon/sdl2/include /Ic:/users/demon/glew/include

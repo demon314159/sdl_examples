@@ -3,7 +3,6 @@
 //
 
 #include "toy.h"
-#include "cube_shape.h"
 
 #define TRACK_LANES 4
 
@@ -49,14 +48,15 @@ void Toy::advance(int nanoseconds)
 
 void Toy::build_model()
 {
-    CadModel rcm = CadModel(CubeShape(1.0, 1.0, 1.0), PaintCan(1.0, 0.0, 0.0), ANIMATION_0_ID);
-    CadModel gcm = CadModel(CubeShape(1.0, 1.0, 1.0), PaintCan(0.0, 1.0, 0.0), ANIMATION_1_ID);
-    CadModel bcm = CadModel(CubeShape(1.0, 1.0, 1.0), PaintCan(0.0, 0.0, 1.0), ANIMATION_2_ID);
-    CadModel xcm = CadModel(CubeShape(1.0, 1.0, 1.0), PaintCan(0.0, 1.0, 1.0), ANIMATION_3_ID);
-    m_model->add(rcm, -2.0, 0.0, 0.0);
-    m_model->add(gcm, 2.0, 0.0, 0.0);
-    m_model->add(bcm, 0.0, 0.0, -2.0);
-    m_model->add(xcm, 0.0, 2.0, -2.0);
+    for (int i = 0; i < m_track->sections(); i++) {
+        CadModel cm = m_track->section(i)->cad_model();
+        m_model->add(cm, 0.0, 0.0, 0.0);
+    }
+    for (int i = 0; i < m_track->cars(); i++) {
+        m_track->car(i)->set_lane(i);
+        CadModel car = m_track->car(i)->cad_model(i);
+        m_model->add(car, 0.0, 0.0, 0.0);
+    }
 }
 
 Matrix4x4 Toy::get_animation_matrix(int i) const
