@@ -418,7 +418,7 @@ void View::zoom(float factor)
 
 void View::zoom_home()
 {
-    set_mag(1.0);
+    set_mag(INITIAL_MAG);
 }
 
 void View::set_mag(float mag)
