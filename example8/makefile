@@ -27,6 +27,13 @@ HEADERS = view.h \
           rise_profile.h \
           section.h \
           straight_section.h \
+          box_shape.h \
+          curved_left_track_shape.h \
+          curved_right_track_shape.h \
+          cylinder_shape.h \
+          ring_shape.h \
+          straight_track_shape.h \
+          track_style.h \
 
 OBJECTS = main.obj \
           view.obj \
@@ -46,6 +53,13 @@ OBJECTS = main.obj \
           rise_profile.obj \
           section.obj \
           straight_section.obj \
+          box_shape.obj \
+          curved_left_track_shape.obj \
+          curved_right_track_shape.obj \
+          cylinder_shape.obj \
+          ring_shape.obj \
+          straight_track_shape.obj \
+          track_style.obj \
 
 LIBPATH = /libpath:c:/users/demon/sdl2/lib/x64 /libpath:c:/users/demon/glew/lib/Release/x64
 INCPATH = /Ic:/users/demon/sdl2/include /Ic:/users/demon/glew/include
