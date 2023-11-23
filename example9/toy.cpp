@@ -64,17 +64,19 @@ Matrix4x4 Toy::get_animation_matrix(int i) const
 
     mm.unity();
     if (i == 0) {
-        mm.translate(-2.0, 0.0, 0.0);
-        mm.rotate_ax(m_animation_0_angle);
+        mm.translate(-2.0, 0.0, -2.0);
+        mm.rotate_ax(-m_animation_0_angle / 4.0);
+        mm.rotate_az(m_animation_0_angle);
     } else if (i == 1) {
-        mm.translate(2.0, 0.0, 0.0);
-        mm.rotate_ay(m_animation_1_angle);
+        mm.translate(2.0, 0.0, -2.0);
+        mm.rotate_ax(m_animation_1_angle);
     } else if (i == 2) {
-        mm.translate(0.0, -1.0, -2.0);
-        mm.rotate_az(m_animation_2_angle);
+        mm.translate(0.0, -1.0, 0.0);
+        mm.rotate_ay(m_animation_2_angle);
     } else if (i == 3) {
-        mm.translate(0.0, 1.0, -2.0);
-        mm.rotate_az(m_animation_3_angle);
+        mm.translate(0.0, 1.0, 0.0);
+        mm.rotate_ay(-m_animation_3_angle);
+        mm.rotate_az(m_animation_3_angle * 3.0);
     }
     return mm;
 }
