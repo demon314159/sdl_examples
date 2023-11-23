@@ -46,7 +46,6 @@ View::View(SDL_Window* window)
     , m_yrot(0.0)
     , m_xoff(0.0)
     , m_yoff(0.0)
-    , m_last_count(0.0)
 {
 #ifdef VERBOSE
     printf("View::View(doc)\n");
@@ -67,12 +66,11 @@ View::View(SDL_Window* window)
     m_renderer = SDL_CreateRenderer(m_window, -1, 0);
     if (m_renderer == NULL) {
         printf("Renderer Creation Error: %s\n", SDL_GetError());
+
         exit(0);
     }
     position_camera();
-    unsigned long perf_count = SDL_GetPerformanceFrequency();
-    double aa = (double) SDL_GetPerformanceFrequency();
-    m_last_count = (float) SDL_GetPerformanceCounter();
+    m_last_time_point = std::chrono::high_resolution_clock::now();
 }
 
 void View::position_camera()
@@ -159,7 +157,7 @@ void View::initialize()
         printf("Error initializing GLEW: %s\n", glewGetErrorString(glew_error));
         exit(0);
     }
-    if (SDL_GL_SetSwapInterval(0) < 0) {
+    if (SDL_GL_SetSwapInterval(-1) < 0) {
         printf("Warning: Unable to set VSync. SDL Error: %s\n", SDL_GetError());
     }
     glClearColor(1.0f, 0.682f, 0.259f, 1.0f); // yellow orange
@@ -312,13 +310,10 @@ void View::render()
 #ifdef VERBOSE
     printf("View::render()\n");
 #endif
-    float this_count = (float) SDL_GetPerformanceCounter();
-    float ftp = (this_count - m_last_count) * 1.0e9 / (float) SDL_GetPerformanceFrequency();
-    m_last_count = this_count;
-    int tp = round(ftp);
-    if (tp == 0)
-        return;
-    m_toy->advance(tp);
+    std::chrono::high_resolution_clock::time_point this_time_point = std::chrono::high_resolution_clock::now();
+    unsigned long real_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(this_time_point - m_last_time_point).count();
+    m_last_time_point = this_time_point;
+    m_toy->advance(real_ns);
     Matrix4x4 matrix;
     matrix.unity();
     matrix.translate(m_xoff, m_yoff, -m_camz - m_radius);

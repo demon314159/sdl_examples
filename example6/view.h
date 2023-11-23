@@ -18,7 +18,7 @@
 
 #define INITIAL_HEIGHT 512
 #define INITIAL_WIDTH ((INITIAL_HEIGHT * 1920) / 1080)
-#define INITIAL_XROT 40.0
+#define INITIAL_XROT 20.0
 #define INITIAL_MAG 2.25
 
 class View

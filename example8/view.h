@@ -9,6 +9,7 @@
 #include <GL/glew.h>
 #include <SDL_opengl.h>
 #include <stdio.h>
+#include <chrono>
 
 #include "vertex_data.h"
 #include "matrix4x4.h"
@@ -17,7 +18,7 @@
 
 #define INITIAL_HEIGHT 512
 #define INITIAL_WIDTH ((INITIAL_HEIGHT * 1920) / 1080)
-#define INITIAL_XROT 40.0
+#define INITIAL_XROT 20.0
 #define INITIAL_MAG 2.25
 
 class View
@@ -82,7 +83,7 @@ private:
     Matrix4x4 m_mvp_matrix;
     Matrix4x4 m_rot_matrix;
     Matrix4x4 m_projection;
-    float m_last_count;
+    std::chrono::high_resolution_clock::time_point m_last_time_point;
 
     bool add_shader_from_source_file(GLuint shader, const char* name);
     void print_program_log(GLuint program);
