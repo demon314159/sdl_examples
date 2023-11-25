@@ -46,11 +46,12 @@ View::View(SDL_Window* window)
     , m_yrot(0.0)
     , m_xoff(0.0)
     , m_yoff(0.0)
+    , m_joystick(nullptr)
 {
 #ifdef VERBOSE
     printf("View::View(doc)\n");
 #endif
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+    if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_JOYSTICK) < 0) {
         printf("Video Initialization Error: %s\n", SDL_GetError());
         exit(0);
     }
@@ -70,6 +71,14 @@ View::View(SDL_Window* window)
     }
     position_camera();
     m_last_time_point = std::chrono::high_resolution_clock::now();
+    int n = SDL_NumJoysticks();
+    printf("Joysticks = %d\n", n);
+    for (int i = 0; i < n; i++) {
+          printf("%d: '%s'\n", i, SDL_JoystickNameForIndex(i));
+    }
+    if (n > 0) {
+        m_joystick = SDL_JoystickOpen(0);
+    }
 }
 
 void View::position_camera()
@@ -96,6 +105,9 @@ View::~View()
 #ifdef VERBOSE
     printf("View::~View()\n");
 #endif
+    if (m_joystick != nullptr) {
+        SDL_JoystickClose(m_joystick);
+    }
     delete m_toy;
     if (m_animation_matrix_uniform != nullptr) {
         delete m_animation_matrix_uniform;

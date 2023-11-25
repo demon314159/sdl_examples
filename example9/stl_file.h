@@ -1,19 +1,19 @@
 //
-// stl_interface.h
+// stl_file.h
 //
 
-#ifndef _STL_INTERFACE_H_
-#define _STL_INTERFACE_H_
+#ifndef _STL_FILE_H_
+#define _STL_FILE_H_
 
-#include "bin_interface.h"
+#include "bin_file.h"
 #include "float3.h"
 #include "int3.h"
 
-class StlInterface
+class StlFile
 {
 public:
-    StlInterface(const char* file_name);
-    ~StlInterface();
+    StlFile(const char* file_name);
+    ~StlFile();
     bool file_is_valid() const;
     const char* error_message() const;
     int facets() const;
@@ -24,7 +24,7 @@ public:
 private:
     bool m_file_is_valid;
     bool m_pass2;
-    BinInterface m_bi;
+    BinFile m_bf;
     char m_error_message[256];
     int m_facet_count;
     Float3* m_v1;
@@ -34,4 +34,4 @@ private:
     bool parse();
 };
 
-#endif // _STL_INTERFACE_H_
+#endif // _STL_FILE_H_

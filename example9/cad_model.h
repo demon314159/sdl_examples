@@ -9,7 +9,7 @@
 #include "facet.h"
 #include "bounding_box.h"
 #include "int3.h"
-#include "stl_interface.h"
+#include "stl_file.h"
 #include "paint_can.h"
 #include "shape.h"
 #include "face.h"
@@ -19,11 +19,11 @@ class CadModel
 public:
     CadModel();
     CadModel(const CadModel& cad_model, float x = 0.0, float y = 0.0, float z = 0.0);
-    CadModel(const StlInterface& stl_interface, const PaintCan& paint_can, float animation_id = 0.0);
+    CadModel(const StlFile& stl_file, const PaintCan& paint_can, float animation_id = 0.0);
     CadModel(const Shape& s, const PaintCan& paint_can, float animation_id = 0.0);
     CadModel(const Shape& s);
     ~CadModel();
-    void add(const StlInterface& stl_interface, const PaintCan& paint_can, float animation_id = 0.0);
+    void add(const StlFile& stl_File, const PaintCan& paint_can, float animation_id = 0.0);
     void add(const Shape& s, const PaintCan& paint_can, float animation_id = 0.0);
     void add(const CadModel& cad_model, float x = 0.0, float y = 0.0, float z = 0.0);
     void rotate_ax(float angle);

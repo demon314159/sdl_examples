@@ -1,22 +1,22 @@
 //
-// bin_interface.cpp
+// bin_file.cpp
 //
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/stat.h>
 
-#include "bin_interface.h"
+#include "bin_file.h"
 
 #define notVERBOSE
 
-BinInterface::BinInterface(const char* file_name)
+BinFile::BinFile(const char* file_name)
     : m_pos(0)
     , m_size(0)
     , m_buf(nullptr)
 {
 #ifdef VERBOSE
-    printf("BinInterface(%s)\n", file_name);
+    printf("BinFile(%s)\n", file_name);
 #endif
 
     FILE* ffi = fopen(file_name, "rb");
@@ -62,29 +62,29 @@ BinInterface::BinInterface(const char* file_name)
     }
 }
 
-BinInterface::~BinInterface()
+BinFile::~BinFile()
 {
 #ifdef VERBOSE
-    printf("~BinInterface()\n");
+    printf("~BinFile()\n");
 #endif
     if (m_buf != NULL) {
         delete [] m_buf;
     }
 }
 
-void BinInterface::rewind()
+void BinFile::rewind()
 {
     m_pos = 0;
 }
 
-void BinInterface::advance()
+void BinFile::advance()
 {
     if (m_pos < m_size) {
         ++m_pos;
     }
 }
 
-char BinInterface::current() const
+char BinFile::current() const
 {
     if (m_pos < m_size) {
         return m_buf[m_pos];
@@ -93,43 +93,43 @@ char BinInterface::current() const
     }
 }
 
-bool BinInterface::is_eof() const
+bool BinFile::is_eof() const
 {
     return m_pos >= m_size;
 }
 
-unsigned short BinInterface::get_unsigned_short()
+unsigned short BinFile::get_unsigned_short()
 {
     if (m_pos < (m_size - 1)) {
         unsigned short* v = (unsigned short*) &m_buf[m_pos];
         m_pos += 2;
         return *v;
     } else {
-        printf("\n<<< BinInterface::get_unsigned_short() past end of file should never happen >>>\n");
+        printf("\n<<< BinFile::get_unsigned_short() past end of file should never happen >>>\n");
         return 0;
     }
 }
 
-int BinInterface::get_int()
+int BinFile::get_int()
 {
     if (m_pos < (m_size - 3)) {
         int* v = (int*) &m_buf[m_pos];
         m_pos += 4;
         return *v;
     } else {
-        printf("\n<<< BinInterface::get_int() past end of file should never happen >>>\n");
+        printf("\n<<< BinFile::get_int() past end of file should never happen >>>\n");
         return 0;
     }
 }
 
-float BinInterface::get_float()
+float BinFile::get_float()
 {
     if (m_pos < (m_size - 3)) {
         float* v = (float*) &m_buf[m_pos];
         m_pos += 4;
         return *v;
     } else {
-        printf("\n<<< BinInterface::get_float() past end of file should never happen >>>\n");
+        printf("\n<<< BinFile::get_float() past end of file should never happen >>>\n");
         return 0;
     }
 }

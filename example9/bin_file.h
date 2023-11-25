@@ -1,15 +1,15 @@
 //
-// bin_interface.h
+// bin_file.h
 //
 
-#ifndef _BIN_INTERFACE_H_
-#define _BIN_INTERFACE_H_
+#ifndef _BIN_FILE_H_
+#define _BIN_FILE_H_
 
-class BinInterface
+class BinFile
 {
 public:
-    BinInterface(const char* file_name);
-    ~BinInterface();
+    BinFile(const char* file_name);
+    ~BinFile();
     void rewind();
     void advance();
     char current() const;
@@ -24,4 +24,4 @@ private:
     char* m_buf;
 };
 
-#endif // _BIN_INTERFACE_H_
+#endif // _BIN_FILE_H_

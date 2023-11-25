@@ -36,6 +36,12 @@ int main(int argc, char *argv[])
                 host.mouse_move_event(&ev);
             } else if (ev.type == SDL_MOUSEWHEEL) {
                 host.mouse_wheel_event(&ev);
+            } else if (ev.type == SDL_JOYAXISMOTION) {
+                printf("joystick axis: %i, %i\n", ev.jaxis.axis, ev.jaxis.value);
+            } else if (ev.type == SDL_JOYBUTTONDOWN) {
+                printf("joystick button down: %i\n", ev.jbutton.button);
+            } else if (ev.type == SDL_JOYBUTTONUP) {
+                printf("joystick button up: %i\n", ev.jbutton.button);
             }
         }
         host.render();

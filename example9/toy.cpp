@@ -3,7 +3,7 @@
 //
 
 #include "toy.h"
-#include "stl_interface.h"
+#include "stl_file.h"
 
 #define ANIMATION_0_SPEED 30.0
 #define ANIMATION_1_SPEED 90.0
@@ -46,10 +46,10 @@ void Toy::advance(int nanoseconds)
 
 void Toy::build_model()
 {
-    CadModel rsphere = CadModel(StlInterface("sphere.stl"), PaintCan(1.0, 0.0, 0.0), ANIMATION_0_ID);
-    CadModel gsphere = CadModel(StlInterface("sphere.stl"), PaintCan(0.0, 1.0, 0.0), ANIMATION_1_ID);
-    CadModel bsphere = CadModel(StlInterface("sphere.stl"), PaintCan(0.0, 0.0, 1.0), ANIMATION_2_ID);
-    CadModel xsphere = CadModel(StlInterface("sphere.stl"), PaintCan(0.0, 1.0, 1.0), ANIMATION_3_ID);
+    CadModel rsphere = CadModel(StlFile("sphere.stl"), PaintCan(1.0, 0.0, 0.0), ANIMATION_0_ID);
+    CadModel gsphere = CadModel(StlFile("sphere.stl"), PaintCan(0.0, 1.0, 0.0), ANIMATION_1_ID);
+    CadModel bsphere = CadModel(StlFile("sphere.stl"), PaintCan(1.0, 0.0, 1.0), ANIMATION_2_ID);
+    CadModel xsphere = CadModel(StlFile("sphere.stl"), PaintCan(0.0, 1.0, 1.0), ANIMATION_3_ID);
 
     m_model->add(rsphere, 0.0, 0.0, 0.0);
     m_model->add(bsphere, 0.0, 0.0, 0.0);

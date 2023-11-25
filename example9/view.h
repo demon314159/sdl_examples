@@ -84,6 +84,7 @@ private:
     Matrix4x4 m_rot_matrix;
     Matrix4x4 m_projection;
     std::chrono::high_resolution_clock::time_point m_last_time_point;
+    SDL_Joystick* m_joystick;
 
     bool add_shader_from_source_file(GLuint shader, const char* name);
     void print_program_log(GLuint program);

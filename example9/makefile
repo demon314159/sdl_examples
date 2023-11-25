@@ -15,8 +15,8 @@ HEADERS = view.h \
           shape.h \
           navigate.h \
           cad_model.h \
-          stl_interface.h \
-          bin_interface.h \
+          stl_file.h \
+          bin_file.h \
           view.h \
           toy.h \
           \
@@ -37,8 +37,8 @@ OBJECTS = main.obj \
           look.obj \
           navigate.obj \
           cad_model.obj \
-          stl_interface.obj \
-          bin_interface.obj \
+          stl_file.obj \
+          bin_file.obj \
           toy.obj \
           \
           \
