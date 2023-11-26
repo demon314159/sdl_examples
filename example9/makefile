@@ -17,6 +17,7 @@ HEADERS = view.h \
           cad_model.h \
           stl_file.h \
           bin_file.h \
+          char_file.h \
           view.h \
           toy.h \
           \
@@ -39,6 +40,7 @@ OBJECTS = main.obj \
           cad_model.obj \
           stl_file.obj \
           bin_file.obj \
+          char_file.obj \
           toy.obj \
           \
           \
