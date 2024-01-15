@@ -23,6 +23,8 @@ HEADERS = view.h \
           \
           flipper_model.h \
           flipper_shape.h \
+          ball_model.h \
+          sphere_shape.h \
           \
           \
           \
@@ -47,6 +49,8 @@ OBJECTS = main.obj \
           \
           flipper_model.obj \
           flipper_shape.obj \
+          ball_model.obj \
+          sphere_shape.obj \
           \
           \
           \

@@ -4,6 +4,7 @@
 
 #include "toy.h"
 #include "flipper_model.h"
+#include "ball_model.h"
 
 #define ANIMATION_0_SPEED 30.0
 #define ANIMATION_1_SPEED 90.0
@@ -11,7 +12,7 @@
 #define ANIMATION_3_SPEED 30.0
 
 Toy::Toy()
-    : m_model( new FlipperModel(2.0, PaintCan(1.0, 1.0, 0.0), PaintCan(1.0, 0.0, 0.0), 1.0, 0.4, 5.0, 2.0, 0.2, 1.6))
+    : m_model( new BallModel(2.0, PaintCan(1.0, 0.0, 0.0), PaintCan(1.0, 1.0, 1.0), PaintCan(0.0, 0.0, 1.0), 1.0))
     , m_animation_0_angle(0.0)
     , m_animation_1_angle(0.0)
     , m_animation_2_angle(0.0)
