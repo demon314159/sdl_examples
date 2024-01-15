@@ -29,6 +29,7 @@ public:
     void rotate_ax(float angle);
     void rotate_ay(float angle);
     void rotate_az(float angle);
+    void translate(float x, float y, float z);
     void magnify(float factor);
     int facets() const;
     Facet facet(int ix) const;

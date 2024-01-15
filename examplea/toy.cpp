@@ -15,7 +15,7 @@
 #define ANIMATION_3_SPEED 30.0
 
 Toy::Toy()
-    : m_model( new BallModel(3.0, PaintCan(1.0, 0.0, 0.0), PaintCan(1.0, 1.0, 1.0), PaintCan(0.0, 0.0, 1.0), 1.0))
+    : m_model(new CadModel())
     , m_animation_0_angle(0.0)
     , m_animation_1_angle(0.0)
     , m_animation_2_angle(0.0)
@@ -50,8 +50,20 @@ void Toy::advance(int nanoseconds)
 
 void Toy::build_model()
 {
+    float D = 20.0;
+    float L = sqrt( 8.0 * D * D);
+    BallModel ball(3.0, PaintCan(1.0, 0.0, 0.0), PaintCan(1.0, 1.0, 1.0), PaintCan(0.0, 0.0, 1.0), 1.0);
     FlipperModel flipper(2.0, PaintCan(1.0, 1.0, 0.0), PaintCan(1.0, 0.0, 0.0), 1.0, 0.4, 5.0, 2.0, 0.2, 1.6);
+    FlipperModel wall(0.0, PaintCan(1.0, 1.0, 0.0), PaintCan(1.0, 0.0, 0.0), 0.2, 0.2, L, 2.0, 0.2, 1.6);
+    wall.translate(-L / 2.0, 0.0, 0.0);
+    m_model->add(ball, 0.0, 0.0, 0.0);
     m_model->add(flipper, 0.0, 0.0, 0.0);
+    wall.rotate_ay(45.0);
+    m_model->add(wall, -D, 0.0, -D);
+    m_model->add(wall, D, 0.0, D);
+    wall.rotate_ay(-90.0);
+    m_model->add(wall, -D, 0.0, D);
+    m_model->add(wall, D, 0.0, -D);
     m_model->magnify(0.5);
 }
 

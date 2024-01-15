@@ -385,4 +385,18 @@ BoundingBox CadModel::bounding_box() const
     return bb;
 }
 
+void CadModel::translate(float x, float y, float z)
+{
+    for (int i = 0; i < m_facet_count; i++) {
+        m_facet[i].v1.v1 += x;
+        m_facet[i].v1.v2 += y;
+        m_facet[i].v1.v3 += z;
+        m_facet[i].v2.v1 += x;
+        m_facet[i].v2.v2 += y;
+        m_facet[i].v2.v3 += z;
+        m_facet[i].v3.v1 += x;
+        m_facet[i].v3.v2 += y;
+        m_facet[i].v3.v3 += z;
 
+    }
+}
