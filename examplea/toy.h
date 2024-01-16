@@ -32,6 +32,9 @@ private:
     float m_animation_2_angle;
     float m_animation_3_angle;
 
+    Float3 m_ball_position;
+    Float3 m_ball_velocity;
+
     void build_model();
 };
 

@@ -5,6 +5,8 @@
 #ifndef _MATRIX4X4_H_
 #define _MATRIX4X4_H_
 
+#include "float3.h"
+
 class Matrix4x4
 {
 public:
@@ -25,6 +27,7 @@ public:
     void rotate_ax(float angle);
     void rotate_ay(float angle);
     void rotate_az(float angle);
+    void rotate(float angle, Float3 axes);
 
     float get(int row, int col) const;
     void set(int row, int col, float v);

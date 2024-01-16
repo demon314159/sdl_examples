@@ -5,7 +5,6 @@
 #include "toy.h"
 #include "flipper_model.h"
 #include "ball_model.h"
-#include "quaternion.h"
 #include "pi.h"
 #include <math.h>
 
@@ -20,6 +19,8 @@ Toy::Toy()
     , m_animation_1_angle(0.0)
     , m_animation_2_angle(0.0)
     , m_animation_3_angle(0.0)
+    , m_ball_position({0.0, 0.0, 0.0})
+    , m_ball_velocity({-1.0, 0.0, 1.0})
 {
     build_model();
 }
@@ -46,6 +47,8 @@ void Toy::advance(int nanoseconds)
     m_animation_1_angle += (ANIMATION_1_SPEED * ns);
     m_animation_2_angle += (ANIMATION_2_SPEED * ns);
     m_animation_3_angle += (ANIMATION_3_SPEED * ns);
+    m_ball_position.v1 += (m_ball_velocity.v1 * ns);
+    m_ball_position.v3 += (m_ball_velocity.v3 * ns);
 }
 
 void Toy::build_model()
@@ -77,8 +80,10 @@ Matrix4x4 Toy::get_animation_matrix(int i) const
         mm.translate(-2.0, 0.0, 0.0);
         mm.rotate_ay(m_animation_0_angle);
     } else if (i == 1) {
-        Quaternion q(m_animation_1_angle * PI / 180.0, {f, 0.0, f});
-        mm = q.to_matrix();
+        mm.translate(m_ball_position.v1, 0.0, m_ball_position.v3);
+        mm.rotate(m_animation_1_angle * PI / 180.0, {f, 0.0, f});
+//        Quaternion q(m_animation_1_angle * PI / 180.0, {f, 0.0, f});
+//        mm = mm * q.to_matrix();
 //        mm.rotate_ax(m_animation_1_angle);
     } else if (i == 2) {
         mm.rotate_ay(m_animation_2_angle);
