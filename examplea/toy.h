@@ -7,6 +7,8 @@
 
 #include "cad_model.h"
 #include "matrix4x4.h"
+#include "ball.h"
+#include "wall.h"
 
 class Toy
 {
@@ -31,9 +33,8 @@ private:
     float m_animation_1_angle;
     float m_animation_2_angle;
     float m_animation_3_angle;
-
-    Float3 m_ball_position;
-    Float3 m_ball_velocity;
+    Wall m_wall;
+    Ball m_ball;
 
     void build_model();
 };

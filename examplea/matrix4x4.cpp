@@ -204,10 +204,10 @@ void Matrix4x4::rotate(float angle, Float3 axes)
     Matrix4x4 ta;
     Matrix4x4 tb;
 
-    float q0 = cos(angle / 2.0);
-    float q1 = axes.v1 * sin(angle / 2.0);
-    float q2 = axes.v2 * sin(angle / 2.0);
-    float q3 = axes.v3 * sin(angle / 2.0);
+    float q0 = cos((angle * PI / 180.0) / 2.0);
+    float q1 = axes.v1 * sin((angle * PI / 180.0) / 2.0);
+    float q2 = axes.v2 * sin((angle * PI / 180.0) / 2.0);
+    float q3 = axes.v3 * sin((angle * PI / 180.0) / 2.0);
 
     ta.set(0, 0, q0 * q0 + q1 * q1 - q2 * q2 - q3 * q3);
     ta.set(0, 1, 2.0 * q1 * q2 - 2.0 * q0 * q3);
