@@ -16,6 +16,7 @@ public:
 
     CadModel model(float animation_id) const;
     void advance(float seconds);
+    float radius() const;
     Float2 position() const;
     Float2 velocity() const;
     Float2 acceleration() const;

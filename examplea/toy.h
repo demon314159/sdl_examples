@@ -33,7 +33,10 @@ private:
     float m_animation_1_angle;
     float m_animation_2_angle;
     float m_animation_3_angle;
-    Wall m_wall;
+    Wall m_wall1;
+    Wall m_wall2;
+    Wall m_wall3;
+    Wall m_wall4;
     Ball m_ball;
 
     void build_model();

@@ -45,10 +45,13 @@ Toy::Toy()
     , m_animation_2_angle(0.0)
     , m_animation_3_angle(0.0)
     , m_ball(BALL_RADIUS, BALL_TOP_COLOR, BALL_MIDDLE_COLOR, BALL_BOTTOM_COLOR)
-    , m_wall(-45.0, {-WALL_SPACING, 0.0, WALL_SPACING})
+    , m_wall1(-45.0, {-WALL_SPACING, 0.0, WALL_SPACING})
+    , m_wall2(45.0, {WALL_SPACING, 0.0, WALL_SPACING})
+    , m_wall3(180.0 + 45.0, {-WALL_SPACING, 0.0, -WALL_SPACING})
+    , m_wall4(-180.0 -45.0, {WALL_SPACING, 0.0, -WALL_SPACING})
 {
     build_model();
-    m_ball.set_velocity({-1.0, 1.0});
+    m_ball.set_velocity({-4.0, 10.0});
 }
 
 Toy::~Toy()
@@ -66,23 +69,32 @@ int Toy::animation_matrices() const
     return 4;
 }
 
-void collision_test(const Wall& wall)
+void collide(const Wall& wall, Ball& ball)
 {
+    Ball ball_copy = ball;
     // translate wall to (0, 0) and bring ball position and velocity
+    ball_copy.translate({-wall.position().v1, -wall.position().v3});
     // rotate wall by -angle() and bring ball position and velocity
+    ball_copy.rotate(-wall.angle());
+    // translate wall by WALL_RADIUS + BUMPER_THICKNESS and bring ball position and velocity
+    ball_copy.translate({0.0, WALL_RADIUS + BUMPER_THICKNESS});
     // test for ball z position to be mode than -radius
-    //    ( plus ball xposition within +/- WALL_LENGTH / 2.0 )
-    //     ball z + radius < 0 ? return with no change to anything
-    //     ball z + radius > 0 {
-    //         translate wall by WALL_RADIUS + BUMPER_THICKNESS and bring ball position and velocity
-    //         negate ball z velocity
-    //         ball z pos -= (ball_z + radius)
-    //         translate wall by -WALL_RADIUS - BUMPER_THICKNESS and bring ball position and velocity
-    //         rotate wall by angle() and bring ball position and velocity
-    //         translate wall to position() and bring ball position and velocity
-    //     }
-
-
+    if (ball_copy.position().v2 > -ball_copy.radius()) {
+        // negate ball z velocity
+        Float2 temp = ball_copy.velocity();
+        ball_copy.set_velocity({temp.v1, -temp.v2});
+        // ball z pos -= (ball_z + radius)
+        temp = ball_copy.position();
+        ball_copy.set_position({temp.v1, (float) -2.0 * ball.radius() - temp.v2});
+        // translate wall by -WALL_RADIUS - BUMPER_THICKNESS and bring ball position and velocity
+        ball_copy.translate({0.0, -WALL_RADIUS - BUMPER_THICKNESS});
+        // rotate wall by angle() and bring ball position and velocity
+        ball_copy.rotate(wall.angle());
+        // translate wall to position() and bring ball position and velocity
+        ball_copy.translate({wall.position().v1, wall.position().v3});
+        // replace ball with new info
+        ball = ball_copy;
+    }
 }
 
 void Toy::advance(int nanoseconds)
@@ -93,7 +105,10 @@ void Toy::advance(int nanoseconds)
     m_animation_2_angle += (ANIMATION_2_SPEED * seconds);
     m_animation_3_angle += (ANIMATION_3_SPEED * seconds);
     m_ball.advance(seconds);
-    collision_test(m_wall);
+    collide(m_wall1, m_ball);
+    collide(m_wall2, m_ball);
+    collide(m_wall3, m_ball);
+    collide(m_wall4, m_ball);
 }
 
 void Toy::build_model()
@@ -105,17 +120,25 @@ void Toy::build_model()
     m_model->add(ball, 0.0, 0.0, 0.0);
     m_model->add(flipper, 0.0, 0.0, 0.0);
 
-    wall.rotate_ay(m_wall.angle());
-    Float3 pos = m_wall.position();
+    wall.rotate_ay(m_wall1.angle());
+    Float3 pos = m_wall1.position();
     m_model->add(wall, pos.v1, pos.v2, pos.v3);
-    wall.rotate_ay(-m_wall.angle());
+    wall.rotate_ay(-m_wall1.angle());
 
+    wall.rotate_ay(m_wall2.angle());
+    pos = m_wall2.position();
+    m_model->add(wall, pos.v1, pos.v2, pos.v3);
+    wall.rotate_ay(-m_wall2.angle());
 
-//    m_model->add(wall, -D, 0.0, -D);
-//    m_model->add(wall, D, 0.0, D);
-    wall.rotate_ay(-90.0);
-//    m_model->add(wall, D, 0.0, -D);
-    m_model->magnify(0.5);
+    wall.rotate_ay(m_wall3.angle());
+    pos = m_wall3.position();
+    m_model->add(wall, pos.v1, pos.v2, pos.v3);
+    wall.rotate_ay(-m_wall3.angle());
+
+    wall.rotate_ay(m_wall4.angle());
+    pos = m_wall4.position();
+    m_model->add(wall, pos.v1, pos.v2, pos.v3);
+    wall.rotate_ay(-m_wall4.angle());
 }
 
 Matrix4x4 Toy::get_animation_matrix(int i) const
@@ -130,7 +153,7 @@ Matrix4x4 Toy::get_animation_matrix(int i) const
     } else if (i == 1) {
         Float2 bp = m_ball.position();
         mm.translate(bp.v1, 0.0, bp.v2);
-        mm.rotate(m_animation_1_angle, {f, 0.0, f});
+//        mm.rotate(m_animation_1_angle, {f, 0.0, f});
     } else if (i == 2) {
         mm.rotate_ay(m_animation_2_angle);
     } else if (i == 3) {

@@ -40,6 +40,11 @@ void Ball::advance(float seconds)
     m_position.v2 += (m_velocity.v2 * seconds);
 }
 
+float Ball::radius() const
+{
+    return m_radius;
+}
+
 Float2 Ball::position() const
 {
     return m_position;
