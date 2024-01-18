@@ -47,12 +47,15 @@ void Ball::advance(float seconds)
 
     double distance = sqrt(deltax * deltax + deltaz * deltaz);
     double last_angle = (distance / m_radius) * (180.0 / PI);
-
-
-// Rotete m_orienation quaternion by last_angle and axes and normalize it
-    Quaternion qa((float) last_angle, {f, 0.0, f});
-    m_orientation = m_orientation * qa;
-    m_orientation.normalize();
+    double v = sqrt(m_velocity.v1 * m_velocity.v1 + m_velocity.v2 * m_velocity.v2);
+    if (v > 0.0) {
+        float ta = m_velocity.v2 / v;
+        float tb = -m_velocity.v1 / v;
+        // Rotete m_orienation quaternion by last_angle and axes and normalize it
+        Quaternion qa((float) last_angle, {ta, 0.0, tb});
+        m_orientation = m_orientation * qa;
+        m_orientation.normalize();
+    }
 }
 
 float Ball::radius() const

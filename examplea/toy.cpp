@@ -52,7 +52,7 @@ Toy::Toy()
 {
     build_model();
 //    m_ball.set_velocity({-4.0, 10.0});
-    m_ball.set_velocity({-8.0, 8.0});
+    m_ball.set_velocity({-8.0, 5.0});
 }
 
 Toy::~Toy()
