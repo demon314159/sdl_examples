@@ -80,7 +80,7 @@ void collide(const Wall& wall, Ball& ball)
     // translate wall by WALL_RADIUS + BUMPER_THICKNESS and bring ball position and velocity
     ball_copy.translate_frame({0.0, WALL_RADIUS + BUMPER_THICKNESS});
     // test for ball z position to be mode than -radius
-    if (ball_copy.position().v2 > -ball_copy.radius()) {
+    if (ball_copy.position().v2 > -ball_copy.radius()) { // collision
         // negate ball z velocity
         Float2 temp = ball_copy.velocity();
         ball_copy.set_velocity({temp.v1, -temp.v2});
@@ -94,7 +94,10 @@ void collide(const Wall& wall, Ball& ball)
         // translate wall to position() and bring ball position and velocity
         ball_copy.translate_frame({wall.position().v1, wall.position().v3});
         // replace ball with new info
+        float f = 0.9;
         ball = ball_copy;
+        Float2 bv = ball.velocity();
+        ball.set_velocity({bv.v1 * f, bv.v2 * f});
     }
 }
 
