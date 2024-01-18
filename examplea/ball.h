@@ -7,6 +7,8 @@
 
 #include "cad_model.h"
 #include "float3.h"
+#include "matrix4x4.h"
+#include "quaternion.h"
 
 class Ball
 {
@@ -22,8 +24,9 @@ public:
     Float2 acceleration() const;
     void set_position(Float2 position);
     void set_velocity(Float2 velocity);
-    void rotate(float angle);
-    void translate(Float2 distance);
+    void rotate_frame(float angle);
+    void translate_frame(Float2 distance);
+    Matrix4x4 animation_matrix() const;
 
 private:
     float m_radius;
@@ -32,6 +35,7 @@ private:
     PaintCan m_bottom_color;
     Float2 m_position;
     Float2 m_velocity;
+    Quaternion m_orientation;
 };
 
 #endif // _BALL_H_

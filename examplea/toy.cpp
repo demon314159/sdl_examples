@@ -51,7 +51,8 @@ Toy::Toy()
     , m_wall4(-180.0 -45.0, {WALL_SPACING, 0.0, -WALL_SPACING})
 {
     build_model();
-    m_ball.set_velocity({-4.0, 10.0});
+//    m_ball.set_velocity({-4.0, 10.0});
+    m_ball.set_velocity({-8.0, 8.0});
 }
 
 Toy::~Toy()
@@ -73,11 +74,11 @@ void collide(const Wall& wall, Ball& ball)
 {
     Ball ball_copy = ball;
     // translate wall to (0, 0) and bring ball position and velocity
-    ball_copy.translate({-wall.position().v1, -wall.position().v3});
+    ball_copy.translate_frame({-wall.position().v1, -wall.position().v3});
     // rotate wall by -angle() and bring ball position and velocity
-    ball_copy.rotate(-wall.angle());
+    ball_copy.rotate_frame(-wall.angle());
     // translate wall by WALL_RADIUS + BUMPER_THICKNESS and bring ball position and velocity
-    ball_copy.translate({0.0, WALL_RADIUS + BUMPER_THICKNESS});
+    ball_copy.translate_frame({0.0, WALL_RADIUS + BUMPER_THICKNESS});
     // test for ball z position to be mode than -radius
     if (ball_copy.position().v2 > -ball_copy.radius()) {
         // negate ball z velocity
@@ -87,11 +88,11 @@ void collide(const Wall& wall, Ball& ball)
         temp = ball_copy.position();
         ball_copy.set_position({temp.v1, (float) -2.0 * ball.radius() - temp.v2});
         // translate wall by -WALL_RADIUS - BUMPER_THICKNESS and bring ball position and velocity
-        ball_copy.translate({0.0, -WALL_RADIUS - BUMPER_THICKNESS});
+        ball_copy.translate_frame({0.0, -WALL_RADIUS - BUMPER_THICKNESS});
         // rotate wall by angle() and bring ball position and velocity
-        ball_copy.rotate(wall.angle());
+        ball_copy.rotate_frame(wall.angle());
         // translate wall to position() and bring ball position and velocity
-        ball_copy.translate({wall.position().v1, wall.position().v3});
+        ball_copy.translate_frame({wall.position().v1, wall.position().v3});
         // replace ball with new info
         ball = ball_copy;
     }
@@ -144,16 +145,13 @@ void Toy::build_model()
 Matrix4x4 Toy::get_animation_matrix(int i) const
 {
     Matrix4x4 mm;
-    float f = 1.0 / sqrt(2.0);
 
     mm.unity();
     if (i == 0) {
         mm.translate(-2.0, 0.0, 0.0);
         mm.rotate_ay(m_animation_0_angle);
     } else if (i == 1) {
-        Float2 bp = m_ball.position();
-        mm.translate(bp.v1, 0.0, bp.v2);
-//        mm.rotate(m_animation_1_angle, {f, 0.0, f});
+        mm = m_ball.animation_matrix();
     } else if (i == 2) {
         mm.rotate_ay(m_animation_2_angle);
     } else if (i == 3) {

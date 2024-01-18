@@ -19,6 +19,7 @@ HEADERS = view.h \
           bin_file.h \
           char_file.h \
           view.h \
+          quaternion.h \
           toy.h \
           \
           flipper_model.h \
@@ -46,6 +47,7 @@ OBJECTS = main.obj \
           stl_file.obj \
           bin_file.obj \
           char_file.obj \
+          quaternion.obj \
           toy.obj \
           \
           flipper_model.obj \
