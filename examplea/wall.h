@@ -6,19 +6,25 @@
 #define _WALL_H_
 
 #include "float3.h"
+#include "ball.h"
+#include "cad_model.h"
 
 class Wall
 {
 public:
-    Wall(float angle, Float3 position);
+    Wall(float angle, Float3 position, float length);
     ~Wall();
 
+    CadModel model(float animation_id) const;
     float angle() const;
     Float3 position() const;
+    float length() const;
+    void collide(Ball& ball) const;
 
 private:
     float m_angle;
     Float3 m_position;
+    float m_length;
 };
 
 #endif // _WALL_H_

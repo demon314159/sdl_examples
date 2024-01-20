@@ -2,7 +2,7 @@
 // ball.h
 //
 
-#if !defined(_BALL_H_)
+#ifndef _BALL_H_
 #define _BALL_H_
 
 #include "cad_model.h"

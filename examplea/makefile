@@ -27,6 +27,7 @@ HEADERS = view.h \
           ball.h \
           sphere_shape.h \
           wall.h \
+          flipper.h \
           \
           \
           \
@@ -55,6 +56,7 @@ OBJECTS = main.obj \
           ball.obj \
           sphere_shape.obj \
           wall.obj \
+          flipper.obj \
           \
           \
           \

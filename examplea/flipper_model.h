@@ -2,7 +2,7 @@
 // flipper_model.h
 //
 
-#if !defined(_FLIPPER_MODEL_H_)
+#ifndef _FLIPPER_MODEL_H_
 #define _FLIPPER_MODEL_H_
 
 #include "cad_model.h"

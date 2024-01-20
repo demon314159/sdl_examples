@@ -2,7 +2,7 @@
 // cad_model.h
 //
 
-#if !defined(_CAD_MODEL_H_)
+#ifndef _CAD_MODEL_H_
 #define _CAD_MODEL_H_
 
 #include "float3.h"
