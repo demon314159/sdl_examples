@@ -44,8 +44,6 @@ private:
     Ball m_ball;
 
     void build_model();
-    bool within_range(const Wall& wall, const Ball& ball) const;
-    void collide(const Wall& wall, Ball& ball);
 };
 
 #endif // _TOY_H_

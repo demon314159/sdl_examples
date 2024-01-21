@@ -8,6 +8,10 @@
 #include "float3.h"
 #include "ball.h"
 #include "cad_model.h"
+#include "convex_reflector.h"
+#include "straight_reflector.h"
+#include "convex_reflector.h"
+#include "straight_reflector.h"
 
 class Wall
 {
@@ -25,6 +29,10 @@ private:
     float m_angle;
     Float3 m_position;
     float m_length;
+    ConvexReflector m_reflector1;
+    ConvexReflector m_reflector2;
+    StraightReflector m_reflector3;
+    StraightReflector m_reflector4;
 };
 
 #endif // _WALL_H_
