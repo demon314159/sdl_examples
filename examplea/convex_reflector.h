@@ -15,17 +15,21 @@ public:
     ~ConvexReflector();
 
     Float2 position() const;
-    float length() const;
-    float angle() const;
+    float radius() const;
+    float angle_i() const;
+    float angle_f() const;
 
+    bool angle_within_range(float angle) const;
+    bool within_distance(const Ball& ball) const;
     void collide(Ball& ball) const;
     void translate(Float2 distance);
     void rotate(float angle);
 
 private:
     Float2 m_position;
-    float m_length;
-    float m_angle;
+    float m_radius;
+    float m_angle_i;
+    float m_angle_f;
 };
 
 #endif // _CONVEX_REFLECTOR_H_

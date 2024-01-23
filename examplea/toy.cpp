@@ -49,14 +49,15 @@ Toy::Toy()
     , m_wall3(90.0, {(W1 / 2.0 + W2 / 2.0) / 2.0, 0.0, L1 / 2.0}, WALL3_LENGTH)
     , m_wall4(THETA4, {(-W2 / 2.0 - W3 / 2.0) / 2.0, 0.0, L1 + L2 / 2.0}, WALL4_LENGTH)
     , m_wall5(THETA5, {(W2 / 2.0 + W3 / 2.0) / 2.0, 0.0, L1 + L2 / 2.0}, WALL5_LENGTH)
+
     , m_flipper1(-THETA, {-W4 / 2.0, 0.0, L1 + L2 + L3}, FLIPPER_TRAVEL)
     , m_flipper2(180.0 + THETA, {W4 / 2.0, 0.0, L1 + L2 + L3}, -FLIPPER_TRAVEL)
 {
     build_model();
-    m_flipper1.set_active_angle(30.0);
-    m_flipper2.set_active_angle(-30.0);
-    m_ball.set_position({5.0, 5.0});
-    m_ball.set_velocity({0.0, 40.0});
+    m_flipper1.set_active_angle(70.0);
+    m_flipper2.set_active_angle(-70.0);
+    m_ball.set_position({-2.0, 10.0});
+    m_ball.set_velocity({0.0, 5.0});
 }
 
 Toy::~Toy()
