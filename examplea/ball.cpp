@@ -57,6 +57,9 @@ void Ball::advance(float seconds)
         m_orientation.normalize();
     }
     m_velocity.v2 += (10.0 * seconds);
+    if (m_position.v2 > 70.0) {
+        m_position = {1.0, 5.0};
+    }
 }
 
 float Ball::radius() const
