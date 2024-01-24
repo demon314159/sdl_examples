@@ -9,8 +9,7 @@
 
 #define MAJOR_RADIUS (FLIPPER_MAJOR_RADIUS + BUMPER_THICKNESS)
 #define MINOR_RADIUS (FLIPPER_MINOR_RADIUS + BUMPER_THICKNESS)
-#define MAXIMUM_ANGULAR_VELOCITY 280.0
-#define ANGULAR_ACCELERATION 2240.0
+#define ANGULAR_VELOCITY 280.0
 
 Flipper::Flipper(float angle, Float3 position, float travel)
     : m_action_button(false)
@@ -43,9 +42,7 @@ void Flipper::advance(float seconds)
 {
     if (m_action_button) {
         if (fabs(m_active_angle) < fabs(m_travel)) {
-            if (m_angular_velocity < MAXIMUM_ANGULAR_VELOCITY) {
-                m_angular_velocity += (ANGULAR_ACCELERATION * seconds);
-            }
+            m_angular_velocity = ANGULAR_VELOCITY;
             if (m_travel > 0.0) {
                 m_active_angle += (m_angular_velocity * seconds);
             } else {
@@ -57,24 +54,19 @@ void Flipper::advance(float seconds)
     } else {
         if (m_travel > 0.0) {
             if (m_active_angle > 0.0) {
-                if (m_angular_velocity < MAXIMUM_ANGULAR_VELOCITY) {
-                    m_angular_velocity += (ANGULAR_ACCELERATION * seconds);
-                }
+                m_angular_velocity = ANGULAR_VELOCITY;
                 m_active_angle -= (m_angular_velocity * seconds);
             } else {
               m_angular_velocity = 0.0;
             }
         } else {
             if (m_active_angle < 0.0) {
-                if (m_angular_velocity < MAXIMUM_ANGULAR_VELOCITY) {
-                    m_angular_velocity += (ANGULAR_ACCELERATION * seconds);
-                }
+                m_angular_velocity = ANGULAR_VELOCITY;
                 m_active_angle += (m_angular_velocity * seconds);
             } else {
               m_angular_velocity = 0.0;
             }
         }
-
     }
 }
 

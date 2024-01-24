@@ -91,7 +91,9 @@ void StraightReflector::collide(Ball& ball) const
     if (within_range(ball_copy)) { // collision
         // negate ball z velocity
         Float2 temp = ball_copy.velocity();
-        ball_copy.set_velocity({temp.v1, -temp.v2});
+        if (temp.v2 > 0.0) {
+            ball_copy.set_velocity({temp.v1, -temp.v2});
+        }
         // ball z pos -= (ball_z + radius)
         temp = ball_copy.position();
         ball_copy.set_position({temp.v1, (float) -2.0 * ball.radius() - temp.v2});
