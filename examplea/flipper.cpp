@@ -5,15 +5,21 @@
 #include "flipper.h"
 #include "flipper_model.h"
 #include "look.h"
+#include <math.h>
 
 #define MAJOR_RADIUS (FLIPPER_MAJOR_RADIUS + BUMPER_THICKNESS)
 #define MINOR_RADIUS (FLIPPER_MINOR_RADIUS + BUMPER_THICKNESS)
+#define MAXIMUM_ANGULAR_VELOCITY 280.0
+#define ANGULAR_ACCELERATION 2240.0
 
 Flipper::Flipper(float angle, Float3 position, float travel)
-    : m_angle(angle)
+    : m_action_button(false)
+    , m_angle(angle)
     , m_position(position)
     , m_travel(travel)
     , m_active_angle(0.0)
+    , m_angular_velocity(0.0)
+    , m_angular_acceleration(0.0)
     , m_reflector1(true, MAJOR_RADIUS, MINOR_RADIUS, FLIPPER_LENGTH)
     , m_reflector2(false, MAJOR_RADIUS, MINOR_RADIUS, FLIPPER_LENGTH)
     , m_reflector3(true, MAJOR_RADIUS, MINOR_RADIUS, FLIPPER_LENGTH)
@@ -31,6 +37,45 @@ Flipper::Flipper(float angle, Float3 position, float travel)
 
 Flipper::~Flipper()
 {
+}
+
+void Flipper::advance(float seconds)
+{
+    if (m_action_button) {
+        if (fabs(m_active_angle) < fabs(m_travel)) {
+            if (m_angular_velocity < MAXIMUM_ANGULAR_VELOCITY) {
+                m_angular_velocity += (ANGULAR_ACCELERATION * seconds);
+            }
+            if (m_travel > 0.0) {
+                m_active_angle += (m_angular_velocity * seconds);
+            } else {
+                m_active_angle -= (m_angular_velocity * seconds);
+            }
+        } else {
+            m_angular_velocity = 0.0;
+        }
+    } else {
+        if (m_travel > 0.0) {
+            if (m_active_angle > 0.0) {
+                if (m_angular_velocity < MAXIMUM_ANGULAR_VELOCITY) {
+                    m_angular_velocity += (ANGULAR_ACCELERATION * seconds);
+                }
+                m_active_angle -= (m_angular_velocity * seconds);
+            } else {
+              m_angular_velocity = 0.0;
+            }
+        } else {
+            if (m_active_angle < 0.0) {
+                if (m_angular_velocity < MAXIMUM_ANGULAR_VELOCITY) {
+                    m_angular_velocity += (ANGULAR_ACCELERATION * seconds);
+                }
+                m_active_angle += (m_angular_velocity * seconds);
+            } else {
+              m_angular_velocity = 0.0;
+            }
+        }
+
+    }
 }
 
 float Flipper::angle() const
@@ -92,17 +137,18 @@ CadModel Flipper::model(float animation_id) const
 {
     FlipperModel flipper(animation_id, BODY_COLOR, BUMPER_COLOR, FLIPPER_MAJOR_RADIUS, FLIPPER_MINOR_RADIUS, FLIPPER_LENGTH, FLIPPER_HEIGHT, BUMPER_THICKNESS, BUMPER_HEIGHT);
     flipper.rotate_ay(m_angle);
+    Float3 pos = m_position;
     CadModel mm;
-    mm.add(flipper);
+    mm.add(flipper, pos.v1, pos.v2, pos.v3);
     return mm;
 }
 
 void Flipper::action_button(bool on)
 {
     if (on) {
-        m_active_angle = m_travel;
+        m_action_button = true;
     } else {
-        m_active_angle = 0.0;
+        m_action_button = false;
     }
 }
 

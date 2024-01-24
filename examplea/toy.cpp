@@ -35,7 +35,7 @@
 #define WALL4_LENGTH sqrt(((W2 - W3) / 2.0) * ((W2 - W3) / 2.0) + L2 * L2)
 #define WALL5_LENGTH WALL4_LENGTH
 
-#define FLIPPER_TRAVEL 60.0
+#define FLIPPER_TRAVEL 70.0
 
 Toy::Toy()
     : m_model(new CadModel())
@@ -82,6 +82,8 @@ void Toy::advance(int nanoseconds)
     m_animation_1_angle += (ANIMATION_1_SPEED * seconds);
     m_animation_2_angle += (ANIMATION_2_SPEED * seconds);
     m_animation_3_angle += (ANIMATION_3_SPEED * seconds);
+    m_flipper1.advance(seconds);
+    m_flipper2.advance(seconds);
     m_ball.advance(seconds);
     m_wall1.collide(m_ball);
     m_wall2.collide(m_ball);
@@ -112,9 +114,11 @@ Matrix4x4 Toy::get_animation_matrix(int i) const
     if (i == 0) {
         mm.translate(m_flipper1.position().v1, m_flipper1.position().v2, m_flipper1.position().v3);
         mm.rotate_ay(m_animation_0_angle + m_flipper1.active_angle());
+        mm.translate(-m_flipper1.position().v1, -m_flipper1.position().v2, -m_flipper1.position().v3);
     } else if (i == 1) {
         mm.translate(m_flipper2.position().v1, m_flipper2.position().v2, m_flipper2.position().v3);
         mm.rotate_ay(m_animation_1_angle + m_flipper2.active_angle());
+        mm.translate(-m_flipper2.position().v1, -m_flipper2.position().v2, -m_flipper2.position().v3);
     } else if (i == 2) {
         mm = m_ball.animation_matrix();
     } else if (i == 3) {

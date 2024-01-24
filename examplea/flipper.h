@@ -20,21 +20,23 @@ public:
     ~Flipper();
 
     CadModel model(float animation_id) const;
-//    void advance(float seconds);
+    void advance(float seconds);
     float angle() const;
     Float3 position() const;
     float travel() const;
     float active_angle() const;
     void set_active_angle(float angle);
-//    Matrix4x4 animation_matrix() const;
     void collide(Ball& ball) const;
     void action_button(bool on);
 
 private:
+    bool m_action_button;
     float m_angle;
     Float3 m_position;
     float m_travel;
     float m_active_angle;
+    float m_angular_velocity;
+    float m_angular_acceleration;
     ConvexReflector m_reflector1;
     ConvexReflector m_reflector2;
     StraightReflector m_reflector3;
