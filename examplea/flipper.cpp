@@ -96,3 +96,13 @@ CadModel Flipper::model(float animation_id) const
     mm.add(flipper);
     return mm;
 }
+
+void Flipper::action_button(bool on)
+{
+    if (on) {
+        m_active_angle = m_travel;
+    } else {
+        m_active_angle = 0.0;
+    }
+}
+

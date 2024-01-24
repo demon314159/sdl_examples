@@ -28,6 +28,7 @@ public:
     void set_active_angle(float angle);
 //    Matrix4x4 animation_matrix() const;
     void collide(Ball& ball) const;
+    void action_button(bool on);
 
 private:
     float m_angle;

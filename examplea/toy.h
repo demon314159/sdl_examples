@@ -26,6 +26,9 @@ public:
     int animation_matrices() const;
     Matrix4x4 get_animation_matrix(int i) const;
 
+    void left_action_button(bool on);
+    void right_action_button(bool on);
+
     void advance(int nanoseconds);
 
 private:

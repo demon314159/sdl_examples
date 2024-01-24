@@ -51,7 +51,11 @@ void Host::key_press_event(SDL_Event* e)
 {
     unsigned int a = e->key.keysym.scancode;
     bool shifted = (e->key.keysym.mod & KMOD_SHIFT) ? true : false;
-    if (a == SDL_SCANCODE_UP) {
+    if (a == SDL_SCANCODE_LSHIFT) {
+        m_view.left_action_button(true);
+    } else if (a == SDL_SCANCODE_RSHIFT) {
+        m_view.right_action_button(true);
+    } else if (a == SDL_SCANCODE_UP) {
         if (shifted) {
             m_view.translate_y(-m_view.height() / 10);
         } else {
@@ -93,6 +97,12 @@ void Host::key_press_event(SDL_Event* e)
 
 void Host::key_release_event(SDL_Event* e)
 {
+    unsigned int a = e->key.keysym.scancode;
+    if (a == SDL_SCANCODE_LSHIFT) {
+        m_view.left_action_button(false);
+    } else if (a == SDL_SCANCODE_RSHIFT) {
+        m_view.right_action_button(false);
+    }
 }
 
 void Host::mouse_press_event(SDL_Event* e)

@@ -40,6 +40,8 @@ public:
     void set_mag(float mag);
     int width() const;
     int height() const;
+    void left_action_button(bool on);
+    void right_action_button(bool on);
 
 protected:
     bool init_shaders();

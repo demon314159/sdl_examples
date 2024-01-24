@@ -490,3 +490,14 @@ void View::print_shader_log(GLuint shader)
         printf( "Name %d is not a shader\n", shader );
     }
 }
+
+void View::left_action_button(bool on)
+{
+    m_toy->left_action_button(on);
+}
+
+void View::right_action_button(bool on)
+{
+    m_toy->right_action_button(on);
+}
+
