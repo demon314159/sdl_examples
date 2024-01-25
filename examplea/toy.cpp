@@ -54,9 +54,7 @@ Toy::Toy()
     , m_flipper2(180.0 + THETA, {W4 / 2.0, 0.0, L1 + L2 + L3}, -FLIPPER_TRAVEL)
 {
     build_model();
-//    m_flipper1.set_active_angle(70.0);
-//    m_flipper2.set_active_angle(-70.0);
-    m_ball.set_position({-2.0, 10.0});
+    m_ball.set_position({-4.0, 10.0});
     m_ball.set_velocity({0.0, 5.0});
 }
 

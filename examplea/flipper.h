@@ -23,6 +23,7 @@ public:
     void advance(float seconds);
     float angle() const;
     Float3 position() const;
+    float angular_velocity() const;
     float travel() const;
     float active_angle() const;
     void set_active_angle(float angle);

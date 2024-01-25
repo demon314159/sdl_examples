@@ -101,6 +101,13 @@ void Ball::rotate_frame(float angle)
     m_velocity = {tx, tz};
 }
 
+void Ball::translate_velocity_frame(Float2 velocity)
+{
+    m_velocity.v1 += velocity.v1;
+    m_velocity.v2 += velocity.v2;
+}
+
+
 void Ball::translate_frame(Float2 distance)
 {
     m_position.v1 += distance.v1;

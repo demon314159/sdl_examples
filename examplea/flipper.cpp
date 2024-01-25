@@ -7,9 +7,11 @@
 #include "look.h"
 #include <math.h>
 
+#include <stdio.h>
+
 #define MAJOR_RADIUS (FLIPPER_MAJOR_RADIUS + BUMPER_THICKNESS)
 #define MINOR_RADIUS (FLIPPER_MINOR_RADIUS + BUMPER_THICKNESS)
-#define ANGULAR_VELOCITY 280.0
+#define ANGULAR_VELOCITY (280.0 * 4.0)
 
 Flipper::Flipper(float angle, Float3 position, float travel)
     : m_action_button(false)
@@ -80,6 +82,11 @@ Float3 Flipper::position() const
     return m_position;
 }
 
+float Flipper::angular_velocity() const
+{
+    return m_angular_velocity;
+}
+
 float Flipper::travel() const
 {
     return m_travel;
@@ -114,10 +121,12 @@ void Flipper::collide(Ball& ball) const
         copy3.translate({-m_position.v1, -m_position.v3});
         copy3.rotate(m_active_angle);
         copy3.translate({m_position.v1, m_position.v3});
+        copy3.set_angular_velocity(m_travel > 0.0 ? m_angular_velocity : -m_angular_velocity);
 
         copy4.translate({-m_position.v1, -m_position.v3});
         copy4.rotate(m_active_angle);
         copy4.translate({m_position.v1, m_position.v3});
+        copy4.set_angular_velocity(m_travel > 0.0 ? m_angular_velocity : -m_angular_velocity);
     }
     copy1.collide(ball);
     copy2.collide(ball);

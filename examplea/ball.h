@@ -25,6 +25,7 @@ public:
     void set_position(Float2 position);
     void set_velocity(Float2 velocity);
     void rotate_frame(float angle);
+    void translate_velocity_frame(Float2 velocity);
     void translate_frame(Float2 distance);
     Matrix4x4 animation_matrix() const;
 
