@@ -6,7 +6,12 @@
 #include "pi.h"
 #include <math.h>
 
+#include <stdio.h>
+#include <stdlib.h>
+
 ConvexReflector::ConvexReflector(bool left, float r1, float r2, float length)
+    : m_angular_velocity(0.0)
+    , m_velocity_origin({0.0, 0.0})
 {
     double theta = asin((r1 - r2) / length);
     if (left) {
@@ -24,6 +29,18 @@ ConvexReflector::ConvexReflector(bool left, float r1, float r2, float length)
 
 ConvexReflector::~ConvexReflector()
 {
+}
+
+void ConvexReflector::show(const char* msg) const
+{
+    printf("    ConvexReflector(%s): position {%.3f, %.3f} radius %.3f, angle_i %.3f, angle_f %.3f, v %.3f, vo {%.3f, %.3f}\n",
+                msg, m_position.v1, m_position.v2, m_radius, m_angle_i, m_angle_f,
+                m_angular_velocity, m_velocity_origin.v1, m_velocity_origin.v2);
+}
+
+void ConvexReflector::set_angular_velocity(float angular_velocity)
+{
+    m_angular_velocity = angular_velocity;
 }
 
 Float2 ConvexReflector::position() const
@@ -65,6 +82,12 @@ void ConvexReflector::rotate(float angle)
     m_angle_f += angle;
 }
 
+void ConvexReflector::translate(Float2& point, Float2 distance) const
+{
+    point.v1 += distance.v1;
+    point.v2 += distance.v2;
+}
+
 bool ConvexReflector::angle_within_range(float angle) const
 {
     while (angle < m_angle_i) {
@@ -85,15 +108,26 @@ bool ConvexReflector::within_distance(const Ball& ball) const
     return distance <= (ball.radius() + m_radius);
 }
 
+Float2 ConvexReflector::velocity_at_impact(float x, Float2 velocity_origin) const
+{
+    float theta = atan2(-velocity_origin.v2, -velocity_origin.v1);
+    float distance = sqrt(velocity_origin.v2 * velocity_origin.v2 + velocity_origin.v1 * velocity_origin.v1);
+    float v = m_angular_velocity * (PI / 180.0) * distance;
+    v = v * 0.7;
+    float vz = -v * cos(theta);
+    float vx = v * sin(theta);
+    return {vx, vz};
+}
+
 void ConvexReflector::collide(Ball& ball) const
 {
+    Float2 vo = m_velocity_origin;
     if (within_distance(ball)) {
         float dx = ball.position().v1 - m_position.v1;
         float dz = ball.position().v2 - m_position.v2;
         float angle = (180.0 / PI) * atan2(-dz, dx);
         if (angle_within_range(angle)) {
             float rot_angle = angle - 90.0;
-
             Ball ball_copy = ball;
             // translate reflector to (0, 0) and bring ball position and velocity
             ball_copy.translate_frame({-m_position.v1, -m_position.v2});
@@ -101,6 +135,12 @@ void ConvexReflector::collide(Ball& ball) const
             ball_copy.rotate_frame(-rot_angle);
             // translate reflector by (0, radius) and bring ball position and velocity
             ball_copy.translate_frame({0, m_radius});
+            Float2 impact_velocity = {0.0, 0.0};
+            // Adjust frame for velocity at point of impact
+            if (m_angular_velocity != 0.0) {
+                impact_velocity = velocity_at_impact(ball_copy.position().v1, vo);
+                ball_copy.translate_velocity_frame({-impact_velocity.v1, -impact_velocity.v2});
+            }
             // negate ball z velocity
             Float2 temp = ball_copy.velocity();
             if (temp.v2 > 0.0) {
@@ -109,6 +149,10 @@ void ConvexReflector::collide(Ball& ball) const
             // ball z pos -= (ball_z + radius)
             temp = ball_copy.position();
             ball_copy.set_position({temp.v1, (float) -2.0 * ball.radius() - temp.v2});
+            // Unadjust frame for velocity at point of impact
+            if (m_angular_velocity != 0.0) {
+                ball_copy.translate_velocity_frame(impact_velocity);
+            }
             // translate reflector by (0, -radius) and bring ball position and velocity
             ball_copy.translate_frame({0, -m_radius});
             // rotate reflector by angle and bring ball position and velocity
