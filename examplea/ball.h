@@ -9,6 +9,7 @@
 #include "float3.h"
 #include "matrix4x4.h"
 #include "quaternion.h"
+#include "state.h"
 
 class Ball
 {
@@ -24,6 +25,7 @@ public:
     Float2 acceleration() const;
     void set_position(Float2 position);
     void set_velocity(Float2 velocity);
+    void set_acceleration(Float2 acceleration);
     void rotate_frame(float angle);
     void translate_velocity_frame(Float2 velocity);
     void translate_frame(Float2 distance);
@@ -34,9 +36,13 @@ private:
     PaintCan m_top_color;
     PaintCan m_middle_color;
     PaintCan m_bottom_color;
-    Float2 m_position;
-    Float2 m_velocity;
+    Float2 m_acceleration;
+    State m_state;
     Quaternion m_orientation;
+
+    State rates(const State& state) const;
+    State next_state(double dt) const;
+    Quaternion next_orientation(const State& next) const;
 };
 
 #endif // _BALL_H_

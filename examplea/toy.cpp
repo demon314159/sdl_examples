@@ -56,6 +56,7 @@ Toy::Toy()
     build_model();
     m_ball.set_position({-4.0, 10.0});
     m_ball.set_velocity({0.0, 5.0});
+    m_ball.set_acceleration({0.0, 50.0});
 }
 
 Toy::~Toy()
