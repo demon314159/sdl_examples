@@ -44,20 +44,20 @@ void Flipper::advance(float seconds)
 {
     if (m_action_button) {
         if (fabs(m_active_angle) < fabs(m_travel)) {
-            m_angular_velocity = ANGULAR_VELOCITY;
             if (m_travel > 0.0) {
-                m_active_angle += (m_angular_velocity * seconds);
+                m_angular_velocity = ANGULAR_VELOCITY;
             } else {
-                m_active_angle -= (m_angular_velocity * seconds);
+                m_angular_velocity = -ANGULAR_VELOCITY;
             }
+            m_active_angle += (m_angular_velocity * seconds);
         } else {
             m_angular_velocity = 0.0;
         }
     } else {
         if (m_travel > 0.0) {
             if (m_active_angle > 0.0) {
-                m_angular_velocity = ANGULAR_VELOCITY;
-                m_active_angle -= (m_angular_velocity * seconds);
+                m_angular_velocity = -ANGULAR_VELOCITY;
+                m_active_angle += (m_angular_velocity * seconds);
             } else {
               m_angular_velocity = 0.0;
             }
@@ -113,20 +113,22 @@ void Flipper::collide(Ball& ball) const
         copy1.translate({-m_position.v1, -m_position.v3});
         copy1.rotate(m_active_angle);
         copy1.translate({m_position.v1, m_position.v3});
+        copy1.set_angular_velocity(m_angular_velocity);
 
         copy2.translate({-m_position.v1, -m_position.v3});
         copy2.rotate(m_active_angle);
         copy2.translate({m_position.v1, m_position.v3});
+        copy2.set_angular_velocity(m_angular_velocity);
 
         copy3.translate({-m_position.v1, -m_position.v3});
         copy3.rotate(m_active_angle);
         copy3.translate({m_position.v1, m_position.v3});
-        copy3.set_angular_velocity(m_travel > 0.0 ? m_angular_velocity : -m_angular_velocity);
+        copy3.set_angular_velocity(m_angular_velocity);
 
         copy4.translate({-m_position.v1, -m_position.v3});
         copy4.rotate(m_active_angle);
         copy4.translate({m_position.v1, m_position.v3});
-        copy4.set_angular_velocity(m_travel > 0.0 ? m_angular_velocity : -m_angular_velocity);
+        copy4.set_angular_velocity(m_angular_velocity);
     }
     copy1.collide(ball);
     copy2.collide(ball);

@@ -14,7 +14,6 @@ public:
     StraightReflector(bool top, float r1, float r2, float length);
     ~StraightReflector();
 
-    void show(const char* msg) const;
     Float2 position() const;
     float length() const;
     float angle() const;

@@ -6,9 +6,6 @@
 #include "pi.h"
 #include <math.h>
 
-#include <stdio.h>
-#include <stdlib.h>
-
 StraightReflector::StraightReflector(bool top, float r1, float r2, float length)
     : m_position({0.0, 0.0})
     , m_length(1.0)
@@ -35,13 +32,6 @@ StraightReflector::StraightReflector(bool top, float r1, float r2, float length)
 
 StraightReflector::~StraightReflector()
 {
-}
-
-void StraightReflector::show(const char* msg) const
-{
-    printf("    StraightReflector(%s): position {%.3f, %.3f} angle %.3f, length %.3f, v %.3f, vo {%.3f, %.3f}\n",
-                msg, m_position.v1, m_position.v2, m_angle, m_length,
-                m_angular_velocity, m_velocity_origin.v1, m_velocity_origin.v2);
 }
 
 void StraightReflector::set_angular_velocity(float angular_velocity)
@@ -117,12 +107,13 @@ void StraightReflector::rotate(Float2& point, float angle) const
 
 Float2 StraightReflector::velocity_at_impact(float x, Float2 velocity_origin) const
 {
-    float theta = atan2(-velocity_origin.v2, -velocity_origin.v1);
-    float distance = sqrt(velocity_origin.v2 * velocity_origin.v2 + velocity_origin.v1 * velocity_origin.v1);
+    float dx = x - velocity_origin.v1;
+    float dz = velocity_origin.v2;
+    float theta = atan2(dz, dx);
+    float distance = sqrt(dz * dz + dx * dx);
     float v = m_angular_velocity * (PI / 180.0) * distance;
-    v = v * 0.7;
     float vz = -v * cos(theta);
-    float vx = v * sin(theta);
+    float vx = -v * sin(theta);
     return {vx, vz};
 }
 
@@ -147,6 +138,7 @@ void StraightReflector::collide(Ball& ball) const
         // negate ball z velocity
         Float2 temp = ball_copy.velocity();
         if (temp.v2 > 0.0) {
+            temp.v2 *= 0.2;
             ball_copy.set_velocity({temp.v1, -temp.v2});
         }
         // ball z pos -= (ball_z + radius)
@@ -161,10 +153,7 @@ void StraightReflector::collide(Ball& ball) const
         // translate reflector to position and bring ball position and velocity
         ball_copy.translate_frame({m_position.v1, m_position.v2});
         // replace ball with new info
-        float f = 0.9;
         ball = ball_copy;
-        Float2 bv = ball.velocity();
-        ball.set_velocity({bv.v1 * f, bv.v2 * f});
     }
 }
 

@@ -14,7 +14,6 @@ public:
     ConvexReflector(bool left, float r1, float r2, float length);
     ~ConvexReflector();
 
-    void show(const char* msg) const;
     Float2 position() const;
     float radius() const;
     float angle_i() const;
@@ -38,6 +37,7 @@ private:
     Float2 m_velocity_origin;
 
     void translate(Float2& point, Float2 distance) const;
+    void rotate(Float2& point, float angle) const;
 };
 
 #endif // _CONVEX_REFLECTOR_H_

@@ -24,6 +24,13 @@ Ball::~Ball()
 {
 }
 
+void Ball::show(const char* msg) const
+{
+    printf("    Ball(%s): pos (%.3f, %.3f),  vel (%.3f, %.3f)\n", msg,
+        m_state.position().v1, m_state.position().v2,
+        m_state.velocity().v1, m_state.velocity().v2);
+}
+
 CadModel Ball::model(float animation_id) const
 {
     float angle = 20.0;
@@ -44,8 +51,8 @@ float last_angle = 0.0;
     State next = next_state(seconds);
     m_orientation = next_orientation(next);
     m_state = next;
-    if (m_state.position().v2 > 70.0) {
-        set_position({1.0, 1.0});
+    if (m_state.position().v2 > 85.0) {
+        set_position({1.0, 10.0});
     }
 }
 
