@@ -26,7 +26,10 @@
 #define WALL_RADIUS 0.2f
 #define WALL_HEIGHT 2.0f
 
-
+//#define WALL_REFLECTIVITY 0.2f
+//#define FLIPPER_REFLECTIVITY 0.2f
+#define WALL_REFLECTIVITY 0.2f
+#define FLIPPER_REFLECTIVITY 0.2f
 
 class Look
 {

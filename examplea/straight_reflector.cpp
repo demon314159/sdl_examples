@@ -6,9 +6,10 @@
 #include "pi.h"
 #include <math.h>
 
-StraightReflector::StraightReflector(bool top, float r1, float r2, float length)
+StraightReflector::StraightReflector(bool top, float r1, float r2, float length, float reflectivity)
     : m_position({0.0, 0.0})
     , m_length(1.0)
+    , m_reflectivity(reflectivity)
     , m_angle(0.0)
     , m_angular_velocity(0.0)
     , m_velocity_origin({0.0, 0.0})
@@ -138,7 +139,7 @@ void StraightReflector::collide(Ball& ball) const
         // negate ball z velocity
         Float2 temp = ball_copy.velocity();
         if (temp.v2 > 0.0) {
-            temp.v2 *= 0.2;
+            temp.v2 *= m_reflectivity;
             ball_copy.set_velocity({temp.v1, -temp.v2});
         }
         // ball z pos -= (ball_z + radius)

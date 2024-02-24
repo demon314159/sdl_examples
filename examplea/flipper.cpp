@@ -11,7 +11,7 @@
 #define MINOR_RADIUS (FLIPPER_MINOR_RADIUS + BUMPER_THICKNESS)
 #define ANGULAR_VELOCITY (280.0 * 4.0)
 
-Flipper::Flipper(float angle, Float3 position, float travel)
+Flipper::Flipper(float angle, Float3 position, float travel, float reflectivity)
     : m_action_button(false)
     , m_angle(angle)
     , m_position(position)
@@ -19,10 +19,10 @@ Flipper::Flipper(float angle, Float3 position, float travel)
     , m_active_angle(0.0)
     , m_angular_velocity(0.0)
     , m_angular_acceleration(0.0)
-    , m_reflector1(true, MAJOR_RADIUS, MINOR_RADIUS, FLIPPER_LENGTH)
-    , m_reflector2(false, MAJOR_RADIUS, MINOR_RADIUS, FLIPPER_LENGTH)
-    , m_reflector3(true, MAJOR_RADIUS, MINOR_RADIUS, FLIPPER_LENGTH)
-    , m_reflector4(false, MAJOR_RADIUS, MINOR_RADIUS, FLIPPER_LENGTH)
+    , m_reflector1(true, MAJOR_RADIUS, MINOR_RADIUS, FLIPPER_LENGTH, reflectivity)
+    , m_reflector2(false, MAJOR_RADIUS, MINOR_RADIUS, FLIPPER_LENGTH, reflectivity)
+    , m_reflector3(true, MAJOR_RADIUS, MINOR_RADIUS, FLIPPER_LENGTH, reflectivity)
+    , m_reflector4(false, MAJOR_RADIUS, MINOR_RADIUS, FLIPPER_LENGTH, reflectivity)
 {
     m_reflector1.rotate(angle);
     m_reflector1.translate({position.v1, position.v3});

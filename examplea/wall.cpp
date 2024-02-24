@@ -6,14 +6,14 @@
 #include "flipper_model.h"
 #include "look.h"
 
-Wall::Wall(float angle, Float3 position, float length)
+Wall::Wall(float angle, Float3 position, float length, float reflectivity)
     : m_angle(angle)
     , m_position(position)
     , m_length(length)
-    , m_reflector1(true, WALL_RADIUS + BUMPER_THICKNESS, WALL_RADIUS + BUMPER_THICKNESS, length)
-    , m_reflector2(false, WALL_RADIUS + BUMPER_THICKNESS, WALL_RADIUS + BUMPER_THICKNESS, length)
-    , m_reflector3(true, WALL_RADIUS + BUMPER_THICKNESS, WALL_RADIUS + BUMPER_THICKNESS, length)
-    , m_reflector4(false, WALL_RADIUS + BUMPER_THICKNESS, WALL_RADIUS + BUMPER_THICKNESS, length)
+    , m_reflector1(true, WALL_RADIUS + BUMPER_THICKNESS, WALL_RADIUS + BUMPER_THICKNESS, length, reflectivity)
+    , m_reflector2(false, WALL_RADIUS + BUMPER_THICKNESS, WALL_RADIUS + BUMPER_THICKNESS, length, reflectivity)
+    , m_reflector3(true, WALL_RADIUS + BUMPER_THICKNESS, WALL_RADIUS + BUMPER_THICKNESS, length, reflectivity)
+    , m_reflector4(false, WALL_RADIUS + BUMPER_THICKNESS, WALL_RADIUS + BUMPER_THICKNESS, length, reflectivity)
 {
     m_reflector1.translate({-length / 2.0f, 0.0});
     m_reflector1.rotate(angle);

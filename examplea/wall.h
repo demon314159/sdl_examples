@@ -16,7 +16,7 @@
 class Wall
 {
 public:
-    Wall(float angle, Float3 position, float length);
+    Wall(float angle, Float3 position, float length, float reflectivity);
     ~Wall();
 
     CadModel model(float animation_id) const;

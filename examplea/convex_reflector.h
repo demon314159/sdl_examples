@@ -11,7 +11,7 @@
 class ConvexReflector
 {
 public:
-    ConvexReflector(bool left, float r1, float r2, float length);
+    ConvexReflector(bool left, float r1, float r2, float length, float reflectivity);
     ~ConvexReflector();
 
     Float2 position() const;
@@ -31,6 +31,7 @@ public:
 private:
     Float2 m_position;
     float m_radius;
+    float m_reflectivity;
     float m_angle_i;
     float m_angle_f;
     float m_angular_velocity;

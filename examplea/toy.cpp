@@ -44,14 +44,14 @@ Toy::Toy()
     , m_animation_2_angle(0.0)
     , m_animation_3_angle(0.0)
     , m_ball(BALL_RADIUS, BALL_TOP_COLOR, BALL_MIDDLE_COLOR, BALL_BOTTOM_COLOR)
-    , m_wall1(0.0, {0.0, 0.0, 0.0}, WALL1_LENGTH)
-    , m_wall2(-90, {(-W1 / 2.0 - W2 / 2.0) / 2.0, 0.0, L1 / 2.0}, WALL2_LENGTH)
-    , m_wall3(90.0, {(W1 / 2.0 + W2 / 2.0) / 2.0, 0.0, L1 / 2.0}, WALL3_LENGTH)
-    , m_wall4(THETA4, {(-W2 / 2.0 - W3 / 2.0) / 2.0, 0.0, L1 + L2 / 2.0}, WALL4_LENGTH)
-    , m_wall5(THETA5, {(W2 / 2.0 + W3 / 2.0) / 2.0, 0.0, L1 + L2 / 2.0}, WALL5_LENGTH)
+    , m_wall1(0.0, {0.0, 0.0, 0.0}, WALL1_LENGTH, WALL_REFLECTIVITY)
+    , m_wall2(-90, {(-W1 / 2.0 - W2 / 2.0) / 2.0, 0.0, L1 / 2.0}, WALL2_LENGTH, WALL_REFLECTIVITY)
+    , m_wall3(90.0, {(W1 / 2.0 + W2 / 2.0) / 2.0, 0.0, L1 / 2.0}, WALL3_LENGTH, WALL_REFLECTIVITY)
+    , m_wall4(THETA4, {(-W2 / 2.0 - W3 / 2.0) / 2.0, 0.0, L1 + L2 / 2.0}, WALL4_LENGTH, WALL_REFLECTIVITY)
+    , m_wall5(THETA5, {(W2 / 2.0 + W3 / 2.0) / 2.0, 0.0, L1 + L2 / 2.0}, WALL5_LENGTH, WALL_REFLECTIVITY)
 
-    , m_flipper1(-THETA, {-W4 / 2.0, 0.0, L1 + L2 + L3}, FLIPPER_TRAVEL)
-    , m_flipper2(180.0 + THETA, {W4 / 2.0, 0.0, L1 + L2 + L3}, -FLIPPER_TRAVEL)
+    , m_flipper1(-THETA, {-W4 / 2.0, 0.0, L1 + L2 + L3}, FLIPPER_TRAVEL, FLIPPER_REFLECTIVITY)
+    , m_flipper2(180.0 + THETA, {W4 / 2.0, 0.0, L1 + L2 + L3}, -FLIPPER_TRAVEL, FLIPPER_REFLECTIVITY)
 {
     build_model();
     m_ball.set_position({-2.05, 10.0});

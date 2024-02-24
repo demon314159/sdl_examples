@@ -11,7 +11,7 @@
 class StraightReflector
 {
 public:
-    StraightReflector(bool top, float r1, float r2, float length);
+    StraightReflector(bool top, float r1, float r2, float length, float reflectivity);
     ~StraightReflector();
 
     Float2 position() const;
@@ -30,6 +30,7 @@ public:
 private:
     Float2 m_position;
     float m_length;
+    float m_reflectivity;
     float m_angle;
     float m_angular_velocity;
     Float2 m_velocity_origin;

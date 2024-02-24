@@ -16,7 +16,7 @@
 class Flipper
 {
 public:
-    Flipper(float angle, Float3 position, float travel);
+    Flipper(float angle, Float3 position, float travel, float reflectivity);
     ~Flipper();
 
     CadModel model(float animation_id) const;

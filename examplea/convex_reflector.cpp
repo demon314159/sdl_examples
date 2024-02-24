@@ -6,8 +6,9 @@
 #include "pi.h"
 #include <math.h>
 
-ConvexReflector::ConvexReflector(bool left, float r1, float r2, float length)
-    : m_angular_velocity(0.0)
+ConvexReflector::ConvexReflector(bool left, float r1, float r2, float length, float reflectivity)
+    : m_reflectivity(reflectivity)
+    , m_angular_velocity(0.0)
     , m_velocity_origin({0.0, 0.0})
 {
     double theta = asin((r1 - r2) / length);
@@ -156,7 +157,7 @@ void ConvexReflector::collide(Ball& ball) const
             // negate ball z velocity
             Float2 temp = ball_copy.velocity();
             if (temp.v2 > 0.0) {
-                temp.v2 *= 0.2;
+                temp.v2 *= m_reflectivity;
                 ball_copy.set_velocity({temp.v1, -temp.v2});
             }
             // ball z pos -= (ball_z + radius)
@@ -173,10 +174,7 @@ void ConvexReflector::collide(Ball& ball) const
             // translate reflector to position and bring ball position and velocity
             ball_copy.translate_frame({m_position.v1, m_position.v2});
             // replace ball with new info
-            float f = 0.9;
             ball = ball_copy;
-            Float2 bv = ball.velocity();
-            ball.set_velocity({bv.v1 * f, bv.v2 * f});
         }
     }
 }
