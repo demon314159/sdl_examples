@@ -31,8 +31,6 @@ public:
     void translate_frame(Float2 distance);
     Matrix4x4 animation_matrix() const;
 
-    void show(const char* msg) const;
-
 private:
     float m_radius;
     PaintCan m_top_color;

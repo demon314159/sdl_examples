@@ -7,8 +7,6 @@
 #include "pi.h"
 #include "math.h"
 
-#include <stdio.h>
-
 Ball::Ball(float radius, const PaintCan& top_color, const PaintCan& middle_color, const PaintCan& bottom_color)
     : m_radius(radius)
     , m_top_color(top_color)
@@ -22,13 +20,6 @@ Ball::Ball(float radius, const PaintCan& top_color, const PaintCan& middle_color
 
 Ball::~Ball()
 {
-}
-
-void Ball::show(const char* msg) const
-{
-    printf("    Ball(%s): pos (%.3f, %.3f),  vel (%.3f, %.3f)\n", msg,
-        m_state.position().v1, m_state.position().v2,
-        m_state.velocity().v1, m_state.velocity().v2);
 }
 
 CadModel Ball::model(float animation_id) const

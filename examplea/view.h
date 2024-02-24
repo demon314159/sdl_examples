@@ -8,7 +8,6 @@
 #include <SDL.h>
 #include <GL/glew.h>
 #include <SDL_opengl.h>
-#include <stdio.h>
 #include <chrono>
 
 #include "vertex_data.h"

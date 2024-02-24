@@ -7,8 +7,6 @@
 #include "look.h"
 #include <math.h>
 
-#include <stdio.h>
-
 #define MAJOR_RADIUS (FLIPPER_MAJOR_RADIUS + BUMPER_THICKNESS)
 #define MINOR_RADIUS (FLIPPER_MINOR_RADIUS + BUMPER_THICKNESS)
 #define ANGULAR_VELOCITY (280.0 * 4.0)

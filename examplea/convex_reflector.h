@@ -38,6 +38,7 @@ private:
 
     void translate(Float2& point, Float2 distance) const;
     void rotate(Float2& point, float angle) const;
+    bool null_velocity_origin() const;
 };
 
 #endif // _CONVEX_REFLECTOR_H_

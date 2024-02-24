@@ -28,6 +28,11 @@ ConvexReflector::~ConvexReflector()
 {
 }
 
+bool ConvexReflector::null_velocity_origin() const
+{
+    return m_position.v1 == m_velocity_origin.v1 && m_position.v2 == m_velocity_origin.v2;
+}
+
 void ConvexReflector::set_angular_velocity(float angular_velocity)
 {
     m_angular_velocity = angular_velocity;
@@ -144,7 +149,7 @@ void ConvexReflector::collide(Ball& ball) const
             translate(vo, {0.0, m_radius});
             Float2 impact_velocity = {0.0, 0.0};
             // Adjust frame for velocity at point of impact
-            if (m_angular_velocity != 0.0) {
+            if (!null_velocity_origin() && m_angular_velocity != 0.0) {
                 impact_velocity = velocity_at_impact(ball_copy.position().v1, vo);
                 ball_copy.translate_velocity_frame({-impact_velocity.v1, -impact_velocity.v2});
             }
@@ -158,7 +163,7 @@ void ConvexReflector::collide(Ball& ball) const
             temp = ball_copy.position();
             ball_copy.set_position({temp.v1, (float) -2.0 * ball.radius() - temp.v2});
             // Unadjust frame for velocity at point of impact
-            if (m_angular_velocity != 0.0) {
+            if (!null_velocity_origin() && m_angular_velocity != 0.0) {
                 ball_copy.translate_velocity_frame(impact_velocity);
             }
             // translate reflector by (0, -radius) and bring ball position and velocity
