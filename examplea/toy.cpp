@@ -52,6 +52,9 @@ Toy::Toy()
 
     , m_flipper1(-THETA, {-W4 / 2.0, 0.0, L1 + L2 + L3}, FLIPPER_TRAVEL, FLIPPER_REFLECTIVITY)
     , m_flipper2(180.0 + THETA, {W4 / 2.0, 0.0, L1 + L2 + L3}, -FLIPPER_TRAVEL, FLIPPER_REFLECTIVITY)
+    , m_bumper1({-W1 / 8.0, 0.0, L1 / 2.0}, BUMPER_REFLECTIVITY)
+    , m_bumper2({W1 / 8.0, 0.0, L1 / 2.0}, BUMPER_REFLECTIVITY)
+    , m_bumper3({0.0, 0.0, 3.0f * L1 / 4.0}, BUMPER_REFLECTIVITY)
 {
     build_model();
     m_ball.set_position({-2.05, 10.0});
@@ -91,6 +94,9 @@ void Toy::advance(int nanoseconds)
     m_wall5.collide(m_ball);
     m_flipper1.collide(m_ball);
     m_flipper2.collide(m_ball);
+    m_bumper1.collide(m_ball);
+    m_bumper2.collide(m_ball);
+    m_bumper3.collide(m_ball);
 }
 
 void Toy::build_model()
@@ -98,6 +104,9 @@ void Toy::build_model()
     m_model->add(m_ball.model(ANIMATION_ID_2));
     m_model->add(m_flipper1.model(ANIMATION_ID_0));
     m_model->add(m_flipper2.model(ANIMATION_ID_1));
+    m_model->add(m_bumper1.model(0.0));
+    m_model->add(m_bumper2.model(0.0));
+    m_model->add(m_bumper3.model(0.0));
     m_model->add(m_wall1.model(0.0));
     m_model->add(m_wall2.model(0.0));
     m_model->add(m_wall3.model(0.0));

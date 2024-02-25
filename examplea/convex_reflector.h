@@ -12,6 +12,7 @@ class ConvexReflector
 {
 public:
     ConvexReflector(bool left, float r1, float r2, float length, float reflectivity);
+    ConvexReflector(float r, float reflectivity);
     ~ConvexReflector();
 
     Float2 position() const;

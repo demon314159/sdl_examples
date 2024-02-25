@@ -28,10 +28,13 @@ HEADERS = view.h \
           convex_reflector.h \
           flipper_model.h \
           flipper_shape.h \
+          bumper_model.h \
+          bumper_shape.h \
           ball.h \
           sphere_shape.h \
           wall.h \
           flipper.h \
+          bumper.h \
           \
           \
           \
@@ -61,10 +64,13 @@ OBJECTS = main.obj \
           convex_reflector.obj \
           flipper_model.obj \
           flipper_shape.obj \
+          bumper_model.obj \
+          bumper_shape.obj \
           ball.obj \
           sphere_shape.obj \
           wall.obj \
           flipper.obj \
+          bumper.obj \
           \
           \
           \

@@ -50,8 +50,8 @@ float Wall::length() const
 
 void Wall::collide(Ball& ball) const
 {
-//    m_reflector1.collide(ball);
-//    m_reflector2.collide(ball);
+    m_reflector1.collide(ball);
+    m_reflector2.collide(ball);
     m_reflector3.collide(ball);
     m_reflector4.collide(ball);
 }

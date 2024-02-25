@@ -10,8 +10,6 @@
 #include "cad_model.h"
 #include "convex_reflector.h"
 #include "straight_reflector.h"
-#include "convex_reflector.h"
-#include "straight_reflector.h"
 
 class Wall
 {

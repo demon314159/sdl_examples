@@ -20,16 +20,16 @@
 #define FLIPPER_LENGTH 5.0f
 #define FLIPPER_HEIGHT 2.0f
 
+#define BUMPER_RADIUS 2.0f
 #define BUMPER_THICKNESS 0.2f
 #define BUMPER_HEIGHT 1.6f
 
 #define WALL_RADIUS 0.2f
 #define WALL_HEIGHT 2.0f
 
-//#define WALL_REFLECTIVITY 0.2f
-//#define FLIPPER_REFLECTIVITY 0.2f
 #define WALL_REFLECTIVITY 0.2f
 #define FLIPPER_REFLECTIVITY 0.2f
+#define BUMPER_REFLECTIVITY 2.0f
 
 class Look
 {
