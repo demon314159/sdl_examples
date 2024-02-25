@@ -10,7 +10,7 @@
 #include "ball.h"
 #include "wall.h"
 #include "flipper.h"
-#include "bumper.h"
+#include "pole.h"
 
 class Toy
 {
@@ -45,9 +45,9 @@ private:
     Wall m_wall5;
     Flipper m_flipper1;
     Flipper m_flipper2;
-    Bumper m_bumper1;
-    Bumper m_bumper2;
-    Bumper m_bumper3;
+    Pole m_pole1;
+    Pole m_pole2;
+    Pole m_pole3;
     Ball m_ball;
 
     void build_model();

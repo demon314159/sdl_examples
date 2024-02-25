@@ -1,12 +1,12 @@
 //
-// bumper_shape.cpp
+// pole_shape.cpp
 //
 
-#include "bumper_shape.h"
+#include "pole_shape.h"
 #include "pi.h"
 #include "math.h"
 
-BumperShape::BumperShape(float radius, float height)
+PoleShape::PoleShape(float radius, float height)
     : m_radius(radius)
     , m_height(height)
     , m_size_known(false)
@@ -22,28 +22,28 @@ BumperShape::BumperShape(float radius, float height)
     }
 }
 
-BumperShape::~BumperShape()
+PoleShape::~PoleShape()
 {
     if (m_facet != NULL)
         delete [] m_facet;
 }
 
-int BumperShape::facets() const
+int PoleShape::facets() const
 {
     return m_facet_count;
 }
 
-Facet BumperShape::facet(int facet_ix) const
+Facet PoleShape::facet(int facet_ix) const
 {
     return m_facet[facet_ix];
 }
 
-void BumperShape::define_shape()
+void PoleShape::define_shape()
 {
     define_cylinder();
 }
 
-void BumperShape::define_cylinder()
+void PoleShape::define_cylinder()
 {
     int steps = 50;
     float theta_i = 0.0;
@@ -53,7 +53,7 @@ void BumperShape::define_cylinder()
     }
 }
 
-void BumperShape::cylinder_slice(int step, int steps, float r, float theta_i, float theta_f)
+void PoleShape::cylinder_slice(int step, int steps, float r, float theta_i, float theta_f)
 {
     double dtheta = (theta_f - theta_i) / (float) steps;
     float theta1 = theta_i + dtheta * (float) step;
@@ -73,13 +73,13 @@ void BumperShape::cylinder_slice(int step, int steps, float r, float theta_i, fl
     add_face({x0, y0, z0}, {x1, y0, z1}, {x2, y0, z2}, false);
 }
 
-void BumperShape::add_face(Float3 v1, Float3 v2, Float3 v3, Float3 v4, bool flip)
+void PoleShape::add_face(Float3 v1, Float3 v2, Float3 v3, Float3 v4, bool flip)
 {
     add_face(v1, v2, v3, flip);
     add_face(v1, v3, v4, flip);
 }
 
-void BumperShape::add_face(Float3 v1, Float3 v2, Float3 v3, bool flip)
+void PoleShape::add_face(Float3 v1, Float3 v2, Float3 v3, bool flip)
 {
     if (m_size_known) {
         m_facet[m_facet_count].animation_id = 0.0;

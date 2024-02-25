@@ -1,20 +1,19 @@
 //
-// bumper_shape.h
+// pole_shape.h
 //
 
-#ifndef _BUMPER_SHAPE_H_
-#define _BUMPER_SHAPE_H_
+#ifndef _POLE_SHAPE_H_
+#define _POLE_SHAPE_H_
 
 #include "shape.h"
 #include "float3.h"
 #include "facet.h"
 
-
-class BumperShape: public Shape
+class PoleShape: public Shape
 {
 public:
-    BumperShape(float radius, float height);
-    virtual ~BumperShape();
+    PoleShape(float radius, float height);
+    virtual ~PoleShape();
     int facets() const override;
     Facet facet(int facet_ix) const override;
 
@@ -33,4 +32,4 @@ private:
     void add_face(Float3 v1, Float3 v2, Float3 v3, Float3 v4, bool flip = false);
 };
 
-#endif // _BUMPER_SHAPE_
+#endif // _POLE_SHAPE_
