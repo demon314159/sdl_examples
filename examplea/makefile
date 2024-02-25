@@ -11,7 +11,6 @@ HEADERS = view.h \
           vertex_data.h \
           paint_can.h \
           bounding_box.h \
-          look.h \
           shape.h \
           navigate.h \
           cad_model.h \
@@ -22,8 +21,8 @@ HEADERS = view.h \
           quaternion.h \
           toy.h \
           \
+          look.h \
           state.h \
-          \
           straight_reflector.h \
           convex_reflector.h \
           flipper_model.h \
@@ -49,7 +48,6 @@ OBJECTS = main.obj \
           matrix4x4.obj \
           matrix3x3.obj \
           paint_can.obj \
-          look.obj \
           navigate.obj \
           cad_model.obj \
           stl_file.obj \
@@ -59,7 +57,6 @@ OBJECTS = main.obj \
           toy.obj \
           \
           state.obj \
-          \
           straight_reflector.obj \
           convex_reflector.obj \
           flipper_model.obj \

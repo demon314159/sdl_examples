@@ -4,25 +4,32 @@
 
 #include "flipper.h"
 #include "flipper_model.h"
-#include "look.h"
 #include <math.h>
 
-#define MAJOR_RADIUS (FLIPPER_MAJOR_RADIUS + BUMPER_THICKNESS)
-#define MINOR_RADIUS (FLIPPER_MINOR_RADIUS + BUMPER_THICKNESS)
-#define ANGULAR_VELOCITY (280.0 * 4.0)
-
-Flipper::Flipper(float angle, Float3 position, float travel, float reflectivity)
+Flipper::Flipper(float angle, Float3 position, float length, float major_radius, float minor_radius,
+                 float height, float bumper_thickness, float bumper_height,
+                 const PaintCan& body_color, const PaintCan& bumper_color,
+                float travel, float velocity, float reflectivity, int steps)
     : m_action_button(false)
     , m_angle(angle)
     , m_position(position)
+    , m_length(length)
+    , m_major_radius(major_radius)
+    , m_minor_radius(minor_radius)
+    , m_height(height)
+    , m_bumper_thickness(bumper_thickness)
+    , m_bumper_height(bumper_height)
+    , m_body_color(body_color)
+    , m_bumper_color(bumper_color)
     , m_travel(travel)
+    , m_velocity(velocity)
+    , m_steps(steps)
     , m_active_angle(0.0)
     , m_angular_velocity(0.0)
-    , m_angular_acceleration(0.0)
-    , m_reflector1(true, MAJOR_RADIUS, MINOR_RADIUS, FLIPPER_LENGTH, reflectivity)
-    , m_reflector2(false, MAJOR_RADIUS, MINOR_RADIUS, FLIPPER_LENGTH, reflectivity)
-    , m_reflector3(true, MAJOR_RADIUS, MINOR_RADIUS, FLIPPER_LENGTH, reflectivity)
-    , m_reflector4(false, MAJOR_RADIUS, MINOR_RADIUS, FLIPPER_LENGTH, reflectivity)
+    , m_reflector1(true, major_radius + bumper_thickness, minor_radius + bumper_thickness, length, reflectivity)
+    , m_reflector2(false, major_radius + bumper_thickness, minor_radius + bumper_thickness, length, reflectivity)
+    , m_reflector3(true, major_radius + bumper_thickness, minor_radius + bumper_thickness, length, reflectivity)
+    , m_reflector4(false, major_radius + bumper_thickness, minor_radius + bumper_thickness, length, reflectivity)
 {
     m_reflector1.rotate(angle);
     m_reflector1.translate({position.v1, position.v3});
@@ -43,9 +50,9 @@ void Flipper::advance(float seconds)
     if (m_action_button) {
         if (fabs(m_active_angle) < fabs(m_travel)) {
             if (m_travel > 0.0) {
-                m_angular_velocity = ANGULAR_VELOCITY;
+                m_angular_velocity = m_velocity;
             } else {
-                m_angular_velocity = -ANGULAR_VELOCITY;
+                m_angular_velocity = -m_velocity;
             }
             m_active_angle += (m_angular_velocity * seconds);
         } else {
@@ -54,14 +61,14 @@ void Flipper::advance(float seconds)
     } else {
         if (m_travel > 0.0) {
             if (m_active_angle > 0.0) {
-                m_angular_velocity = -ANGULAR_VELOCITY;
+                m_angular_velocity = -m_velocity;
                 m_active_angle += (m_angular_velocity * seconds);
             } else {
               m_angular_velocity = 0.0;
             }
         } else {
             if (m_active_angle < 0.0) {
-                m_angular_velocity = ANGULAR_VELOCITY;
+                m_angular_velocity = m_velocity;
                 m_active_angle += (m_angular_velocity * seconds);
             } else {
               m_angular_velocity = 0.0;
@@ -136,7 +143,7 @@ void Flipper::collide(Ball& ball) const
 
 CadModel Flipper::model(float animation_id) const
 {
-    FlipperModel flipper(animation_id, BODY_COLOR, BUMPER_COLOR, FLIPPER_MAJOR_RADIUS, FLIPPER_MINOR_RADIUS, FLIPPER_LENGTH, FLIPPER_HEIGHT, BUMPER_THICKNESS, BUMPER_HEIGHT);
+    FlipperModel flipper(animation_id, m_body_color, m_bumper_color, m_major_radius, m_minor_radius, m_length, m_height, m_bumper_thickness, m_bumper_height);
     flipper.rotate_ay(m_angle);
     Float3 pos = m_position;
     CadModel mm;

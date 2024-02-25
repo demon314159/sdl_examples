@@ -4,16 +4,25 @@
 
 #include "wall.h"
 #include "flipper_model.h"
-#include "look.h"
 
-Wall::Wall(float angle, Float3 position, float length, float reflectivity)
+Wall::Wall(float angle, Float3 position, float length, float radius, float height,
+           float bumper_thickness, float bumper_height,
+           const PaintCan& body_color, const PaintCan& bumper_color,
+           float reflectivity, int steps)
     : m_angle(angle)
     , m_position(position)
     , m_length(length)
-    , m_reflector1(true, WALL_RADIUS + BUMPER_THICKNESS, WALL_RADIUS + BUMPER_THICKNESS, length, reflectivity)
-    , m_reflector2(false, WALL_RADIUS + BUMPER_THICKNESS, WALL_RADIUS + BUMPER_THICKNESS, length, reflectivity)
-    , m_reflector3(true, WALL_RADIUS + BUMPER_THICKNESS, WALL_RADIUS + BUMPER_THICKNESS, length, reflectivity)
-    , m_reflector4(false, WALL_RADIUS + BUMPER_THICKNESS, WALL_RADIUS + BUMPER_THICKNESS, length, reflectivity)
+    , m_radius(radius)
+    , m_height(height)
+    , m_bumper_thickness(bumper_thickness)
+    , m_bumper_height(bumper_height)
+    , m_body_color(body_color)
+    , m_bumper_color(bumper_color)
+    , m_steps(steps)
+    , m_reflector1(true, radius + bumper_thickness, radius + bumper_thickness, length, reflectivity)
+    , m_reflector2(false, radius + bumper_thickness, radius + bumper_thickness, length, reflectivity)
+    , m_reflector3(true, radius + bumper_thickness, radius + bumper_thickness, length, reflectivity)
+    , m_reflector4(false, radius + bumper_thickness, radius + bumper_thickness, length, reflectivity)
 {
     m_reflector1.translate({-length / 2.0f, 0.0});
     m_reflector1.rotate(angle);
@@ -58,7 +67,7 @@ void Wall::collide(Ball& ball) const
 
 CadModel Wall::model(float animation_id) const
 {
-    FlipperModel wall(animation_id, BODY_COLOR, BUMPER_COLOR, WALL_RADIUS, WALL_RADIUS, m_length, WALL_HEIGHT, BUMPER_THICKNESS, BUMPER_HEIGHT);
+    FlipperModel wall(animation_id, m_body_color, m_bumper_color, m_radius, m_radius, m_length, m_height, m_bumper_thickness, m_bumper_height);
     wall.translate(-m_length / 2.0, 0.0, 0.0);
     wall.rotate_ay(m_angle);
     Float3 pos = m_position;

@@ -7,7 +7,6 @@
 #include "matrix3x3.h"
 #include "paint_can.h"
 #include "bounding_box.h"
-#include "look.h"
 #include "pi.h"
 #include <math.h>
 #include <sys/stat.h>

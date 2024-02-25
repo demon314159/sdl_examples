@@ -19,6 +19,7 @@
 #define FLIPPER_MINOR_RADIUS 0.4f
 #define FLIPPER_LENGTH 5.0f
 #define FLIPPER_HEIGHT 2.0f
+#define FLIPPER_VELOCITY (280.0 * 4.0)
 
 #define BUMPER_THICKNESS 0.2f
 #define BUMPER_HEIGHT 1.6f
@@ -36,15 +37,6 @@
 #define WALL_SEGMENTS 50
 #define FLIPPER_SEGMENTS 50
 #define POLE_SEGMENTS 50
-#define BALL_SEGMENTS 25
-
-class Look
-{
-public:
-    static float cube_dimx;
-    static float cube_dimy;
-    static float cube_dimz;
-    static PaintCan cube_paint();
-};
+#define BALL_SEGMENTS 50
 
 #endif // _LOOK_H_

@@ -16,7 +16,10 @@
 class Flipper
 {
 public:
-    Flipper(float angle, Float3 position, float travel, float reflectivity);
+    Flipper(float angle, Float3 position, float length, float major_radius, float minor_radius,
+            float height, float bumper_thickness, float bumper_height,
+            const PaintCan& body_color, const PaintCan& bumper_color,
+            float travel, float velocity, float reflectivity, int steps);
     ~Flipper();
 
     CadModel model(float animation_id) const;
@@ -34,10 +37,19 @@ private:
     bool m_action_button;
     float m_angle;
     Float3 m_position;
+    float m_length;
+    float m_major_radius;
+    float m_minor_radius;
+    float m_height;
+    float m_bumper_thickness;
+    float m_bumper_height;
+    PaintCan m_body_color;
+    PaintCan m_bumper_color;
     float m_travel;
+    float m_velocity;
+    int m_steps;
     float m_active_angle;
     float m_angular_velocity;
-    float m_angular_acceleration;
     ConvexReflector m_reflector1;
     ConvexReflector m_reflector2;
     StraightReflector m_reflector3;
