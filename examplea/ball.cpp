@@ -7,11 +7,12 @@
 #include "pi.h"
 #include "math.h"
 
-Ball::Ball(float radius, const PaintCan& top_color, const PaintCan& middle_color, const PaintCan& bottom_color)
+Ball::Ball(float radius, const PaintCan& top_color, const PaintCan& middle_color, const PaintCan& bottom_color, int steps)
     : m_radius(radius)
     , m_top_color(top_color)
     , m_middle_color(middle_color)
     , m_bottom_color(bottom_color)
+    , m_steps(steps)
     , m_acceleration({0.0, 0.0})
     , m_state()
     , m_orientation()
@@ -28,9 +29,9 @@ CadModel Ball::model(float animation_id) const
     float top_lattitude = angle * PI / 180.0;
     float bottom_lattitude = -angle * PI / 180.0;
     CadModel mm;
-    mm.add(SphereShape(m_radius, -PI / 2.0, bottom_lattitude), m_bottom_color, animation_id);
-    mm.add(SphereShape(m_radius, bottom_lattitude, top_lattitude), m_middle_color, animation_id);
-    mm.add(SphereShape(m_radius, top_lattitude, PI / 2.0), m_top_color, animation_id);
+    mm.add(SphereShape(m_radius, m_steps, -PI / 2.0, bottom_lattitude), m_bottom_color, animation_id);
+    mm.add(SphereShape(m_radius, m_steps, bottom_lattitude, top_lattitude), m_middle_color, animation_id);
+    mm.add(SphereShape(m_radius, m_steps, top_lattitude, PI / 2.0), m_top_color, animation_id);
     return mm;
 }
 

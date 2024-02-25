@@ -14,7 +14,7 @@
 class Ball
 {
 public:
-    Ball(float radius, const PaintCan& top_color, const PaintCan& middle_color, const PaintCan& bottom_color);
+    Ball(float radius, const PaintCan& top_color, const PaintCan& middle_color, const PaintCan& bottom_color, int steps);
     ~Ball();
 
     CadModel model(float animation_id) const;
@@ -36,6 +36,7 @@ private:
     PaintCan m_top_color;
     PaintCan m_middle_color;
     PaintCan m_bottom_color;
+    int m_steps;
     Float2 m_acceleration;
     State m_state;
     Quaternion m_orientation;

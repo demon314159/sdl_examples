@@ -13,7 +13,7 @@
 class SphereShape: public Shape
 {
 public:
-    SphereShape(float radius, float lattitude_i = -PI / 2.0, float lattitude_f = PI / 2.0);
+    SphereShape(float radius, int steps, float lattitude_i = -PI / 2.0, float lattitude_f = PI / 2.0);
     virtual ~SphereShape();
     int facets() const override;
     Facet facet(int facet_ix) const override;
@@ -22,6 +22,7 @@ private:
     float m_radius;
     float m_lattitude_i;
     float m_lattitude_f;
+    int m_steps;
     bool m_size_known;
     int m_facet_count;
     Facet *m_facet;

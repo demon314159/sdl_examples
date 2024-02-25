@@ -6,9 +6,10 @@
 #include "pi.h"
 #include "math.h"
 
-PoleShape::PoleShape(float radius, float height)
+PoleShape::PoleShape(float radius, float height, int steps)
     : m_radius(radius)
     , m_height(height)
+    , m_steps(steps)
     , m_size_known(false)
     , m_facet_count(0)
     , m_facet(NULL)
@@ -45,17 +46,16 @@ void PoleShape::define_shape()
 
 void PoleShape::define_cylinder()
 {
-    int steps = 50;
     float theta_i = 0.0;
     float theta_f = 2.0 * PI;
-    for (int i = 0; i < steps; i++) {
-        cylinder_slice(i, steps, m_radius, theta_i, theta_f);
+    for (int i = 0; i < m_steps; i++) {
+        cylinder_slice(i, m_radius, theta_i, theta_f);
     }
 }
 
-void PoleShape::cylinder_slice(int step, int steps, float r, float theta_i, float theta_f)
+void PoleShape::cylinder_slice(int step, float r, float theta_i, float theta_f)
 {
-    double dtheta = (theta_f - theta_i) / (float) steps;
+    double dtheta = (theta_f - theta_i) / (float) m_steps;
     float theta1 = theta_i + dtheta * (float) step;
     float theta2 = theta_i + dtheta * (float) (step + 1);
 

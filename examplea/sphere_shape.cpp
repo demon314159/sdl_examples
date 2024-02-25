@@ -5,12 +5,11 @@
 #include "sphere_shape.h"
 #include "math.h"
 
-#define TOTAL_STEPS 25
-
-SphereShape::SphereShape(float radius, float lattitude_i, float lattitude_f)
+SphereShape::SphereShape(float radius, int steps, float lattitude_i, float lattitude_f)
     : m_radius(radius)
     , m_lattitude_i(lattitude_i)
     , m_lattitude_f(lattitude_f)
+    , m_steps(steps)
     , m_size_known(false)
     , m_facet_count(0)
     , m_facet(NULL)
@@ -42,7 +41,7 @@ Facet SphereShape::facet(int facet_ix) const
 
 void SphereShape::define_shape()
 {
-    int steps = round(TOTAL_STEPS * (m_lattitude_f - m_lattitude_i) / PI);
+    int steps = round(m_steps * (m_lattitude_f - m_lattitude_i) / PI);
     steps = (steps < 1) ? 1 : steps;
     for (int i = 0; i < steps; i++) {
         sphere_slice(i, steps, m_radius, m_lattitude_i, m_lattitude_f);
@@ -54,8 +53,8 @@ void SphereShape::sphere_slice(int step, int steps, float r, float lattitude_i, 
     double dlattitude = (lattitude_f - lattitude_i) / (float) steps;
     float lattitude1 = lattitude_i + dlattitude * (float) step;
     float lattitude2 = lattitude_i + dlattitude * (float) (step + 1);
-    for (int j = 0; j < TOTAL_STEPS; j++) {
-        ring_slice(j, TOTAL_STEPS, r, lattitude1, lattitude2);
+    for (int j = 0; j < m_steps; j++) {
+        ring_slice(j, m_steps, r, lattitude1, lattitude2);
     }
 }
 

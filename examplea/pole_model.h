@@ -13,7 +13,8 @@ public:
     PoleModel(float animation_id,
               const PaintCan& body_color, const PaintCan& bumper_color,
               float radius, float height,
-              float bumper_thickness, float bumper_height);
+              float bumper_thickness, float bumper_height,
+              int steps);
     ~PoleModel();
 
 private:

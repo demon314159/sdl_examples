@@ -33,8 +33,10 @@
 #define FLIPPER_REFLECTIVITY 0.2f
 #define POLE_REFLECTIVITY 2.0f
 
-
-
+#define WALL_SEGMENTS 50
+#define FLIPPER_SEGMENTS 50
+#define POLE_SEGMENTS 50
+#define BALL_SEGMENTS 25
 
 class Look
 {
