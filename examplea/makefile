@@ -25,6 +25,7 @@ HEADERS = view.h \
           state.h \
           straight_reflector.h \
           convex_reflector.h \
+          convex_kicker.h \
           flipper_model.h \
           flipper_shape.h \
           pole_model.h \
@@ -59,6 +60,7 @@ OBJECTS = main.obj \
           state.obj \
           straight_reflector.obj \
           convex_reflector.obj \
+          convex_kicker.obj \
           flipper_model.obj \
           flipper_shape.obj \
           pole_model.obj \

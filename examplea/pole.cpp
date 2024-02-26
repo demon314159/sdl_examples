@@ -7,7 +7,7 @@
 
 Pole::Pole(Float3 position, float radius, float height, float bumper_thickness, float bumper_height,
            const PaintCan& body_color, const PaintCan& bumper_color,
-           float reflectivity, int steps)
+           float kicker_velocity, int steps)
     : m_position(position)
     , m_radius(radius)
     , m_height(height)
@@ -16,9 +16,9 @@ Pole::Pole(Float3 position, float radius, float height, float bumper_thickness, 
     , m_body_color(body_color)
     , m_bumper_color(bumper_color)
     , m_steps(steps)
-    , m_reflector(radius + bumper_thickness, reflectivity)
+    , m_kicker(radius + bumper_thickness, kicker_velocity)
 {
-    m_reflector.translate({position.v1, position.v3});
+    m_kicker.translate({position.v1, position.v3});
 }
 
 Pole::~Pole()
@@ -42,7 +42,7 @@ float Pole::height() const
 
 void Pole::collide(Ball& ball) const
 {
-    m_reflector.collide(ball);
+    m_kicker.collide(ball);
 }
 
 CadModel Pole::model(float animation_id) const

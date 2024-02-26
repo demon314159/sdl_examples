@@ -8,14 +8,14 @@
 #include "float3.h"
 #include "ball.h"
 #include "cad_model.h"
-#include "convex_reflector.h"
+#include "convex_kicker.h"
 
 class Pole
 {
 public:
     Pole(Float3 position, float radius, float height, float bumper_thickness, float bumper_height,
          const PaintCan& body_color, const PaintCan& bumper_color,
-         float reflectivity, int steps);
+         float kicker_velocity, int steps);
     ~Pole();
 
     CadModel model(float animation_id) const;
@@ -33,7 +33,7 @@ private:
     PaintCan m_body_color;
     PaintCan m_bumper_color;
     int m_steps;
-    ConvexReflector m_reflector;
+    ConvexKicker m_kicker;
 };
 
 #endif // _POLE_H_
