@@ -28,13 +28,13 @@ HEADERS = view.h \
           convex_kicker.h \
           flipper_model.h \
           flipper_shape.h \
-          pole_model.h \
-          pole_shape.h \
+          bouncer_model.h \
+          cylinder_shape.h \
           ball.h \
           sphere_shape.h \
           wall.h \
           flipper.h \
-          pole.h \
+          bouncer.h \
           \
           \
           \
@@ -63,13 +63,13 @@ OBJECTS = main.obj \
           convex_kicker.obj \
           flipper_model.obj \
           flipper_shape.obj \
-          pole_model.obj \
-          pole_shape.obj \
+          bouncer_model.obj \
+          cylinder_shape.obj \
           ball.obj \
           sphere_shape.obj \
           wall.obj \
           flipper.obj \
-          pole.obj \
+          bouncer.obj \
           \
           \
           \

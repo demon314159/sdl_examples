@@ -1,12 +1,12 @@
 //
-// pole_shape.cpp
+// cylinder_shape.cpp
 //
 
-#include "pole_shape.h"
+#include "cylinder_shape.h"
 #include "pi.h"
 #include "math.h"
 
-PoleShape::PoleShape(float radius, float height, int steps)
+CylinderShape::CylinderShape(float radius, float height, int steps)
     : m_radius(radius)
     , m_height(height)
     , m_steps(steps)
@@ -23,37 +23,32 @@ PoleShape::PoleShape(float radius, float height, int steps)
     }
 }
 
-PoleShape::~PoleShape()
+CylinderShape::~CylinderShape()
 {
     if (m_facet != NULL)
         delete [] m_facet;
 }
 
-int PoleShape::facets() const
+int CylinderShape::facets() const
 {
     return m_facet_count;
 }
 
-Facet PoleShape::facet(int facet_ix) const
+Facet CylinderShape::facet(int facet_ix) const
 {
     return m_facet[facet_ix];
 }
 
-void PoleShape::define_shape()
-{
-    define_cylinder();
-}
-
-void PoleShape::define_cylinder()
+void CylinderShape::define_shape()
 {
     float theta_i = 0.0;
     float theta_f = 2.0 * PI;
     for (int i = 0; i < m_steps; i++) {
-        cylinder_slice(i, m_radius, theta_i, theta_f);
+        slice(i, m_radius, theta_i, theta_f);
     }
 }
 
-void PoleShape::cylinder_slice(int step, float r, float theta_i, float theta_f)
+void CylinderShape::slice(int step, float r, float theta_i, float theta_f)
 {
     double dtheta = (theta_f - theta_i) / (float) m_steps;
     float theta1 = theta_i + dtheta * (float) step;
@@ -73,13 +68,13 @@ void PoleShape::cylinder_slice(int step, float r, float theta_i, float theta_f)
     add_face({x0, y0, z0}, {x1, y0, z1}, {x2, y0, z2}, false);
 }
 
-void PoleShape::add_face(Float3 v1, Float3 v2, Float3 v3, Float3 v4, bool flip)
+void CylinderShape::add_face(Float3 v1, Float3 v2, Float3 v3, Float3 v4, bool flip)
 {
     add_face(v1, v2, v3, flip);
     add_face(v1, v3, v4, flip);
 }
 
-void PoleShape::add_face(Float3 v1, Float3 v2, Float3 v3, bool flip)
+void CylinderShape::add_face(Float3 v1, Float3 v2, Float3 v3, bool flip)
 {
     if (m_size_known) {
         m_facet[m_facet_count].animation_id = 0.0;

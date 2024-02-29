@@ -52,9 +52,9 @@ Toy::Toy()
 
     , m_flipper1(-THETA, {-W4 / 2.0, 0.0, L1 + L2 + L3}, FLIPPER_LENGTH, FLIPPER_MAJOR_RADIUS, FLIPPER_MINOR_RADIUS, FLIPPER_HEIGHT, BUMPER_THICKNESS, BUMPER_HEIGHT, BODY_COLOR, BUMPER_COLOR, FLIPPER_TRAVEL, FLIPPER_VELOCITY, FLIPPER_REFLECTIVITY, FLIPPER_SEGMENTS)
     , m_flipper2(180.0 + THETA, {W4 / 2.0, 0.0, L1 + L2 + L3}, FLIPPER_LENGTH, FLIPPER_MAJOR_RADIUS, FLIPPER_MINOR_RADIUS, FLIPPER_HEIGHT, BUMPER_THICKNESS, BUMPER_HEIGHT, BODY_COLOR, BUMPER_COLOR, -FLIPPER_TRAVEL, FLIPPER_VELOCITY, FLIPPER_REFLECTIVITY, FLIPPER_SEGMENTS)
-    , m_pole1({-W1 / 8.0, 0.0, L1 / 2.0}, POLE_RADIUS, POLE_HEIGHT, BUMPER_THICKNESS, BUMPER_HEIGHT, BODY_COLOR, BUMPER_COLOR, POLE_KICKER_VELOCITY, POLE_SEGMENTS)
-    , m_pole2({W1 / 8.0, 0.0, L1 / 2.0}, POLE_RADIUS, POLE_HEIGHT, BUMPER_THICKNESS, BUMPER_HEIGHT, BODY_COLOR, BUMPER_COLOR, POLE_KICKER_VELOCITY, POLE_SEGMENTS)
-    , m_pole3({0.0, 0.0, 3.0f * L1 / 4.0}, POLE_RADIUS, POLE_HEIGHT, BUMPER_THICKNESS, BUMPER_HEIGHT, BODY_COLOR, BUMPER_COLOR, POLE_KICKER_VELOCITY, POLE_SEGMENTS)
+    , m_bouncer1({-W1 / 8.0, 0.0, L1 / 2.0}, BOUNCER_WALL_RADIUS, BOUNCER_STEM_RADIUS, BOUNCER_WALL_HEIGHT, BOUNCER_STEM_HEIGHT, BOUNCER_TOP_COLOR, BOUNCER_MIDDLE_COLOR, BOUNCER_BOTTOM_COLOR, BOUNCER_KICKER_VELOCITY, BOUNCER_SEGMENTS)
+    , m_bouncer2({W1 / 8.0, 0.0, L1 / 2.0}, BOUNCER_WALL_RADIUS, BOUNCER_STEM_RADIUS, BOUNCER_WALL_HEIGHT, BOUNCER_STEM_HEIGHT, BOUNCER_TOP_COLOR, BOUNCER_MIDDLE_COLOR, BOUNCER_BOTTOM_COLOR, BOUNCER_KICKER_VELOCITY, BOUNCER_SEGMENTS)
+    , m_bouncer3({0.0, 0.0, 3.0f * L1 / 4.0}, BOUNCER_WALL_RADIUS, BOUNCER_STEM_RADIUS, BOUNCER_WALL_HEIGHT, BOUNCER_STEM_HEIGHT, BOUNCER_TOP_COLOR, BOUNCER_MIDDLE_COLOR, BOUNCER_BOTTOM_COLOR, BOUNCER_KICKER_VELOCITY, BOUNCER_SEGMENTS)
 {
     build_model();
     m_ball.set_position({-2.05, 10.0});
@@ -94,9 +94,9 @@ void Toy::advance(int nanoseconds)
     m_wall5.collide(m_ball);
     m_flipper1.collide(m_ball);
     m_flipper2.collide(m_ball);
-    m_pole1.collide(m_ball);
-    m_pole2.collide(m_ball);
-    m_pole3.collide(m_ball);
+    m_bouncer1.collide(m_ball);
+    m_bouncer2.collide(m_ball);
+    m_bouncer3.collide(m_ball);
 }
 
 void Toy::build_model()
@@ -104,9 +104,9 @@ void Toy::build_model()
     m_model->add(m_ball.model(ANIMATION_ID_2));
     m_model->add(m_flipper1.model(ANIMATION_ID_0));
     m_model->add(m_flipper2.model(ANIMATION_ID_1));
-    m_model->add(m_pole1.model(0.0));
-    m_model->add(m_pole2.model(0.0));
-    m_model->add(m_pole3.model(0.0));
+    m_model->add(m_bouncer1.model(0.0));
+    m_model->add(m_bouncer2.model(0.0));
+    m_model->add(m_bouncer3.model(0.0));
     m_model->add(m_wall1.model(0.0));
     m_model->add(m_wall2.model(0.0));
     m_model->add(m_wall3.model(0.0));
