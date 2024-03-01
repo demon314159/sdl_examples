@@ -15,11 +15,6 @@ public:
     ConvexReflector(float r, float reflectivity);
     ~ConvexReflector();
 
-    Float2 position() const;
-    float radius() const;
-    float angle_i() const;
-    float angle_f() const;
-
     void set_angular_velocity(float angular_velocity);
     Float2 velocity_at_impact(float x, Float2 velocity_origin) const;
 

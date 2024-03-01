@@ -14,10 +14,6 @@ public:
     StraightReflector(bool top, float r1, float r2, float length, float reflectivity);
     ~StraightReflector();
 
-    Float2 position() const;
-    float length() const;
-    float angle() const;
-
     void set_angular_velocity(float angular_velocity);
     Float2 velocity_at_impact(float x, Float2 velocity_origin) const;
 

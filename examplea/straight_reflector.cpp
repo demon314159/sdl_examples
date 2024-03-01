@@ -40,21 +40,6 @@ void StraightReflector::set_angular_velocity(float angular_velocity)
     m_angular_velocity = angular_velocity;
 }
 
-Float2 StraightReflector::position() const
-{
-    return m_position;
-}
-
-float StraightReflector::length() const
-{
-    return m_length;
-}
-
-float StraightReflector::angle() const
-{
-    return m_angle;
-}
-
 void StraightReflector::translate(Float2 distance)
 {
     m_position.v1 += distance.v1;

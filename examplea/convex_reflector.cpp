@@ -50,26 +50,6 @@ void ConvexReflector::set_angular_velocity(float angular_velocity)
     m_angular_velocity = angular_velocity;
 }
 
-Float2 ConvexReflector::position() const
-{
-    return m_position;
-}
-
-float ConvexReflector::radius() const
-{
-    return m_radius;
-}
-
-float ConvexReflector::angle_i() const
-{
-    return m_angle_i;
-}
-
-float ConvexReflector::angle_f() const
-{
-    return m_angle_f;
-}
-
 void ConvexReflector::translate(Float2 distance)
 {
     m_position.v1 += distance.v1;

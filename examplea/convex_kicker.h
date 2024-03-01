@@ -14,11 +14,6 @@ public:
     ConvexKicker(float radius, float velocity);
     ~ConvexKicker();
 
-    Float2 position() const;
-    float radius() const;
-    float angle_i() const;
-    float angle_f() const;
-
     bool angle_within_range(float angle) const;
     bool within_distance(const Ball& ball) const;
     void collide(Ball& ball) const;

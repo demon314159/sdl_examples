@@ -19,26 +19,6 @@ ConvexKicker::~ConvexKicker()
 {
 }
 
-Float2 ConvexKicker::position() const
-{
-    return m_position;
-}
-
-float ConvexKicker::radius() const
-{
-    return m_radius;
-}
-
-float ConvexKicker::angle_i() const
-{
-    return m_angle_i;
-}
-
-float ConvexKicker::angle_f() const
-{
-    return m_angle_f;
-}
-
 void ConvexKicker::translate(Float2 distance)
 {
     m_position.v1 += distance.v1;
