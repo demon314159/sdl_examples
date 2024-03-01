@@ -7,8 +7,8 @@
 #include <math.h>
 
 Flipper::Flipper(float angle, Float3 position, float length, float major_radius, float minor_radius,
-                 float height, float bumper_thickness, float bumper_height,
-                 const PaintCan& body_color, const PaintCan& bumper_color,
+                 float height, float rubber_thickness, float rubber_height,
+                 const PaintCan& body_color, const PaintCan& rubber_color,
                 float travel, float velocity, float reflectivity, int steps)
     : m_action_button(false)
     , m_angle(angle)
@@ -17,19 +17,19 @@ Flipper::Flipper(float angle, Float3 position, float length, float major_radius,
     , m_major_radius(major_radius)
     , m_minor_radius(minor_radius)
     , m_height(height)
-    , m_bumper_thickness(bumper_thickness)
-    , m_bumper_height(bumper_height)
+    , m_rubber_thickness(rubber_thickness)
+    , m_rubber_height(rubber_height)
     , m_body_color(body_color)
-    , m_bumper_color(bumper_color)
+    , m_rubber_color(rubber_color)
     , m_travel(travel)
     , m_velocity(velocity)
     , m_steps(steps)
     , m_active_angle(0.0)
     , m_angular_velocity(0.0)
-    , m_reflector1(true, major_radius + bumper_thickness, minor_radius + bumper_thickness, length, reflectivity)
-    , m_reflector2(false, major_radius + bumper_thickness, minor_radius + bumper_thickness, length, reflectivity)
-    , m_reflector3(true, major_radius + bumper_thickness, minor_radius + bumper_thickness, length, reflectivity)
-    , m_reflector4(false, major_radius + bumper_thickness, minor_radius + bumper_thickness, length, reflectivity)
+    , m_reflector1(true, major_radius + rubber_thickness, minor_radius + rubber_thickness, length, reflectivity)
+    , m_reflector2(false, major_radius + rubber_thickness, minor_radius + rubber_thickness, length, reflectivity)
+    , m_reflector3(true, major_radius + rubber_thickness, minor_radius + rubber_thickness, length, reflectivity)
+    , m_reflector4(false, major_radius + rubber_thickness, minor_radius + rubber_thickness, length, reflectivity)
 {
     m_reflector1.rotate(angle);
     m_reflector1.translate({position.v1, position.v3});
@@ -143,7 +143,7 @@ void Flipper::collide(Ball& ball) const
 
 CadModel Flipper::model(float animation_id) const
 {
-    FlipperModel flipper(animation_id, m_body_color, m_bumper_color, m_major_radius, m_minor_radius, m_length, m_height, m_bumper_thickness, m_bumper_height);
+    FlipperModel flipper(animation_id, m_body_color, m_rubber_color, m_major_radius, m_minor_radius, m_length, m_height, m_rubber_thickness, m_rubber_height);
     flipper.rotate_ay(m_angle);
     Float3 pos = m_position;
     CadModel mm;

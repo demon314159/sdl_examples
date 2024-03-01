@@ -11,9 +11,9 @@ class FlipperModel: public CadModel
 {
 public:
     FlipperModel(float animation_id,
-                 const PaintCan& flipper_color, const PaintCan& bumper_color,
+                 const PaintCan& flipper_color, const PaintCan& rubber_color,
                  float r1, float r2, float length, float height,
-                 float bumper_thickness, float bumper_height);
+                 float rubber_thickness, float rubber_height);
     ~FlipperModel();
 
 private:

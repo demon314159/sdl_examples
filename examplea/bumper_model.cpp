@@ -1,19 +1,17 @@
 //
-// bouncer_model.cpp
+// bumper_model.cpp
 //
 
-#include "bouncer_model.h"
+#include "bumper_model.h"
 #include "cylinder_shape.h"
 #include "sphere_shape.h"
 #include <math.h>
 
-BouncerModel::BouncerModel(float animation_id,
-                     const PaintCan& top_color, const PaintCan& middle_color, const PaintCan& bottom_color,
-                     float wall_radius, float stem_radius, float wall_height, float stem_height,
-                     int steps)
+BumperModel::BumperModel(float animation_id,
+                         const PaintCan& top_color, const PaintCan& middle_color, const PaintCan& bottom_color,
+                         float wall_radius, float stem_radius, float wall_height, float stem_height,
+                         int steps)
 {
-//    add(CylinderShape(radius, height, steps), body_color, animation_id);
-//    add(CylinderShape(radius + bumper_thickness, bumper_height, steps), bumper_color, animation_id);
     float r_curve = 8.0;
     float x = wall_radius;
     float theta = acos(x / r_curve);
@@ -34,7 +32,7 @@ BouncerModel::BouncerModel(float animation_id,
     add(stem, 0.0, -stem_height / 2.0, 0.0);
 }
 
-BouncerModel::~BouncerModel()
+BumperModel::~BumperModel()
 {
 }
 

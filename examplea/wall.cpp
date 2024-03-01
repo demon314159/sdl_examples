@@ -6,23 +6,23 @@
 #include "flipper_model.h"
 
 Wall::Wall(float angle, Float3 position, float length, float radius, float height,
-           float bumper_thickness, float bumper_height,
-           const PaintCan& body_color, const PaintCan& bumper_color,
+           float rubber_thickness, float rubber_height,
+           const PaintCan& body_color, const PaintCan& rubber_color,
            float reflectivity, int steps)
     : m_angle(angle)
     , m_position(position)
     , m_length(length)
     , m_radius(radius)
     , m_height(height)
-    , m_bumper_thickness(bumper_thickness)
-    , m_bumper_height(bumper_height)
+    , m_rubber_thickness(rubber_thickness)
+    , m_rubber_height(rubber_height)
     , m_body_color(body_color)
-    , m_bumper_color(bumper_color)
+    , m_rubber_color(rubber_color)
     , m_steps(steps)
-    , m_reflector1(true, radius + bumper_thickness, radius + bumper_thickness, length, reflectivity)
-    , m_reflector2(false, radius + bumper_thickness, radius + bumper_thickness, length, reflectivity)
-    , m_reflector3(true, radius + bumper_thickness, radius + bumper_thickness, length, reflectivity)
-    , m_reflector4(false, radius + bumper_thickness, radius + bumper_thickness, length, reflectivity)
+    , m_reflector1(true, radius + rubber_thickness, radius + rubber_thickness, length, reflectivity)
+    , m_reflector2(false, radius + rubber_thickness, radius + rubber_thickness, length, reflectivity)
+    , m_reflector3(true, radius + rubber_thickness, radius + rubber_thickness, length, reflectivity)
+    , m_reflector4(false, radius + rubber_thickness, radius + rubber_thickness, length, reflectivity)
 {
     m_reflector1.translate({-length / 2.0f, 0.0});
     m_reflector1.rotate(angle);
@@ -67,7 +67,7 @@ void Wall::collide(Ball& ball) const
 
 CadModel Wall::model(float animation_id) const
 {
-    FlipperModel wall(animation_id, m_body_color, m_bumper_color, m_radius, m_radius, m_length, m_height, m_bumper_thickness, m_bumper_height);
+    FlipperModel wall(animation_id, m_body_color, m_rubber_color, m_radius, m_radius, m_length, m_height, m_rubber_thickness, m_rubber_height);
     wall.translate(-m_length / 2.0, 0.0, 0.0);
     wall.rotate_ay(m_angle);
     Float3 pos = m_position;

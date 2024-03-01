@@ -17,8 +17,8 @@ class Flipper
 {
 public:
     Flipper(float angle, Float3 position, float length, float major_radius, float minor_radius,
-            float height, float bumper_thickness, float bumper_height,
-            const PaintCan& body_color, const PaintCan& bumper_color,
+            float height, float rubber_thickness, float rubber_height,
+            const PaintCan& body_color, const PaintCan& rubber_color,
             float travel, float velocity, float reflectivity, int steps);
     ~Flipper();
 
@@ -41,10 +41,10 @@ private:
     float m_major_radius;
     float m_minor_radius;
     float m_height;
-    float m_bumper_thickness;
-    float m_bumper_height;
+    float m_rubber_thickness;
+    float m_rubber_height;
     PaintCan m_body_color;
-    PaintCan m_bumper_color;
+    PaintCan m_rubber_color;
     float m_travel;
     float m_velocity;
     int m_steps;

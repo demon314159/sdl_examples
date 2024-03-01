@@ -1,22 +1,22 @@
 //
-// bouncer.h
+// bumper.h
 //
 
-#ifndef _BOUNCER_H_
-#define _BOUNCER_H_
+#ifndef _BUMPER_H_
+#define _BUMPER_H_
 
 #include "float3.h"
 #include "ball.h"
 #include "cad_model.h"
 #include "convex_kicker.h"
 
-class Bouncer
+class Bumper
 {
 public:
-    Bouncer(Float3 position, float wall_radius, float stem_radius, float wall_height, float stem_height,
-         const PaintCan& top_color, const PaintCan& middle_color, const PaintCan& bottom_color,
-         float kicker_velocity, int steps);
-    ~Bouncer();
+    Bumper(Float3 position, float wall_radius, float stem_radius, float wall_height, float stem_height,
+           const PaintCan& top_color, const PaintCan& middle_color, const PaintCan& bottom_color,
+           float kicker_velocity, int steps);
+    ~Bumper();
 
     CadModel model(float animation_id) const;
     void collide(Ball& ball) const;
@@ -34,4 +34,4 @@ private:
     ConvexKicker m_kicker;
 };
 
-#endif // _BOUNCER_H_
+#endif // _BUMPER_H_
