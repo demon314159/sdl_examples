@@ -6,6 +6,8 @@
 #include "pi.h"
 #include <math.h>
 #include "look.h"
+#include "plane_shape.h"
+#include "open_box_shape.h"
 
 #define ANIMATION_0_SPEED 0.0
 #define ANIMATION_1_SPEED 0.0
@@ -53,6 +55,15 @@ void Toy::advance(int nanoseconds)
 
 void Toy::build_model()
 {
+    float x = 10.9;
+    float y = 0.3;
+    float z = 23.1;
+
+    CadModel top_playfield(PlaneShape(x, z), PaintCan(0.0, 1.0, 0.0), 0.0);
+    CadModel board(OpenBoxShape(x, y, z), PaintCan(0.0, 1.0, 0.0), 0.0);
+
+    m_model->add(top_playfield);
+    m_model->add(board, 0.0, -y / 2.0, 0.0);
 }
 
 Matrix4x4 Toy::get_animation_matrix(int i) const

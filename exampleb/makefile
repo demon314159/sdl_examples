@@ -13,6 +13,10 @@ HEADERS = view.h \
           bounding_box.h \
           look.h \
           shape.h \
+          plane_shape.h \
+          cube_shape.h \
+          open_box_shape.h \
+          cylinder_shape.h \
           navigate.h \
           cad_model.h \
           stl_file.h \
@@ -37,6 +41,10 @@ OBJECTS = main.obj \
           matrix3x3.obj \
           paint_can.obj \
           look.obj \
+          plane_shape.obj \
+          cube_shape.obj \
+          open_box_shape.obj \
+          cylinder_shape.obj \
           navigate.obj \
           cad_model.obj \
           stl_file.obj \
