@@ -1,3 +1,5 @@
+#version 330 core
+
 uniform mat4 mvp_matrix;
 uniform mat4 rot_matrix;
 uniform mat4 animation_0_matrix;
@@ -8,10 +10,14 @@ uniform mat4 animation_3_matrix;
 attribute vec3 a_position;
 attribute vec3 a_normal;
 attribute vec3 a_color;
+attribute vec2 a_texture_position;
 attribute float a_animation_id;
+attribute float a_texture_id;
 
 varying vec4 v_normal;
 varying vec4 v_color;
+varying vec2 v_texture_position;
+varying float v_texture_id;
 
 void main()
 {
@@ -50,4 +56,7 @@ void main()
     }
     // Pass color coordinate to fragment shader
     v_color = vec4(a_color, 1.0);
+    v_texture_position = a_texture_position;
+    v_texture_id = a_texture_id;
+
 }

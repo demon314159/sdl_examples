@@ -57,10 +57,12 @@ private:
     SDL_Renderer* m_renderer;
     SDL_GLContext m_context;
     GLuint m_program;
-    GLint m_pos_attr;
-    GLint m_col_attr;
-    GLint m_norm_attr;
-    GLint m_ani_attr;
+    GLint m_position_attr;
+    GLint m_color_attr;
+    GLint m_normal_attr;
+    GLint m_texture_position_attr;
+    GLint m_animation_id_attr;
+    GLint m_texture_id_attr;
     GLint m_mvp_matrix_uniform;
     GLint m_rot_matrix_uniform;
     GLint* m_animation_matrix_uniform;

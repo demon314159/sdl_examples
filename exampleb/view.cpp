@@ -21,10 +21,12 @@ View::View(SDL_Window* window)
     , m_renderer(nullptr)
     , m_context(nullptr)
     , m_program(0)
-    , m_pos_attr(0)
-    , m_col_attr(0)
-    , m_norm_attr(0)
-    , m_ani_attr(0)
+    , m_position_attr(0)
+    , m_color_attr(0)
+    , m_normal_attr(0)
+    , m_texture_position_attr(0)
+    , m_animation_id_attr(0)
+    , m_texture_id_attr(0)
     , m_mvp_matrix_uniform(0)
     , m_rot_matrix_uniform(0)
     , m_animation_matrix_uniform(nullptr)
@@ -180,24 +182,34 @@ void View::initialize()
         printf("Error ilinking program\n");
         exit(0);
     }
-    m_pos_attr = glGetAttribLocation(m_program, "a_position");
-    if (m_pos_attr == -1) {
+    m_position_attr = glGetAttribLocation(m_program, "a_position");
+    if (m_position_attr == -1) {
         printf("a_position is not a valid glsl variable\n");
         exit(0);
     }
-    m_col_attr = glGetAttribLocation(m_program, "a_color");
-    if (m_col_attr == -1) {
+    m_color_attr = glGetAttribLocation(m_program, "a_color");
+    if (m_color_attr == -1) {
         printf("a_color is not a valid glsl variable\n");
         exit(0);
     }
-    m_norm_attr = glGetAttribLocation(m_program, "a_normal");
-    if (m_norm_attr == -1) {
+    m_normal_attr = glGetAttribLocation(m_program, "a_normal");
+    if (m_normal_attr == -1) {
         printf("a_normal is not a valid glsl variable\n");
         exit(0);
     }
-    m_ani_attr = glGetAttribLocation(m_program, "a_animation_id");
-    if (m_ani_attr == -1) {
+    m_texture_position_attr = glGetAttribLocation(m_program, "a_texture_position");
+    if (m_texture_position_attr == -1) {
+        printf("a_texture_position is not a valid glsl variable\n");
+        exit(0);
+    }
+    m_animation_id_attr = glGetAttribLocation(m_program, "a_animation_id");
+    if (m_animation_id_attr == -1) {
         printf("a_animation_id is not a valid glsl variable\n");
+        exit(0);
+    }
+    m_texture_id_attr = glGetAttribLocation(m_program, "a_texture_id");
+    if (m_texture_id_attr == -1) {
+        printf("a_texture_id is not a valid glsl variable\n");
         exit(0);
     }
     m_mvp_matrix_uniform = glGetUniformLocation(m_program, "mvp_matrix");
@@ -320,19 +332,26 @@ void View::render()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glUseProgram(m_program);
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-    glEnableVertexAttribArray(m_pos_attr);
-    glEnableVertexAttribArray(m_col_attr);
-    glEnableVertexAttribArray(m_norm_attr);
-    glEnableVertexAttribArray(m_ani_attr);
+    glEnableVertexAttribArray(m_position_attr);
+    glEnableVertexAttribArray(m_color_attr);
+    glEnableVertexAttribArray(m_normal_attr);
+    glEnableVertexAttribArray(m_texture_position_attr);
+    glEnableVertexAttribArray(m_animation_id_attr);
+    glEnableVertexAttribArray(m_texture_id_attr);
     int stride = sizeof(VertexData);
     char* offset = 0;
-    glVertexAttribPointer(m_pos_attr, 3, GL_FLOAT, GL_FALSE, stride, (void*) offset);
+    glVertexAttribPointer(m_position_attr, 3, GL_FLOAT, GL_FALSE, stride, (void*) offset);
     offset += sizeof(Float3);
-    glVertexAttribPointer(m_norm_attr, 3, GL_FLOAT, GL_FALSE, stride, (void*) offset);
+    glVertexAttribPointer(m_normal_attr, 3, GL_FLOAT, GL_FALSE, stride, (void*) offset);
     offset += sizeof(Float3);
-    glVertexAttribPointer(m_col_attr, 3, GL_FLOAT, GL_FALSE, stride, (void*) offset);
+    glVertexAttribPointer(m_color_attr, 3, GL_FLOAT, GL_FALSE, stride, (void*) offset);
     offset += sizeof(Float3);
-    glVertexAttribPointer(m_ani_attr, 1, GL_FLOAT, GL_FALSE, stride, (void*) offset);
+    glVertexAttribPointer(m_texture_position_attr, 2, GL_FLOAT, GL_FALSE, stride, (void*) offset);
+    offset += sizeof(Float2);
+    glVertexAttribPointer(m_animation_id_attr, 1, GL_FLOAT, GL_FALSE, stride, (void*) offset);
+    offset += sizeof(float);
+    glVertexAttribPointer(m_texture_id_attr, 1, GL_FLOAT, GL_FALSE, stride, (void*) offset);
+
     glUniformMatrix4fv(m_mvp_matrix_uniform, 1, GL_TRUE, m_mvp_matrix.data());
     glUniformMatrix4fv(m_rot_matrix_uniform, 1, GL_TRUE, m_rot_matrix.data());
     int n = m_toy->animation_matrices();
@@ -341,10 +360,12 @@ void View::render()
     }
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glDrawArrays(GL_TRIANGLES, 0, m_facet_count);
-    glDisableVertexAttribArray(m_ani_attr);
-    glDisableVertexAttribArray(m_norm_attr);
-    glDisableVertexAttribArray(m_col_attr);
-    glDisableVertexAttribArray(m_pos_attr);
+    glDisableVertexAttribArray(m_texture_id_attr);
+    glDisableVertexAttribArray(m_animation_id_attr);
+    glDisableVertexAttribArray(m_texture_position_attr);
+    glDisableVertexAttribArray(m_normal_attr);
+    glDisableVertexAttribArray(m_color_attr);
+    glDisableVertexAttribArray(m_position_attr);
     glUseProgram(0);
     SDL_GL_SwapWindow(m_window);
     glFinish();
