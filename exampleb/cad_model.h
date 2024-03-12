@@ -39,6 +39,10 @@ public:
     Float3 facet_v3(int facet_ix) const;
     Float3 facet_color(int facet_ix) const;
     Float3 facet_normal(int facet_ix) const;
+    float facet_texture_id(int facet_ix) const;
+    Float2 facet_texture_v1(int facet_ix) const;
+    Float2 facet_texture_v2(int facet_ix) const;
+    Float2 facet_texture_v3(int facet_ix) const;
     BoundingBox bounding_box() const;
 
 private:

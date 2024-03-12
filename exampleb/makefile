@@ -41,6 +41,7 @@ OBJECTS = main.obj \
           matrix3x3.obj \
           paint_can.obj \
           look.obj \
+          shape.obj \
           plane_shape.obj \
           cube_shape.obj \
           open_box_shape.obj \

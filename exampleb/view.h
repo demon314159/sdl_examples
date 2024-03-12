@@ -68,6 +68,7 @@ private:
     GLint* m_animation_matrix_uniform;
     unsigned int m_vao;
     unsigned int m_vbo;
+    unsigned int m_texture;
     int m_frame;
     int m_max_vertex_count;
     int m_facet_count;
@@ -92,6 +93,8 @@ private:
     bool add_shader_from_source_file(GLuint shader, const char* name);
     void print_program_log(GLuint program);
     void print_shader_log(GLuint shader);
+
+    void generate_textures();
 };
 
 #endif // _VIEW_H_

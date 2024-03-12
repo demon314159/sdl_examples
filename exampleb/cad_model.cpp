@@ -80,6 +80,17 @@ CadModel::CadModel(const Shape& s, const PaintCan& paint_can, float animation_id
             m_facet[i].v2 = s.facet(i).v2;
             m_facet[i].v3 = s.facet(i).v3;
             m_facet[i].color = paint_can.ambient_color();
+            if (s.uses_texture()) {
+                m_facet[i].texture_id = s.facet(i).texture_id;
+                m_facet[i].texture_v1 = s.facet(i).texture_v1;
+                m_facet[i].texture_v2 = s.facet(i).texture_v2;
+                m_facet[i].texture_v3 = s.facet(i).texture_v3;
+            } else {
+                m_facet[i].texture_id = 0.0;
+                m_facet[i].texture_v1 = {0.0, 0.0};
+                m_facet[i].texture_v2 = {0.0, 0.0};
+                m_facet[i].texture_v3 = {0.0, 0.0};
+            }
         }
     }
 }
@@ -100,6 +111,17 @@ CadModel::CadModel(const Shape& s)
             m_facet[i].v2 = s.facet(i).v2;
             m_facet[i].v3 = s.facet(i).v3;
             m_facet[i].color = s.facet(i).color;
+            if (s.uses_texture()) {
+                m_facet[i].texture_id = s.facet(i).texture_id;
+                m_facet[i].texture_v1 = s.facet(i).texture_v1;
+                m_facet[i].texture_v2 = s.facet(i).texture_v2;
+                m_facet[i].texture_v3 = s.facet(i).texture_v3;
+            } else {
+                m_facet[i].texture_id = 0.0;
+                m_facet[i].texture_v1 = {0.0, 0.0};
+                m_facet[i].texture_v2 = {0.0, 0.0};
+                m_facet[i].texture_v3 = {0.0, 0.0};
+            }
         }
     }
 }
@@ -150,6 +172,17 @@ void CadModel::add(const Shape& s, const PaintCan& paint_can, float animation_id
             m_facet[m_facet_count + i].v2 = s.facet(i).v2;
             m_facet[m_facet_count + i].v3 = s.facet(i).v3;
             m_facet[m_facet_count + i].color = paint_can.ambient_color();
+            if (s.uses_texture()) {
+                m_facet[m_facet_count + i].texture_id = s.facet(i).texture_id;
+                m_facet[m_facet_count + i].texture_v1 = s.facet(i).texture_v1;
+                m_facet[m_facet_count + i].texture_v2 = s.facet(i).texture_v2;
+                m_facet[m_facet_count + i].texture_v3 = s.facet(i).texture_v3;
+            } else {
+                m_facet[m_facet_count + i].texture_id = 0.0;
+                m_facet[m_facet_count + i].texture_v1 = {0.0, 0.0};
+                m_facet[m_facet_count + i].texture_v2 = {0.0, 0.0};
+                m_facet[m_facet_count + i].texture_v3 = {0.0, 0.0};
+            }
         }
         m_facet_count += added_facet_count;
         delete [] tfacet;
@@ -228,7 +261,7 @@ Float3 CadModel::facet_color(int facet_ix) const
     if (facet_ix < m_facet_count)
         return m_facet[facet_ix].color;
     else
-        return Float3{.0, 0.0, 0.0};
+        return {0.0, 0.0, 0.0};
 }
 
 Float3 CadModel::facet_normal(int facet_ix) const
@@ -249,6 +282,38 @@ Float3 CadModel::facet_normal(int facet_ix) const
     xp.v2 = vb.v1 * va.v3 - va.v1 * vb.v3;
     xp.v3 = va.v1 * vb.v2 - vb.v1 * va.v2;
     return xp;
+}
+
+float CadModel::facet_texture_id(int facet_ix) const
+{
+    if (facet_ix < m_facet_count)
+        return m_facet[facet_ix].texture_id;
+    else
+        return 0.0;
+}
+
+Float2 CadModel::facet_texture_v1(int facet_ix) const
+{
+    if (facet_ix < m_facet_count)
+        return m_facet[facet_ix].texture_v1;
+    else
+        return {0.0, 0.0};
+}
+
+Float2 CadModel::facet_texture_v2(int facet_ix) const
+{
+    if (facet_ix < m_facet_count)
+        return m_facet[facet_ix].texture_v2;
+    else
+        return {0.0, 0.0};
+}
+
+Float2 CadModel::facet_texture_v3(int facet_ix) const
+{
+    if (facet_ix < m_facet_count)
+        return m_facet[facet_ix].texture_v3;
+    else
+        return {0.0, 0.0};
 }
 
 Float3 CadModel::translate(const Float3& v, const Float3& offset) const

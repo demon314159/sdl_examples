@@ -14,6 +14,9 @@
 #include <algorithm>
 #include <stdio.h>
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
 #define notVERBOSE
 
 View::View(SDL_Window* window)
@@ -32,6 +35,7 @@ View::View(SDL_Window* window)
     , m_animation_matrix_uniform(nullptr)
     , m_vao(0)
     , m_vbo(0)
+    , m_texture(0)
     , m_frame(0)
     , m_max_vertex_count(1024 * 1024)
     , m_facet_count(0)
@@ -140,6 +144,30 @@ bool View::add_shader_from_source_file(GLuint shader, const char* name)
     return true;
 }
 
+void View::generate_textures()
+{
+    glGenTextures(1, &m_texture);
+    glBindTexture(GL_TEXTURE_2D, m_texture);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    int width, height, channels;
+    unsigned char *data = stbi_load("playfield.png", &width, &height, &channels, 0);
+    printf("Image loaded width %d, height %d, channels %d\n", width, height, channels);
+    if (data) {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+        stbi_image_free(data);
+        printf("texture width %d, height %d, channels %d\n", width, height, channels);
+    } else {
+
+        printf("failed to load texture\n");
+    }
+}
+
+
 void View::initialize()
 {
 #ifdef VERBOSE
@@ -147,6 +175,11 @@ void View::initialize()
 #endif
     const char* vshader_name = "vshader.glsl";
     const char* fshader_name = "fshader.glsl";
+
+
+
+
+
     GLuint vshader = 0;
     GLuint fshader = 0;
     GLenum glew_error = glewInit();
@@ -222,6 +255,7 @@ void View::initialize()
         printf("rot_matrix is not a valid glsl variable\n");
         exit(0);
     }
+    generate_textures();
     int n = m_toy->animation_matrices();
     if (n > 0) {
         m_animation_matrix_uniform = new GLint[n];
@@ -257,24 +291,35 @@ void View::copy_facets()
 
 void View::sub_copy_facets(CadModel* model, VertexData* vertices, int& vix)
 {
-    float an_id;
+    float an_id, tx_id;
     Float3 vp, vc, vn;
+    Float2 tp;
     for (int i = 0; i < model->facets(); i++) {
         an_id = model->facet_animation_id(i);
+        tx_id = model->facet_texture_id(i);
         vc = model->facet_color(i);
         vn = model->facet_normal(i);
         vp = model->facet_v1(i);
+        tp = model->facet_texture_v1(i);
         vertices[vix].animation_id = an_id;
+        vertices[vix].texture_id = tx_id;
+        vertices[vix].texture_position = tp;
         vertices[vix].position = vp;
         vertices[vix].normal = vn;
         vertices[vix++].color = vc;
         vp = model->facet_v2(i);
+        tp = model->facet_texture_v2(i);
         vertices[vix].animation_id = an_id;
+        vertices[vix].texture_id = tx_id;
+        vertices[vix].texture_position = tp;
         vertices[vix].position = vp;
         vertices[vix].normal = vn;
         vertices[vix++].color = vc;
         vp = model->facet_v3(i);
+        tp = model->facet_texture_v3(i);
         vertices[vix].animation_id = an_id;
+        vertices[vix].texture_id = tx_id;
+        vertices[vix].texture_position = tp;
         vertices[vix].position = vp;
         vertices[vix].normal = vn;
         vertices[vix++].color = vc;
