@@ -55,9 +55,9 @@ void Toy::advance(int nanoseconds)
 
 void Toy::build_model()
 {
-    float x = 10.9;
-    float y = 0.3;
-    float z = 23.1;
+    float x = 317.55;
+    float y = 8.75;
+    float z = 652.75;
 
     CadModel top_playfield(PlaneShape(x, z, 1.0), PaintCan(0.0, 1.0, 0.0), 0.0);
     CadModel board(OpenBoxShape(x, y, z), PaintCan(0.0, 1.0, 0.0), 0.0);
