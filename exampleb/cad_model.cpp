@@ -36,6 +36,10 @@ CadModel::CadModel(const CadModel& cad_model, float x, float y, float z)
             m_facet[i].v2 = translate(cad_model.facet_v2(i), offset);
             m_facet[i].v3 = translate(cad_model.facet_v3(i), offset);
             m_facet[i].color = cad_model.facet_color(i);
+            m_facet[i].texture_id = cad_model.facet_texture_id(i);
+            m_facet[i].texture_v1 = cad_model.facet_texture_v1(i);
+            m_facet[i].texture_v2 = cad_model.facet_texture_v2(i);
+            m_facet[i].texture_v3 = cad_model.facet_texture_v3(i);
         }
     }
 }
@@ -58,6 +62,10 @@ CadModel::CadModel(const StlFile& stl_file, const PaintCan& paint_can, float ani
             m_facet[i].v2 = stl_file.facet_v2(i);
             m_facet[i].v3 = stl_file.facet_v3(i);
             m_facet[i].color = paint_can.ambient_color();
+            m_facet[i].texture_id = 0.0;
+            m_facet[i].texture_v1 = {0.0, 0.0};
+            m_facet[i].texture_v2 = {0.0, 0.0};
+            m_facet[i].texture_v3 = {0.0, 0.0};
         }
     }
 }
@@ -81,6 +89,7 @@ CadModel::CadModel(const Shape& s, const PaintCan& paint_can, float animation_id
             m_facet[i].v3 = s.facet(i).v3;
             m_facet[i].color = paint_can.ambient_color();
             if (s.uses_texture()) {
+                printf("uses texture %f\n", s.facet(i).texture_id);
                 m_facet[i].texture_id = s.facet(i).texture_id;
                 m_facet[i].texture_v1 = s.facet(i).texture_v1;
                 m_facet[i].texture_v2 = s.facet(i).texture_v2;
@@ -112,6 +121,7 @@ CadModel::CadModel(const Shape& s)
             m_facet[i].v3 = s.facet(i).v3;
             m_facet[i].color = s.facet(i).color;
             if (s.uses_texture()) {
+                printf("uses texture %f\n", s.facet(i).texture_id);
                 m_facet[i].texture_id = s.facet(i).texture_id;
                 m_facet[i].texture_v1 = s.facet(i).texture_v1;
                 m_facet[i].texture_v2 = s.facet(i).texture_v2;
@@ -146,6 +156,10 @@ void CadModel::add(const StlFile& stl_file, const PaintCan& paint_can, float ani
             m_facet[m_facet_count + i].v2 = stl_file.facet_v2(i);
             m_facet[m_facet_count + i].v3 = stl_file.facet_v3(i);
             m_facet[m_facet_count + i].color = paint_can.ambient_color();
+            m_facet[m_facet_count + i].texture_id = 0.0;
+            m_facet[m_facet_count + i].texture_v1 = {0.0, 0.0};
+            m_facet[m_facet_count + i].texture_v2 = {0.0, 0.0};
+            m_facet[m_facet_count + i].texture_v3 = {0.0, 0.0};
         }
         m_facet_count += added_facet_count;
         delete [] tfacet;
@@ -173,6 +187,7 @@ void CadModel::add(const Shape& s, const PaintCan& paint_can, float animation_id
             m_facet[m_facet_count + i].v3 = s.facet(i).v3;
             m_facet[m_facet_count + i].color = paint_can.ambient_color();
             if (s.uses_texture()) {
+                printf("uses texture %f\n", s.facet(i).texture_id);
                 m_facet[m_facet_count + i].texture_id = s.facet(i).texture_id;
                 m_facet[m_facet_count + i].texture_v1 = s.facet(i).texture_v1;
                 m_facet[m_facet_count + i].texture_v2 = s.facet(i).texture_v2;
@@ -208,6 +223,10 @@ void CadModel::add(const CadModel& cad_model, float x, float y, float z)
             m_facet[m_facet_count + i].v2 = translate(cad_model.facet_v2(i), offset);
             m_facet[m_facet_count + i].v3 = translate(cad_model.facet_v3(i), offset);
             m_facet[m_facet_count + i].color = cad_model.facet_color(i);
+            m_facet[m_facet_count + i].texture_id = cad_model.facet_texture_id(i);
+            m_facet[m_facet_count + i].texture_v1 = cad_model.facet_texture_v1(i);
+            m_facet[m_facet_count + i].texture_v2 = cad_model.facet_texture_v2(i);
+            m_facet[m_facet_count + i].texture_v3 = cad_model.facet_texture_v3(i);
         }
         m_facet_count += added_facet_count;
         delete [] tfacet;

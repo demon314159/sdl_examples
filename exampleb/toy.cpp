@@ -59,7 +59,7 @@ void Toy::build_model()
     float y = 0.3;
     float z = 23.1;
 
-    CadModel top_playfield(PlaneShape(x, z), PaintCan(0.0, 1.0, 0.0), 0.0);
+    CadModel top_playfield(PlaneShape(x, z, 1.0), PaintCan(0.0, 1.0, 0.0), 0.0);
     CadModel board(OpenBoxShape(x, y, z), PaintCan(0.0, 1.0, 0.0), 0.0);
 
     m_model->add(top_playfield);

@@ -255,6 +255,11 @@ void View::initialize()
         printf("rot_matrix is not a valid glsl variable\n");
         exit(0);
     }
+    m_texture1_uniform = glGetUniformLocation(m_program, "texture1");
+    if (m_texture1_uniform == -1) {
+        printf("texture1 is not a valid glsl variable\n");
+        exit(0);
+    }
     generate_textures();
     int n = m_toy->animation_matrices();
     if (n > 0) {
@@ -297,6 +302,9 @@ void View::sub_copy_facets(CadModel* model, VertexData* vertices, int& vix)
     for (int i = 0; i < model->facets(); i++) {
         an_id = model->facet_animation_id(i);
         tx_id = model->facet_texture_id(i);
+        if (tx_id > 0.0) {
+            printf("View: tx_id = %f\n", tx_id);
+        }
         vc = model->facet_color(i);
         vn = model->facet_normal(i);
         vp = model->facet_v1(i);
@@ -403,6 +411,10 @@ void View::render()
     for (int i = 0; i < n; i++) {
         glUniformMatrix4fv(m_animation_matrix_uniform[i], 1, GL_TRUE, m_toy->get_animation_matrix(i).data());
     }
+
+    glUniform1i(m_texture1_uniform, 0);
+
+
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glDrawArrays(GL_TRIANGLES, 0, m_facet_count);
     glDisableVertexAttribArray(m_texture_id_attr);
