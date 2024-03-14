@@ -26,6 +26,7 @@ HEADERS = view.h \
           quaternion.h \
           toy.h \
           \
+          lamp.h \
           \
           \
           \
@@ -54,6 +55,7 @@ OBJECTS = main.obj \
           quaternion.obj \
           toy.obj \
           \
+          lamp.obj \
           \
           \
           \

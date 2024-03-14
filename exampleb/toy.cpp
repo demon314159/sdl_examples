@@ -8,6 +8,7 @@
 #include "look.h"
 #include "plane_shape.h"
 #include "open_box_shape.h"
+#include "cube_shape.h"
 
 #define ANIMATION_0_SPEED 0.0
 #define ANIMATION_1_SPEED 0.0
@@ -20,7 +21,8 @@
 #define ANIMATION_ID_3 5.0
 
 Toy::Toy()
-    : m_model(new CadModel())
+    : m_lamp28(LAMP28_ID, LAMP28_POSITION, LAMP_SIZE, LAMP28_ON_COLOR, LAMP28_OFF_COLOR)
+    , m_model(new CadModel())
     , m_animation_0_angle(0.0)
     , m_animation_1_angle(0.0)
     , m_animation_2_angle(0.0)
@@ -55,19 +57,17 @@ void Toy::advance(int nanoseconds)
 
 void Toy::build_model()
 {
-    float x = 317.5;
-    float y = 8.75;
-    float z = 557.4;
 
     float k = 1.0;
 
-    CadModel mid_playfield(PlaneShape(x, z, 0.0), PaintCan(0.0, k, 0.0), 1.0);
-    CadModel top_playfield(PlaneShape(x, z, 1.0), PaintCan(0.0, 1.0, 0.0), 99.0);
-    CadModel board(OpenBoxShape(x, y, z), PaintCan(0.0, 1.0, 0.0), 0.0);
+    CadModel cube(CubeShape(8.0, 8.0, 8.0), PaintCan(1.0, 0.0, 0.0), 0.0);
+    CadModel top_playfield(PlaneShape(PLAYFIELD_X, PLAYFIELD_Z, 1.0), PaintCan(0.0, 1.0, 0.0), 99.0);
+    CadModel board(OpenBoxShape(PLAYFIELD_X, PLAYFIELD_Y, PLAYFIELD_Z), PaintCan(0.0, 1.0, 0.0), 0.0);
 
-    m_model->add(mid_playfield, 0.0, -4.0, 0.0);
-    m_model->add(top_playfield);
-    m_model->add(board, 0.0, -y / 2.0, 0.0);
+    m_model->add(cube, 0.0, 0.0, 0.0);
+    m_model->add(m_lamp28.model(), 0.0, 0.0, 0.0);
+    m_model->add(top_playfield, PLAYFIELD_X / 2.0, 0.0, PLAYFIELD_Z / 2.0);
+    m_model->add(board, PLAYFIELD_X / 2.0, -PLAYFIELD_Y / 2.0, PLAYFIELD_Z / 2.0);
 }
 
 Matrix4x4 Toy::get_animation_matrix(int i) const

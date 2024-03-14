@@ -11,6 +11,7 @@ class PaintCan
 {
 public:
     PaintCan(float r, float g, float b, float diffuse = 1.0, float specular = 0.5, float shiny = 0.5);
+    PaintCan(Float3 rgb, float diffuse = 1.0, float specular = 0.5, float shiny = 0.5);
     ~PaintCan();
 
     Float3 ambient_color() const;

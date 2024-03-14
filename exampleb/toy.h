@@ -7,6 +7,7 @@
 
 #include "cad_model.h"
 #include "matrix4x4.h"
+#include "lamp.h"
 
 class Toy
 {
@@ -29,6 +30,7 @@ public:
     void advance(int nanoseconds);
 
 private:
+    Lamp m_lamp28;
     CadModel* m_model;
     float m_animation_0_angle;
     float m_animation_1_angle;
