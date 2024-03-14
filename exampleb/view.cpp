@@ -154,10 +154,19 @@ void View::generate_textures()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     int width, height, channels;
+    width = 0;
+    height = 0;
+    channels = 0;
+
     unsigned char *data = stbi_load("playfield.png", &width, &height, &channels, 0);
+//    unsigned char *data = stbi_load("zzz.png", &width, &height, &channels, 0);
+
+
+
+
     printf("Image loaded width %d, height %d, channels %d\n", width, height, channels);
     if (data) {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
         stbi_image_free(data);
         printf("texture width %d, height %d, channels %d\n", width, height, channels);

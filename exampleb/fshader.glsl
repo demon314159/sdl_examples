@@ -18,7 +18,12 @@ void main()
         billy.a = v_color.a;
         gl_FragColor = billy;
     } else {
-        gl_FragColor = texture(texture1, v_texture_position);
+        c = 0.75;
+        billy = texture(texture1, v_texture_position);
+        billy.r = c * billy.r;
+        billy.g = c * billy.g;
+        billy.b = c * billy.b;
+        gl_FragColor = billy;
     }
 }
 

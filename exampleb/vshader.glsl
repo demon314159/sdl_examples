@@ -55,7 +55,11 @@ void main()
         }
     }
     // Pass color coordinate to fragment shader
-    v_color = vec4(a_color, 1.0);
+    if (a_animation_id == 99.0) {
+        v_color = vec4(a_color, 0.0);
+    } else {
+        v_color = vec4(a_color, 1.0);
+    }
     v_texture_position = a_texture_position;
     v_texture_id = a_texture_id;
 
