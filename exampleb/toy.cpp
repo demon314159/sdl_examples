@@ -8,7 +8,6 @@
 #include "look.h"
 #include "plane_shape.h"
 #include "open_box_shape.h"
-#include "cube_shape.h"
 
 #define ANIMATION_0_SPEED 0.0
 #define ANIMATION_1_SPEED 0.0
@@ -60,11 +59,9 @@ void Toy::build_model()
 
     float k = 1.0;
 
-    CadModel cube(CubeShape(8.0, 8.0, 8.0), PaintCan(1.0, 0.0, 0.0), 0.0);
     CadModel top_playfield(PlaneShape(PLAYFIELD_X, PLAYFIELD_Z, 1.0), PaintCan(0.0, 1.0, 0.0), 99.0);
     CadModel board(OpenBoxShape(PLAYFIELD_X, PLAYFIELD_Y, PLAYFIELD_Z), PaintCan(0.0, 1.0, 0.0), 0.0);
 
-    m_model->add(cube, 0.0, 0.0, 0.0);
     m_model->add(m_lamp28.model(), 0.0, 0.0, 0.0);
     m_model->add(top_playfield, PLAYFIELD_X / 2.0, 0.0, PLAYFIELD_Z / 2.0);
     m_model->add(board, PLAYFIELD_X / 2.0, -PLAYFIELD_Y / 2.0, PLAYFIELD_Z / 2.0);
