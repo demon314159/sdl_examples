@@ -11,9 +11,9 @@
 #define PLAYFIELD_Y  4.0f
 #define PLAYFIELD_Z  557.50f
 
-#define LAMP_SIZE {25.0, 25.0}
+#define LAMP_SIZE {30.0, 30.0}
 #define LAMP28_ID  128.0f
-#define LAMP28_POSITION {145.0, -PLAYFIELD_Y / 2.0, 308.0}
+#define LAMP28_POSITION {145.0, -PLAYFIELD_Y / 3.0, 308.0}
 #define LAMP28_ON_COLOR {1.0, 1.0, 0.0}
 #define LAMP28_OFF_COLOR {0.5, 0.5, 0.5}
 
