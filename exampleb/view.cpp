@@ -81,14 +81,14 @@ void View::position_camera()
 {
     BoundingBox bb = m_toy->get_model()->bounding_box();
 
-    bb.vmin.v1 -= 2.0;
-    bb.vmin.v3 -= 2.0;
-    bb.vmax.v1 += 2.0;
-    bb.vmax.v3 += 2.0;
+//    bb.vmin.v1 -= 2.0;
+//    bb.vmin.v3 -= 2.0;
+//    bb.vmax.v1 += 2.0;
+//    bb.vmax.v3 += 2.0;
 
     m_radius = fmax(fabs(bb.vmax.v1 - bb.vmin.v1) / 2.0, fabs(bb.vmax.v3 - bb.vmin.v3) / 2.0);
     m_radius = fmax(m_radius, (bb.vmax.v2 - bb.vmin.v2) / (2.0));
-    m_radius = fmax(m_radius, 2.0);
+    m_radius = fmax(m_radius, 0.1);
     m_radius *= sqrt(2.0);
     m_center.v1 = (bb.vmin.v1 + bb.vmax.v1) / 2.0;
     m_center.v2 = (bb.vmin.v2 + bb.vmax.v2) / 2.0;

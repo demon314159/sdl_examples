@@ -54,6 +54,7 @@ Toy::Toy()
     m_lamp.set(LAMP28_IX, true);
     m_lamp.set(LAMP21_IX, true);
     m_lamp.set(LAMP25_IX, true);
+    m_lamp.set(LAMP26_IX, true);
     m_lamp.set(LAMP15_IX, true);
     m_lamp.set(LAMP19_IX, true);
     m_lamp.set(LAMP4_IX, true);
