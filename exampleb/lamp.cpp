@@ -52,7 +52,14 @@ CadModel Lamp::model() const
 
 void Lamp::set(int ix, bool v)
 {
-    if (ix < MAX_LAMPS) {
+    if (ix < m_lamps) {
         m_state[ix] = v;
+    }
+}
+
+void Lamp::toggle(int ix)
+{
+    if (ix < m_lamps) {
+        m_state[ix] = !m_state[ix];
     }
 }

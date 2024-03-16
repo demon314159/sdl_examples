@@ -34,6 +34,7 @@ public:
 private:
     Lamp m_lamp;
     CadModel* m_model;
+    double lamp_count;
     float m_animation_0_angle;
     float m_animation_1_angle;
     float m_animation_2_angle;

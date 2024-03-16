@@ -23,6 +23,7 @@ public:
     CadModel model() const;
     Float3 color(int ix) const;
     void set(int ix, bool v);
+    void toggle(int ix);
 
 private:
     int m_lamps;

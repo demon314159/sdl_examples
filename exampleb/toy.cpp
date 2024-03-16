@@ -22,6 +22,7 @@
 Toy::Toy()
     : m_lamp()
     , m_model(new CadModel())
+    , lamp_count(0.0)
     , m_animation_0_angle(0.0)
     , m_animation_1_angle(0.0)
     , m_animation_2_angle(0.0)
@@ -85,6 +86,13 @@ void Toy::advance(int nanoseconds)
     m_animation_1_angle += (ANIMATION_1_SPEED * seconds);
     m_animation_2_angle += (ANIMATION_2_SPEED * seconds);
     m_animation_3_angle += (ANIMATION_3_SPEED * seconds);
+    lamp_count += nanoseconds;
+    if (lamp_count > 500000000.0) {
+        lamp_count = 0.0;
+        for (int i = 0; i < m_lamp.lamps(); i++) {
+            m_lamp.toggle(i);
+        }
+    }
 }
 
 const Lamp* Toy::get_lamp() const
