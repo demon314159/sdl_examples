@@ -18,7 +18,7 @@ void main()
         billy.a = v_color.a;
         gl_FragColor = billy;
     } else {
-        c = 0.6;
+        c = 0.7;
         billy = texture(texture1, v_texture_position);
         billy.r = c * billy.r;
         billy.g = c * billy.g;

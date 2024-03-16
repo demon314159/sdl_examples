@@ -26,7 +26,15 @@ HEADERS = view.h \
           quaternion.h \
           toy.h \
           \
+          sphere_shape.h \
+          flipper_shape.h \
+          state.h \
           lamp.h \
+          ball.h \
+          straight_reflector.h \
+          convex_reflector.h \
+          flipper_model.h \
+          flipper.h \
           \
           \
           \
@@ -55,7 +63,15 @@ OBJECTS = main.obj \
           quaternion.obj \
           toy.obj \
           \
+          sphere_shape.obj \
+          flipper_shape.obj \
+          state.obj \
           lamp.obj \
+          ball.obj \
+          straight_reflector.obj \
+          convex_reflector.obj \
+          flipper_model.obj \
+          flipper.obj \
           \
           \
           \
