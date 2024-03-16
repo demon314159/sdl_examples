@@ -67,6 +67,7 @@ private:
     GLint m_rot_matrix_uniform;
     GLint* m_animation_matrix_uniform;
 
+    GLint m_lamp_uniform;
     GLint m_texture1_uniform;
 
     unsigned int m_vao;

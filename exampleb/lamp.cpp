@@ -5,13 +5,8 @@
 #include "lamp.h"
 #include "plane_shape.h"
 
-Lamp::Lamp(float lamp_id, Float3 position, Float2 size, const PaintCan& on_color, const PaintCan& off_color)
-    : m_state(false)
-    , m_lamp_id(lamp_id)
-    , m_position(position)
-    , m_size(size)
-    , m_on_color(on_color)
-    , m_off_color(off_color)
+Lamp::Lamp()
+    : m_lamps(0)
 {
 }
 
@@ -19,12 +14,45 @@ Lamp::~Lamp()
 {
 }
 
+int Lamp::lamps() const
+{
+    return m_lamps;
+}
+
+void Lamp::add(Float3 position, Float2 size, const PaintCan& on_color, const PaintCan& off_color)
+{
+    if (m_lamps < MAX_LAMPS) {
+        m_state[m_lamps] = false;
+        m_position[m_lamps] = position;
+        m_size[m_lamps] = size;
+        m_on_color[m_lamps] = on_color.ambient_color();
+        m_off_color[m_lamps] = off_color.ambient_color();
+    }
+    ++m_lamps;
+}
+
+Float3 Lamp::color(int ix) const
+{
+    if (ix >= MAX_LAMPS) {
+        return {0.0, 0.0, 0.0};
+    } else {
+        return m_state[ix] ? m_on_color[ix] : m_off_color[ix];
+    }
+}
+
 CadModel Lamp::model() const
 {
     CadModel cm;
-    CadModel lamp(PlaneShape(m_size.v1, m_size.v2), m_off_color, m_lamp_id);
-    cm.add(lamp, m_position.v1, m_position.v2, m_position.v3);
+    for (int i = 0; i < m_lamps; i++) {
+        CadModel lamp(PlaneShape(m_size[i].v1, m_size[i].v2), m_off_color[i], ((float) i + 100));
+        cm.add(lamp, m_position[i].v1, m_position[i].v2, m_position[i].v3);
+    }
     return cm;
 }
 
-
+void Lamp::set(int ix, bool v)
+{
+    if (ix < MAX_LAMPS) {
+        m_state[ix] = v;
+    }
+}

@@ -1,9 +1,9 @@
 #version 330 core
 
-varying vec4 v_normal;
-varying vec4 v_color;
-varying vec2 v_texture_position;
-varying float v_texture_id;
+in vec4 v_normal;
+in vec4 v_color;
+in vec2 v_texture_position;
+in float v_texture_id;
 
 uniform sampler2D texture1;
 
@@ -18,7 +18,7 @@ void main()
         billy.a = v_color.a;
         gl_FragColor = billy;
     } else {
-        c = 0.75;
+        c = 0.6;
         billy = texture(texture1, v_texture_position);
         billy.r = c * billy.r;
         billy.g = c * billy.g;

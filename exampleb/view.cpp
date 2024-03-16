@@ -3,6 +3,7 @@
 //
 
 #include "view.h"
+#include "lamp.h"
 #include "matrix4x4.h"
 #include "matrix3x3.h"
 #include "paint_can.h"
@@ -33,6 +34,8 @@ View::View(SDL_Window* window)
     , m_mvp_matrix_uniform(0)
     , m_rot_matrix_uniform(0)
     , m_animation_matrix_uniform(nullptr)
+    , m_lamp_uniform(0)
+    , m_texture1_uniform(0)
     , m_vao(0)
     , m_vbo(0)
     , m_texture(0)
@@ -264,6 +267,11 @@ void View::initialize()
         printf("rot_matrix is not a valid glsl variable\n");
         exit(0);
     }
+    m_lamp_uniform = glGetUniformLocation(m_program, "lamp_color");
+    if (m_lamp_uniform == -1) {
+        printf("lamp_color is not a valid glsl variable\n");
+        exit(0);
+    }
     m_texture1_uniform = glGetUniformLocation(m_program, "texture1");
     if (m_texture1_uniform == -1) {
         printf("texture1 is not a valid glsl variable\n");
@@ -418,8 +426,23 @@ void View::render()
         glUniformMatrix4fv(m_animation_matrix_uniform[i], 1, GL_TRUE, m_toy->get_animation_matrix(i).data());
     }
 
-    glUniform1i(m_texture1_uniform, 0);
 
+
+
+    const Lamp* lamp = m_toy->get_lamp();
+    n = lamp->lamps();
+    if (n > 0) {
+        GLfloat* buf = new GLfloat[n * 3];
+        for (int i = 0; i < n; i++) {
+            Float3 lc = lamp->color(i);
+            buf[3*i] = lc.v1;
+            buf[3*i + 1] = lc.v2;
+            buf[3*i + 2] = lc.v3;
+        }
+        glUniform3fv(m_lamp_uniform,  n, buf);
+        delete [] buf;
+    }
+    glUniform1i(m_texture1_uniform, 0);
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glDrawArrays(GL_TRIANGLES, 0, m_facet_count);
