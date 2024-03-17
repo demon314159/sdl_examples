@@ -80,10 +80,6 @@ int Toy::animation_matrices() const
 void Toy::advance(int nanoseconds)
 {
     float seconds = 1.0e-9 * (float) nanoseconds;
-    m_animation_0_angle += (ANIMATION_0_SPEED * seconds);
-    m_animation_1_angle += (ANIMATION_1_SPEED * seconds);
-    m_animation_2_angle += (ANIMATION_2_SPEED * seconds);
-    m_animation_3_angle += (ANIMATION_3_SPEED * seconds);
     m_flipper1.advance(seconds);
     m_flipper2.advance(seconds);
     m_ball.advance(seconds);

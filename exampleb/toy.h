@@ -8,6 +8,7 @@
 #include "cad_model.h"
 #include "matrix4x4.h"
 #include "lamp.h"
+#include "flipper.h"
 
 class Toy
 {
@@ -33,12 +34,11 @@ public:
 
 private:
     Lamp m_lamp;
+    Flipper m_left_flipper;
+    Flipper m_right_flipper;
+    Flipper m_top_flipper;
     CadModel* m_model;
     double lamp_count;
-    float m_animation_0_angle;
-    float m_animation_1_angle;
-    float m_animation_2_angle;
-    float m_animation_3_angle;
     void build_model();
 };
 

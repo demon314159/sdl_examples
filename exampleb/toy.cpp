@@ -21,12 +21,23 @@
 
 Toy::Toy()
     : m_lamp()
+    , m_left_flipper(LEFT_FLIPPER_ANGLE, LEFT_FLIPPER_POSITION, BOTTOM_FLIPPER_LENGTH,
+                     BOTTOM_FLIPPER_MAJOR_RADIUS, BOTTOM_FLIPPER_MINOR_RADIUS,
+                     BOTTOM_FLIPPER_HEIGHT, RUBBER_THICKNESS, RUBBER_HEIGHT,
+                     BOTTOM_FLIPPER_COLOR, RUBBER_COLOR, BOTTOM_FLIPPER_TRAVEL,
+                     BOTTOM_FLIPPER_SPEED, BOTTOM_FLIPPER_REFLECTIVITY, BOTTOM_FLIPPER_SEGMENTS)
+    , m_right_flipper(RIGHT_FLIPPER_ANGLE, RIGHT_FLIPPER_POSITION, BOTTOM_FLIPPER_LENGTH,
+                     BOTTOM_FLIPPER_MAJOR_RADIUS, BOTTOM_FLIPPER_MINOR_RADIUS,
+                     BOTTOM_FLIPPER_HEIGHT, RUBBER_THICKNESS, RUBBER_HEIGHT,
+                     BOTTOM_FLIPPER_COLOR, RUBBER_COLOR, -BOTTOM_FLIPPER_TRAVEL,
+                     BOTTOM_FLIPPER_SPEED, BOTTOM_FLIPPER_REFLECTIVITY, BOTTOM_FLIPPER_SEGMENTS)
+    , m_top_flipper( TOP_FLIPPER_ANGLE, TOP_FLIPPER_POSITION, TOP_FLIPPER_LENGTH,
+                     TOP_FLIPPER_MAJOR_RADIUS, TOP_FLIPPER_MINOR_RADIUS,
+                     TOP_FLIPPER_HEIGHT, RUBBER_THICKNESS, RUBBER_HEIGHT,
+                     TOP_FLIPPER_COLOR, RUBBER_COLOR, -TOP_FLIPPER_TRAVEL,
+                     TOP_FLIPPER_SPEED, TOP_FLIPPER_REFLECTIVITY, TOP_FLIPPER_SEGMENTS)
     , m_model(new CadModel())
     , lamp_count(0.0)
-    , m_animation_0_angle(0.0)
-    , m_animation_1_angle(0.0)
-    , m_animation_2_angle(0.0)
-    , m_animation_3_angle(0.0)
 {
     m_lamp.add(LAMP28_POSITION, LAMP_SIZE, TYPE1_ON_COLOR, TYPE1_OFF_COLOR);
     m_lamp.add(LAMP8_POSITION,  LAMP_SIZE, TYPE1_ON_COLOR, TYPE1_OFF_COLOR);
@@ -83,10 +94,9 @@ int Toy::animation_matrices() const
 void Toy::advance(int nanoseconds)
 {
     float seconds = 1.0e-9 * (float) nanoseconds;
-    m_animation_0_angle += (ANIMATION_0_SPEED * seconds);
-    m_animation_1_angle += (ANIMATION_1_SPEED * seconds);
-    m_animation_2_angle += (ANIMATION_2_SPEED * seconds);
-    m_animation_3_angle += (ANIMATION_3_SPEED * seconds);
+    m_left_flipper.advance(seconds);
+    m_right_flipper.advance(seconds);
+    m_top_flipper.advance(seconds);
     lamp_count += nanoseconds;
     if (lamp_count > 500000000.0) {
         lamp_count = 0.0;
@@ -112,6 +122,10 @@ void Toy::build_model()
     m_model->add(m_lamp.model(), 0.0, 0.0, 0.0);
     m_model->add(top_playfield, PLAYFIELD_X / 2.0, 0.0, PLAYFIELD_Z / 2.0);
     m_model->add(board, PLAYFIELD_X / 2.0, -PLAYFIELD_Y / 2.0, PLAYFIELD_Z / 2.0);
+
+    m_model->add(m_left_flipper.model(ANIMATION_ID_0));
+    m_model->add(m_right_flipper.model(ANIMATION_ID_1));
+    m_model->add(m_top_flipper.model(ANIMATION_ID_2));
 }
 
 Matrix4x4 Toy::get_animation_matrix(int i) const
@@ -120,19 +134,30 @@ Matrix4x4 Toy::get_animation_matrix(int i) const
 
     mm.unity();
     if (i == 0) {
+        mm.translate(m_left_flipper.position().v1, m_left_flipper.position().v2, m_left_flipper.position().v3);
+        mm.rotate_ay(m_left_flipper.active_angle());
+        mm.translate(-m_left_flipper.position().v1, -m_left_flipper.position().v2, -m_left_flipper.position().v3);
     } else if (i == 1) {
+        mm.translate(m_right_flipper.position().v1, m_right_flipper.position().v2, m_right_flipper.position().v3);
+        mm.rotate_ay(m_right_flipper.active_angle());
+        mm.translate(-m_right_flipper.position().v1, -m_right_flipper.position().v2, -m_right_flipper.position().v3);
     } else if (i == 2) {
+        mm.translate(m_top_flipper.position().v1, m_top_flipper.position().v2, m_top_flipper.position().v3);
+        mm.rotate_ay(m_top_flipper.active_angle());
+        mm.translate(-m_top_flipper.position().v1, -m_top_flipper.position().v2, -m_top_flipper.position().v3);
     } else if (i == 3) {
-        mm.rotate_ay(-m_animation_3_angle);
     }
     return mm;
 }
 
 void Toy::left_action_button(bool on)
 {
+    m_left_flipper.action_button(on);
 }
 
 void Toy::right_action_button(bool on)
 {
+    m_right_flipper.action_button(on);
+    m_top_flipper.action_button(on);
 }
 
