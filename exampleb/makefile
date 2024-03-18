@@ -33,8 +33,12 @@ HEADERS = view.h \
           ball.h \
           straight_reflector.h \
           convex_reflector.h \
+          concave_reflector.h \
           flipper_model.h \
           flipper.h \
+          straight_strip.h \
+          concave_strip.h \
+          concave_plane_shape.h \
           \
           \
           \
@@ -70,8 +74,12 @@ OBJECTS = main.obj \
           ball.obj \
           straight_reflector.obj \
           convex_reflector.obj \
+          concave_reflector.obj \
           flipper_model.obj \
           flipper.obj \
+          straight_strip.obj \
+          concave_strip.obj \
+          concave_plane_shape.obj \
           \
           \
           \

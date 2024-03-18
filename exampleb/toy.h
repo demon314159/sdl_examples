@@ -9,6 +9,8 @@
 #include "matrix4x4.h"
 #include "lamp.h"
 #include "flipper.h"
+#include "straight_strip.h"
+#include "concave_strip.h"
 
 class Toy
 {
@@ -33,12 +35,18 @@ public:
     const Lamp* get_lamp() const;
 
 private:
+    StraightStrip m_strip1;
+    StraightStrip m_strip2;
+    StraightStrip m_strip3;
+    StraightStrip m_strip4;
+    StraightStrip m_strip5;
+    ConcaveStrip m_strip6;
     Lamp m_lamp;
     Flipper m_left_flipper;
     Flipper m_right_flipper;
     Flipper m_top_flipper;
     CadModel* m_model;
-    double lamp_count;
+    double m_lamp_count;
     void build_model();
 };
 

@@ -20,7 +20,13 @@
 #define ANIMATION_ID_3 5.0
 
 Toy::Toy()
-    : m_lamp()
+    : m_strip1(90.0, {0.314, 0.012 / 2.0, 0.369}, 0.416, 0.012, PaintCan(0.9137, 0.7566, 0.4823), 0.2)
+    , m_strip2(90.0, {0.288, 0.012 / 2.0, 0.335}, 0.370, 0.012, PaintCan(0.9137, 0.7566, 0.4823), 0.2)
+    , m_strip3(30.12, {0.22529, 0.012 / 2.0, 0.55638}, 0.145, 0.012, PaintCan(0.9137, 0.7566, 0.4823), 0.2)
+    , m_strip4(-30.12, {0.065711, 0.012 / 2.0, 0.55638}, 0.145, 0.012, PaintCan(0.9137, 0.7566, 0.4823), 0.2)
+    , m_strip5(-90.0, {0.003, 0.012 / 2.0, 0.3405}, 0.359, 0.012, PaintCan(0.9137, 0.7566, 0.4823), 0.2)
+    , m_strip6(0.0, 180.0, {0.1585, 0.012 / 2.0, 0.161}, 0.1555, 0.012, PaintCan(0.9137, 0.7566, 0.4823), 0.2, 200)
+    , m_lamp()
     , m_left_flipper(LEFT_FLIPPER_ANGLE, LEFT_FLIPPER_POSITION, BOTTOM_FLIPPER_LENGTH,
                      BOTTOM_FLIPPER_MAJOR_RADIUS, BOTTOM_FLIPPER_MINOR_RADIUS,
                      BOTTOM_FLIPPER_HEIGHT, RUBBER_THICKNESS, RUBBER_HEIGHT,
@@ -37,7 +43,7 @@ Toy::Toy()
                      TOP_FLIPPER_COLOR, RUBBER_COLOR, -TOP_FLIPPER_TRAVEL,
                      TOP_FLIPPER_SPEED, TOP_FLIPPER_REFLECTIVITY, TOP_FLIPPER_SEGMENTS)
     , m_model(new CadModel())
-    , lamp_count(0.0)
+    , m_lamp_count(0.0)
 {
     m_lamp.add(LAMP28_POSITION, LAMP_SIZE, TYPE1_ON_COLOR, TYPE1_OFF_COLOR);
     m_lamp.add(LAMP8_POSITION,  LAMP_SIZE, TYPE1_ON_COLOR, TYPE1_OFF_COLOR);
@@ -97,9 +103,9 @@ void Toy::advance(int nanoseconds)
     m_left_flipper.advance(seconds);
     m_right_flipper.advance(seconds);
     m_top_flipper.advance(seconds);
-    lamp_count += nanoseconds;
-    if (lamp_count > 500000000.0) {
-        lamp_count = 0.0;
+    m_lamp_count += nanoseconds;
+    if (m_lamp_count > 500000000.0) {
+        m_lamp_count = 0.0;
         for (int i = 0; i < m_lamp.lamps(); i++) {
             m_lamp.toggle(i);
         }
@@ -126,6 +132,12 @@ void Toy::build_model()
     m_model->add(m_left_flipper.model(ANIMATION_ID_0));
     m_model->add(m_right_flipper.model(ANIMATION_ID_1));
     m_model->add(m_top_flipper.model(ANIMATION_ID_2));
+    m_model->add(m_strip1.model(0.0));
+    m_model->add(m_strip2.model(0.0));
+    m_model->add(m_strip3.model(0.0));
+    m_model->add(m_strip4.model(0.0));
+    m_model->add(m_strip5.model(0.0));
+    m_model->add(m_strip6.model(0.0));
 }
 
 Matrix4x4 Toy::get_animation_matrix(int i) const
