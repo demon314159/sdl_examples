@@ -31,6 +31,16 @@ StraightReflector::StraightReflector(bool top, float r1, float r2, float length,
     }
 }
 
+StraightReflector::StraightReflector(float length, float reflectivity)
+    : m_position({0.0, 0.0})
+    , m_length(length)
+    , m_reflectivity(reflectivity)
+    , m_angle(0.0)
+    , m_angular_velocity(0.0)
+    , m_velocity_origin({0.0, 0.0})
+{
+}
+
 StraightReflector::~StraightReflector()
 {
 }

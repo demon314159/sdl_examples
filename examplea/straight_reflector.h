@@ -12,6 +12,7 @@ class StraightReflector
 {
 public:
     StraightReflector(bool top, float r1, float r2, float length, float reflectivity);
+    StraightReflector(float length, float reflectivity);
     ~StraightReflector();
 
     void set_angular_velocity(float angular_velocity);

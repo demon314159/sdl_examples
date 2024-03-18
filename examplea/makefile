@@ -30,11 +30,13 @@ HEADERS = view.h \
           flipper_shape.h \
           bumper_model.h \
           cylinder_shape.h \
+          plane_shape.h \
           ball.h \
           sphere_shape.h \
           wall.h \
           flipper.h \
           bumper.h \
+          straight_strip.h \
           \
           \
           \
@@ -65,11 +67,13 @@ OBJECTS = main.obj \
           flipper_shape.obj \
           bumper_model.obj \
           cylinder_shape.obj \
+          plane_shape.obj \
           ball.obj \
           sphere_shape.obj \
           wall.obj \
           flipper.obj \
           bumper.obj \
+          straight_strip.obj \
           \
           \
           \

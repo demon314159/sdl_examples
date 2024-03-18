@@ -8,6 +8,7 @@
 #include "paint_can.h"
 
 #define BODY_COLOR PaintCan(1.0, 1.0, 0.0)
+#define STRIP_COLOR PaintCan(0.9137, 0.7566, 0.4823)
 #define RUBBER_COLOR PaintCan(1.0, 0.0, 0.0)
 #define BUMPER_TOP_COLOR PaintCan(0.0, 0.0, 1.0)
 #define BUMPER_MIDDLE_COLOR PaintCan(1.0, 1.0, 1.0)

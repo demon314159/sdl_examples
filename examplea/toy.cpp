@@ -44,7 +44,8 @@ Toy::Toy()
     , m_animation_2_angle(0.0)
     , m_animation_3_angle(0.0)
     , m_ball(BALL_RADIUS, BALL_TOP_COLOR, BALL_MIDDLE_COLOR, BALL_BOTTOM_COLOR, BALL_SEGMENTS)
-    , m_wall1(0.0, {0.0, 0.0, 0.0}, WALL1_LENGTH, WALL_RADIUS, WALL_HEIGHT, RUBBER_THICKNESS, RUBBER_HEIGHT, BODY_COLOR, RUBBER_COLOR, WALL_REFLECTIVITY, WALL_SEGMENTS)
+//    , m_wall1(0.0, {0.0, 0.0, 0.0}, WALL1_LENGTH, WALL_RADIUS, WALL_HEIGHT, RUBBER_THICKNESS, RUBBER_HEIGHT, BODY_COLOR, RUBBER_COLOR, WALL_REFLECTIVITY, WALL_SEGMENTS)
+    , m_strip1(180.0, {0.0, 0.0, 0.0}, WALL1_LENGTH, WALL_HEIGHT, STRIP_COLOR, WALL_REFLECTIVITY)
     , m_wall2(-90, {(-W1 / 2.0 - W2 / 2.0) / 2.0, 0.0, L1 / 2.0}, WALL2_LENGTH, WALL_RADIUS, WALL_HEIGHT, RUBBER_THICKNESS, RUBBER_HEIGHT, BODY_COLOR, RUBBER_COLOR, WALL_REFLECTIVITY, WALL_SEGMENTS)
     , m_wall3(90.0, {(W1 / 2.0 + W2 / 2.0) / 2.0, 0.0, L1 / 2.0}, WALL3_LENGTH, WALL_RADIUS, WALL_HEIGHT, RUBBER_THICKNESS, RUBBER_HEIGHT, BODY_COLOR, RUBBER_COLOR, WALL_REFLECTIVITY, WALL_SEGMENTS)
     , m_wall4(THETA4, {(-W2 / 2.0 - W3 / 2.0) / 2.0, 0.0, L1 + L2 / 2.0}, WALL4_LENGTH, WALL_RADIUS, WALL_HEIGHT, RUBBER_THICKNESS, RUBBER_HEIGHT, BODY_COLOR, RUBBER_COLOR, WALL_REFLECTIVITY, WALL_SEGMENTS)
@@ -83,7 +84,8 @@ void Toy::advance(int nanoseconds)
     m_flipper1.advance(seconds);
     m_flipper2.advance(seconds);
     m_ball.advance(seconds);
-    m_wall1.collide(m_ball);
+//    m_wall1.collide(m_ball);
+    m_strip1.collide(m_ball);
     m_wall2.collide(m_ball);
     m_wall3.collide(m_ball);
     m_wall4.collide(m_ball);
@@ -103,7 +105,8 @@ void Toy::build_model()
     m_model->add(m_bumper1.model(0.0));
     m_model->add(m_bumper2.model(0.0));
     m_model->add(m_bumper3.model(0.0));
-    m_model->add(m_wall1.model(0.0));
+//    m_model->add(m_wall1.model(0.0));
+    m_model->add(m_strip1.model(0.0));
     m_model->add(m_wall2.model(0.0));
     m_model->add(m_wall3.model(0.0));
     m_model->add(m_wall4.model(0.0));
