@@ -8,7 +8,7 @@
 #include "cad_model.h"
 #include "matrix4x4.h"
 #include "ball.h"
-#include "straight_strip.h"
+#include "concave_strip.h"
 #include "wall.h"
 #include "flipper.h"
 #include "bumper.h"
@@ -40,7 +40,7 @@ private:
     float m_animation_2_angle;
     float m_animation_3_angle;
 //    Wall m_wall1;
-    StraightStrip m_strip1;
+    ConcaveStrip m_strip1;
     Wall m_wall2;
     Wall m_wall3;
     Wall m_wall4;

@@ -25,18 +25,21 @@ HEADERS = view.h \
           state.h \
           straight_reflector.h \
           convex_reflector.h \
+          concave_reflector.h \
           convex_kicker.h \
           flipper_model.h \
           flipper_shape.h \
           bumper_model.h \
           cylinder_shape.h \
           plane_shape.h \
+          concave_plane_shape.h \
           ball.h \
           sphere_shape.h \
           wall.h \
           flipper.h \
           bumper.h \
           straight_strip.h \
+          concave_strip.h \
           \
           \
           \
@@ -62,18 +65,21 @@ OBJECTS = main.obj \
           state.obj \
           straight_reflector.obj \
           convex_reflector.obj \
+          concave_reflector.obj \
           convex_kicker.obj \
           flipper_model.obj \
           flipper_shape.obj \
           bumper_model.obj \
           cylinder_shape.obj \
           plane_shape.obj \
+          concave_plane_shape.obj \
           ball.obj \
           sphere_shape.obj \
           wall.obj \
           flipper.obj \
           bumper.obj \
           straight_strip.obj \
+          concave_strip.obj \
           \
           \
           \

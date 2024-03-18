@@ -44,5 +44,6 @@
 #define FLIPPER_SEGMENTS 50
 #define BUMPER_SEGMENTS 100
 #define BALL_SEGMENTS 50
+#define STRIP_SEGMENTS 150
 
 #endif // _LOOK_H_
