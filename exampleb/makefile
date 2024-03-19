@@ -26,6 +26,7 @@ HEADERS = view.h \
           toy.h \
           \
           sphere_shape.h \
+          top_panel_shape.h \
           flipper_shape.h \
           state.h \
           lamp.h \
@@ -66,6 +67,7 @@ OBJECTS = main.obj \
           toy.obj \
           \
           sphere_shape.obj \
+          top_panel_shape.obj \
           flipper_shape.obj \
           state.obj \
           lamp.obj \

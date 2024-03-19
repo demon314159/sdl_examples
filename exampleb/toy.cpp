@@ -9,6 +9,7 @@
 #include "plane_shape.h"
 #include "cube_shape.h"
 #include "cylinder_shape.h"
+#include "top_panel_shape.h"
 
 #define ANIMATION_0_SPEED 0.0
 #define ANIMATION_1_SPEED 0.0
@@ -22,7 +23,14 @@
 
 #define R1 0.148
 #define T1 0.008
+
+#define ANGLE1 0.0
+#define ANGLE2 145.452
 #define WOOD_COLOR PaintCan(0.9137, 0.7566, 0.4823)
+
+#define TOP_PANEL_STEPS 200
+#define FOCUS_X (0.314 - R1)
+#define FOCUS_Z 0.161
 
 Toy::Toy()
     : m_strip1(90.0, {0.314, 0.012 / 2.0, 0.369}, 0.416, 0.012, WOOD_COLOR, 0.2)
@@ -33,7 +41,7 @@ Toy::Toy()
     , m_strip6(-30.12, {0.065711, 0.012 / 2.0, 0.55638}, 0.145, 0.012, WOOD_COLOR, 0.2)
     , m_strip7(-90.0, {0.003, 0.012 / 2.0, 0.3338}, 0.3724, 0.012, WOOD_COLOR, 0.2)
     , m_strip8(59.7693 - 180.0, {0.02355, 0.012 / 2.0, 0.112335}, 0.08163, 0.012, WOOD_COLOR, 0.2)
-    , m_strip9(0.0, 145.452, {0.314 - R1, 0.012 / 2.0, 0.161}, R1, 0.012, WOOD_COLOR, 0.2, 200)
+    , m_strip9(ANGLE1, ANGLE2, {FOCUS_X, 0.012 / 2.0, FOCUS_Z}, R1, 0.012, WOOD_COLOR, 0.2, TOP_PANEL_STEPS)
     , m_lamp()
     , m_left_flipper(LEFT_FLIPPER_ANGLE, LEFT_FLIPPER_POSITION, BOTTOM_FLIPPER_LENGTH,
                      BOTTOM_FLIPPER_MAJOR_RADIUS, BOTTOM_FLIPPER_MINOR_RADIUS,
@@ -163,6 +171,9 @@ void Toy::build_model()
     CadModel panel(PlaneShape(PLAYFIELD_X, PLAYFIELD_Z), WOOD_COLOR, 0.0);
     panel.rotate_ax(180.0);
     m_model->add(panel, PLAYFIELD_X / 2.0, -PLAYFIELD_Y, PLAYFIELD_Z / 2.0);
+
+    CadModel top_panel(TopPanelShape(PLAYFIELD_X, R1, ANGLE1, ANGLE2, {FOCUS_X, FOCUS_Z}, 0.003, 0.1476, TOP_PANEL_STEPS), WOOD_COLOR, 0.0);
+    m_model->add(top_panel, 0.0, 0.012, 0.0);
 
 }
 
