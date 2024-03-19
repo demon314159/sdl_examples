@@ -15,7 +15,6 @@ HEADERS = view.h \
           shape.h \
           plane_shape.h \
           cube_shape.h \
-          open_box_shape.h \
           cylinder_shape.h \
           navigate.h \
           cad_model.h \
@@ -57,7 +56,6 @@ OBJECTS = main.obj \
           shape.obj \
           plane_shape.obj \
           cube_shape.obj \
-          open_box_shape.obj \
           cylinder_shape.obj \
           navigate.obj \
           cad_model.obj \

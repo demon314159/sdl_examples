@@ -7,7 +7,8 @@
 #include <math.h>
 #include "look.h"
 #include "plane_shape.h"
-#include "open_box_shape.h"
+#include "cube_shape.h"
+#include "cylinder_shape.h"
 
 #define ANIMATION_0_SPEED 0.0
 #define ANIMATION_1_SPEED 0.0
@@ -19,13 +20,20 @@
 #define ANIMATION_ID_2 4.0
 #define ANIMATION_ID_3 5.0
 
+#define R1 0.148
+#define T1 0.008
+#define WOOD_COLOR PaintCan(0.9137, 0.7566, 0.4823)
+
 Toy::Toy()
-    : m_strip1(90.0, {0.314, 0.012 / 2.0, 0.369}, 0.416, 0.012, PaintCan(0.9137, 0.7566, 0.4823), 0.2)
-    , m_strip2(90.0, {0.288, 0.012 / 2.0, 0.335}, 0.370, 0.012, PaintCan(0.9137, 0.7566, 0.4823), 0.2)
-    , m_strip3(30.12, {0.22529, 0.012 / 2.0, 0.55638}, 0.145, 0.012, PaintCan(0.9137, 0.7566, 0.4823), 0.2)
-    , m_strip4(-30.12, {0.065711, 0.012 / 2.0, 0.55638}, 0.145, 0.012, PaintCan(0.9137, 0.7566, 0.4823), 0.2)
-    , m_strip5(-90.0, {0.003, 0.012 / 2.0, 0.3405}, 0.359, 0.012, PaintCan(0.9137, 0.7566, 0.4823), 0.2)
-    , m_strip6(0.0, 180.0, {0.1585, 0.012 / 2.0, 0.161}, 0.1555, 0.012, PaintCan(0.9137, 0.7566, 0.4823), 0.2, 200)
+    : m_strip1(90.0, {0.314, 0.012 / 2.0, 0.369}, 0.416, 0.012, WOOD_COLOR, 0.2)
+    , m_strip2(-90.0, {0.288 + T1, 0.012 / 2.0, 0.3635}, 0.427, 0.012, WOOD_COLOR, 0.2)
+    , m_strip3(90.0, {0.288, 0.012 / 2.0, 0.335}, 0.370, 0.012, WOOD_COLOR, 0.2)
+    , m_strip4(0.0, {0.288 + T1 / 2.0, 0.012 / 2.0, 0.150}, T1, 0.012, WOOD_COLOR, 0.2)
+    , m_strip5(30.12, {0.22529, 0.012 / 2.0, 0.55638}, 0.145, 0.012, WOOD_COLOR, 0.2)
+    , m_strip6(-30.12, {0.065711, 0.012 / 2.0, 0.55638}, 0.145, 0.012, WOOD_COLOR, 0.2)
+    , m_strip7(-90.0, {0.003, 0.012 / 2.0, 0.3338}, 0.3724, 0.012, WOOD_COLOR, 0.2)
+    , m_strip8(59.7693 - 180.0, {0.02355, 0.012 / 2.0, 0.112335}, 0.08163, 0.012, WOOD_COLOR, 0.2)
+    , m_strip9(0.0, 145.452, {0.314 - R1, 0.012 / 2.0, 0.161}, R1, 0.012, WOOD_COLOR, 0.2, 200)
     , m_lamp()
     , m_left_flipper(LEFT_FLIPPER_ANGLE, LEFT_FLIPPER_POSITION, BOTTOM_FLIPPER_LENGTH,
                      BOTTOM_FLIPPER_MAJOR_RADIUS, BOTTOM_FLIPPER_MINOR_RADIUS,
@@ -122,12 +130,9 @@ void Toy::build_model()
 
     float k = 1.0;
 
-    CadModel top_playfield(PlaneShape(PLAYFIELD_X, PLAYFIELD_Z, 1.0), PaintCan(0.0, 1.0, 0.0), 99.0);
-    CadModel board(OpenBoxShape(PLAYFIELD_X, PLAYFIELD_Y, PLAYFIELD_Z), PaintCan(0.0, 1.0, 0.0), 0.0);
-
+    CadModel top_playfield(PlaneShape(PLAYFIELD_X, PLAYFIELD_Z, 1.0), PaintCan(1.0, 1.0, 1.0), 99.0);
     m_model->add(m_lamp.model(), 0.0, 0.0, 0.0);
     m_model->add(top_playfield, PLAYFIELD_X / 2.0, 0.0, PLAYFIELD_Z / 2.0);
-    m_model->add(board, PLAYFIELD_X / 2.0, -PLAYFIELD_Y / 2.0, PLAYFIELD_Z / 2.0);
 
     m_model->add(m_left_flipper.model(ANIMATION_ID_0));
     m_model->add(m_right_flipper.model(ANIMATION_ID_1));
@@ -138,6 +143,27 @@ void Toy::build_model()
     m_model->add(m_strip4.model(0.0));
     m_model->add(m_strip5.model(0.0));
     m_model->add(m_strip6.model(0.0));
+    m_model->add(m_strip7.model(0.0));
+    m_model->add(m_strip8.model(0.0));
+    m_model->add(m_strip9.model(0.0));
+
+    CadModel cap(CylinderShape(T1 / 2.0, 0.012, 50), WOOD_COLOR, 0.0);
+    CadModel barrier1(CubeShape(T1, 0.012, PLAYFIELD_Z - 0.150), WOOD_COLOR, 0.0);
+    m_model->add(barrier1, 0.288 + T1 / 2.0, 0.012 / 2.0, (0.150 + PLAYFIELD_Z) / 2.0);
+    m_model->add(cap, 0.288 + T1 / 2.0, 0.012 / 2.0, 0.150);
+
+    CadModel barrier2(CubeShape(T1, 0.012 + PLAYFIELD_Y, PLAYFIELD_Z), WOOD_COLOR, 0.0);
+    m_model->add(barrier2, 0.314 + T1 / 2.0, 0.012 / 2.0 - PLAYFIELD_Y / 2.0, PLAYFIELD_Z / 2.0);
+    m_model->add(barrier2, 0.003 - T1 / 2.0, 0.012 / 2.0 - PLAYFIELD_Y / 2.0, PLAYFIELD_Z / 2.0);
+
+    CadModel barrier3(CubeShape(PLAYFIELD_X, 0.012 + PLAYFIELD_Y, T1), WOOD_COLOR, 0.0);
+    m_model->add(barrier3, PLAYFIELD_X / 2.0, 0.012 / 2.0 - PLAYFIELD_Y / 2.0, T1 / 2.0);
+    m_model->add(barrier3, PLAYFIELD_X / 2.0, 0.012 / 2.0 - PLAYFIELD_Y / 2.0, PLAYFIELD_Z - T1 / 2.0);
+
+    CadModel panel(PlaneShape(PLAYFIELD_X, PLAYFIELD_Z), WOOD_COLOR, 0.0);
+    panel.rotate_ax(180.0);
+    m_model->add(panel, PLAYFIELD_X / 2.0, -PLAYFIELD_Y, PLAYFIELD_Z / 2.0);
+
 }
 
 Matrix4x4 Toy::get_animation_matrix(int i) const

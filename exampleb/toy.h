@@ -40,7 +40,10 @@ private:
     StraightStrip m_strip3;
     StraightStrip m_strip4;
     StraightStrip m_strip5;
-    ConcaveStrip m_strip6;
+    StraightStrip m_strip6;
+    StraightStrip m_strip7;
+    StraightStrip m_strip8;
+    ConcaveStrip m_strip9;
     Lamp m_lamp;
     Flipper m_left_flipper;
     Flipper m_right_flipper;
