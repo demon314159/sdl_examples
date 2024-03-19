@@ -10,6 +10,7 @@
 #include "cube_shape.h"
 #include "cylinder_shape.h"
 #include "top_panel_shape.h"
+#include "bottom_panel_shape.h"
 
 #define ANIMATION_0_SPEED 0.0
 #define ANIMATION_1_SPEED 0.0
@@ -27,6 +28,7 @@
 #define ANGLE1 0.0
 #define ANGLE2 145.452
 #define WOOD_COLOR PaintCan(0.9137, 0.7566, 0.4823)
+#define FACE_PLATE_COLOR PaintCan(1.0, 1.0, 1.0)
 
 #define TOP_PANEL_STEPS 200
 #define FOCUS_X (0.314 - R1)
@@ -168,13 +170,24 @@ void Toy::build_model()
     m_model->add(barrier3, PLAYFIELD_X / 2.0, 0.012 / 2.0 - PLAYFIELD_Y / 2.0, T1 / 2.0);
     m_model->add(barrier3, PLAYFIELD_X / 2.0, 0.012 / 2.0 - PLAYFIELD_Y / 2.0, PLAYFIELD_Z - T1 / 2.0);
 
-    CadModel panel(PlaneShape(PLAYFIELD_X, PLAYFIELD_Z), WOOD_COLOR, 0.0);
-    panel.rotate_ax(180.0);
-    m_model->add(panel, PLAYFIELD_X / 2.0, -PLAYFIELD_Y, PLAYFIELD_Z / 2.0);
+    CadModel under_panel(PlaneShape(PLAYFIELD_X, PLAYFIELD_Z), WOOD_COLOR, 0.0);
+    under_panel.rotate_ax(180.0);
+    m_model->add(under_panel, PLAYFIELD_X / 2.0, -PLAYFIELD_Y, PLAYFIELD_Z / 2.0);
 
     CadModel top_panel(TopPanelShape(PLAYFIELD_X, R1, ANGLE1, ANGLE2, {FOCUS_X, FOCUS_Z}, 0.003, 0.1476, TOP_PANEL_STEPS), WOOD_COLOR, 0.0);
     m_model->add(top_panel, 0.0, 0.012, 0.0);
 
+    float r = 0.130;
+    float a = 30.12 * PI / 180.0;
+    float z1 = 0.520;
+    float z2 = z1 + r * sin(a);
+    float z3 = PLAYFIELD_Z;
+    float x1 = 0.003;
+    float x4 = 0.288;
+    float x2 = x1 + r * cos(a);
+    float x3 = x4 - r * cos(a);
+    CadModel bottom_panel(BottomPanelShape(x1, x2, x3, x4, z1, z2, z3), FACE_PLATE_COLOR, 0.0);
+    m_model->add(bottom_panel, 0.0, 0.012, 0.0);
 }
 
 Matrix4x4 Toy::get_animation_matrix(int i) const
