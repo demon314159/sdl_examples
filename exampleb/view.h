@@ -42,6 +42,7 @@ public:
     int height() const;
     void left_action_button(bool on);
     void right_action_button(bool on);
+    void launch_action_button(bool on);
 
 protected:
     bool init_shaders();

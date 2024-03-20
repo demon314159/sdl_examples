@@ -608,3 +608,8 @@ void View::right_action_button(bool on)
     m_toy->right_action_button(on);
 }
 
+void View::launch_action_button(bool on)
+{
+    m_toy->launch_action_button(on);
+}
+

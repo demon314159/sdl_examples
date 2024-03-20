@@ -37,15 +37,9 @@ CadModel Ball::model(float animation_id) const
 
 void Ball::advance(float seconds)
 {
-
-float last_angle = 0.0;
-
     State next = next_state(seconds);
     m_orientation = next_orientation(next);
     m_state = next;
-    if (m_state.position().v2 > 85.0) {
-        set_position({1.0, 10.0});
-    }
 }
 
 float Ball::radius() const
@@ -102,7 +96,7 @@ Matrix4x4 Ball::animation_matrix() const
 {
     Matrix4x4 mm;
     mm.unity();
-    mm.translate(m_state.position().v1, 0.0, m_state.position().v2);
+    mm.translate(m_state.position().v1, m_radius, m_state.position().v2);
 
     // Multipy mm times the rotation matrix
     mm = mm * m_orientation.rotation_matrix();
