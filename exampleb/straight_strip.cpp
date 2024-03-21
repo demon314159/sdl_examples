@@ -36,7 +36,7 @@ float StraightStrip::length() const
     return m_length;
 }
 
-void StraightStrip::collide(Ball& ball) const
+void StraightStrip::collide(Ball* ball) const
 {
     m_reflector.collide(ball);
 }

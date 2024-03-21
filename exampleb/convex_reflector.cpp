@@ -98,13 +98,13 @@ bool ConvexReflector::angle_within_range(float angle) const
     return angle >= m_angle_i;
 }
 
-bool ConvexReflector::within_distance(const Ball& ball) const
+bool ConvexReflector::within_distance(const Ball* ball) const
 {
-    double dx = ball.position().v1 - m_position.v1;
-    double dz = ball.position().v2 - m_position.v2;
+    double dx = ball->position().v1 - m_position.v1;
+    double dz = ball->position().v2 - m_position.v2;
 
     float distance = sqrt(dx * dx + dz * dz);
-    return distance <= (ball.radius() + m_radius);
+    return distance <= (ball->radius() + m_radius);
 }
 
 Float2 ConvexReflector::velocity_at_impact(float x, Float2 velocity_origin) const
@@ -120,16 +120,16 @@ Float2 ConvexReflector::velocity_at_impact(float x, Float2 velocity_origin) cons
     return {vx, vz};
 }
 
-void ConvexReflector::collide(Ball& ball) const
+void ConvexReflector::collide(Ball* ball) const
 {
     Float2 vo = m_velocity_origin;
     if (within_distance(ball)) {
-        float dx = ball.position().v1 - m_position.v1;
-        float dz = ball.position().v2 - m_position.v2;
+        float dx = ball->position().v1 - m_position.v1;
+        float dz = ball->position().v2 - m_position.v2;
         float angle = (180.0 / PI) * atan2(-dz, dx);
         if (angle_within_range(angle)) {
             float rot_angle = angle - 90.0;
-            Ball ball_copy = ball;
+            Ball ball_copy = *ball;
             // translate reflector to (0, 0) and bring ball position and velocity
             ball_copy.translate_frame({-m_position.v1, -m_position.v2});
             translate(vo, {-m_position.v1, -m_position.v2});
@@ -153,7 +153,7 @@ void ConvexReflector::collide(Ball& ball) const
             }
             // ball z pos -= (ball_z + radius)
             temp = ball_copy.position();
-            ball_copy.set_position({temp.v1, (float) -2.0 * ball.radius() - temp.v2});
+            ball_copy.set_position({temp.v1, (float) -2.0 * ball_copy.radius() - temp.v2});
             // Unadjust frame for velocity at point of impact
             if (!null_velocity_origin() && m_angular_velocity != 0.0) {
                 ball_copy.translate_velocity_frame(impact_velocity);
@@ -165,7 +165,7 @@ void ConvexReflector::collide(Ball& ball) const
             // translate reflector to position and bring ball position and velocity
             ball_copy.translate_frame({m_position.v1, m_position.v2});
             // replace ball with new info
-            ball = ball_copy;
+            *ball = ball_copy;
         }
     }
 }

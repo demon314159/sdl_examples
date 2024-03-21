@@ -13,6 +13,9 @@
 
 #define LAMP_SIZE {0.020, 0.030}
 
+#define WOOD_COLOR PaintCan(0.9137, 0.7566, 0.4823)
+#define FACE_PLATE_COLOR PaintCan(1.0, 1.0, 1.0)
+
 #define LAMP28_IX  0
 #define LAMP8_IX   1
 #define LAMP10_IX  2
@@ -108,8 +111,7 @@
 #define RUBBER_THICKNESS 0.002
 #define RUBBER_HEIGHT 0.012
 
-//#define BALL_RADIUS  0.007083
-#define BALL_RADIUS  0.008
+#define BALL_RADIUS  0.008f
 #define BALL_TOP_COLOR PaintCan(1.0, 0.0, 0.0)
 #define BALL_MIDDLE_COLOR PaintCan(1.0, 1.0, 1.0)
 #define BALL_BOTTOM_COLOR PaintCan(0.0, 0.0, 1.0)

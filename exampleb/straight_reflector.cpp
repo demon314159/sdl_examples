@@ -70,13 +70,13 @@ void StraightReflector::rotate(float angle)
     m_angle += angle;
 }
 
-bool StraightReflector::within_range(const Ball& ball) const
+bool StraightReflector::within_range(const Ball* ball) const
 {
-    Float2 bp = ball.position();
+    Float2 bp = ball->position();
 
-    if (bp.v2 < -ball.radius())
+    if (bp.v2 < -ball->radius())
         return false;
-    if (bp.v2 > ball.radius())
+    if (bp.v2 > ball->radius())
         return false;
     if (bp.v1 < (-m_length / 2.0))
         return false;
@@ -113,10 +113,10 @@ Float2 StraightReflector::velocity_at_impact(float x, Float2 velocity_origin) co
     return {vx, vz};
 }
 
-void StraightReflector::collide(Ball& ball) const
+void StraightReflector::collide(Ball* ball) const
 {
     Float2 vo = m_velocity_origin;
-    Ball ball_copy = ball;
+    Ball ball_copy = *ball;
     // translate reflector to (0, 0) and bring ball position and velocity
     ball_copy.translate_frame({-m_position.v1, -m_position.v2});
     translate(vo, {-m_position.v1, -m_position.v2});
@@ -124,7 +124,7 @@ void StraightReflector::collide(Ball& ball) const
     ball_copy.rotate_frame(-m_angle);
     rotate(vo, -m_angle);
     // test for ball z position to be mode than -radius
-    if (within_range(ball_copy)) { // collision
+    if (within_range(&ball_copy)) { // collision
         Float2 impact_velocity = {0.0, 0.0};
         // Adjust frame for velocity at point of impact
         if (m_angular_velocity != 0.0) {
@@ -139,7 +139,7 @@ void StraightReflector::collide(Ball& ball) const
         }
         // ball z pos -= (ball_z + radius)
         temp = ball_copy.position();
-        ball_copy.set_position({temp.v1, (float) -2.0 * ball.radius() - temp.v2});
+        ball_copy.set_position({temp.v1, (float) -2.0 * ball_copy.radius() - temp.v2});
         // Unadjust frame for velocity at point of impact
         if (m_angular_velocity != 0.0) {
             ball_copy.translate_velocity_frame(impact_velocity);
@@ -149,7 +149,7 @@ void StraightReflector::collide(Ball& ball) const
         // translate reflector to position and bring ball position and velocity
         ball_copy.translate_frame({m_position.v1, m_position.v2});
         // replace ball with new info
-        ball = ball_copy;
+        *ball = ball_copy;
     }
 }
 

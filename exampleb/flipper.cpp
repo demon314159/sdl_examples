@@ -107,7 +107,7 @@ void Flipper::set_active_angle(float angle)
     m_active_angle = angle;
 }
 
-void Flipper::collide(Ball& ball) const
+void Flipper::collide(Ball* ball) const
 {
     ConvexReflector copy1 = m_reflector1;
     ConvexReflector copy2 = m_reflector2;

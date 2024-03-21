@@ -167,12 +167,12 @@ void View::generate_textures()
 
 
 
-    printf("Image loaded width %d, height %d, channels %d\n", width, height, channels);
+//    printf("Image loaded width %d, height %d, channels %d\n", width, height, channels);
     if (data) {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
         stbi_image_free(data);
-        printf("texture width %d, height %d, channels %d\n", width, height, channels);
+//        printf("texture width %d, height %d, channels %d\n", width, height, channels);
     } else {
 
         printf("failed to load texture\n");

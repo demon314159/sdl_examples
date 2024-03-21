@@ -30,7 +30,7 @@ public:
     float travel() const;
     float active_angle() const;
     void set_active_angle(float angle);
-    void collide(Ball& ball) const;
+    void collide(Ball* ball) const;
     void action_button(bool on);
 
 private:

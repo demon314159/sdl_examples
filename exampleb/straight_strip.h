@@ -21,7 +21,7 @@ public:
     float angle() const;
     Float3 position() const;
     float length() const;
-    void collide(Ball& ball) const;
+    void collide(Ball* ball) const;
 
 private:
     float m_angle;

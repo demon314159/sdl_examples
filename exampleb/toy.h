@@ -10,8 +10,7 @@
 #include "lamp.h"
 #include "ball.h"
 #include "flipper.h"
-#include "straight_strip.h"
-#include "concave_strip.h"
+#include "table.h"
 
 class Toy
 {
@@ -37,24 +36,15 @@ public:
     const Lamp* get_lamp() const;
 
 private:
-    Ball m_ball;
-    StraightStrip m_strip1;
-    StraightStrip m_strip2;
-    StraightStrip m_strip3;
-    StraightStrip m_strip4;
-    StraightStrip m_strip5;
-    StraightStrip m_strip6;
-    StraightStrip m_strip7;
-    StraightStrip m_strip8;
-    ConcaveStrip m_strip9;
-    StraightStrip m_strip10;
-    Lamp m_lamp;
-    Flipper m_left_flipper;
-    Flipper m_right_flipper;
-    Flipper m_top_flipper;
+    Ball* m_ball;
+    Lamp* m_lamp;
+    Table* m_table;
+    Flipper* m_left_flipper;
+    Flipper* m_right_flipper;
+    Flipper* m_top_flipper;
     CadModel* m_model;
     bool m_last_launch_action_button;
-    double m_lamp_count;
+    double m_ns_count;
     void build_model();
 };
 

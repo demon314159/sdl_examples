@@ -18,8 +18,8 @@ public:
     void set_angular_velocity(float angular_velocity);
     Float2 velocity_at_impact(float x, Float2 velocity_origin) const;
 
-    bool within_range(const Ball& ball) const;
-    void collide(Ball& ball) const;
+    bool within_range(const Ball* ball) const;
+    void collide(Ball* ball) const;
     void translate(Float2 distance);
     void rotate(float angle);
     void rotate(Float2& point, float angle) const;

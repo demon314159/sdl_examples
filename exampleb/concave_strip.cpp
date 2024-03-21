@@ -42,7 +42,7 @@ float ConcaveStrip::radius() const
     return m_radius;
 }
 
-void ConcaveStrip::collide(Ball& ball) const
+void ConcaveStrip::collide(Ball* ball) const
 {
     m_reflector.collide(ball);
 }

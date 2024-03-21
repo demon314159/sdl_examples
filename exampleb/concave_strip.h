@@ -22,7 +22,7 @@ public:
     float angle_f() const;
     Float3 position() const;
     float radius() const;
-    void collide(Ball& ball) const;
+    void collide(Ball* ball) const;
 
 private:
     float m_angle_i;
