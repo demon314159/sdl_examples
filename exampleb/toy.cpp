@@ -192,7 +192,8 @@ void Toy::right_action_button(bool on)
 void Toy::launch_action_button(bool on)
 {
     if (on && !m_last_launch_action_button) {
-        if (m_ball->position().v2 > (m_table->ball_home_position().v2 - BALL_RADIUS)) {
+        if ((m_ball->position().v2 > (m_table->ball_home_position().v2 - BALL_RADIUS))
+         && (m_ball->position().v1 > (m_table->ball_home_position().v1 - BALL_RADIUS))) {
             m_ball->set_velocity({0.0, -BALL_LAUNCH_SPEED});
         }
     }
