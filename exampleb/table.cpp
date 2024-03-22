@@ -23,6 +23,7 @@ Table::Table()
     , m_strip8(NULL)
     , m_strip9(NULL)
     , m_strip10(NULL)
+    , m_strip11(NULL)
     , m_ring1(NULL)
 {
     m_ball_home_position = {(X7 + X8) / 2.0f, Z7 - BALL_RADIUS};
@@ -37,6 +38,7 @@ Table::Table()
     m_strip8 = new StraightStrip(ANGLE4 - 180.0, {(X1 + X2) / 2.0f, Y1 / 2.0f, (ZA + Z2) / 2.0f}, R4, Y1, WOOD_COLOR, 0.2);
     m_strip9 = new ConcaveStrip(ANGLE1, ANGLE2, {X4, Y1 / 2.0f, Z4}, R1, Y1, WOOD_COLOR, 0.2, TOP_PANEL_STEPS);
     m_strip10 = new StraightStrip(0.0, {(X7 + X8) / 2.0f, Y1 / 2.0f, Z7}, X8 - X7, Y1, WOOD_COLOR, 0.0);
+    m_strip11 = new StraightStrip(ANGLE6, {XC, Y1 / 2.0f, ZC}, TB, Y1, RUBBER_COLOR, RING_REFLECTIVITY);
     m_ring1 = new Ring(ANGLE5, {XB, YB / 2.0f, ZB}, YB / 2.0f, YB / 8.0f, TB / 2.0f, RUBBER_COLOR, RING_REFLECTIVITY, RING_SEGMENTS);
 }
 
@@ -52,6 +54,7 @@ Table::~Table()
     delete m_strip8;
     delete m_strip9;
     delete m_strip10;
+    delete m_strip11;
     delete m_ring1;
 }
 
@@ -77,6 +80,7 @@ void Table::collide(Ball* ball) const
     m_strip8->collide(ball);
     m_strip9->collide(ball);
     m_strip10->collide(ball);
+    m_strip11->collide(ball);
     m_ring1->collide(ball);
 }
 
@@ -95,7 +99,14 @@ CadModel Table::model() const
     mm.add(m_strip8->model(0.0));
     mm.add(m_strip9->model(0.0));
     mm.add(m_strip10->model(0.0));
+    mm.add(m_strip11->model(0.0));
     mm.add(m_ring1->model(0.0));
+    CadModel diode(CubeShape(TB, Y1, TC), RUBBER_COLOR, 0.0);
+    diode.translate(0.0, -Y1 / 2.0f, TC / 2.0f);
+    diode.rotate_ax(-90.0);
+    diode.translate(0.0, Y1 / 2.0, 0.0);
+    diode.rotate_ay(ANGLE6);
+    mm.add(diode, XC, Y1 / 2.0f, ZC);
     CadModel cap(CylinderShape(T1 / 2.0f, Y1, 50), WOOD_COLOR, 0.0);
     CadModel barrier1(CubeShape(T1, Y1, PLAYFIELD_Z - Z3), WOOD_COLOR, 0.0);
     mm.add(barrier1, X6 + T1 / 2.0f, Y1 / 2.0f, (Z3 + PLAYFIELD_Z) / 2.0f);

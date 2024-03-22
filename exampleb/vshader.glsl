@@ -38,7 +38,6 @@ void main()
         } else if (a_animation_id == 3.0) {
             gl_Position = mvp_matrix * animation_1_matrix * vec4(a_position, 1.0);
             v_normal = rot_matrix * animation_1_matrix * vec4(billy, 0.0);
-
         } else if (a_animation_id == 4.0) {
             gl_Position = mvp_matrix * animation_2_matrix * vec4(a_position, 1.0);
             v_normal = rot_matrix * animation_2_matrix * vec4(billy, 0.0);

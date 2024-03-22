@@ -7,6 +7,12 @@
 
 #include "paint_can.h"
 
+#define ANIMATION_MATRICES 4
+#define ANIMATION_ID_0 2.0
+#define ANIMATION_ID_1 3.0
+#define ANIMATION_ID_2 4.0
+#define ANIMATION_ID_3 5.0
+
 #define PLAYFIELD_X  0.320675f
 #define PLAYFIELD_Y  0.006f
 #define PLAYFIELD_Z  0.663927777f
@@ -118,7 +124,7 @@
 #define BALL_SEGMENTS 60
 
 #define RING_SEGMENTS 50
-#define RING_REFLECTIVITY  0.5
+#define RING_REFLECTIVITY  0.6
 
 
 class Look

@@ -10,6 +10,7 @@
 #include "concave_strip.h"
 #include "cad_model.h"
 #include "float3.h"
+#include "matrix4x4.h"
 #include "pi.h"
 #include "look.h"
 #include <math.h>
@@ -37,6 +38,7 @@ private:
     StraightStrip* m_strip8;
     ConcaveStrip* m_strip9;
     StraightStrip* m_strip10;
+    StraightStrip* m_strip11;
     Ring* m_ring1;
 
     float R1 = 0.148;
@@ -48,6 +50,7 @@ private:
     float ANGLE3 = 30.12;
     float ANGLE4 = 59.7693;
     float ANGLE5 = ANGLE2 - 8.0;
+    float ANGLE6 = 45.0;
     float X1 =  0.003;
     float X6 = 0.288;
     float X8 = 0.314;
@@ -76,6 +79,9 @@ private:
     float YB = Y1 * 1.5;
     float XB = X4 + (R1 - TB / 2.0) * cos(ANGLE5 * PI / 180.0);
     float ZB = Z4 - (R1 - TB / 2.0) * sin(ANGLE5 * PI / 180.0);
+    float XC = X4 + (R1 - TB / 2.0) * cos(ANGLE6 * PI / 180.0);
+    float ZC = Z4 - (R1 - TB / 2.0) * sin(ANGLE6 * PI / 180.0);
+    float TC = TB / 10.0;
 };
 
 #endif // _TABLE_H_

@@ -8,15 +8,6 @@
 #include "look.h"
 #include <stdio.h>
 
-#define ANIMATION_0_SPEED 0.0
-#define ANIMATION_1_SPEED 0.0
-#define ANIMATION_2_SPEED 15.0
-#define ANIMATION_3_SPEED 30.0
-
-#define ANIMATION_ID_0 2.0
-#define ANIMATION_ID_1 3.0
-#define ANIMATION_ID_2 4.0
-#define ANIMATION_ID_3 5.0
 
 
 #define BALL_LAUNCH_SPEED 0.5
@@ -114,7 +105,7 @@ CadModel* Toy::get_model() const
 
 int Toy::animation_matrices() const
 {
-    return 4;
+    return ANIMATION_MATRICES;
 }
 
 void Toy::advance(int nanoseconds)
