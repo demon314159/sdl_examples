@@ -5,6 +5,7 @@
 #ifndef _TABLE_H_
 #define _TABLE_H_
 
+#include "ring.h"
 #include "straight_strip.h"
 #include "concave_strip.h"
 #include "cad_model.h"
@@ -36,6 +37,7 @@ private:
     StraightStrip* m_strip8;
     ConcaveStrip* m_strip9;
     StraightStrip* m_strip10;
+    Ring* m_ring1;
 
     float R1 = 0.148;
     float R2 = 0.145;
@@ -45,6 +47,7 @@ private:
     float ANGLE2 = 145.452;
     float ANGLE3 = 30.12;
     float ANGLE4 = 59.7693;
+    float ANGLE5 = ANGLE2 - 8.0;
     float X1 =  0.003;
     float X6 = 0.288;
     float X8 = 0.314;
@@ -69,6 +72,10 @@ private:
     float Z9 = PLAYFIELD_Z - T1;
     float Z10 = PLAYFIELD_Z;
     float R4 = sqrt((X2 - X1) * (X2 - X1) + (ZA - Z2) * (ZA - Z2));
+    float TB = X8 - X7;
+    float YB = Y1 * 1.5;
+    float XB = X4 + (R1 - TB / 2.0) * cos(ANGLE5 * PI / 180.0);
+    float ZB = Z4 - (R1 - TB / 2.0) * sin(ANGLE5 * PI / 180.0);
 };
 
 #endif // _TABLE_H_

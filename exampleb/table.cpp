@@ -6,6 +6,7 @@
 #include "plane_shape.h"
 #include "cube_shape.h"
 #include "cylinder_shape.h"
+#include "ring_shape.h"
 #include "top_panel_shape.h"
 #include "bottom_panel_shape.h"
 
@@ -22,6 +23,7 @@ Table::Table()
     , m_strip8(NULL)
     , m_strip9(NULL)
     , m_strip10(NULL)
+    , m_ring1(NULL)
 {
     m_ball_home_position = {(X7 + X8) / 2.0f, Z7 - BALL_RADIUS};
     m_ball_z_limit = Z8;
@@ -35,6 +37,7 @@ Table::Table()
     m_strip8 = new StraightStrip(ANGLE4 - 180.0, {(X1 + X2) / 2.0f, Y1 / 2.0f, (ZA + Z2) / 2.0f}, R4, Y1, WOOD_COLOR, 0.2);
     m_strip9 = new ConcaveStrip(ANGLE1, ANGLE2, {X4, Y1 / 2.0f, Z4}, R1, Y1, WOOD_COLOR, 0.2, TOP_PANEL_STEPS);
     m_strip10 = new StraightStrip(0.0, {(X7 + X8) / 2.0f, Y1 / 2.0f, Z7}, X8 - X7, Y1, WOOD_COLOR, 0.0);
+    m_ring1 = new Ring(ANGLE5, {XB, YB / 2.0f, ZB}, YB / 2.0f, YB / 8.0f, TB / 2.0f, RUBBER_COLOR, RING_REFLECTIVITY, RING_SEGMENTS);
 }
 
 Table::~Table()
@@ -49,6 +52,7 @@ Table::~Table()
     delete m_strip8;
     delete m_strip9;
     delete m_strip10;
+    delete m_ring1;
 }
 
 float Table::ball_z_limit() const
@@ -63,16 +67,17 @@ Float2 Table::ball_home_position() const
 
 void Table::collide(Ball* ball) const
 {
-    m_strip1 ->collide(ball);
-    m_strip2 ->collide(ball);
-    m_strip3 ->collide(ball);
-    m_strip4 ->collide(ball);
-    m_strip5 ->collide(ball);
-    m_strip6 ->collide(ball);
-    m_strip7 ->collide(ball);
-    m_strip8 ->collide(ball);
-    m_strip9 ->collide(ball);
-    m_strip10 ->collide(ball);
+    m_strip1->collide(ball);
+    m_strip2->collide(ball);
+    m_strip3->collide(ball);
+    m_strip4->collide(ball);
+    m_strip5->collide(ball);
+    m_strip6->collide(ball);
+    m_strip7->collide(ball);
+    m_strip8->collide(ball);
+    m_strip9->collide(ball);
+    m_strip10->collide(ball);
+    m_ring1->collide(ball);
 }
 
 CadModel Table::model() const
@@ -90,6 +95,7 @@ CadModel Table::model() const
     mm.add(m_strip8->model(0.0));
     mm.add(m_strip9->model(0.0));
     mm.add(m_strip10->model(0.0));
+    mm.add(m_ring1->model(0.0));
     CadModel cap(CylinderShape(T1 / 2.0f, Y1, 50), WOOD_COLOR, 0.0);
     CadModel barrier1(CubeShape(T1, Y1, PLAYFIELD_Z - Z3), WOOD_COLOR, 0.0);
     mm.add(barrier1, X6 + T1 / 2.0f, Y1 / 2.0f, (Z3 + PLAYFIELD_Z) / 2.0f);

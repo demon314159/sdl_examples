@@ -16,6 +16,7 @@ HEADERS = view.h \
           plane_shape.h \
           cube_shape.h \
           cylinder_shape.h \
+          ring_shape.h \
           navigate.h \
           cad_model.h \
           stl_file.h \
@@ -41,6 +42,8 @@ HEADERS = view.h \
           concave_strip.h \
           concave_plane_shape.h \
           table.h \
+          ring_model.h \
+          ring.h \
           \
           \
           \
@@ -60,6 +63,7 @@ OBJECTS = main.obj \
           plane_shape.obj \
           cube_shape.obj \
           cylinder_shape.obj \
+          ring_shape.obj \
           navigate.obj \
           cad_model.obj \
           stl_file.obj \
@@ -84,6 +88,8 @@ OBJECTS = main.obj \
           concave_strip.obj \
           concave_plane_shape.obj \
           table.obj \
+          ring_model.obj \
+          ring.obj \
           \
           \
           \

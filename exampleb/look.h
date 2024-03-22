@@ -117,6 +117,9 @@
 #define BALL_BOTTOM_COLOR PaintCan(0.0, 0.0, 1.0)
 #define BALL_SEGMENTS 60
 
+#define RING_SEGMENTS 50
+#define RING_REFLECTIVITY  0.5
+
 
 class Look
 {
