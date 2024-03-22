@@ -102,9 +102,11 @@ CadModel Table::model() const
     mm.add(m_strip11->model(0.0));
     mm.add(m_ring1->model(0.0));
     CadModel diode(CubeShape(TB, Y1, TC), RUBBER_COLOR, 0.0);
+    CadModel wall(CubeShape(TC, Y1, TB), RUBBER_COLOR, 0.0);
     diode.translate(0.0, -Y1 / 2.0f, TC / 2.0f);
     diode.rotate_ax(-90.0);
     diode.translate(0.0, Y1 / 2.0, 0.0);
+    diode.add(wall, -TB / 2.0f + TC / 2.0f, 0.0, TB / 2.0);
     diode.rotate_ay(ANGLE6);
     mm.add(diode, XC, Y1 / 2.0f, ZC);
     CadModel cap(CylinderShape(T1 / 2.0f, Y1, 50), WOOD_COLOR, 0.0);
