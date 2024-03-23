@@ -44,6 +44,8 @@ HEADERS = view.h \
           table.h \
           ring_model.h \
           ring.h \
+          pipe.h \
+          pipe_shape.h \
           \
           \
           \
@@ -90,6 +92,8 @@ OBJECTS = main.obj \
           table.obj \
           ring_model.obj \
           ring.obj \
+          pipe.obj \
+          pipe_shape.obj \
           \
           \
           \

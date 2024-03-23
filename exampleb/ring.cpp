@@ -1,5 +1,5 @@
 //
-// flipper.cpp
+// ring.cpp
 //
 
 #include "ring.h"

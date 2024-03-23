@@ -10,6 +10,9 @@
 #include "top_panel_shape.h"
 #include "bottom_panel_shape.h"
 
+#include "pipe.h"
+
+
 Table::Table()
     : m_ball_z_limit(0.0)
     , m_ball_home_position({0.0, 0.0})
@@ -126,6 +129,12 @@ CadModel Table::model() const
     mm.add(top_panel, 0.0, Y1, 0.0);
     CadModel bottom_panel(BottomPanelShape(X1, X3, X5, X6, Z5, Z6, Z9), FACE_PLATE_COLOR, 0.0);
     mm.add(bottom_panel, 0.0, Y1, 0.0);
+
+    float PIPE_RADIUS = 0.000625;
+    PaintCan PIPE_COLOR(0.42, 0.42, 0.42);
+
+    Pipe p1(0.0, {0.0, 0.0, 0.0}, PIPE_RADIUS, 0.0325, PIPE_COLOR, 10);
+    mm.add(p1.model(0.0), 0.0, 4.0 * Y1, 0.0);
     return mm;
 }
 
