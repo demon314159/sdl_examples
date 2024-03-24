@@ -45,7 +45,10 @@ HEADERS = view.h \
           ring_model.h \
           ring.h \
           pipe.h \
+          pipe_elbow.h \
           pipe_shape.h \
+          pipe_elbow_shape.h \
+          rollover.h \
           \
           \
           \
@@ -93,7 +96,10 @@ OBJECTS = main.obj \
           ring_model.obj \
           ring.obj \
           pipe.obj \
+          pipe_elbow.obj \
           pipe_shape.obj \
+          pipe_elbow_shape.obj \
+          rollover.obj \
           \
           \
           \

@@ -54,8 +54,8 @@ void PipeShape::slice(int step, float angle_i, float angle_f)
     float angle1 = angle_i + dangle * (float) step;
     float angle2 = angle_i + dangle * (float) (step + 1);
 
-    float x2 = m_length / 2.0;
-    float x1 = -m_length / 2.0;
+    float x2 = m_length;
+    float x1 = 0.0;
     float y1 = m_radius * cos(angle1);
     float z1 = m_radius * sin(angle1);
     float y2 = m_radius * cos(angle2);

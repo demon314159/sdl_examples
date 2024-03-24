@@ -10,8 +10,10 @@
 #include "top_panel_shape.h"
 #include "bottom_panel_shape.h"
 
-#include "pipe.h"
+#include "rollover.h"
 
+
+#include <stdio.h>
 
 Table::Table()
     : m_ball_z_limit(0.0)
@@ -91,7 +93,8 @@ CadModel Table::model() const
 {
     CadModel mm;
     CadModel top_playfield(PlaneShape(PLAYFIELD_X, PLAYFIELD_Z, 1.0), PaintCan(1.0, 1.0, 1.0), 99.0);
-    mm.add(top_playfield, PLAYFIELD_X / 2.0, 0.0, PLAYFIELD_Z / 2.0);
+    CadModel backlight(PlaneShape(PLAYFIELD_X, PLAYFIELD_Z, 0.0), PaintCan(0.0, 0.0, 0.0), 1.0);
+    mm.add(backlight, PLAYFIELD_X / 2.0, -PLAYFIELD_Y * 5.0 / 6.0, PLAYFIELD_Z / 2.0);
     mm.add(m_strip1->model(0.0));
     mm.add(m_strip2->model(0.0));
     mm.add(m_strip3->model(0.0));
@@ -130,11 +133,23 @@ CadModel Table::model() const
     CadModel bottom_panel(BottomPanelShape(X1, X3, X5, X6, Z5, Z6, Z9), FACE_PLATE_COLOR, 0.0);
     mm.add(bottom_panel, 0.0, Y1, 0.0);
 
-    float PIPE_RADIUS = 0.000625;
-    PaintCan PIPE_COLOR(0.42, 0.42, 0.42);
+    Float3 position1 = {0.17275, 0.0, 0.09125};
+    Float3 position2 = {0.19825, 0.0, 0.09125};
+    Float3 position3 = {0.22475, 0.0, 0.09125};
+    float length = 0.0305;
+    float width = 0.0025;
+    float diameter = 0.00125;
 
-    Pipe p1(0.0, {0.0, 0.0, 0.0}, PIPE_RADIUS, 0.0325, PIPE_COLOR, 10);
-    mm.add(p1.model(0.0), 0.0, 4.0 * Y1, 0.0);
+    Rollover rollover1(90.0, position1, length, width, diameter, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
+    Rollover rollover2(90.0, position2, length, width, diameter, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
+    Rollover rollover3(90.0, position3, length, width, diameter, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
+    mm.add(rollover1.model(0.0), 0.0, 0.0, 0.0);
+    mm.add(rollover2.model(0.0), 0.0, 0.0, 0.0);
+    mm.add(rollover3.model(0.0), 0.0, 0.0, 0.0);
+
+
+
+    mm.add(top_playfield, PLAYFIELD_X / 2.0, 0.0, PLAYFIELD_Z / 2.0);
     return mm;
 }
 

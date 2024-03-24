@@ -126,6 +126,8 @@
 #define RING_SEGMENTS 50
 #define RING_REFLECTIVITY  0.6
 
+#define ROLLOVER_SEGMENTS 25
+#define ROLLOVER_COLOR PaintCan(0.42, 0.42, 0.42)
 
 class Look
 {
