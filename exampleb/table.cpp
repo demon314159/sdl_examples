@@ -11,6 +11,7 @@
 #include "bottom_panel_shape.h"
 
 #include "rollover.h"
+#include "straight_wire_guide.h"
 
 
 #include <stdio.h>
@@ -30,6 +31,12 @@ Table::Table()
     , m_strip10(NULL)
     , m_strip11(NULL)
     , m_ring1(NULL)
+    , m_wire_guide1(NULL)
+    , m_wire_guide2(NULL)
+    , m_wire_guide3(NULL)
+    , m_wire_guide4(NULL)
+    , m_wire_guide5(NULL)
+    , m_wire_guide6(NULL)
 {
     m_ball_home_position = {(X7 + X8) / 2.0f, Z7 - BALL_RADIUS};
     m_ball_z_limit = Z8;
@@ -45,6 +52,26 @@ Table::Table()
     m_strip10 = new StraightStrip(0.0, {(X7 + X8) / 2.0f, Y1 / 2.0f, Z7}, X8 - X7, Y1, WOOD_COLOR, 0.0);
     m_strip11 = new StraightStrip(ANGLE6, {XC, Y1 / 2.0f, ZC}, TB, Y1, RUBBER_COLOR, RING_REFLECTIVITY);
     m_ring1 = new Ring(ANGLE5, {XB, YB / 2.0f, ZB}, YB / 2.0f, YB / 8.0f, TB / 2.0f, RUBBER_COLOR, RING_REFLECTIVITY, RING_SEGMENTS);
+
+    Float3 position1 = {0.02775, 0.0, 0.47625};
+    Float3 position2 = {0.262, 0.0, 0.47525};
+    Float3 position3 = {0.028, 0.0, 0.479};
+    Float3 position4 = {0.2035, 0.0, 0.519};
+    Float3 position5 = {0.0485, 0.0, 0.46275};
+    Float3 position6 = {0.241, 0.0, 0.4625};
+    float length1 = 0.06525;
+    float length2 = 0.049;
+    float length3 = 0.07115;
+    float length4 = 0.07129;
+    float length5 = 0.04925;
+    float length6 = 0.02175;
+    float height = Y1 / 2.0;
+    m_wire_guide1 = new StraightWireGuide(90.0, position1, length1, height, WIRE_GUIDE_DIAMETER, WIRE_GUIDE_COLOR, WIRE_GUIDE_REFLECTIVITY, WIRE_GUIDE_SEGMENTS);
+    m_wire_guide2 = new StraightWireGuide(90.0, position2, length2, height, WIRE_GUIDE_DIAMETER, WIRE_GUIDE_COLOR, WIRE_GUIDE_REFLECTIVITY, WIRE_GUIDE_SEGMENTS);
+    m_wire_guide3 = new StraightWireGuide(-34.695, position3, length3, height, WIRE_GUIDE_DIAMETER, WIRE_GUIDE_COLOR, WIRE_GUIDE_REFLECTIVITY, WIRE_GUIDE_SEGMENTS);
+    m_wire_guide4 = new StraightWireGuide(34.860, position4, length4, height, WIRE_GUIDE_DIAMETER, WIRE_GUIDE_COLOR, WIRE_GUIDE_REFLECTIVITY, WIRE_GUIDE_SEGMENTS);
+    m_wire_guide5 = new StraightWireGuide(90.0, position5, length5, height, WIRE_GUIDE_DIAMETER, WIRE_GUIDE_COLOR, WIRE_GUIDE_REFLECTIVITY, WIRE_GUIDE_SEGMENTS);
+    m_wire_guide6 = new StraightWireGuide(90.0, position6, length6, height, WIRE_GUIDE_DIAMETER, WIRE_GUIDE_COLOR, WIRE_GUIDE_REFLECTIVITY, WIRE_GUIDE_SEGMENTS);
 }
 
 Table::~Table()
@@ -61,6 +88,12 @@ Table::~Table()
     delete m_strip10;
     delete m_strip11;
     delete m_ring1;
+    delete m_wire_guide1;
+    delete m_wire_guide2;
+    delete m_wire_guide3;
+    delete m_wire_guide4;
+    delete m_wire_guide5;
+    delete m_wire_guide6;
 }
 
 float Table::ball_z_limit() const
@@ -87,6 +120,12 @@ void Table::collide(Ball* ball) const
     m_strip10->collide(ball);
     m_strip11->collide(ball);
     m_ring1->collide(ball);
+    m_wire_guide1->collide(ball);
+    m_wire_guide2->collide(ball);
+    m_wire_guide3->collide(ball);
+    m_wire_guide4->collide(ball);
+    m_wire_guide5->collide(ball);
+    m_wire_guide6->collide(ball);
 }
 
 CadModel Table::model() const
@@ -144,16 +183,15 @@ CadModel Table::model() const
     float type1_length = 0.0305;
     float type2_length = 0.02125;
     float width = 0.0025;
-    float diameter = 0.00125;
 
-    Rollover rollover1(90.0, position1, type1_length, width, diameter, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
-    Rollover rollover2(90.0, position2, type1_length, width, diameter, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
-    Rollover rollover3(90.0, position3, type1_length, width, diameter, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
-    Rollover rollover4(90.0, position4, type1_length, width, diameter, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
-    Rollover rollover5(90.0, position5, type2_length, width, diameter, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
-    Rollover rollover6(90.0, position6, type1_length, width, diameter, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
-    Rollover rollover7(90.0, position7, type1_length, width, diameter, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
-    Rollover rollover8(90.0, position8, type2_length, width, diameter, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
+    Rollover rollover1(90.0, position1, type1_length, width, ROLLOVER_WIRE_DIAMETER, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
+    Rollover rollover2(90.0, position2, type1_length, width, ROLLOVER_WIRE_DIAMETER, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
+    Rollover rollover3(90.0, position3, type1_length, width, ROLLOVER_WIRE_DIAMETER, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
+    Rollover rollover4(90.0, position4, type1_length, width, ROLLOVER_WIRE_DIAMETER, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
+    Rollover rollover5(90.0, position5, type2_length, width, ROLLOVER_WIRE_DIAMETER, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
+    Rollover rollover6(90.0, position6, type1_length, width, ROLLOVER_WIRE_DIAMETER, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
+    Rollover rollover7(90.0, position7, type1_length, width, ROLLOVER_WIRE_DIAMETER, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
+    Rollover rollover8(90.0, position8, type2_length, width, ROLLOVER_WIRE_DIAMETER, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
     mm.add(rollover1.model(0.0), 0.0, 0.0, 0.0);
     mm.add(rollover2.model(0.0), 0.0, 0.0, 0.0);
     mm.add(rollover3.model(0.0), 0.0, 0.0, 0.0);
@@ -163,7 +201,12 @@ CadModel Table::model() const
     mm.add(rollover7.model(0.0), 0.0, 0.0, 0.0);
     mm.add(rollover8.model(0.0), 0.0, 0.0, 0.0);
 
-
+    mm.add(m_wire_guide1->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_wire_guide2->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_wire_guide3->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_wire_guide4->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_wire_guide5->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_wire_guide6->model(0.0), 0.0, 0.0, 0.0);
 
     mm.add(top_playfield, PLAYFIELD_X / 2.0, 0.0, PLAYFIELD_Z / 2.0);
     return mm;

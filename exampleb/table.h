@@ -5,6 +5,7 @@
 #ifndef _TABLE_H_
 #define _TABLE_H_
 
+#include "straight_wire_guide.h"
 #include "ring.h"
 #include "straight_strip.h"
 #include "concave_strip.h"
@@ -40,6 +41,12 @@ private:
     StraightStrip* m_strip10;
     StraightStrip* m_strip11;
     Ring* m_ring1;
+    StraightWireGuide* m_wire_guide1;
+    StraightWireGuide* m_wire_guide2;
+    StraightWireGuide* m_wire_guide3;
+    StraightWireGuide* m_wire_guide4;
+    StraightWireGuide* m_wire_guide5;
+    StraightWireGuide* m_wire_guide6;
 
     float R1 = 0.148;
     float R2 = 0.145;

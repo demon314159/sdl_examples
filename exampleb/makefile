@@ -49,6 +49,7 @@ HEADERS = view.h \
           pipe_shape.h \
           pipe_elbow_shape.h \
           rollover.h \
+          straight_wire_guide.h \
           \
           \
           \
@@ -100,6 +101,7 @@ OBJECTS = main.obj \
           pipe_shape.obj \
           pipe_elbow_shape.obj \
           rollover.obj \
+          straight_wire_guide.obj \
           \
           \
           \
