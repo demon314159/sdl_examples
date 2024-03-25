@@ -8,6 +8,7 @@
 #include "straight_wire_guide.h"
 #include "ring.h"
 #include "straight_strip.h"
+#include "straight_diode_strip.h"
 #include "concave_strip.h"
 #include "cad_model.h"
 #include "float3.h"
@@ -39,7 +40,7 @@ private:
     StraightStrip* m_strip8;
     ConcaveStrip* m_strip9;
     StraightStrip* m_strip10;
-    StraightStrip* m_strip11;
+    StraightDiodeStrip* m_strip11;
     Ring* m_ring1;
     StraightWireGuide* m_wire_guide1;
     StraightWireGuide* m_wire_guide2;

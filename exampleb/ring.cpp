@@ -17,14 +17,24 @@ Ring::Ring(float angle, Float3 position, float outer_radius, float inner_radius,
     , m_steps(steps)
     , m_reflector1(width, reflectivity)
     , m_reflector2(width, reflectivity)
+    , m_reflector3(outer_radius * 2.0f, 0.0)
+    , m_reflector4(outer_radius * 2.0f, 0.0)
 {
     m_reflector1.translate({0.0, -outer_radius});
     m_reflector2.rotate(180.0);
     m_reflector2.translate({0.0, outer_radius});
+    m_reflector3.rotate(90.0);
+    m_reflector3.translate({-width / 2.0f, 0.0});
+    m_reflector4.rotate(-90.0);
+    m_reflector4.translate({width / 2.0f, 0.0});
     m_reflector1.rotate(angle);
     m_reflector2.rotate(angle);
+    m_reflector3.rotate(angle);
+    m_reflector4.rotate(angle);
     m_reflector1.translate({position.v1, position.v3});
     m_reflector2.translate({position.v1, position.v3});
+    m_reflector3.translate({position.v1, position.v3});
+    m_reflector4.translate({position.v1, position.v3});
 }
 
 Ring::~Ring()
@@ -45,6 +55,8 @@ void Ring::collide(Ball* ball) const
 {
     m_reflector1.collide(ball);
     m_reflector2.collide(ball);
+    m_reflector3.collide(ball);
+    m_reflector4.collide(ball);
 }
 
 CadModel Ring::model(float animation_id) const

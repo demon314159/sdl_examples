@@ -32,6 +32,8 @@ private:
     int m_steps;
     StraightReflector m_reflector1;
     StraightReflector m_reflector2;
+    StraightReflector m_reflector3;
+    StraightReflector m_reflector4;
 };
 
 #endif // _RING_H_

@@ -125,31 +125,41 @@ void StraightReflector::collide(Ball* ball) const
     rotate(vo, -m_angle);
     // test for ball z position to be more than -radius
     if (within_range(&ball_copy)) { // collision
-        Float2 impact_velocity = {0.0, 0.0};
-        // Adjust frame for velocity at point of impact
-        if (m_angular_velocity != 0.0) {
-            impact_velocity = velocity_at_impact(ball_copy.position().v1, vo);
-            ball_copy.translate_velocity_frame({-impact_velocity.v1, -impact_velocity.v2});
+
+
+        if (ball_copy.velocity().v2 >= 0.0) {
+
+
+            Float2 impact_velocity = {0.0, 0.0};
+            // Adjust frame for velocity at point of impact
+            if (m_angular_velocity != 0.0) {
+                impact_velocity = velocity_at_impact(ball_copy.position().v1, vo);
+                ball_copy.translate_velocity_frame({-impact_velocity.v1, -impact_velocity.v2});
+            }
+            // negate ball z velocity
+            Float2 temp = ball_copy.velocity();
+            if (temp.v2 > 0.0) {
+                temp.v2 *= m_reflectivity;
+                ball_copy.set_velocity({temp.v1, -temp.v2});
+            }
+            // ball z pos -= (ball_z + radius)
+            temp = ball_copy.position();
+            ball_copy.set_position({temp.v1, (float) -2.0 * ball_copy.radius() - temp.v2});
+            // Unadjust frame for velocity at point of impact
+            if (m_angular_velocity != 0.0) {
+                ball_copy.translate_velocity_frame(impact_velocity);
+            }
+            // rotate reflector by angle and bring ball position and velocity
+            ball_copy.rotate_frame(m_angle);
+            // translate reflector to position and bring ball position and velocity
+            ball_copy.translate_frame({m_position.v1, m_position.v2});
+            // replace ball with new info
+            *ball = ball_copy;
+
+
         }
-        // negate ball z velocity
-        Float2 temp = ball_copy.velocity();
-        if (temp.v2 > 0.0) {
-            temp.v2 *= m_reflectivity;
-            ball_copy.set_velocity({temp.v1, -temp.v2});
-        }
-        // ball z pos -= (ball_z + radius)
-        temp = ball_copy.position();
-        ball_copy.set_position({temp.v1, (float) -2.0 * ball_copy.radius() - temp.v2});
-        // Unadjust frame for velocity at point of impact
-        if (m_angular_velocity != 0.0) {
-            ball_copy.translate_velocity_frame(impact_velocity);
-        }
-        // rotate reflector by angle and bring ball position and velocity
-        ball_copy.rotate_frame(m_angle);
-        // translate reflector to position and bring ball position and velocity
-        ball_copy.translate_frame({m_position.v1, m_position.v2});
-        // replace ball with new info
-        *ball = ball_copy;
+
+
     }
 }
 

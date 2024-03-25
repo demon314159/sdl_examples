@@ -34,11 +34,13 @@ HEADERS = view.h \
           lamp.h \
           ball.h \
           straight_reflector.h \
+          straight_diode_reflector.h \
           convex_reflector.h \
           concave_reflector.h \
           flipper_model.h \
           flipper.h \
           straight_strip.h \
+          straight_diode_strip.h \
           concave_strip.h \
           concave_plane_shape.h \
           table.h \
@@ -86,11 +88,13 @@ OBJECTS = main.obj \
           lamp.obj \
           ball.obj \
           straight_reflector.obj \
+          straight_diode_reflector.obj \
           convex_reflector.obj \
           concave_reflector.obj \
           flipper_model.obj \
           flipper.obj \
           straight_strip.obj \
+          straight_diode_strip.obj \
           concave_strip.obj \
           concave_plane_shape.obj \
           table.obj \
