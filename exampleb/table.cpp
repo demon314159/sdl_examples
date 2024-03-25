@@ -136,16 +136,32 @@ CadModel Table::model() const
     Float3 position1 = {0.17275, 0.0, 0.09125};
     Float3 position2 = {0.19825, 0.0, 0.09125};
     Float3 position3 = {0.22475, 0.0, 0.09125};
-    float length = 0.0305;
+    Float3 position4 = {0.2725, 0.0, 0.2295};
+    Float3 position5 = {0.01675, 0.0, 0.45588};
+    Float3 position6 = {0.03825, 0.0, 0.45125};
+    Float3 position7 = {0.25125, 0.0, 0.451375};
+    Float3 position8 = {0.27275, 0.0, 0.45525};
+    float type1_length = 0.0305;
+    float type2_length = 0.02125;
     float width = 0.0025;
     float diameter = 0.00125;
 
-    Rollover rollover1(90.0, position1, length, width, diameter, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
-    Rollover rollover2(90.0, position2, length, width, diameter, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
-    Rollover rollover3(90.0, position3, length, width, diameter, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
+    Rollover rollover1(90.0, position1, type1_length, width, diameter, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
+    Rollover rollover2(90.0, position2, type1_length, width, diameter, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
+    Rollover rollover3(90.0, position3, type1_length, width, diameter, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
+    Rollover rollover4(90.0, position4, type1_length, width, diameter, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
+    Rollover rollover5(90.0, position5, type2_length, width, diameter, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
+    Rollover rollover6(90.0, position6, type1_length, width, diameter, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
+    Rollover rollover7(90.0, position7, type1_length, width, diameter, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
+    Rollover rollover8(90.0, position8, type2_length, width, diameter, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
     mm.add(rollover1.model(0.0), 0.0, 0.0, 0.0);
     mm.add(rollover2.model(0.0), 0.0, 0.0, 0.0);
     mm.add(rollover3.model(0.0), 0.0, 0.0, 0.0);
+    mm.add(rollover4.model(0.0), 0.0, 0.0, 0.0);
+    mm.add(rollover5.model(0.0), 0.0, 0.0, 0.0);
+    mm.add(rollover6.model(0.0), 0.0, 0.0, 0.0);
+    mm.add(rollover7.model(0.0), 0.0, 0.0, 0.0);
+    mm.add(rollover8.model(0.0), 0.0, 0.0, 0.0);
 
 
 

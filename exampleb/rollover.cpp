@@ -8,9 +8,6 @@
 #include "pi.h"
 #include <math.h>
 
-#include <stdio.h>
-
-
 Rollover::Rollover(float angle, Float3 position, float length, float width, float diameter,
            const PaintCan& color, int steps)
     : m_angle(angle)
@@ -83,7 +80,7 @@ CadModel Rollover::model(float animation_id) const
     PipeElbow p23(p2.end_angle(), p2.end_position(), m_diameter / 2.0, a3 - a2, m_diameter, m_color, m_steps, m_steps);
     Pipe p3(p23.end_angle(), p23.end_position(), m_diameter / 2.0, lead, m_color, m_steps);
     float actual_length = p3.end_position().v1;
-    printf("m_length = %.6f, ideal_length = %.6f, actual length = %.6f\n", m_length, x1, actual_length);
+//    printf("m_length = %.6f, ideal_length = %.6f, actual length = %.6f\n", m_length, x1, actual_length);
 
     mm.add(p0.model(0.0), 0.0, 0.0, 0.0);
     mm.add(p01.model(0.0), 0.0, 0.0, 0.0);
