@@ -10,7 +10,7 @@
 
 
 
-#define BALL_LAUNCH_SPEED 0.8
+#define BALL_LAUNCH_SPEED 0.9
 #define BALL_ACCELERATION 0.25
 
 Toy::Toy()

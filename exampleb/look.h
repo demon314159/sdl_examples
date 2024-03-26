@@ -121,7 +121,7 @@
 #define BALL_TOP_COLOR PaintCan(1.0, 0.0, 0.0)
 #define BALL_MIDDLE_COLOR PaintCan(1.0, 1.0, 1.0)
 #define BALL_BOTTOM_COLOR PaintCan(0.0, 0.0, 1.0)
-#define BALL_SEGMENTS 60
+#define BALL_SEGMENTS 80
 
 #define RING_SEGMENTS 50
 #define RING_REFLECTIVITY  0.6

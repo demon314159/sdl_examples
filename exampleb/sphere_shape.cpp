@@ -41,7 +41,7 @@ Facet SphereShape::facet(int facet_ix) const
 
 void SphereShape::define_shape()
 {
-    int steps = round(m_steps * (m_lattitude_f - m_lattitude_i) / PI);
+    int steps = round(m_steps * (m_lattitude_f - m_lattitude_i) / (2.0 * PI));
     steps = (steps < 1) ? 1 : steps;
     for (int i = 0; i < steps; i++) {
         sphere_slice(i, steps, m_radius, m_lattitude_i, m_lattitude_f);
