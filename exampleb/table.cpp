@@ -65,7 +65,7 @@ Table::Table()
     float length4 = 0.07129;
     float length5 = 0.04925;
     float length6 = 0.02175;
-    float height = Y1 / 2.0;
+    float height = BALL_RADIUS;
     m_wire_guide1 = new StraightWireGuide(90.0, position1, length1, height, WIRE_GUIDE_DIAMETER, WIRE_GUIDE_COLOR, WIRE_GUIDE_REFLECTIVITY, WIRE_GUIDE_SEGMENTS);
     m_wire_guide2 = new StraightWireGuide(90.0, position2, length2, height, WIRE_GUIDE_DIAMETER, WIRE_GUIDE_COLOR, WIRE_GUIDE_REFLECTIVITY, WIRE_GUIDE_SEGMENTS);
     m_wire_guide3 = new StraightWireGuide(-34.695, position3, length3, height, WIRE_GUIDE_DIAMETER, WIRE_GUIDE_COLOR, WIRE_GUIDE_REFLECTIVITY, WIRE_GUIDE_SEGMENTS);
