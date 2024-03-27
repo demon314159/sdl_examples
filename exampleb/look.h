@@ -135,6 +135,13 @@
 #define WIRE_GUIDE_COLOR PaintCan(0.42, 0.42, 0.42)
 #define WIRE_GUIDE_REFLECTIVITY  0.2
 
+#define LANE_GUIDE_DIAMETER 0.008
+#define LANE_GUIDE_SEGMENTS 50
+#define LANE_GUIDE_COLOR PaintCan(1.0, 1.0, 0.0)
+#define LANE_GUIDE_REFLECTIVITY  0.2
+
+#define METAL_COLOR PaintCan(0.42, 0.42, 0.42)
+
 class Look
 {
 public:

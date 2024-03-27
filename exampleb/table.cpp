@@ -37,6 +37,7 @@ Table::Table()
     , m_wire_guide4(NULL)
     , m_wire_guide5(NULL)
     , m_wire_guide6(NULL)
+    , m_lane_guide1(NULL)
 {
     m_ball_home_position = {(X7 + X8) / 2.0f, Z7 - BALL_RADIUS};
     m_ball_z_limit = Z8;
@@ -50,7 +51,7 @@ Table::Table()
     m_strip8 = new StraightStrip(ANGLE4 - 180.0, {(X1 + X2) / 2.0f, Y1 / 2.0f, (ZA + Z2) / 2.0f}, R4, Y1, WOOD_COLOR, 0.2);
     m_strip9 = new ConcaveStrip(ANGLE1, ANGLE2, {X4, Y1 / 2.0f, Z4}, R1, Y1, WOOD_COLOR, 0.2, TOP_PANEL_STEPS);
     m_strip10 = new StraightStrip(0.0, {(X7 + X8) / 2.0f, Y1 / 2.0f, Z7}, X8 - X7, Y1, WOOD_COLOR, 0.0);
-    m_strip11 = new StraightDiodeStrip(ANGLE6, {XC, Y1 / 2.0f, ZC}, TB, Y1, RUBBER_COLOR, RING_REFLECTIVITY);
+    m_strip11 = new StraightDiodeStrip(ANGLE6, {XC, Y1 / 2.0f, ZC}, TB, Y1, METAL_COLOR, RING_REFLECTIVITY);
     m_ring1 = new Ring(ANGLE5, {XB, YB / 2.0f, ZB}, YB / 2.0f - TB / 4.0f, YB / 8.0f, TB / 2.0f, RUBBER_COLOR, RING_REFLECTIVITY, RING_SEGMENTS);
 
     Float3 position1 = {0.02775, 0.0, 0.47625};
@@ -72,6 +73,8 @@ Table::Table()
     m_wire_guide4 = new StraightWireGuide(34.860, position4, length4, height, WIRE_GUIDE_DIAMETER, WIRE_GUIDE_COLOR, WIRE_GUIDE_REFLECTIVITY, WIRE_GUIDE_SEGMENTS);
     m_wire_guide5 = new StraightWireGuide(90.0, position5, length5, height, WIRE_GUIDE_DIAMETER, WIRE_GUIDE_COLOR, WIRE_GUIDE_REFLECTIVITY, WIRE_GUIDE_SEGMENTS);
     m_wire_guide6 = new StraightWireGuide(90.0, position6, length6, height, WIRE_GUIDE_DIAMETER, WIRE_GUIDE_COLOR, WIRE_GUIDE_REFLECTIVITY, WIRE_GUIDE_SEGMENTS);
+    m_lane_guide1 = new LaneGuide(90.0, {0.185, 0.0, 0.105}, 0.032, BALL_RADIUS - LANE_GUIDE_DIAMETER, LANE_GUIDE_DIAMETER, LANE_GUIDE_COLOR, LANE_GUIDE_REFLECTIVITY, LANE_GUIDE_SEGMENTS);
+    m_lane_guide2 = new LaneGuide(90.0, {0.2115, 0.0, 0.105}, 0.032, BALL_RADIUS - LANE_GUIDE_DIAMETER, LANE_GUIDE_DIAMETER, LANE_GUIDE_COLOR, LANE_GUIDE_REFLECTIVITY, LANE_GUIDE_SEGMENTS);
 }
 
 Table::~Table()
@@ -94,6 +97,8 @@ Table::~Table()
     delete m_wire_guide4;
     delete m_wire_guide5;
     delete m_wire_guide6;
+    delete m_lane_guide1;
+    delete m_lane_guide2;
 }
 
 float Table::ball_z_limit() const
@@ -126,6 +131,8 @@ void Table::collide(Ball* ball) const
     m_wire_guide4->collide(ball);
     m_wire_guide5->collide(ball);
     m_wire_guide6->collide(ball);
+    m_lane_guide1->collide(ball);
+    m_lane_guide2->collide(ball);
 }
 
 CadModel Table::model() const
@@ -207,6 +214,9 @@ CadModel Table::model() const
     mm.add(m_wire_guide4->model(0.0), 0.0, 0.0, 0.0);
     mm.add(m_wire_guide5->model(0.0), 0.0, 0.0, 0.0);
     mm.add(m_wire_guide6->model(0.0), 0.0, 0.0, 0.0);
+
+    mm.add(m_lane_guide1->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_lane_guide2->model(0.0), 0.0, 0.0, 0.0);
 
     mm.add(top_playfield, PLAYFIELD_X / 2.0, 0.0, PLAYFIELD_Z / 2.0);
     return mm;
