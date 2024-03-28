@@ -12,12 +12,13 @@
 class TriangularPrismShape: public Shape
 {
 public:
-    TriangularPrismShape(float length, float width, float height, float corner_radius = 0.0);
+    TriangularPrismShape(bool lighted, float length, float width, float height, float corner_radius = 0.0);
     virtual ~TriangularPrismShape();
     int facets() const override;
     Facet facet(int facet_ix) const override;
 
 private:
+    bool m_lighted;
     float m_length;
     float m_width;
     float m_height;

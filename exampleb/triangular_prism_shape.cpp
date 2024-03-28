@@ -6,8 +6,9 @@
 #include "pi.h"
 #include "math.h"
 
-TriangularPrismShape::TriangularPrismShape(float length, float width, float height, float corner_radius)
-    : m_length(length)
+TriangularPrismShape::TriangularPrismShape(bool lighted, float length, float width, float height, float corner_radius)
+    : m_lighted(lighted)
+    , m_length(length)
     , m_width(width)
     , m_height(height)
     , m_corner_radius(corner_radius)
@@ -61,19 +62,21 @@ void TriangularPrismShape::define_shape()
     float uz0 = -r;
     float uz1 = r;
 
-    add_face({x1, y0, z0}, {x2, y0, z0}, {ux2, y1, uz0}, {ux1, y1, uz0}, true);
-    add_face({x1, y0, z3}, {x2, y0, z3}, {ux2, y1, uz1}, {ux1, y1, uz1}, false);
-    add_face({x0, y0, z1}, {x0, y0, z2}, {ux0, y1, uz1}, {ux0, y1, uz0}, false);
-    add_face({x3, y0, z1}, {x3, y0, z2}, {ux3, y1, uz1}, {ux3, y1, uz0}, true);
+    if (m_lighted) {
+        add_face({x1, y0, z0}, {x2, y0, z0}, {ux2, y1, uz0}, {ux1, y1, uz0}, true);
+        add_face({x1, y0, z3}, {x2, y0, z3}, {ux2, y1, uz1}, {ux1, y1, uz1}, false);
+    } else {
+        add_face({x0, y0, z1}, {x0, y0, z2}, {ux0, y1, uz1}, {ux0, y1, uz0}, false);
+        add_face({x3, y0, z1}, {x3, y0, z2}, {ux3, y1, uz1}, {ux3, y1, uz0}, true);
 
-    add_face({x0, y0, z1}, {x1, y0, z0}, {ux1, y1, uz0}, {ux0, y1, 0.0}, true);
-    add_face({x0, y0, z2}, {x1, y0, z3}, {ux1, y1, uz1}, {ux0, y1, 0.0}, false);
-    add_face({x2, y0, z0}, {x3, y0, z1}, {ux3, y1, 0.0}, {ux2, y1, uz0}, true);
-    add_face({x2, y0, z3}, {x3, y0, z2}, {ux3, y1, 0.0}, {ux2, y1, uz1}, false);
+        add_face({x0, y0, z1}, {x1, y0, z0}, {ux1, y1, uz0}, {ux0, y1, 0.0}, true);
+        add_face({x0, y0, z2}, {x1, y0, z3}, {ux1, y1, uz1}, {ux0, y1, 0.0}, false);
+        add_face({x2, y0, z0}, {x3, y0, z1}, {ux3, y1, 0.0}, {ux2, y1, uz0}, true);
+        add_face({x2, y0, z3}, {x3, y0, z2}, {ux3, y1, 0.0}, {ux2, y1, uz1}, false);
 
-    add_face({ux0, y1, 0.0}, {ux3, y1, 0.0}, {ux2, y1, uz0}, {ux1, y1, uz0}, false);
-    add_face({ux0, y1, 0.0}, {ux3, y1, 0.0}, {ux2, y1, uz1}, {ux1, y1, uz1}, true);
-
+        add_face({ux0, y1, 0.0}, {ux3, y1, 0.0}, {ux2, y1, uz0}, {ux1, y1, uz0}, false);
+        add_face({ux0, y1, 0.0}, {ux3, y1, 0.0}, {ux2, y1, uz1}, {ux1, y1, uz1}, true);
+    }
 }
 
 void TriangularPrismShape::add_face(Float3 v1, Float3 v2, Float3 v3, Float3 v4, bool flip)
