@@ -14,7 +14,7 @@
 class LaneGuide
 {
 public:
-    LaneGuide(float angle, Float3 position, float length, float height, float diameter, const PaintCan& color, int reflectivity, int steps);
+    LaneGuide(float angle, Float3 position, float length, float height, float width, const PaintCan& color, float reflectivity, int steps);
     ~LaneGuide();
 
     CadModel model(float animation_id) const;
@@ -22,7 +22,7 @@ public:
     Float3 position() const;
     float length() const;
     float height() const;
-    float diameter() const;
+    float width() const;
     void collide(Ball* ball) const;
 
 private:
@@ -30,7 +30,7 @@ private:
     Float3 m_position;
     float m_length;
     float m_height;
-    float m_diameter;
+    float m_width;
     PaintCan m_color;
     int m_steps;
     ConvexReflector m_reflector1;

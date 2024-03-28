@@ -28,6 +28,8 @@ HEADERS = view.h \
           \
           sphere_shape.h \
           toroid_shape.h \
+          triangular_prism_shape.h \
+          cone_shape.h \
           top_panel_shape.h \
           bottom_panel_shape.h \
           flipper_shape.h \
@@ -84,6 +86,8 @@ OBJECTS = main.obj \
           \
           sphere_shape.obj \
           toroid_shape.obj \
+          triangular_prism_shape.obj \
+          cone_shape.obj \
           top_panel_shape.obj \
           bottom_panel_shape.obj \
           flipper_shape.obj \

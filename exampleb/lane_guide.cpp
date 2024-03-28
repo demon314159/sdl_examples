@@ -6,24 +6,29 @@
 #include "pipe.h"
 #include "pipe_elbow.h"
 #include "cube_shape.h"
+#include "cylinder_shape.h"
+#include "ring_shape.h"
+#include "toroid_shape.h"
+#include "triangular_prism_shape.h"
+#include "cone_shape.h"
 #include "pi.h"
 #include <math.h>
 
 #include <stdio.h>
 
-LaneGuide::LaneGuide(float angle, Float3 position, float length, float height, float diameter,
-                     const PaintCan& color, int reflectivity, int steps)
+LaneGuide::LaneGuide(float angle, Float3 position, float length, float height, float width,
+                     const PaintCan& color, float reflectivity, int steps)
     : m_angle(angle)
     , m_position(position)
     , m_length(length)
     , m_height(height)
-    , m_diameter(diameter)
+    , m_width(width)
     , m_color(color)
     , m_steps(steps)
-    , m_reflector1(true, diameter / 2.0, diameter / 2.0, length, reflectivity)
-    , m_reflector2(false, diameter / 2.0, diameter / 2.0, length, reflectivity)
-    , m_reflector3(true, diameter / 2.0, diameter / 2.0, length, reflectivity)
-    , m_reflector4(false, diameter / 2.0, diameter / 2.0, length, reflectivity)
+    , m_reflector1(true, width / 2.0, width / 2.0, length, reflectivity)
+    , m_reflector2(false, width / 2.0, width / 2.0, length, reflectivity)
+    , m_reflector3(true, width / 2.0, width / 2.0, length, reflectivity)
+    , m_reflector4(false, width / 2.0, width / 2.0, length, reflectivity)
 {
     m_reflector1.rotate(angle);
     m_reflector1.translate({position.v1, position.v3});
@@ -59,9 +64,9 @@ float LaneGuide::height() const
     return m_height;
 }
 
-float LaneGuide::diameter() const
+float LaneGuide::width() const
 {
-    return m_diameter;
+    return m_width;
 }
 
 void LaneGuide::collide(Ball* ball) const
@@ -74,26 +79,27 @@ void LaneGuide::collide(Ball* ball) const
 
 CadModel LaneGuide::model(float animation_id) const
 {
+    float fpost = 0.75;
+    float f1 = fpost * 0.75;
+    float f0 = 0.35;
+    float rbumper = 0.002;
     CadModel mm;
-
-    float a0 = 90.0;
-    float a1 = 0.0;
-    float a2 = -90.0;
-
-    CadModel base(CubeShape(m_length, m_diameter / 4.0f, m_diameter), m_color, 0.0);
-    Pipe p0(a0, {0.0, 0.0, 0.0}, m_diameter / 2.0, m_height, m_color, m_steps);
-    PipeElbow p01(p0.end_angle(), p0.end_position(), m_diameter / 2.0, a1 - a0, m_diameter, m_color, m_steps, m_steps);
-    float extra = p01.end_position().v1;
-    Pipe p1(p01.end_angle(), p01.end_position(), m_diameter / 2.0, m_length - 2.0 * extra, m_color, m_steps);
-    PipeElbow p12(p1.end_angle(), p1.end_position(), m_diameter / 2.0, a2 - a1, m_diameter, m_color, m_steps, m_steps);
-    Pipe p2(p12.end_angle(), p12.end_position(), m_diameter / 2.0, m_height, m_color, m_steps);
-    mm.add(p0.model(0.0), 0.0, 0.0, 0.0);
-    mm.add(p01.model(0.0), 0.0, 0.0, 0.0);
-    mm.add(p1.model(0.0), 0.0, 0.0, 0.0);
-    mm.add(p12.model(0.0), 0.0, 0.0, 0.0);
-    mm.add(p2.model(0.0), 0.0, 0.0, 0.0);
-    mm.rotate_ax(90.0);
-    mm.add(base, m_length / 2.0, m_diameter / 8.0, 0.0);
+    CadModel cone(ConeShape(f1 * m_width / 2.0, m_height, m_steps, 0.001), PaintCan(0.42, 0.42, 0.42), 0.0);
+    CadModel bumper(ToroidShape(m_width / 2.0 - rbumper, rbumper, m_steps), PaintCan(1.0, 1.0, 1.0), 0.0);
+    CadModel base(CubeShape(m_length, m_width / 8.0, fpost * m_width), m_color, 0.0);
+    CadModel big_post(CylinderShape(f1 * m_width / 2.0, m_height, m_steps), m_color, 0.0);
+    CadModel little_post(RingShape(fpost * m_width / 2.0, 0.0, (f0 * m_height), m_steps, m_width / 16.0), m_color, 0.0);
+    CadModel prism(TriangularPrismShape(m_length - m_width, m_width, m_height * 1.5, m_width / 8.0), m_color, 0.0);
+    mm.add(cone, 0.0, m_height / 2.0, 0.0);
+    mm.add(cone, m_length, m_height / 2.0, 0.0);
+    mm.add(bumper, 0.0, m_height, 0.0);
+    mm.add(bumper, m_length, m_height, 0.0);
+    mm.add(base, m_length / 2.0, m_width / 16.0, 0.0);
+    mm.add(big_post, 0.0,  m_height / 2.0, 0.0);
+    mm.add(little_post, 0.0,  f0 * m_height / 2.0, 0.0);
+    mm.add(big_post, m_length,  m_height / 2.0, 0.0);
+    mm.add(little_post, m_length,  f0 * m_height / 2.0, 0.0);
+    mm.add(prism, m_length/ 2.0, 0.0, 0.0);
     mm.rotate_ay(m_angle);
     mm.translate(m_position.v1, m_position.v2, m_position.v3);
     return mm;
