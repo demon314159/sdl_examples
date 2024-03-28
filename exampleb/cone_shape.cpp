@@ -6,11 +6,11 @@
 #include "pi.h"
 #include "math.h"
 
-ConeShape::ConeShape(float radius, float height, int steps, float corner_radius)
-    : m_radius(radius)
+ConeShape::ConeShape(float bottom_radius, float top_radius, float height, int steps)
+    : m_bottom_radius(bottom_radius)
+    , m_top_radius(top_radius)
     , m_height(height)
     , m_steps(steps)
-    , m_corner_radius(corner_radius)
     , m_size_known(false)
     , m_facet_count(0)
     , m_facet(NULL)
@@ -49,26 +49,26 @@ void ConeShape::define_shape()
 
 void ConeShape::ay_slice(int step, int steps)
 {
-    float r = m_corner_radius;
     double da = 2.0 * PI / (float) steps;
     float a1 = da * (float) step;
     float a2 = da * (float) (step + 1);
-    float x1 = m_radius * cos(a1);
-    float z1 = m_radius * sin(a1);
-    float x2 = m_radius * cos(a2);
-    float z2 = m_radius * sin(a2);
+    float x1 = m_bottom_radius * cos(a1);
+    float z1 = m_bottom_radius * sin(a1);
+    float x2 = m_bottom_radius * cos(a2);
+    float z2 = m_bottom_radius * sin(a2);
 
-    float ux1 = r * cos(a1);
-    float uz1 = r * sin(a1);
-    float ux2 = r * cos(a2);
-    float uz2 = r * sin(a2);
+    float ux1 = m_top_radius * cos(a1);
+    float uz1 = m_top_radius * sin(a1);
+    float ux2 = m_top_radius * cos(a2);
+    float uz2 = m_top_radius * sin(a2);
 
     float y0 = 0.0;
     float y1 = m_height;
 
 
     add_face({x1, y0, z1}, {x2, y0, z2}, {ux2, y1, uz2}, {ux1, y1, uz1}, true);
-    if (r >= 0.0) {
+    add_face({x1, y0, z1}, {x2, y0, z2}, {0.0, y0, 0.0}, false);
+    if (m_top_radius >= 0.0) {
         add_face({ux1, y1, uz1}, {ux2, y1, uz2}, {0.0, y1, 0.0}, true);
     }
 }

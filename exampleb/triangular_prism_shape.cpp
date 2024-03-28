@@ -65,9 +65,9 @@ void TriangularPrismShape::define_shape()
     if (m_lighted) {
         add_face({x1, y0, z0}, {x2, y0, z0}, {ux2, y1, uz0}, {ux1, y1, uz0}, true);
         add_face({x1, y0, z3}, {x2, y0, z3}, {ux2, y1, uz1}, {ux1, y1, uz1}, false);
-    } else {
         add_face({x0, y0, z1}, {x0, y0, z2}, {ux0, y1, uz1}, {ux0, y1, uz0}, false);
         add_face({x3, y0, z1}, {x3, y0, z2}, {ux3, y1, uz1}, {ux3, y1, uz0}, true);
+    } else {
 
         add_face({x0, y0, z1}, {x1, y0, z0}, {ux1, y1, uz0}, {ux0, y1, 0.0}, true);
         add_face({x0, y0, z2}, {x1, y0, z3}, {ux1, y1, uz1}, {ux0, y1, 0.0}, false);

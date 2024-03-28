@@ -1,8 +1,8 @@
 //
-// lane_guide.cpp
+// pyramid_lane_guide.cpp
 //
 
-#include "lane_guide.h"
+#include "pyramid_lane_guide.h"
 #include "pipe.h"
 #include "pipe_elbow.h"
 #include "cube_shape.h"
@@ -14,9 +14,7 @@
 #include "pi.h"
 #include <math.h>
 
-#include <stdio.h>
-
-LaneGuide::LaneGuide(float angle, Float3 position, float length, float height, float width,
+PyramidLaneGuide::PyramidLaneGuide(float angle, Float3 position, float length, float height, float width,
                      const PaintCan& color, float reflectivity, int steps)
     : m_angle(angle)
     , m_position(position)
@@ -40,36 +38,36 @@ LaneGuide::LaneGuide(float angle, Float3 position, float length, float height, f
     m_reflector4.translate({position.v1, position.v3});
 }
 
-LaneGuide::~LaneGuide()
+PyramidLaneGuide::~PyramidLaneGuide()
 {
 }
 
-float LaneGuide::angle() const
+float PyramidLaneGuide::angle() const
 {
     return m_angle;
 }
 
-Float3 LaneGuide::position() const
+Float3 PyramidLaneGuide::position() const
 {
     return m_position;
 }
 
-float LaneGuide::length() const
+float PyramidLaneGuide::length() const
 {
     return m_length;
 }
 
-float LaneGuide::height() const
+float PyramidLaneGuide::height() const
 {
     return m_height;
 }
 
-float LaneGuide::width() const
+float PyramidLaneGuide::width() const
 {
     return m_width;
 }
 
-void LaneGuide::collide(Ball* ball) const
+void PyramidLaneGuide::collide(Ball* ball) const
 {
     m_reflector1.collide(ball);
     m_reflector2.collide(ball);
@@ -77,14 +75,14 @@ void LaneGuide::collide(Ball* ball) const
     m_reflector4.collide(ball);
 }
 
-CadModel LaneGuide::model(float animation_id) const
+CadModel PyramidLaneGuide::model(float animation_id) const
 {
     float fpost = 0.75;
     float f1 = fpost * 0.75;
     float f0 = 0.35;
     float rbumper = 0.002;
     CadModel mm;
-    CadModel cone(ConeShape(f1 * m_width / 2.0, m_height, m_steps, 0.001), PaintCan(0.42, 0.42, 0.42), animation_id);
+    CadModel cone(ConeShape(f1 * m_width / 2.0, 0.001, m_height, m_steps), PaintCan(0.42, 0.42, 0.42), animation_id);
     CadModel bumper(ToroidShape(m_width / 2.0 - rbumper, rbumper, m_steps), PaintCan(1.0, 1.0, 1.0), animation_id);
     CadModel base(CubeShape(m_length, m_width / 8.0, fpost * m_width), m_color, animation_id);
     CadModel big_post(CylinderShape(f1 * m_width / 2.0, m_height, m_steps), m_color, animation_id);

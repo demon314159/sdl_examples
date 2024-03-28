@@ -55,7 +55,7 @@ HEADERS = view.h \
           pipe_elbow_shape.h \
           rollover.h \
           straight_wire_guide.h \
-          lane_guide.h \
+          pyramid_lane_guide.h \
           \
           \
           \
@@ -113,7 +113,7 @@ OBJECTS = main.obj \
           pipe_elbow_shape.obj \
           rollover.obj \
           straight_wire_guide.obj \
-          lane_guide.obj \
+          pyramid_lane_guide.obj \
           \
           \
           \

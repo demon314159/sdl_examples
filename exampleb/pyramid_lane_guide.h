@@ -1,9 +1,9 @@
 //
-// lane_guide.h
+// pyramid_lane_guide.h
 //
 
-#ifndef _LANE_GUIDE_H_
-#define _LANE_GUIDE_H_
+#ifndef _PYRAMID_LANE_GUIDE_H_
+#define _PYRAMID_LANE_GUIDE_H_
 
 #include "cad_model.h"
 #include "float3.h"
@@ -11,11 +11,11 @@
 #include "convex_reflector.h"
 #include "straight_reflector.h"
 
-class LaneGuide
+class PyramidLaneGuide
 {
 public:
-    LaneGuide(float angle, Float3 position, float length, float height, float width, const PaintCan& color, float reflectivity, int steps);
-    ~LaneGuide();
+    PyramidLaneGuide(float angle, Float3 position, float length, float height, float width, const PaintCan& color, float reflectivity, int steps);
+    ~PyramidLaneGuide();
 
     CadModel model(float animation_id) const;
     float angle() const;
@@ -39,4 +39,4 @@ private:
     StraightReflector m_reflector4;
 };
 
-#endif // _LANE_GUIDE_H_
+#endif // _PYRAMID_LANE_GUIDE_H_

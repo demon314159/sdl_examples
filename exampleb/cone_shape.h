@@ -12,16 +12,16 @@
 class ConeShape: public Shape
 {
 public:
-    ConeShape(float radius, float height, int steps, float corner_radius = 0.0);
+    ConeShape(float bottom_radius, float top_radius, float height, int steps);
     virtual ~ConeShape();
     int facets() const override;
     Facet facet(int facet_ix) const override;
 
 private:
-    float m_radius;
+    float m_bottom_radius;
+    float m_top_radius;
     float m_height;
     int m_steps;
-    float m_corner_radius;
     bool m_size_known;
     int m_facet_count;
     Facet *m_facet;
