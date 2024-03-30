@@ -8,7 +8,7 @@
 #include <math.h>
 
 Ring::Ring(float angle, Float3 position, float outer_radius, float inner_radius, float width,
-           const PaintCan& color, float reflectivity, int steps)
+           const PaintCan& color, float major_reflectivity, float minor_reflectivity, int steps)
     : m_angle(angle)
     , m_position(position)
     , m_outer_radius(outer_radius)
@@ -16,10 +16,10 @@ Ring::Ring(float angle, Float3 position, float outer_radius, float inner_radius,
     , m_width(width)
     , m_color(color)
     , m_steps(steps)
-    , m_reflector1(true, width / 2.0, width / 2.0, outer_radius * 2.0, reflectivity)
-    , m_reflector2(false, width / 2.0, width / 2.0, outer_radius * 2.0, reflectivity)
-    , m_reflector3(true, width / 2.0, width / 2.0, outer_radius * 2.0, reflectivity)
-    , m_reflector4(false, width / 2.0, width / 2.0, outer_radius * 2.0, reflectivity)
+    , m_reflector1(true, width / 2.0, width / 2.0, outer_radius * 2.0, major_reflectivity)
+    , m_reflector2(false, width / 2.0, width / 2.0, outer_radius * 2.0, major_reflectivity)
+    , m_reflector3(true, width / 2.0, width / 2.0, outer_radius * 2.0, minor_reflectivity)
+    , m_reflector4(false, width / 2.0, width / 2.0, outer_radius * 2.0, minor_reflectivity)
 {
     m_reflector1.translate({-outer_radius, 0.0});
     m_reflector1.rotate(angle + 90.0);

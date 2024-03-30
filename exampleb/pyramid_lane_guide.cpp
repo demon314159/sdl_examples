@@ -15,7 +15,7 @@
 #include <math.h>
 
 PyramidLaneGuide::PyramidLaneGuide(float angle, Float3 position, float length, float height, float width,
-                     const PaintCan& color, float reflectivity, int steps)
+                     const PaintCan& color, float major_reflectivity, float minor_reflectivity, int steps)
     : m_angle(angle)
     , m_position(position)
     , m_length(length)
@@ -23,10 +23,10 @@ PyramidLaneGuide::PyramidLaneGuide(float angle, Float3 position, float length, f
     , m_width(width)
     , m_color(color)
     , m_steps(steps)
-    , m_reflector1(true, width / 2.0, width / 2.0, length, reflectivity)
-    , m_reflector2(false, width / 2.0, width / 2.0, length, reflectivity)
-    , m_reflector3(true, width / 2.0, width / 2.0, length, reflectivity)
-    , m_reflector4(false, width / 2.0, width / 2.0, length, reflectivity)
+    , m_reflector1(true, width / 2.0, width / 2.0, length, major_reflectivity)
+    , m_reflector2(false, width / 2.0, width / 2.0, length, major_reflectivity)
+    , m_reflector3(true, width / 2.0, width / 2.0, length, minor_reflectivity)
+    , m_reflector4(false, width / 2.0, width / 2.0, length, minor_reflectivity)
 {
     m_reflector1.rotate(angle);
     m_reflector1.translate({position.v1, position.v3});
@@ -84,7 +84,7 @@ CadModel PyramidLaneGuide::model(float animation_id) const
     CadModel mm;
     CadModel cone(ConeShape(f1 * m_width / 2.0, 0.001, m_height, m_steps), PaintCan(0.42, 0.42, 0.42), animation_id);
     CadModel bumper(ToroidShape(m_width / 2.0 - rbumper, rbumper, m_steps), PaintCan(1.0, 1.0, 1.0), animation_id);
-    CadModel base(CubeShape(m_length, m_width / 8.0, fpost * m_width), m_color, animation_id);
+    CadModel base(CubeShape(m_length, m_width / 10.0, fpost * m_width), m_color, animation_id);
     CadModel big_post(CylinderShape(f1 * m_width / 2.0, m_height, m_steps), m_color, animation_id);
     CadModel little_post(RingShape(fpost * m_width / 2.0, 0.0, (f0 * m_height), m_steps, m_width / 16.0), m_color, animation_id);
     CadModel unlit_prism(TriangularPrismShape(false, m_length - m_width, m_width, m_height * 1.5, m_width / 8.0), m_color, animation_id);
@@ -93,7 +93,7 @@ CadModel PyramidLaneGuide::model(float animation_id) const
     mm.add(cone, m_length, m_height / 2.0, 0.0);
     mm.add(bumper, 0.0, m_height, 0.0);
     mm.add(bumper, m_length, m_height, 0.0);
-    mm.add(base, m_length / 2.0, m_width / 16.0, 0.0);
+    mm.add(base, m_length / 2.0, m_width / 20.0, 0.0);
     mm.add(big_post, 0.0,  m_height / 2.0, 0.0);
     mm.add(little_post, 0.0,  f0 * m_height / 2.0, 0.0);
     mm.add(big_post, m_length,  m_height / 2.0, 0.0);

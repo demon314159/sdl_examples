@@ -14,7 +14,8 @@
 class PyramidLaneGuide
 {
 public:
-    PyramidLaneGuide(float angle, Float3 position, float length, float height, float width, const PaintCan& color, float reflectivity, int steps);
+    PyramidLaneGuide(float angle, Float3 position, float length, float height, float width, const PaintCan& color,
+                     float majotr_reflectivity, float minor_reflectivity, int steps);
     ~PyramidLaneGuide();
 
     CadModel model(float animation_id) const;

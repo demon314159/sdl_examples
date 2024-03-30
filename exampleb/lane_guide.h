@@ -1,33 +1,36 @@
 //
-// ring.h
+// lane_guide.h
 //
 
-#ifndef _RING_H_
-#define _RING_H_
+#ifndef _LANE_GUIDE_H_
+#define _LANE_GUIDE_H_
 
 #include "cad_model.h"
 #include "float3.h"
 #include "ball.h"
-#include "straight_reflector.h"
 #include "convex_reflector.h"
+#include "straight_reflector.h"
 
-class Ring
+class LaneGuide
 {
 public:
-    Ring(float angle, Float3 position, float outer_radius, float inner_radius, float width,
-         const PaintCan& color, float major_reflectivity, float minor_reflectivity, int steps);
-    ~Ring();
+    LaneGuide(float angle, Float3 position, float length, float height, float width, const PaintCan& color,
+              float reflectivity, int steps);
+    ~LaneGuide();
 
     CadModel model(float animation_id) const;
     float angle() const;
     Float3 position() const;
+    float length() const;
+    float height() const;
+    float width() const;
     void collide(Ball* ball) const;
 
 private:
     float m_angle;
     Float3 m_position;
-    float m_outer_radius;
-    float m_inner_radius;
+    float m_length;
+    float m_height;
     float m_width;
     PaintCan m_color;
     int m_steps;
@@ -37,4 +40,4 @@ private:
     StraightReflector m_reflector4;
 };
 
-#endif // _RING_H_
+#endif // _LANE_GUIDE_H_
