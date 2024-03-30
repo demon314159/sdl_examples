@@ -145,6 +145,7 @@
 #define LANE_GUIDE_WIDTH 0.016
 #define LANE_GUIDE_SEGMENTS 50
 #define LANE_GUIDE_COLOR PaintCan(1.0, 1.0, 1.0)
+#define RED_LANE_GUIDE_COLOR PaintCan(1.0, 0.0, 0.16)
 #define LANE_GUIDE_REFLECTIVITY  0.4
 
 #define METAL_COLOR PaintCan(0.42, 0.42, 0.42)

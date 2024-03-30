@@ -55,6 +55,7 @@ private:
     PyramidLaneGuide* m_lane_guide1;
     PyramidLaneGuide* m_lane_guide2;
     LaneGuide* m_lane_guide3;
+    LaneGuide* m_lane_guide4;
 
     float R1 = 0.148;
     float R2 = 0.145;

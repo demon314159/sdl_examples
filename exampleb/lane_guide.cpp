@@ -16,13 +16,14 @@
 #include <math.h>
 
 LaneGuide::LaneGuide(float angle, Float3 position, float length, float height, float width,
-                     const PaintCan& color, float reflectivity, int steps)
+                     const PaintCan& color, const PaintCan& face_color, float reflectivity, int steps)
     : m_angle(angle)
     , m_position(position)
     , m_length(length)
     , m_height(height)
     , m_width(width)
     , m_color(color)
+    , m_face_color(face_color)
     , m_steps(steps)
     , m_reflector1(true, width / 2.0, width / 2.0, length, reflectivity)
     , m_reflector2(false, width / 2.0, width / 2.0, length, reflectivity)
@@ -91,8 +92,8 @@ CadModel LaneGuide::model(float animation_id) const
     float h5_post = h4_post + m_height / 5.0;
 
     CadModel base0(CubeShape(m_length, m_width / 10, r0_post * 2.0), m_color, animation_id);
-    CadModel base1(CubeShape(m_length, m_width / 10, r0_post * 2.0), m_color, 1.0);
-    CadModel base2(CylinderShape(r0_post, m_width / 10, m_steps), m_color, 1.0);
+    CadModel base1(CubeShape(m_length, m_width / 10, r0_post * 2.0), m_face_color, 1.0);
+    CadModel base2(CylinderShape(r0_post, m_width / 10, m_steps), m_face_color, 1.0);
     CadModel base3(ConeShape(r2_post, 0.001, h5_post - h4_post, m_steps), PaintCan(0.42, 0.42, 0.42), animation_id);
     CadModel big_post1(ConeShape(r0_post, r1_post, h1_post, m_steps), m_color, animation_id);
     CadModel big_post2(ConeShape(r1_post, r1_post, h2_post - h1_post, m_steps), m_color, animation_id);

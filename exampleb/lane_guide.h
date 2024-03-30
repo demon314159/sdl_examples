@@ -14,7 +14,8 @@
 class LaneGuide
 {
 public:
-    LaneGuide(float angle, Float3 position, float length, float height, float width, const PaintCan& color,
+    LaneGuide(float angle, Float3 position, float length, float height, float width,
+              const PaintCan& color, const PaintCan& face_color,
               float reflectivity, int steps);
     ~LaneGuide();
 
@@ -33,6 +34,7 @@ private:
     float m_height;
     float m_width;
     PaintCan m_color;
+    PaintCan m_face_color;
     int m_steps;
     ConvexReflector m_reflector1;
     ConvexReflector m_reflector2;
