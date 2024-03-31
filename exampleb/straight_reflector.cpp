@@ -41,6 +41,10 @@ StraightReflector::StraightReflector(float length, float reflectivity)
 {
 }
 
+StraightReflector::StraightReflector(Float3 p1, Float3 p2, float reflectivity)
+{
+}
+
 StraightReflector::~StraightReflector()
 {
 }

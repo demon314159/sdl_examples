@@ -43,6 +43,8 @@ Table::Table()
     , m_lane_guide2(NULL)
     , m_lane_guide3(NULL)
     , m_lane_guide4(NULL)
+    , m_lane_guide5(NULL)
+    , m_lane_guide6(NULL)
 {
     m_ball_home_position = {(X7 + X8) / 2.0f, Z7 - BALL_RADIUS};
     m_ball_z_limit = Z8;
@@ -87,7 +89,9 @@ Table::Table()
     m_lane_guide1 = new PyramidLaneGuide(90.0, {0.185, 0.0, 0.105}, 0.032, BALL_RADIUS, PYRAMID_LANE_GUIDE_WIDTH, PYRAMID_LANE_GUIDE_COLOR, PYRAMID_LANE_GUIDE_MAJOR_REFLECTIVITY, PYRAMID_LANE_GUIDE_MINOR_REFLECTIVITY, PYRAMID_LANE_GUIDE_SEGMENTS);
     m_lane_guide2 = new PyramidLaneGuide(90.0, {0.2115, 0.0, 0.105}, 0.032, BALL_RADIUS, PYRAMID_LANE_GUIDE_WIDTH, PYRAMID_LANE_GUIDE_COLOR, PYRAMID_LANE_GUIDE_MAJOR_REFLECTIVITY, PYRAMID_LANE_GUIDE_MINOR_REFLECTIVITY, PYRAMID_LANE_GUIDE_SEGMENTS);
     m_lane_guide3 = new LaneGuide(90.0, {0.15525, 0.0, 0.10525}, 0.0335, BALL_RADIUS, LANE_GUIDE_WIDTH, LANE_GUIDE_COLOR, LANE_GUIDE_COLOR, LANE_GUIDE_REFLECTIVITY, LANE_GUIDE_SEGMENTS);
-    m_lane_guide4 = new LaneGuide(90.0, {0.256, 0.0, 0.249}, 0.039, BALL_RADIUS, LANE_GUIDE_WIDTH, LANE_GUIDE_COLOR, RED_LANE_GUIDE_COLOR, LANE_GUIDE_REFLECTIVITY, LANE_GUIDE_SEGMENTS);
+    m_lane_guide4 = new LaneGuide(90.0, {0.241, 0.0, 0.1055}, 0.034, BALL_RADIUS, LANE_GUIDE_WIDTH, LANE_GUIDE_COLOR, LANE_GUIDE_COLOR, LANE_GUIDE_REFLECTIVITY, LANE_GUIDE_SEGMENTS);
+    m_lane_guide5 = new LaneGuide(90.0, {0.2745, 0.0, 0.1605}, 0.0395, BALL_RADIUS, LANE_GUIDE_WIDTH, LANE_GUIDE_COLOR, LANE_GUIDE_COLOR, LANE_GUIDE_REFLECTIVITY, LANE_GUIDE_SEGMENTS);
+    m_lane_guide6 = new LaneGuide(90.0, {0.256, 0.0, 0.249}, 0.039, BALL_RADIUS, LANE_GUIDE_WIDTH, LANE_GUIDE_COLOR, RED_LANE_GUIDE_COLOR, LANE_GUIDE_REFLECTIVITY, LANE_GUIDE_SEGMENTS);
 }
 
 Table::~Table()
@@ -116,6 +120,8 @@ Table::~Table()
     delete m_lane_guide2;
     delete m_lane_guide3;
     delete m_lane_guide4;
+    delete m_lane_guide5;
+    delete m_lane_guide6;
 }
 
 float Table::ball_z_limit() const
@@ -154,6 +160,8 @@ void Table::collide(Ball* ball) const
     m_lane_guide2->collide(ball);
     m_lane_guide3->collide(ball);
     m_lane_guide4->collide(ball);
+    m_lane_guide5->collide(ball);
+    m_lane_guide6->collide(ball);
 }
 
 CadModel Table::model() const
@@ -242,6 +250,8 @@ CadModel Table::model() const
     mm.add(m_lane_guide2->model(0.0), 0.0, 0.0, 0.0);
     mm.add(m_lane_guide3->model(0.0), 0.0, 0.0, 0.0);
     mm.add(m_lane_guide4->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_lane_guide5->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_lane_guide6->model(0.0), 0.0, 0.0, 0.0);
 
     mm.add(top_playfield, PLAYFIELD_X / 2.0, 0.0, PLAYFIELD_Z / 2.0);
     return mm;

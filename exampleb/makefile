@@ -57,6 +57,7 @@ HEADERS = view.h \
           straight_wire_guide.h \
           lane_guide.h \
           pyramid_lane_guide.h \
+          bumper.h \
           \
           \
           \
@@ -116,6 +117,7 @@ OBJECTS = main.obj \
           straight_wire_guide.obj \
           lane_guide.obj \
           pyramid_lane_guide.obj \
+          bumper.obj \
           \
           \
           \

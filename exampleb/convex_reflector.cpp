@@ -36,6 +36,10 @@ ConvexReflector::ConvexReflector(float r, float reflectivity)
     m_angle_f = 360.0f;
 }
 
+ConvexReflector::ConvexReflector(Float3 p1, Float3 p2, Float3 p3, float reflectivity)
+{
+}
+
 ConvexReflector::~ConvexReflector()
 {
 }

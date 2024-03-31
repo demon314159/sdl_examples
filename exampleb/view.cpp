@@ -41,7 +41,7 @@ View::View(SDL_Window* window)
     , m_texture(0)
     , m_frame(0)
     , m_max_vertex_count(1024 * 1024)
-    , m_facet_count(0)
+    , m_vertex_count(0)
     , m_toy(new Toy())
     , m_radius(2.0)
     , m_center({0.0, 0.0, 0.0})
@@ -300,13 +300,15 @@ void View::initialize()
 
 void View::copy_facets()
 {
-    m_facet_count = 3 * m_toy->get_model()->facets();
-    if (m_facet_count > 0) {
-        VertexData* vertices = new VertexData[m_facet_count];
+    int facet_count = m_toy->get_model()->facets();
+    printf("Total number of facets = %d\n", facet_count);
+    m_vertex_count = 3 * facet_count;
+    if (m_vertex_count > 0) {
+        VertexData* vertices = new VertexData[m_vertex_count];
         int vix = 0;
         sub_copy_facets(m_toy->get_model(), vertices, vix);
         // Transfer vertex data to VBO
-        glBufferData(GL_ARRAY_BUFFER, m_facet_count * sizeof(VertexData), vertices, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, m_vertex_count * sizeof(VertexData), vertices, GL_STATIC_DRAW);
         delete [] vertices;
     }
 }
@@ -445,7 +447,7 @@ void View::render()
     glUniform1i(m_texture1_uniform, 0);
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    glDrawArrays(GL_TRIANGLES, 0, m_facet_count);
+    glDrawArrays(GL_TRIANGLES, 0, m_vertex_count);
     glDisableVertexAttribArray(m_texture_id_attr);
     glDisableVertexAttribArray(m_animation_id_attr);
     glDisableVertexAttribArray(m_texture_position_attr);

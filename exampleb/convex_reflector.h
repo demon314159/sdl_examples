@@ -13,6 +13,7 @@ class ConvexReflector
 public:
     ConvexReflector(bool left, float r1, float r2, float length, float reflectivity);
     ConvexReflector(float r, float reflectivity);
+    ConvexReflector(Float3 p1, Float3 p2, Float3 p3, float reflectivity);
     ~ConvexReflector();
 
     void set_angular_velocity(float angular_velocity);

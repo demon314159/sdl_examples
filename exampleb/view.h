@@ -76,7 +76,7 @@ private:
     unsigned int m_texture;
     int m_frame;
     int m_max_vertex_count;
-    int m_facet_count;
+    int m_vertex_count;
     Toy* m_toy;
     float m_radius;
     Float3 m_center;
