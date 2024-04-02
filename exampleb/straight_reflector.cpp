@@ -6,6 +6,8 @@
 #include "pi.h"
 #include <math.h>
 
+#include <stdio.h>
+
 StraightReflector::StraightReflector(bool top, float r1, float r2, float length, float reflectivity)
     : m_position({0.0, 0.0})
     , m_length(1.0)
@@ -41,8 +43,21 @@ StraightReflector::StraightReflector(float length, float reflectivity)
 {
 }
 
-StraightReflector::StraightReflector(Float3 p1, Float3 p2, float reflectivity)
+StraightReflector::StraightReflector(Float2 p1, Float2 p2, float radius, float reflectivity)
+    : m_position({0.0, 0.0})
+    , m_reflectivity(reflectivity)
+    , m_angle(0.0)
+    , m_angular_velocity(0.0)
+    , m_velocity_origin({0.0, 0.0})
 {
+    float dx = p2.v1 - p1.v1;
+    float dz = p2.v2 - p1.v2;
+    m_length = sqrt(dx * dx + dz * dz);
+    float angle = atan2(-dz, dx) * 180.0 / PI;
+    translate({0.0, -radius});
+    rotate(angle);
+    translate({(p1.v1 + p2.v1) / 2.0f, (p1.v2 + p2.v2) / 2.0f});
+    printf("StraightReflector: angle = %.3f\n", angle);
 }
 
 StraightReflector::~StraightReflector()
@@ -156,4 +171,20 @@ void StraightReflector::collide(Ball* ball) const
         *ball = ball_copy;
     }
 }
+
+Float2 StraightReflector::position() const
+{
+    return m_position;
+}
+
+float StraightReflector::length() const
+{
+    return m_length;
+}
+
+float StraightReflector::angle() const
+{
+    return m_angle;
+}
+
 

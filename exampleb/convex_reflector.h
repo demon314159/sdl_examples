@@ -13,7 +13,7 @@ class ConvexReflector
 public:
     ConvexReflector(bool left, float r1, float r2, float length, float reflectivity);
     ConvexReflector(float r, float reflectivity);
-    ConvexReflector(Float3 p1, Float3 p2, Float3 p3, float reflectivity);
+    ConvexReflector(Float2 p1, Float2 p2, Float2 p3, float radius, float reflectivity);
     ~ConvexReflector();
 
     void set_angular_velocity(float angular_velocity);
@@ -24,6 +24,11 @@ public:
     void collide(Ball* ball) const;
     void translate(Float2 distance);
     void rotate(float angle);
+
+    Float2 position() const;
+    float radius() const;
+    float angle_i() const;
+    float angle_f() const;
 
 private:
     Float2 m_position;

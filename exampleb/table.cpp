@@ -45,6 +45,7 @@ Table::Table()
     , m_lane_guide4(NULL)
     , m_lane_guide5(NULL)
     , m_lane_guide6(NULL)
+    , m_three_post1(NULL)
 {
     m_ball_home_position = {(X7 + X8) / 2.0f, Z7 - BALL_RADIUS};
     m_ball_z_limit = Z8;
@@ -92,6 +93,7 @@ Table::Table()
     m_lane_guide4 = new LaneGuide(90.0, {0.241, 0.0, 0.1055}, 0.034, BALL_RADIUS, LANE_GUIDE_WIDTH, LANE_GUIDE_COLOR, LANE_GUIDE_COLOR, LANE_GUIDE_REFLECTIVITY, LANE_GUIDE_SEGMENTS);
     m_lane_guide5 = new LaneGuide(90.0, {0.2745, 0.0, 0.1605}, 0.0395, BALL_RADIUS, LANE_GUIDE_WIDTH, LANE_GUIDE_COLOR, LANE_GUIDE_COLOR, LANE_GUIDE_REFLECTIVITY, LANE_GUIDE_SEGMENTS);
     m_lane_guide6 = new LaneGuide(90.0, {0.256, 0.0, 0.249}, 0.039, BALL_RADIUS, LANE_GUIDE_WIDTH, LANE_GUIDE_COLOR, RED_LANE_GUIDE_COLOR, LANE_GUIDE_REFLECTIVITY, LANE_GUIDE_SEGMENTS);
+    m_three_post1 = new ThreePost({0.27425, 0.296}, {0.275, 0.39475}, {0.25625, 0.318}, THREE_POST_RADIUS, BALL_RADIUS, THREE_POST_COLOR, THREE_POST_COLOR, THREE_POST_REFLECTIVITY, THREE_POST_SEGMENTS);
 }
 
 Table::~Table()
@@ -122,6 +124,7 @@ Table::~Table()
     delete m_lane_guide4;
     delete m_lane_guide5;
     delete m_lane_guide6;
+    delete m_three_post1;
 }
 
 float Table::ball_z_limit() const
@@ -162,6 +165,7 @@ void Table::collide(Ball* ball) const
     m_lane_guide4->collide(ball);
     m_lane_guide5->collide(ball);
     m_lane_guide6->collide(ball);
+    m_three_post1->collide(ball);
 }
 
 CadModel Table::model() const
@@ -252,6 +256,7 @@ CadModel Table::model() const
     mm.add(m_lane_guide4->model(0.0), 0.0, 0.0, 0.0);
     mm.add(m_lane_guide5->model(0.0), 0.0, 0.0, 0.0);
     mm.add(m_lane_guide6->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_three_post1->model(0.0), 0.0, 0.0, 0.0);
 
     mm.add(top_playfield, PLAYFIELD_X / 2.0, 0.0, PLAYFIELD_Z / 2.0);
     return mm;

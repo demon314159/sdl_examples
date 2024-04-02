@@ -46,6 +46,7 @@ HEADERS = view.h \
           straight_diode_strip.h \
           concave_strip.h \
           concave_plane_shape.h \
+          convex_plane_shape.h \
           table.h \
           ring_model.h \
           ring.h \
@@ -57,7 +58,7 @@ HEADERS = view.h \
           straight_wire_guide.h \
           lane_guide.h \
           pyramid_lane_guide.h \
-          bumper.h \
+          three_post.h \
           \
           \
           \
@@ -106,6 +107,7 @@ OBJECTS = main.obj \
           straight_diode_strip.obj \
           concave_strip.obj \
           concave_plane_shape.obj \
+          convex_plane_shape.obj \
           table.obj \
           ring_model.obj \
           ring.obj \
@@ -117,7 +119,7 @@ OBJECTS = main.obj \
           straight_wire_guide.obj \
           lane_guide.obj \
           pyramid_lane_guide.obj \
-          bumper.obj \
+          three_post.obj \
           \
           \
           \

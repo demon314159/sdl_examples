@@ -148,6 +148,11 @@
 #define RED_LANE_GUIDE_COLOR PaintCan(1.0, 0.0, 0.16)
 #define LANE_GUIDE_REFLECTIVITY  0.4
 
+#define THREE_POST_RADIUS 0.008
+#define THREE_POST_SEGMENTS 50
+#define THREE_POST_COLOR PaintCan(1.0, 1.0, 1.0)
+#define THREE_POST_REFLECTIVITY  0.4
+
 #define METAL_COLOR PaintCan(0.42, 0.42, 0.42)
 
 class Look

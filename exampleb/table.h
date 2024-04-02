@@ -5,6 +5,7 @@
 #ifndef _TABLE_H_
 #define _TABLE_H_
 
+#include "three_post.h"
 #include "lane_guide.h"
 #include "pyramid_lane_guide.h"
 #include "straight_wire_guide.h"
@@ -58,6 +59,7 @@ private:
     LaneGuide* m_lane_guide4;
     LaneGuide* m_lane_guide5;
     LaneGuide* m_lane_guide6;
+    ThreePost* m_three_post1;
 
     float R1 = 0.148;
     float R2 = 0.145;

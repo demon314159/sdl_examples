@@ -13,7 +13,7 @@ class StraightReflector
 public:
     StraightReflector(bool top, float r1, float r2, float length, float reflectivity);
     StraightReflector(float length, float reflectivity);
-    StraightReflector(Float3 p1, Float3 p2, float reflectivity);
+    StraightReflector(Float2 p1, Float2 p2, float radius, float reflectivity);
     ~StraightReflector();
 
     void set_angular_velocity(float angular_velocity);
@@ -24,6 +24,9 @@ public:
     void translate(Float2 distance);
     void rotate(float angle);
     void rotate(Float2& point, float angle) const;
+    Float2 position() const;
+    float length() const;
+    float angle() const;
 
 private:
     Float2 m_position;

@@ -6,6 +6,8 @@
 #include "pi.h"
 #include <math.h>
 
+#include <stdio.h>
+
 ConvexReflector::ConvexReflector(bool left, float r1, float r2, float length, float reflectivity)
     : m_reflectivity(reflectivity)
     , m_angular_velocity(0.0)
@@ -36,8 +38,21 @@ ConvexReflector::ConvexReflector(float r, float reflectivity)
     m_angle_f = 360.0f;
 }
 
-ConvexReflector::ConvexReflector(Float3 p1, Float3 p2, Float3 p3, float reflectivity)
+ConvexReflector::ConvexReflector(Float2 p1, Float2 p2, Float2 p3, float radius, float reflectivity)
+    : m_position(p2)
+    , m_radius(radius)
+    , m_reflectivity(reflectivity)
+    , m_angular_velocity(0.0)
+    , m_velocity_origin({0.0, 0.0})
 {
+    float angle1 = atan2(-(p1.v2 - p2.v2), p1.v1 - p2.v1) * 180.0 / PI;
+    float angle3 = atan2(-(p3.v2 - p2.v2), p3.v1 - p2.v1) * 180.0 / PI;
+    if (angle1 < angle3) {
+        angle1 += 360.0;
+    }
+    m_angle_i = angle3 + 90.0;
+    m_angle_f = angle1 - 90.0;
+    printf("ConvexReflector: a1: %.3f, a3: %.3f, a_i %.3f, a_f %.3f\n", angle1, angle3, m_angle_i, m_angle_f);
 }
 
 ConvexReflector::~ConvexReflector()
@@ -174,3 +189,22 @@ void ConvexReflector::collide(Ball* ball) const
     }
 }
 
+Float2 ConvexReflector::position() const
+{
+    return m_position;
+}
+
+float ConvexReflector::radius() const
+{
+    return m_radius;
+}
+
+float ConvexReflector::angle_i() const
+{
+    return m_angle_i;
+}
+
+float ConvexReflector::angle_f() const
+{
+    return m_angle_f;
+}
