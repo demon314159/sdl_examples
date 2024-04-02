@@ -60,6 +60,8 @@ private:
     LaneGuide* m_lane_guide5;
     LaneGuide* m_lane_guide6;
     ThreePost* m_three_post1;
+    ThreePost* m_three_post2;
+    ThreePost* m_three_post3;
 
     float R1 = 0.148;
     float R2 = 0.145;
