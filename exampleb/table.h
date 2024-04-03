@@ -49,7 +49,9 @@ private:
     StraightWireGuide* m_wire_guide1;
     StraightWireGuide* m_wire_guide2;
     StraightWireGuide* m_wire_guide3;
+    StraightWireGuide* m_wire_guide35;
     StraightWireGuide* m_wire_guide4;
+    StraightWireGuide* m_wire_guide45;
     StraightWireGuide* m_wire_guide5;
     StraightWireGuide* m_wire_guide6;
     StraightWireGuide* m_wire_guide7;

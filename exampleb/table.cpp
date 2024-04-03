@@ -34,7 +34,9 @@ Table::Table()
     , m_wire_guide1(NULL)
     , m_wire_guide2(NULL)
     , m_wire_guide3(NULL)
+    , m_wire_guide35(NULL)
     , m_wire_guide4(NULL)
+    , m_wire_guide45(NULL)
     , m_wire_guide5(NULL)
     , m_wire_guide6(NULL)
     , m_wire_guide7(NULL)
@@ -72,8 +74,10 @@ Table::Table()
 
     m_wire_guide1 = new StraightWireGuide({0.028, 0.411}, {0.02775, 0.4765}, WIRE_GUIDE_RADIUS, BALL_RADIUS, WIRE_GUIDE_COLOR, WIRE_GUIDE_REFLECTIVITY, WIRE_GUIDE_SEGMENTS);
     m_wire_guide2 = new StraightWireGuide({0.262, 0.426}, {0.262, 0.4755}, WIRE_GUIDE_RADIUS, BALL_RADIUS, WIRE_GUIDE_COLOR, WIRE_GUIDE_REFLECTIVITY, WIRE_GUIDE_SEGMENTS);
-    m_wire_guide3 = new StraightWireGuide({0.02775, 0.479}, {0.0865, 0.5195}, WIRE_GUIDE_RADIUS, BALL_RADIUS, WIRE_GUIDE_COLOR, WIRE_GUIDE_REFLECTIVITY, WIRE_GUIDE_SEGMENTS);
-    m_wire_guide4 = new StraightWireGuide({0.2035, 0.519}, {0.262, 0.478}, WIRE_GUIDE_RADIUS, BALL_RADIUS, WIRE_GUIDE_COLOR, WIRE_GUIDE_REFLECTIVITY, WIRE_GUIDE_SEGMENTS);
+    m_wire_guide3 = new StraightWireGuide({0.02775, 0.479}, {0.029, 0.483}, WIRE_GUIDE_RADIUS, BALL_RADIUS, WIRE_GUIDE_COLOR, WIRE_GUIDE_REFLECTIVITY, WIRE_GUIDE_SEGMENTS);
+    m_wire_guide35 = new StraightWireGuide({0.029, 0.483}, {0.0865, 0.5195}, WIRE_GUIDE_RADIUS, BALL_RADIUS, WIRE_GUIDE_COLOR, WIRE_GUIDE_REFLECTIVITY, WIRE_GUIDE_SEGMENTS);
+    m_wire_guide4 = new StraightWireGuide({0.2035, 0.519}, {0.26075, 0.482}, WIRE_GUIDE_RADIUS, BALL_RADIUS, WIRE_GUIDE_COLOR, WIRE_GUIDE_REFLECTIVITY, WIRE_GUIDE_SEGMENTS);
+    m_wire_guide45 = new StraightWireGuide({0.26075, 0.482}, {0.262, 0.478}, WIRE_GUIDE_RADIUS, BALL_RADIUS, WIRE_GUIDE_COLOR, WIRE_GUIDE_REFLECTIVITY, WIRE_GUIDE_SEGMENTS);
     m_wire_guide5 = new StraightWireGuide({0.0485, 0.4135}, {0.0485, 0.463}, WIRE_GUIDE_RADIUS, BALL_RADIUS, WIRE_GUIDE_COLOR, WIRE_GUIDE_REFLECTIVITY, WIRE_GUIDE_SEGMENTS);
     m_wire_guide6 = new StraightWireGuide({0.241, 0.4405}, {0.241, 0.4625}, WIRE_GUIDE_RADIUS, BALL_RADIUS, WIRE_GUIDE_COLOR, WIRE_GUIDE_REFLECTIVITY, WIRE_GUIDE_SEGMENTS);
     m_wire_guide7 = new StraightWireGuide({0.0835, 0.542}, {0.1255, 0.566}, WIRE_GUIDE_RADIUS, WIRE_GUIDE_RADIUS, WIRE_GUIDE_COLOR, WIRE_GUIDE_REFLECTIVITY, WIRE_GUIDE_SEGMENTS);
@@ -112,7 +116,9 @@ Table::~Table()
     delete m_wire_guide1;
     delete m_wire_guide2;
     delete m_wire_guide3;
+    delete m_wire_guide35;
     delete m_wire_guide4;
+    delete m_wire_guide45;
     delete m_wire_guide5;
     delete m_wire_guide6;
     delete m_wire_guide7;
@@ -161,7 +167,9 @@ void Table::collide(Ball* ball) const
     m_wire_guide1->collide(ball);
     m_wire_guide2->collide(ball);
     m_wire_guide3->collide(ball);
+    m_wire_guide35->collide(ball);
     m_wire_guide4->collide(ball);
+    m_wire_guide45->collide(ball);
     m_wire_guide5->collide(ball);
     m_wire_guide6->collide(ball);
     m_wire_guide7->collide(ball);
@@ -259,7 +267,9 @@ CadModel Table::model() const
     mm.add(m_wire_guide1->model(0.0), 0.0, 0.0, 0.0);
     mm.add(m_wire_guide2->model(0.0), 0.0, 0.0, 0.0);
     mm.add(m_wire_guide3->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_wire_guide35->model(0.0), 0.0, 0.0, 0.0);
     mm.add(m_wire_guide4->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_wire_guide45->model(0.0), 0.0, 0.0, 0.0);
     mm.add(m_wire_guide5->model(0.0), 0.0, 0.0, 0.0);
     mm.add(m_wire_guide6->model(0.0), 0.0, 0.0, 0.0);
     mm.add(m_wire_guide7->model(0.0), 0.0, 0.0, 0.0);
