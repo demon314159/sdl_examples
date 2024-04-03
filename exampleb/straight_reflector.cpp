@@ -6,8 +6,6 @@
 #include "pi.h"
 #include <math.h>
 
-#include <stdio.h>
-
 StraightReflector::StraightReflector(bool top, float r1, float r2, float length, float reflectivity)
     : m_position({0.0, 0.0})
     , m_length(1.0)
@@ -57,7 +55,6 @@ StraightReflector::StraightReflector(Float2 p1, Float2 p2, float radius, float r
     translate({0.0, -radius});
     rotate(angle);
     translate({(p1.v1 + p2.v1) / 2.0f, (p1.v2 + p2.v2) / 2.0f});
-    printf("StraightReflector: angle = %.3f\n", angle);
 }
 
 StraightReflector::~StraightReflector()

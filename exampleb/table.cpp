@@ -48,6 +48,12 @@ Table::Table()
     , m_three_post1(NULL)
     , m_three_post2(NULL)
     , m_three_post3(NULL)
+    , m_three_post4(NULL)
+    , m_three_post5(NULL)
+    , m_three_post6(NULL)
+    , m_two_post1(NULL)
+    , m_two_post2(NULL)
+    , m_two_post3(NULL)
 {
     m_ball_home_position = {(X7 + X8) / 2.0f, Z7 - BALL_RADIUS};
     m_ball_z_limit = Z8;
@@ -98,6 +104,12 @@ Table::Table()
     m_three_post1 = new ThreePost({0.27425, 0.296}, {0.275, 0.39475}, {0.25625, 0.318}, THREE_POST_RADIUS, BALL_RADIUS, THREE_POST_COLOR, THREE_POST_COLOR, THREE_POST_REFLECTIVITY, THREE_POST_SEGMENTS);
     m_three_post2 = new ThreePost({0.233, 0.435}, {0.2335, 0.469}, {0.2095, 0.48175}, THREE_POST_RADIUS, BALL_RADIUS, THREE_POST_COLOR, THREE_POST_COLOR, THREE_POST_REFLECTIVITY, THREE_POST_SEGMENTS);
     m_three_post3 = new ThreePost({0.0555, 0.3985}, {0.080, 0.48175}, {0.056, 0.46875}, THREE_POST_RADIUS, BALL_RADIUS, THREE_POST_COLOR, THREE_POST_COLOR, THREE_POST_REFLECTIVITY, THREE_POST_SEGMENTS);
+    m_three_post4 = new ThreePost({0.1715, 0.2135}, {0.1915, 0.22825}, {0.153, 0.246}, THREE_POST_RADIUS, BALL_RADIUS, THREE_POST_COLOR, THREE_POST_COLOR, THREE_POST_REFLECTIVITY, THREE_POST_SEGMENTS);
+    m_three_post5 = new ThreePost({0.078, 0.071}, {0.0945, 0.09075}, {0.017, 0.131}, THREE_POST_RADIUS, BALL_RADIUS, THREE_POST_COLOR, THREE_POST_COLOR, THREE_POST_REFLECTIVITY, THREE_POST_SEGMENTS);
+    m_three_post6 = new ThreePost({0.015, 0.3145}, {0.0265, 0.3605}, {0.015, 0.372}, THREE_POST_RADIUS, BALL_RADIUS, THREE_POST_COLOR, THREE_POST_COLOR, THREE_POST_REFLECTIVITY, THREE_POST_SEGMENTS);
+    m_two_post1 = new TwoPost({0.078, 0.280}, {0.102, 0.26875}, TWO_POST_RADIUS, BALL_RADIUS, TWO_POST_COLOR, TWO_POST_COLOR, TWO_POST_REFLECTIVITY, TWO_POST_SEGMENTS);
+    m_two_post2 = new TwoPost({0.015, 0.248}, {0.0255, 0.303}, TWO_POST_RADIUS, BALL_RADIUS, TWO_POST_COLOR, TWO_POST_COLOR, TWO_POST_REFLECTIVITY, TWO_POST_SEGMENTS);
+    m_two_post3 = new TwoPost({0.01425, 0.147}, {0.015, 0.2335}, TWO_POST_RADIUS, BALL_RADIUS, TWO_POST_COLOR, TWO_POST_COLOR, TWO_POST_REFLECTIVITY, TWO_POST_SEGMENTS);
 }
 
 Table::~Table()
@@ -131,6 +143,12 @@ Table::~Table()
     delete m_three_post1;
     delete m_three_post2;
     delete m_three_post3;
+    delete m_three_post4;
+    delete m_three_post5;
+    delete m_three_post6;
+    delete m_two_post1;
+    delete m_two_post2;
+    delete m_two_post3;
 }
 
 float Table::ball_z_limit() const
@@ -174,6 +192,12 @@ void Table::collide(Ball* ball) const
     m_three_post1->collide(ball);
     m_three_post2->collide(ball);
     m_three_post3->collide(ball);
+    m_three_post4->collide(ball);
+    m_three_post5->collide(ball);
+    m_three_post6->collide(ball);
+    m_two_post1->collide(ball);
+    m_two_post2->collide(ball);
+    m_two_post3->collide(ball);
 }
 
 CadModel Table::model() const
@@ -194,8 +218,8 @@ CadModel Table::model() const
     mm.add(m_strip10->model(0.0));
     mm.add(m_strip11->model(0.0));
     mm.add(m_ring1->model(0.0));
-    CadModel diode(CubeShape(TB, Y1, TC), RUBBER_COLOR, 0.0);
-    CadModel wall(CubeShape(TC, Y1, TB), RUBBER_COLOR, 0.0);
+    CadModel diode(CubeShape(TB, Y1, TC), METAL_COLOR, 0.0);
+    CadModel wall(CubeShape(TC, Y1, TB), METAL_COLOR, 0.0);
     diode.translate(0.0, -Y1 / 2.0f, TC / 2.0f);
     diode.rotate_ax(-90.0);
     diode.translate(0.0, Y1 / 2.0, 0.0);
@@ -267,6 +291,13 @@ CadModel Table::model() const
     mm.add(m_three_post1->model(0.0), 0.0, 0.0, 0.0);
     mm.add(m_three_post2->model(0.0), 0.0, 0.0, 0.0);
     mm.add(m_three_post3->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_three_post4->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_three_post5->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_three_post6->model(0.0), 0.0, 0.0, 0.0);
+
+    mm.add(m_two_post1->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_two_post2->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_two_post3->model(0.0), 0.0, 0.0, 0.0);
 
     mm.add(top_playfield, PLAYFIELD_X / 2.0, 0.0, PLAYFIELD_Z / 2.0);
     return mm;

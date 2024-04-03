@@ -6,8 +6,6 @@
 #include "pi.h"
 #include <math.h>
 
-#include <stdio.h>
-
 ConvexReflector::ConvexReflector(bool left, float r1, float r2, float length, float reflectivity)
     : m_reflectivity(reflectivity)
     , m_angular_velocity(0.0)
@@ -28,14 +26,30 @@ ConvexReflector::ConvexReflector(bool left, float r1, float r2, float length, fl
 }
 
 ConvexReflector::ConvexReflector(float r, float reflectivity)
-    : m_reflectivity(reflectivity)
+    : m_position({0.0, 0.0})
+    , m_radius(r)
+    , m_angle_i(0.0)
+    , m_angle_f(360.0)
+    , m_reflectivity(reflectivity)
     , m_angular_velocity(0.0)
     , m_velocity_origin({0.0, 0.0})
 {
-    m_position = {0.0, 0.0};
-    m_radius = r;
-    m_angle_i = 0.0f;
-    m_angle_f = 360.0f;
+}
+
+ConvexReflector::ConvexReflector(bool left, float r, float reflectivity)
+    : m_position({0.0, 0.0})
+    , m_radius(r)
+    , m_reflectivity(reflectivity)
+    , m_angular_velocity(0.0)
+    , m_velocity_origin({0.0, 0.0})
+{
+    if (left) {
+        m_angle_i = 90.0;
+        m_angle_f = 270.0;
+    } else {
+        m_angle_i = -90.0;
+        m_angle_f = 90.0;
+    }
 }
 
 ConvexReflector::ConvexReflector(Float2 p1, Float2 p2, Float2 p3, float radius, float reflectivity)
@@ -52,7 +66,6 @@ ConvexReflector::ConvexReflector(Float2 p1, Float2 p2, Float2 p3, float radius, 
     }
     m_angle_i = angle3 + 90.0;
     m_angle_f = angle1 - 90.0;
-    printf("ConvexReflector: a1: %.3f, a3: %.3f, a_i %.3f, a_f %.3f\n", angle1, angle3, m_angle_i, m_angle_f);
 }
 
 ConvexReflector::~ConvexReflector()

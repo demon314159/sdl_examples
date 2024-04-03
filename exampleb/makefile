@@ -58,6 +58,7 @@ HEADERS = view.h \
           straight_wire_guide.h \
           lane_guide.h \
           pyramid_lane_guide.h \
+          two_post.h \
           three_post.h \
           \
           \
@@ -119,6 +120,7 @@ OBJECTS = main.obj \
           straight_wire_guide.obj \
           lane_guide.obj \
           pyramid_lane_guide.obj \
+          two_post.obj \
           three_post.obj \
           \
           \

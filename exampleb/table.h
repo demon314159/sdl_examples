@@ -5,6 +5,7 @@
 #ifndef _TABLE_H_
 #define _TABLE_H_
 
+#include "two_post.h"
 #include "three_post.h"
 #include "lane_guide.h"
 #include "pyramid_lane_guide.h"
@@ -62,6 +63,12 @@ private:
     ThreePost* m_three_post1;
     ThreePost* m_three_post2;
     ThreePost* m_three_post3;
+    ThreePost* m_three_post4;
+    ThreePost* m_three_post5;
+    ThreePost* m_three_post6;
+    TwoPost* m_two_post1;
+    TwoPost* m_two_post2;
+    TwoPost* m_two_post3;
 
     float R1 = 0.148;
     float R2 = 0.145;
@@ -72,7 +79,7 @@ private:
     float ANGLE3 = 30.12;
     float ANGLE4 = 59.7693;
     float ANGLE5 = ANGLE2 - 8.0;
-    float ANGLE6 = 45.0;
+    float ANGLE6 = 53.0;
     float X1 =  0.003;
     float X6 = 0.288;
     float X8 = 0.314;
