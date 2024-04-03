@@ -1,9 +1,9 @@
 //
-// straight_wire_guide.h
+// bent_wire_guide.h
 //
 
-#ifndef _STRAIGHT_WIRE_GUIDE_H_
-#define _STRAIGHT_WIRE_GUIDE_H_
+#ifndef _BENT_WIRE_GUIDE_H_
+#define _BENT_WIRE_GUIDE_H_
 
 #include "cad_model.h"
 #include "float3.h"
@@ -11,21 +11,21 @@
 #include "convex_reflector.h"
 #include "straight_reflector.h"
 
-class StraightWireGuide
+class BentWireGuide
 {
 public:
-    StraightWireGuide(Float2 p1, Float2 p2, float radius, float height,
-                      const PaintCan& color, int reflectivity, int steps);
-    ~StraightWireGuide();
+    BentWireGuide(float angle, Float3 position, float length, float height, float diameter, const PaintCan& color, int reflectivity, int steps);
+    ~BentWireGuide();
 
     CadModel model(float animation_id) const;
     void collide(Ball* ball) const;
 
 private:
-    Float2 m_p1;
-    Float2 m_p2;
-    float m_radius;
+    float m_angle;
+    Float3 m_position;
+    float m_length;
     float m_height;
+    float m_diameter;
     PaintCan m_color;
     int m_steps;
     ConvexReflector m_reflector1;
@@ -34,4 +34,4 @@ private:
     StraightReflector m_reflector4;
 };
 
-#endif // _STRAIGHT_WIRE_GUIDE_H_
+#endif // _BENT_WIRE_GUIDE_H_

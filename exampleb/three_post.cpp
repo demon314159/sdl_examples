@@ -12,9 +12,6 @@
 #include "cylinder_shape.h"
 #include <math.h>
 
-#include <stdio.h>
-
-
 ThreePost::ThreePost(Float2 p1, Float2 p2, Float2 p3, float radius, float height,
                      const PaintCan& color, const PaintCan& face_color, float reflectivity, int steps)
     : m_p1(p1)
@@ -50,7 +47,6 @@ void ThreePost::collide(Ball* ball) const
 
 CadModel ThreePost::model(float animation_id) const
 {
-    printf("ThreePost: m_width: %.6f, m_height: %.6f\n", m_radius * 2.0, m_height);
     CadModel mm;
 
     float rbumper = 0.00211;
@@ -69,8 +65,6 @@ CadModel ThreePost::model(float animation_id) const
     big_post.add(big_post2, 0.0, h1_post, 0.0);
     big_post.add(big_post3, 0.0, h2_post, 0.0);
 
-
-    printf("ThreePost::model(): a_i = %.3f, af = %.3f\n", m_reflector1.angle_i(), m_reflector1.angle_f());
     CadModel b1(ToroidShape(m_radius - rbumper, rbumper, m_steps, m_reflector1.angle_i(), m_reflector1.angle_f()), PaintCan(1.0, 1.0, 1.0), animation_id);
     b1.rotate_ay(90.0);
     CadModel b2(ToroidShape(m_radius - rbumper, rbumper, m_steps, m_reflector2.angle_i(), m_reflector2.angle_f()), PaintCan(1.0, 1.0, 1.0), animation_id);
