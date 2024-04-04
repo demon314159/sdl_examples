@@ -15,6 +15,7 @@ Ball::Ball(float radius, const PaintCan& top_color, const PaintCan& middle_color
     , m_steps(steps)
     , m_acceleration({0.0, 0.0})
     , m_state()
+    , m_last_state()
     , m_orientation()
 {
 }
@@ -38,8 +39,12 @@ CadModel Ball::model(float animation_id) const
 void Ball::advance(float seconds)
 {
     State next = next_state(seconds);
-    m_orientation = next_orientation(next);
     m_state = next;
+}
+
+void Ball::advance_orientation()
+{
+    m_orientation = next_orientation();
 }
 
 float Ball::radius() const
@@ -136,14 +141,14 @@ State Ball::next_state(double dt) const
     return m_state + delta;
 }
 
-Quaternion Ball::next_orientation(const State& next) const
+Quaternion Ball::next_orientation()
 {
-    double deltax = next.position().v1 - m_state.position().v1;
-    double deltaz = next.position().v2 - m_state.position().v2;
+    double deltax = m_state.position().v1 - m_last_state.position().v1;
+    double deltaz = m_state.position().v2 - m_last_state.position().v2;
     double distance = sqrt(deltax * deltax + deltaz * deltaz);
     double last_angle = (distance / m_radius) * (180.0 / PI);
-    float vx = next.velocity().v1;
-    float vz = next.velocity().v2;
+    float vx = m_state.velocity().v1;
+    float vz = m_state.velocity().v2;
     double v = sqrt(vx * vx + vz * vz);
     Quaternion t = m_orientation;
     if (v > 0.0) {
@@ -154,6 +159,7 @@ Quaternion Ball::next_orientation(const State& next) const
         t = t * qa;
         t.normalize();
     }
+    m_last_state = m_state;
     return t;
 }
 

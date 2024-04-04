@@ -123,6 +123,7 @@ void Toy::advance(int nanoseconds)
     m_left_flipper->collide(m_ball);
     m_right_flipper->collide(m_ball);
     m_top_flipper->collide(m_ball);
+    m_ball->advance_orientation();
     m_ns_count += nanoseconds;
     if (m_ns_count > 500000000.0) {
         m_ns_count = 0.0;

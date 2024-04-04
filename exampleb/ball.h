@@ -19,6 +19,7 @@ public:
 
     CadModel model(float animation_id) const;
     void advance(float seconds);
+    void advance_orientation();
     float radius() const;
     Float2 position() const;
     Float2 velocity() const;
@@ -39,11 +40,12 @@ private:
     int m_steps;
     Float2 m_acceleration;
     State m_state;
+    State m_last_state;
     Quaternion m_orientation;
 
     State rates(const State& state) const;
     State next_state(double dt) const;
-    Quaternion next_orientation(const State& next) const;
+    Quaternion next_orientation();
 };
 
 #endif // _BALL_H_
