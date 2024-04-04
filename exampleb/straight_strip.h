@@ -14,6 +14,7 @@ class StraightStrip
 {
 public:
     StraightStrip(float angle, Float3 position, float length, float height, const PaintCan& color, float reflectivity);
+    StraightStrip(Float2 p1, Float2 p2, float height, const PaintCan& color, float reflectivity);
 
     ~StraightStrip();
 

@@ -14,6 +14,7 @@
 #include "straight_strip.h"
 #include "straight_diode_strip.h"
 #include "concave_strip.h"
+#include "convex_strip.h"
 #include "cad_model.h"
 #include "float3.h"
 #include "matrix4x4.h"
@@ -37,7 +38,7 @@ private:
     StraightStrip* m_strip1;
     StraightStrip* m_strip2;
     StraightStrip* m_strip3;
-    StraightStrip* m_strip4;
+    ConvexStrip* m_strip4;
     StraightStrip* m_strip5;
     StraightStrip* m_strip6;
     StraightStrip* m_strip7;
@@ -82,12 +83,12 @@ private:
     float ANGLE4 = 59.7693;
     float ANGLE5 = ANGLE2 - 8.0;
     float ANGLE6 = 53.0;
-    float X1 =  0.003;
+    float X1 =  0.007;
     float X6 = 0.283;
     float X8 = 0.312;
     float Z0 = 0.0;
     float Z1 = T1;
-    float ZA = 0.1476;
+    float ZA = 0.1476 - 0.017;
     float Z3 = 0.164;
     float Z4 = 0.161;
     float Z5 = 0.520;

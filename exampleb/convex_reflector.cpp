@@ -36,6 +36,17 @@ ConvexReflector::ConvexReflector(float r, float reflectivity)
 {
 }
 
+ConvexReflector::ConvexReflector(Float2 p1, float radius, float angle_i, float angle_f, float reflectivity)
+    : m_position(p1)
+    , m_radius(radius)
+    , m_angle_i(angle_i)
+    , m_angle_f(angle_f)
+    , m_reflectivity(reflectivity)
+    , m_angular_velocity(0.0)
+    , m_velocity_origin({0.0, 0.0})
+{
+}
+
 ConvexReflector::ConvexReflector(bool left, float r, float reflectivity)
     : m_position({0.0, 0.0})
     , m_radius(r)

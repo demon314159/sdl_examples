@@ -17,6 +17,19 @@ StraightStrip::StraightStrip(float angle, Float3 position, float length, float h
     m_reflector.translate({position.v1, position.v3});
 }
 
+StraightStrip::StraightStrip(Float2 p1, Float2 p2, float height, const PaintCan& color, float reflectivity)
+    : m_height(height)
+    , m_color(color)
+    , m_reflector(p1, p2, 0.0, reflectivity)
+{
+
+    m_angle = m_reflector.angle();
+    m_position.v1 = m_reflector.position().v1;
+    m_position.v2 = height / 2.0;
+    m_position.v3 = m_reflector.position().v2;
+    m_length = m_reflector.length();
+}
+
 StraightStrip::~StraightStrip()
 {
 }

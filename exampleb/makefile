@@ -45,6 +45,7 @@ HEADERS = view.h \
           straight_strip.h \
           straight_diode_strip.h \
           concave_strip.h \
+          convex_strip.h \
           concave_plane_shape.h \
           convex_plane_shape.h \
           table.h \
@@ -107,6 +108,7 @@ OBJECTS = main.obj \
           straight_strip.obj \
           straight_diode_strip.obj \
           concave_strip.obj \
+          convex_strip.obj \
           concave_plane_shape.obj \
           convex_plane_shape.obj \
           table.obj \

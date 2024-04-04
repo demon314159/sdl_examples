@@ -62,11 +62,11 @@ Table::Table()
     m_strip1 = new StraightStrip(90.0, {X8, Y1 / 2.0f, (Z7 + Z4) / 2.0f}, Z7 - Z4, Y1, WOOD_COLOR, 0.2);
     m_strip2 = new StraightStrip(-90.0, {X7, Y1 / 2.0f, (Z3 + Z7) / 2.0f}, Z7 - Z3, Y1, WOOD_COLOR, 0.2);
     m_strip3 = new StraightStrip(90.0, {X6, Y1 / 2.0f, (Z3 + Z5) / 2.0f}, Z5 - Z3, Y1, WOOD_COLOR, 0.2);
-    m_strip4 = new StraightStrip(0.0, {X6 + T1 / 2.0f, Y1 / 2.0f, Z3}, T1, Y1, WOOD_COLOR, 0.2);
+    m_strip4 = new ConvexStrip(0.0, 180.0, {X6 + T1 / 2.0f, Y1 / 2.0f, Z3}, T1 / 2.0, Y1, WOOD_COLOR, 0.2, RING_SEGMENTS);
     m_strip5 = new StraightStrip(ANGLE3, {(float) (X5 + X6) / 2.0f, (float) Y1 / 2.0f, (float) (Z5 + Z6) / 2.0f}, (float) R2, (float) Y1, WOOD_COLOR, (float) 0.2);
     m_strip6 = new StraightStrip(-ANGLE3, {(X1 + X3) / 2.0f, Y1 / 2.0f, (Z5 + Z6) / 2.0f}, R2, Y1, WOOD_COLOR, 0.2);
     m_strip7 = new StraightStrip(-90.0, {X1, Y1 / 2.0f, (ZA + Z5) / 2.0f}, (Z5 - ZA), Y1, WOOD_COLOR, 0.2);
-    m_strip8 = new StraightStrip(ANGLE4 - 180.0, {(X1 + X2) / 2.0f, Y1 / 2.0f, (ZA + Z2) / 2.0f}, R4, Y1, WOOD_COLOR, 0.2);
+    m_strip8 = new StraightStrip({X2, Z2}, {X1, ZA}, Y1, WOOD_COLOR, 0.2);
     m_strip9 = new ConcaveStrip(ANGLE1, ANGLE2, {X4, Y1 / 2.0f, Z4}, R1, Y1, WOOD_COLOR, 0.2, TOP_PANEL_STEPS);
     m_strip10 = new StraightStrip(0.0, {(X7 + X8) / 2.0f, Y1 / 2.0f, Z7}, X8 - X7, Y1, WOOD_COLOR, 0.0);
     m_strip11 = new StraightDiodeStrip(ANGLE6, {XC, Y1 / 2.0f, ZC}, TB, Y1, METAL_COLOR, RING_MAJOR_REFLECTIVITY);
@@ -219,10 +219,16 @@ CadModel Table::model() const
     diode.add(wall, -TB / 2.0f + TC / 2.0f, 0.0, TB / 2.0);
     diode.rotate_ay(ANGLE6);
     mm.add(diode, XC, Y1 / 2.0f, ZC);
-    CadModel cap(CylinderShape(T1 / 2.0f, Y1, 50), WOOD_COLOR, 0.0);
+
+
     CadModel barrier1(CubeShape(T1, Y1, PLAYFIELD_Z - Z3), WOOD_COLOR, 0.0);
     mm.add(barrier1, X6 + T1 / 2.0f, Y1 / 2.0f, (Z3 + PLAYFIELD_Z) / 2.0f);
+
+
+    CadModel cap(CylinderShape(T1 / 2.0f, Y1, 50), WOOD_COLOR, 0.0);
     mm.add(cap, X6 + T1 / 2.0f, Y1 / 2.0f, Z3);
+
+
     CadModel barrier2(CubeShape(T1, Y1 + PLAYFIELD_Y, PLAYFIELD_Z), WOOD_COLOR, 0.0);
     mm.add(barrier2, X8 + T1 / 2.0, Y1 / 2.0 - PLAYFIELD_Y / 2.0, PLAYFIELD_Z / 2.0);
     mm.add(barrier2, X1 - T1 / 2.0, Y1 / 2.0 - PLAYFIELD_Y / 2.0, PLAYFIELD_Z / 2.0);
