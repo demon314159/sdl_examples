@@ -74,7 +74,7 @@ private:
 
     float R1 = 0.148;
     float R2 = 0.145;
-    float T1 = 0.008;
+    float T1 = 0.010;
     float Y1 = 0.018;
     float ANGLE1 = 0.0;
     float ANGLE2 = 145.452;
@@ -83,12 +83,12 @@ private:
     float ANGLE5 = ANGLE2 - 8.0;
     float ANGLE6 = 53.0;
     float X1 =  0.003;
-    float X6 = 0.288;
-    float X8 = 0.314;
+    float X6 = 0.283;
+    float X8 = 0.312;
     float Z0 = 0.0;
     float Z1 = T1;
     float ZA = 0.1476;
-    float Z3 = 0.150;
+    float Z3 = 0.164;
     float Z4 = 0.161;
     float Z5 = 0.520;
     float Z7 = 0.57725;
