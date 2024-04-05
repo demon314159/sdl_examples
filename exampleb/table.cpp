@@ -56,6 +56,8 @@ Table::Table()
     , m_two_post1(NULL)
     , m_two_post2(NULL)
     , m_two_post3(NULL)
+    , m_bumper1(NULL)
+    , m_bumper2(NULL)
 {
     m_ball_home_position = {(X7 + X8) / 2.0f, Z7 - BALL_RADIUS};
     m_ball_z_limit = Z8;
@@ -99,6 +101,8 @@ Table::Table()
     m_two_post1 = new TwoPost({0.078, 0.280}, {0.102, 0.26875}, TWO_POST_RADIUS, BALL_RADIUS, TWO_POST_COLOR, TWO_POST_COLOR, TWO_POST_REFLECTIVITY, TWO_POST_SEGMENTS);
     m_two_post2 = new TwoPost({0.015, 0.248}, {0.0255, 0.303}, TWO_POST_RADIUS, BALL_RADIUS, TWO_POST_COLOR, TWO_POST_COLOR, TWO_POST_REFLECTIVITY, TWO_POST_SEGMENTS);
     m_two_post3 = new TwoPost({0.01425, 0.147}, {0.015, 0.2335}, TWO_POST_RADIUS, BALL_RADIUS, TWO_POST_COLOR, TWO_POST_COLOR, TWO_POST_REFLECTIVITY, TWO_POST_SEGMENTS);
+    m_bumper1 = new Bumper({0.208, 0.166}, KICKER_RADIUS, KICKER_VELOCITY, BALL_RADIUS, KICKER_COLOR, KICKER_SEGMENTS);
+    m_bumper2 = new Bumper({0.0735, 0.215}, KICKER_RADIUS, KICKER_VELOCITY, BALL_RADIUS, KICKER_COLOR, KICKER_SEGMENTS);
 }
 
 Table::~Table()
@@ -140,6 +144,8 @@ Table::~Table()
     delete m_two_post1;
     delete m_two_post2;
     delete m_two_post3;
+    delete m_bumper1;
+    delete m_bumper2;
 }
 
 float Table::ball_z_limit() const
@@ -191,6 +197,8 @@ void Table::collide(Ball* ball) const
     m_two_post1->collide(ball);
     m_two_post2->collide(ball);
     m_two_post3->collide(ball);
+    m_bumper1->collide(ball);
+    m_bumper2->collide(ball);
 }
 
 CadModel Table::model() const
@@ -299,6 +307,8 @@ CadModel Table::model() const
     mm.add(m_two_post1->model(0.0), 0.0, 0.0, 0.0);
     mm.add(m_two_post2->model(0.0), 0.0, 0.0, 0.0);
     mm.add(m_two_post3->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_bumper1->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_bumper2->model(0.0), 0.0, 0.0, 0.0);
 
     mm.add(top_playfield, PLAYFIELD_X / 2.0, 0.0, PLAYFIELD_Z / 2.0);
     return mm;

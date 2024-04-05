@@ -158,6 +158,11 @@
 #define THREE_POST_COLOR PaintCan(1.0, 1.0, 1.0)
 #define THREE_POST_REFLECTIVITY  0.5
 
+#define KICKER_RADIUS    0.021
+#define KICKER_VELOCITY  0.5
+#define KICKER_COLOR     PaintCan(0.05, 0.288, 0.592)
+#define KICKER_SEGMENTS  50
+
 #define METAL_COLOR PaintCan(0.42, 0.42, 0.42)
 
 class Look
