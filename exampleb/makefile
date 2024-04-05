@@ -63,6 +63,7 @@ HEADERS = view.h \
           three_post.h \
           convex_kicker.h \
           bumper.h \
+          disc_shape.h \
           \
           \
           \
@@ -128,6 +129,7 @@ OBJECTS = main.obj \
           three_post.obj \
           convex_kicker.obj \
           bumper.obj \
+          disc_shape.obj \
           \
           \
           \

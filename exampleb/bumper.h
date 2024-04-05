@@ -13,8 +13,8 @@
 class Bumper
 {
 public:
-    Bumper(Float2 position, float kicker_radius, float kicker_velocity, float ball_radius,
-           const PaintCan& color, int steps);
+    Bumper(Float2 position, float radius, float kicker_radius, float kicker_velocity, float ball_radius,
+           const PaintCan& color, int major_steps, int minor_steps);
     ~Bumper();
 
     CadModel model(float animation_id) const;
@@ -22,11 +22,13 @@ public:
 
 private:
     Float2 m_position;
+    float m_radius;
     float m_kicker_radius;
     float m_kicker_velocity;
     float m_ball_radius;
     PaintCan m_color;
-    int m_steps;
+    int m_major_steps;
+    int m_minor_steps;
     ConvexKicker m_kicker;
 };
 
