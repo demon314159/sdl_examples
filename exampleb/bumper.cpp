@@ -31,9 +31,9 @@ void Bumper::collide(Ball* ball) const
 CadModel Bumper::model(float animation_id) const
 {
     float h1 = m_ball_radius / 8.0;
-    float h2 = m_ball_radius / 4.0;
+    float h2 = m_ball_radius / 2.0;
     float core_radius = m_kicker_radius / 2.0;
-    float h3 = m_ball_radius + 3.0 * m_ball_radius / 4.0;
+    float h3 = m_ball_radius + m_ball_radius / 2.0;
     float h4 = 2.0 * m_ball_radius - m_ball_radius / 8.0;
     PaintCan core_color(1.0, 1.0, 1.0);
 
@@ -47,5 +47,6 @@ CadModel Bumper::model(float animation_id) const
     mm.add(core, m_position.v1, h2 + (h3 - h2) / 2.0, m_position.v2);
     mm.add(paddle2, m_position.v1, h3, m_position.v2);
     mm.add(base, m_position.v1, h4 + h1 / 2.0f, m_position.v2);
+    mm.translate(0.0, 0.001, 0.0);
     return mm;
 }

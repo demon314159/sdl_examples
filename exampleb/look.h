@@ -161,7 +161,7 @@
 #define KICKER_RADIUS    0.017
 #define KICKER_VELOCITY  0.5
 #define KICKER_COLOR     PaintCan(0.05, 0.288, 0.592)
-#define KICKER_SEGMENTS  50
+#define KICKER_SEGMENTS  100
 
 #define METAL_COLOR PaintCan(0.42, 0.42, 0.42)
 
