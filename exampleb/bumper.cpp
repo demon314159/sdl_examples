@@ -7,6 +7,7 @@
 #include "cone_shape.h"
 #include "disc_shape.h"
 #include "diamond_shape.h"
+#include "trim_shape.h"
 
 Bumper::Bumper(Float2 position, float radius, float kicker_radius, float kicker_velocity, float ball_radius,
                const PaintCan& color, int major_steps, int minor_steps)
@@ -57,6 +58,7 @@ CadModel Bumper::model(float animation_id) const
     CadModel paddle2(ConeShape(core_radius * 1.5, m_kicker_radius, h4 - h3, m_major_steps), m_color, animation_id);
     CadModel disc(DiscShape(m_radius, disc_thickness, m_major_steps, m_minor_steps), core_color, animation_id);
     CadModel diamond(DiamondShape(diamond_length, diamond_width, diamond_thickness), m_color, animation_id);
+    CadModel trim(TrimShape(m_radius * 0.9f, (core_radius + m_radius * 0.9f) / 2.0, diamond_thickness, m_major_steps), m_color, animation_id);
     CadModel mm;
     mm.add(base, m_position.v1, h1 / 2.0f, m_position.v2);
     mm.add(paddle1, m_position.v1, h1, m_position.v2);
@@ -64,6 +66,7 @@ CadModel Bumper::model(float animation_id) const
     mm.add(paddle2, m_position.v1, h3, m_position.v2);
     mm.add(base, m_position.v1, h4 + h1 / 2.0f, m_position.v2);
     mm.add(disc, m_position.v1, h5 + disc_thickness / 2.0f, m_position.v2);
+    mm.add(trim, m_position.v1, h6 + diamond_thickness / 2.0f, m_position.v2);
     for (int i = 0; i < 8; i++) {
         CadModel temp(diamond, m_radius - diamond_length / 2.0 - diamond_length / 4.0, 0.0, 0.0);
         temp.rotate_ay(45.0 * (float) i);
