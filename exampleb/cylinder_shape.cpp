@@ -6,10 +6,12 @@
 #include "pi.h"
 #include "math.h"
 
-CylinderShape::CylinderShape(float radius, float height, int steps)
+CylinderShape::CylinderShape(float radius, float height, int steps, bool lit_only, bool unlit_only)
     : m_radius(radius)
     , m_height(height)
     , m_steps(steps)
+    , m_lit_only(lit_only)
+    , m_unlit_only(unlit_only)
     , m_size_known(false)
     , m_facet_count(0)
     , m_facet(NULL)
@@ -63,9 +65,13 @@ void CylinderShape::slice(int step, float r, float theta_i, float theta_f)
     float x2 = r * cos(theta2);
     float z2 = r * sin(theta2);
 
-    add_face({x0, y1, z0}, {x1, y1, z1}, {x2, y1, z2}, true);
-    add_face({x1, y1, z1}, {x2, y1, z2}, {x2, y0, z2}, {x1, y0, z1}, false);
-    add_face({x0, y0, z0}, {x1, y0, z1}, {x2, y0, z2}, false);
+    if (!m_unlit_only) {
+        add_face({x0, y1, z0}, {x1, y1, z1}, {x2, y1, z2}, true);
+    }
+    if ( !m_lit_only) {
+        add_face({x1, y1, z1}, {x2, y1, z2}, {x2, y0, z2}, {x1, y0, z1}, false);
+        add_face({x0, y0, z0}, {x1, y0, z1}, {x2, y0, z2}, false);
+    }
 }
 
 void CylinderShape::add_face(Float3 v1, Float3 v2, Float3 v3, Float3 v4, bool flip)

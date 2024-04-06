@@ -5,10 +5,12 @@
 #include "cube_shape.h"
 #include <cstddef>
 
-CubeShape::CubeShape(float dimx, float dimy, float dimz)
+CubeShape::CubeShape(float dimx, float dimy, float dimz, bool lit_only, bool unlit_only)
     : m_dimx(dimx)
     , m_dimy(dimy)
     , m_dimz(dimz)
+    , m_lit_only(lit_only)
+    , m_unlit_only(unlit_only)
     , m_size_known(false)
     , m_facet_count(0)
     , m_facet(NULL)
@@ -41,12 +43,17 @@ Facet CubeShape::facet(int facet_ix) const
 void CubeShape::define_shape()
 {
     // faces
-    add_face(0x0, 0x1, 0x3, 0x2);
-    add_face(0x4, 0x5, 0x7, 0x6, true);
-    add_face(0x0, 0x1, 0x5, 0x4, true);
-    add_face(0x2, 0x3, 0x7, 0x6);
-    add_face(0x0, 0x4, 0x6, 0x2, true);
-    add_face(0x1, 0x5, 0x7, 0x3);
+
+    if (!m_unlit_only) {
+        add_face(0x2, 0x3, 0x7, 0x6);
+    }
+    if (!m_lit_only) {
+        add_face(0x0, 0x1, 0x3, 0x2);
+        add_face(0x4, 0x5, 0x7, 0x6, true);
+        add_face(0x0, 0x1, 0x5, 0x4, true);
+        add_face(0x0, 0x4, 0x6, 0x2, true);
+        add_face(0x1, 0x5, 0x7, 0x3);
+    }
 }
 
 void CubeShape::add_face(int v1, int v2, int v3, int v4, bool flip)

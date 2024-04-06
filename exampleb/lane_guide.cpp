@@ -92,8 +92,10 @@ CadModel LaneGuide::model(float animation_id) const
     float h5_post = h4_post + m_height / 5.0;
 
     CadModel base0(CubeShape(m_length, m_width / 10, r0_post * 2.0), m_color, animation_id);
-    CadModel base1(CubeShape(m_length, m_width / 10, r0_post * 2.0), m_face_color, 1.0);
-    CadModel base2(CylinderShape(r0_post, m_width / 10, m_steps), m_face_color, 1.0);
+    CadModel base1a(CubeShape(m_length, m_width / 10, r0_post * 2.0, true, false), m_face_color, 1.0);
+    CadModel base1b(CubeShape(m_length, m_width / 10, r0_post * 2.0, false, true), m_face_color, animation_id);
+    CadModel base2a(CylinderShape(r0_post, m_width / 10, m_steps, true, false), m_face_color, 1.0);
+    CadModel base2b(CylinderShape(r0_post, m_width / 10, m_steps, false, true), m_face_color, animation_id);
     CadModel base3(ConeShape(r2_post, 0.001, h5_post - h4_post, m_steps), PaintCan(0.42, 0.42, 0.42), animation_id);
     CadModel big_post1(ConeShape(r0_post, r1_post, h1_post, m_steps), m_color, animation_id);
     CadModel big_post2(ConeShape(r1_post, r1_post, h2_post - h1_post, m_steps), m_color, animation_id);
@@ -103,9 +105,12 @@ CadModel LaneGuide::model(float animation_id) const
     CadModel b3(PipeShape(rbumper, m_length, m_steps), PaintCan(1.0, 1.0, 1.0), animation_id);
 
     mm.add(base0, m_length / 2.0, m_width / 20.0, 0.0);
-    mm.add(base1, m_length / 2.0, h3_post + m_width / 20.0, 0.0);
-    mm.add(base2, 0.0, h3_post + m_width / 20.0, 0.0);
-    mm.add(base2, m_length, h3_post + m_width / 20.0, 0.0);
+    mm.add(base1a, m_length / 2.0, h3_post + m_width / 20.0, 0.0);
+    mm.add(base1b, m_length / 2.0, h3_post + m_width / 20.0, 0.0);
+    mm.add(base2a, 0.0, h3_post + m_width / 20.0, 0.0);
+    mm.add(base2b, 0.0, h3_post + m_width / 20.0, 0.0);
+    mm.add(base2a, m_length, h3_post + m_width / 20.0, 0.0);
+    mm.add(base2b, m_length, h3_post + m_width / 20.0, 0.0);
     mm.add(base3, 0.0, h4_post, 0.0);
     mm.add(base3, m_length, h4_post, 0.0);
     mm.add(big_post1, 0.0,  0.0, 0.0);

@@ -12,7 +12,7 @@
 class CubeShape: public Shape
 {
 public:
-    CubeShape(float dimx, float dimy, float dimz);
+    CubeShape(float dimx, float dimy, float dimz, bool lit_only = false, bool unlit_only = false);
     virtual ~CubeShape();
     int facets() const override;
     Facet facet(int facet_ix) const override;
@@ -21,6 +21,8 @@ private:
     float m_dimx;
     float m_dimy;
     float m_dimz;
+    bool m_lit_only;
+    bool m_unlit_only;
     bool m_size_known;
     int m_facet_count;
     Facet *m_facet;
