@@ -6,11 +6,15 @@
 #include "pi.h"
 #include "math.h"
 
-DiscShape::DiscShape(float radius, float height, int major_steps, int minor_steps)
+DiscShape::DiscShape(float radius, float height, int major_steps, int minor_steps, bool top_only,
+                     bool lit_only, bool unlit_only)
     : m_radius(radius)
     , m_height(height)
     , m_major_steps(major_steps)
     , m_minor_steps(minor_steps)
+    , m_top_only(top_only)
+    , m_lit_only(lit_only)
+    , m_unlit_only(unlit_only)
     , m_size_known(false)
     , m_facet_count(0)
     , m_facet(NULL)
@@ -61,10 +65,16 @@ void DiscShape::slice_ay(int step)
     float z2 = rmajor * sin(ay2 * PI / 180.0);
     float y1 = -m_height / 2.0;
     float y2 = m_height / 2.0;
-    add_face({x1, y1, z1}, {x2, y1, z2}, {0.0, y1, 0.0}, false);
-    add_face({x1, y2, z1}, {x2, y2, z2}, {0.0, y2, 0.0}, true);
-    for (int j = 0; j < m_minor_steps; j++) {
-        edge_slice(j, rmajor, rminor, ay1, ay2);
+    if (!m_unlit_only) {
+        add_face({x1, y2, z1}, {x2, y2, z2}, {0.0, y2, 0.0}, true);
+    }
+    if (!m_lit_only) {
+        if (!m_top_only) {
+            add_face({x1, y1, z1}, {x2, y1, z2}, {0.0, y1, 0.0}, false);
+        }
+        for (int j = 0; j < m_minor_steps; j++) {
+            edge_slice(j, rmajor, rminor, ay1, ay2);
+        }
     }
 }
 
@@ -87,7 +97,13 @@ void DiscShape::edge_slice(int step, float rmajor, float rminor, float ay1, floa
     rotate(p2, ay1);
     rotate(p3, ay2);
     rotate(p4, ay2);
-    add_face(p1, p2, p3, p4, true);
+    if (m_top_only) {
+        if (ax1 >= 0.0 && ax2 >= 0.0) {
+            add_face(p1, p2, p3, p4, true);
+        }
+    } else {
+        add_face(p1, p2, p3, p4, true);
+    }
 }
 
 void DiscShape::rotate(Float3& point, float angle) const

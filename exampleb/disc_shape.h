@@ -12,7 +12,7 @@
 class DiscShape: public Shape
 {
 public:
-    DiscShape(float radius, float height, int major_steps, int minor_steps);
+    DiscShape(float radius, float height, int major_steps, int minor_steps, bool top_only = false, bool lit_only = false, bool unlit_only = false);
     virtual ~DiscShape();
     int facets() const override;
     Facet facet(int facet_ix) const override;
@@ -22,6 +22,9 @@ private:
     float m_height;
     int m_major_steps;
     int m_minor_steps;
+    bool m_top_only;
+    bool m_lit_only;
+    bool m_unlit_only;
     bool m_size_known;
     int m_facet_count;
     Facet *m_facet;
