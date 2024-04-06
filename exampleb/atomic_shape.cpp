@@ -88,23 +88,16 @@ void AtomicShape::add_line(float x1, float z1, float x2, float z2, bool flag)
     translate(p3, position);
     translate(p4, position);
     add_face({p1.v1, y2, p1.v2}, {p2.v1, y2, p2.v2}, {p3.v1, y2, p3.v2}, {p4.v1, y2, p4.v2}, true);
-    add_face({p1.v1, y1, p1.v2}, {p2.v1, y1, p2.v2}, {p3.v1, y1, p3.v2}, {p4.v1, y1, p4.v2}, false);
-    add_face({p1.v1, y1, p1.v2}, {p2.v1, y1, p2.v2}, {p2.v1, y2, p2.v2}, {p1.v1, y2, p1.v2}, true);
-    add_face({p2.v1, y1, p2.v2}, {p3.v1, y1, p3.v2}, {p3.v1, y2, p3.v2}, {p2.v1, y2, p2.v2}, true);
-    add_face({p3.v1, y1, p3.v2}, {p4.v1, y1, p4.v2}, {p4.v1, y2, p4.v2}, {p3.v1, y2, p3.v2}, true);
-    add_face({p4.v1, y1, p4.v2}, {p1.v1, y1, p1.v2}, {p1.v1, y2, p1.v2}, {p4.v1, y2, p4.v2}, true);
 
     float f = 0.3;
     scale(p1, f);
     scale(p2, f);
     scale(p3, f);
     scale(p4, f);
-
-    if (flag) {
+    if (flag)
         add_face({0.0, y2, 0.0}, {p2.v1, y2, p2.v2}, {p3.v1, y2, p3.v2}, {p4.v1, y2, p4.v2}, true);
-    } else {
+    else
         add_face({p1.v1, y2, p1.v2}, {p2.v1, y2, p2.v2}, {0.0, y2, 0.0}, {p4.v1, y2, p4.v2}, true);
-    }
 }
 
 void AtomicShape::rotate(Float2& point, float angle) const
