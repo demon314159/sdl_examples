@@ -53,24 +53,24 @@ void AtomicShape::slice(int step)
     float a1 = da * (float) step;
     float a2 = da * (float) (step + 1);
     float x1 = m_major_radius * cos(a1 * PI / 180.0);
-    float z1 = m_major_radius * sin(a1 * PI / 180.0);
+    float z1 = -m_major_radius * sin(a1 * PI / 180.0);
     float x2 = m_major_radius * cos(a2 * PI / 180.0);
-    float z2 = m_major_radius * sin(a2 * PI / 180.0);
+    float z2 = -m_major_radius * sin(a2 * PI / 180.0);
     float x3 = m_minor_radius * cos(a1 * PI / 180.0);
-    float z3 = m_minor_radius * sin(a1 * PI / 180.0);
+    float z3 = -m_minor_radius * sin(a1 * PI / 180.0);
     float x4 = m_minor_radius * cos(a2 * PI / 180.0);
-    float z4 = m_minor_radius * sin(a2 * PI / 180.0);
-    add_line(x1, z1, x4, z4);
-    add_line(x2, z2, x3, z3);
+    float z4 = -m_minor_radius * sin(a2 * PI / 180.0);
+    add_line(x1, z1, x4, z4, true);
+    add_line(x2, z2, x3, z3, false);
 }
 
-void AtomicShape::add_line(float x1, float z1, float x2, float z2)
+void AtomicShape::add_line(float x1, float z1, float x2, float z2, bool flag)
 {
     float y1 = -m_height / 2.0;
     float y2 = m_height / 2.0;
     float dx = x2 - x1;
     float dz = z2 - z1;
-    float length = sqrt(dx * dx + dz * dz);
+    float length = sqrt(dx * dx + dz * dz) * 1.05;
     float angle = atan2(-dz, dx) * 180.0 / PI;
     Float2 position = {(x1 + x2) / 2.0f, (z1 + z2) / 2.0f};
 
@@ -89,10 +89,22 @@ void AtomicShape::add_line(float x1, float z1, float x2, float z2)
     translate(p4, position);
     add_face({p1.v1, y2, p1.v2}, {p2.v1, y2, p2.v2}, {p3.v1, y2, p3.v2}, {p4.v1, y2, p4.v2}, true);
     add_face({p1.v1, y1, p1.v2}, {p2.v1, y1, p2.v2}, {p3.v1, y1, p3.v2}, {p4.v1, y1, p4.v2}, false);
-    add_face({p1.v1, y1, p1.v2}, {p2.v1, y1, p2.v2}, {p2.v1, y2, p2.v2}, {p1.v1, y2, p1.v2}, false);
-    add_face({p2.v1, y1, p2.v2}, {p3.v1, y1, p3.v2}, {p3.v1, y2, p3.v2}, {p2.v1, y2, p2.v2}, false);
-    add_face({p3.v1, y1, p3.v2}, {p4.v1, y1, p4.v2}, {p4.v1, y2, p4.v2}, {p3.v1, y2, p3.v2}, false);
-    add_face({p4.v1, y1, p4.v2}, {p1.v1, y1, p1.v2}, {p1.v1, y2, p1.v2}, {p4.v1, y2, p4.v2}, false);
+    add_face({p1.v1, y1, p1.v2}, {p2.v1, y1, p2.v2}, {p2.v1, y2, p2.v2}, {p1.v1, y2, p1.v2}, true);
+    add_face({p2.v1, y1, p2.v2}, {p3.v1, y1, p3.v2}, {p3.v1, y2, p3.v2}, {p2.v1, y2, p2.v2}, true);
+    add_face({p3.v1, y1, p3.v2}, {p4.v1, y1, p4.v2}, {p4.v1, y2, p4.v2}, {p3.v1, y2, p3.v2}, true);
+    add_face({p4.v1, y1, p4.v2}, {p1.v1, y1, p1.v2}, {p1.v1, y2, p1.v2}, {p4.v1, y2, p4.v2}, true);
+
+    float f = 0.3;
+    scale(p1, f);
+    scale(p2, f);
+    scale(p3, f);
+    scale(p4, f);
+
+    if (flag) {
+        add_face({0.0, y2, 0.0}, {p2.v1, y2, p2.v2}, {p3.v1, y2, p3.v2}, {p4.v1, y2, p4.v2}, true);
+    } else {
+        add_face({p1.v1, y2, p1.v2}, {p2.v1, y2, p2.v2}, {0.0, y2, 0.0}, {p4.v1, y2, p4.v2}, true);
+    }
 }
 
 void AtomicShape::rotate(Float2& point, float angle) const
@@ -109,6 +121,12 @@ void AtomicShape::translate(Float2& point, Float2 distance) const
 {
     point.v1 += distance.v1;
     point.v2 += distance.v2;
+}
+
+void AtomicShape::scale(Float2& point, float f) const
+{
+    point.v1 *= f;
+    point.v2 *= f;
 }
 
 void AtomicShape::add_face(Float3 v1, Float3 v2, Float3 v3, Float3 v4, bool flip)

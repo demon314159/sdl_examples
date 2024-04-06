@@ -39,7 +39,7 @@ CadModel Bumper::model(float animation_id) const
 {
     float atom_height = 0.0005;
     float disc_thickness = 0.0025;
-    float diamond_thickness = 0.001;
+    float diamond_thickness = 0.0005;
     float diamond_length = 0.007;
     float diamond_width = 0.6 * diamond_length;
     float ring_height = 0.0015;

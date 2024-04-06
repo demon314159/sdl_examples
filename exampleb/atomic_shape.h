@@ -30,9 +30,10 @@ private:
     void add_face(Float3 v1, Float3 v2, Float3 v3, bool flip = false);
     void add_face(Float3 v1, Float3 v2, Float3 v3, Float3 v4, bool flip = false);
     void slice(int step);
-    void add_line(float x1, float z1, float x2, float z2);
+    void add_line(float x1, float z1, float x2, float z2, bool flag);
     void rotate(Float2& point, float angle) const;
     void translate(Float2& point, Float2 distance) const;
+    void scale(Float2& point, float f) const;
 };
 
 #endif // _ATOMIC_SHAPE_
