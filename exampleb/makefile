@@ -66,6 +66,7 @@ HEADERS = view.h \
           disc_shape.h \
           diamond_shape.h \
           trim_shape.h \
+          atomic_shape.h \
           \
           \
           \
@@ -134,6 +135,7 @@ OBJECTS = main.obj \
           disc_shape.obj \
           diamond_shape.obj \
           trim_shape.obj \
+          atomic_shape.obj \
           \
           \
           \
