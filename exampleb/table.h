@@ -79,12 +79,12 @@ private:
     float R1 = 0.148;
     float R2 = 0.145;
     float T1 = 0.010;
-    float Y1 = 0.018;
+    float Y1 = 0.010;
     float ANGLE1 = 0.0;
     float ANGLE2 = 145.452;
     float ANGLE3 = 30.12;
     float ANGLE4 = 59.7693;
-    float ANGLE5 = ANGLE2 - 8.0;
+    float ANGLE5 = ANGLE2 - 9.0;
     float ANGLE6 = 53.0;
     float X1 =  0.007;
     float X6 = 0.283;
@@ -110,13 +110,14 @@ private:
     float Z9 = PLAYFIELD_Z - T1;
     float Z10 = PLAYFIELD_Z;
     float R4 = sqrt((X2 - X1) * (X2 - X1) + (ZA - Z2) * (ZA - Z2));
-    float TB = X8 - X7;
-    float YB = Y1 * 1.2;
+    float TB = (X8 - X7) * 0.7;
+    float TDIODE = (X8 - X7) * 1.4;
+    float YB = BALL_RADIUS * 2.5 * 1.414;
     float XB = X4 + (R1 - TB / 2.0) * cos(ANGLE5 * PI / 180.0);
     float ZB = Z4 - (R1 - TB / 2.0) * sin(ANGLE5 * PI / 180.0);
     float XC = X4 + (R1 - TB / 2.0) * cos(ANGLE6 * PI / 180.0);
     float ZC = Z4 - (R1 - TB / 2.0) * sin(ANGLE6 * PI / 180.0);
-    float TC = TB / 10.0;
+    float TC = TDIODE / 10.0;
 };
 
 #endif // _TABLE_H_

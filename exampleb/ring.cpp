@@ -64,8 +64,8 @@ CadModel Ring::model(float animation_id) const
 {
     CadModel half_toroid(ToroidShape(m_outer_radius, m_width / 2.0f, m_steps, 0.0, 360.0, -90.0, 90.0), m_color, 0.0);
     CadModel ring(RingShape(m_outer_radius, m_inner_radius, m_width, m_steps), m_color, 0.0);
-    ring.rotate_ax(90.0);
-    half_toroid.rotate_ax(90.0);
+    ring.rotate_ax(-60.0);
+    half_toroid.rotate_ax(-60.0);
     ring.rotate_ay(m_angle + 90.0);
     half_toroid.rotate_ay(m_angle + 90.0);
     Float3 pos = m_position;

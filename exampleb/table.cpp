@@ -71,8 +71,8 @@ Table::Table()
     m_strip8 = new StraightStrip({X2, Z2}, {X1, ZA}, Y1, WOOD_COLOR, 0.2);
     m_strip9 = new ConcaveStrip(ANGLE1, ANGLE2, {X4, Y1 / 2.0f, Z4}, R1, Y1, WOOD_COLOR, 0.2, TOP_PANEL_STEPS);
     m_strip10 = new StraightStrip(0.0, {(X7 + X8) / 2.0f, Y1 / 2.0f, Z7}, X8 - X7, Y1, WOOD_COLOR, 0.0);
-    m_strip11 = new StraightDiodeStrip(ANGLE6, {XC, Y1 / 2.0f, ZC}, TB, Y1, METAL_COLOR, RING_MAJOR_REFLECTIVITY);
-    m_ring1 = new Ring(ANGLE5, {XB, YB / 2.0f, ZB}, YB / 2.0f - TB / 4.0f, YB / 8.0f, TB / 2.0f, RUBBER_COLOR, RING_MAJOR_REFLECTIVITY, RING_MINOR_REFLECTIVITY, RING_SEGMENTS);
+    m_strip11 = new StraightDiodeStrip(ANGLE6, {XC, Y1 / 2.0f, ZC}, TDIODE, Y1, METAL_COLOR, RING_MAJOR_REFLECTIVITY);
+    m_ring1 = new Ring(ANGLE5, {XB, YB / 2.0f, ZB}, YB / 2.0f - TB / 4.0f, YB / 8.0f, TB / 2.0f, RING_COLOR, RING_MAJOR_REFLECTIVITY, RING_MINOR_REFLECTIVITY, RING_SEGMENTS);
 
     m_wire_guide1 = new StraightWireGuide({0.028, 0.411}, {0.02775, 0.4765}, WIRE_GUIDE_RADIUS, BALL_RADIUS, WIRE_GUIDE_COLOR, WIRE_GUIDE_REFLECTIVITY, WIRE_GUIDE_SEGMENTS);
     m_wire_guide2 = new StraightWireGuide({0.262, 0.426}, {0.262, 0.4755}, WIRE_GUIDE_RADIUS, BALL_RADIUS, WIRE_GUIDE_COLOR, WIRE_GUIDE_REFLECTIVITY, WIRE_GUIDE_SEGMENTS);
@@ -219,12 +219,12 @@ CadModel Table::model() const
     mm.add(m_strip10->model(0.0));
     mm.add(m_strip11->model(0.0));
     mm.add(m_ring1->model(0.0));
-    CadModel diode(CubeShape(TB, Y1, TC), METAL_COLOR, 0.0);
-    CadModel wall(CubeShape(TC, Y1, TB), METAL_COLOR, 0.0);
+    CadModel diode(CubeShape(TDIODE, Y1, TC), METAL_COLOR, 0.0);
+    CadModel wall(CubeShape(TC, Y1, TDIODE), METAL_COLOR, 0.0);
     diode.translate(0.0, -Y1 / 2.0f, TC / 2.0f);
     diode.rotate_ax(-90.0);
     diode.translate(0.0, Y1 / 2.0, 0.0);
-    diode.add(wall, -TB / 2.0f + TC / 2.0f, 0.0, TB / 2.0);
+//    diode.add(wall, -TDIODE / 2.0f + TC / 2.0f, 0.0, TDIODE / 2.0);
     diode.rotate_ay(ANGLE6);
     mm.add(diode, XC, Y1 / 2.0f, ZC);
 
