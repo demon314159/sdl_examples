@@ -54,7 +54,7 @@ CadModel Bumper::model(float animation_id) const
     float h6 = h5 + disc_thickness;
     float h7 = h6 + diamond_thickness;
     float h8 = h7 + cap_height;
-    float h9 = h8 + disc_thickness;
+    float h9 = h8 + disc_thickness / 2.0;
     float h10 = h9 + atom_height;
 
 
