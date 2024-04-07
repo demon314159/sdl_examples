@@ -146,18 +146,20 @@ Quaternion Ball::next_orientation()
     double deltax = m_state.position().v1 - m_last_state.position().v1;
     double deltaz = m_state.position().v2 - m_last_state.position().v2;
     double distance = sqrt(deltax * deltax + deltaz * deltaz);
-    double last_angle = (distance / m_radius) * (180.0 / PI);
-    float vx = m_state.velocity().v1;
-    float vz = m_state.velocity().v2;
-    double v = sqrt(vx * vx + vz * vz);
     Quaternion t = m_orientation;
-    if (v > 0.0) {
-        float ta = vz / v;
-        float tb = -vx / v;
-        // Rotate m_orienation quaternion by last_angle and axes and normalize it
-        Quaternion qa((float) last_angle, {ta, 0.0, tb});
-        t = t * qa;
-        t.normalize();
+    if (distance >= 0.00001) {
+        double last_angle = (distance / m_radius) * (180.0 / PI);
+        float vx = m_state.velocity().v1;
+        float vz = m_state.velocity().v2;
+        double v = sqrt(vx * vx + vz * vz);
+        if (v > 0.0) {
+            float ta = vz / v;
+            float tb = -vx / v;
+            // Rotate m_orienation quaternion by last_angle and axes and normalize it
+            Quaternion qa((float) last_angle, {ta, 0.0, tb});
+            t = t * qa;
+            t.normalize();
+        }
     }
     m_last_state = m_state;
     return t;
