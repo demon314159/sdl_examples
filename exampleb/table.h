@@ -9,6 +9,7 @@
 #include "bumper.h"
 #include "two_post.h"
 #include "three_post.h"
+#include "three_post_kicker.h"
 #include "lane_guide.h"
 #include "pyramid_lane_guide.h"
 #include "straight_wire_guide.h"
@@ -67,7 +68,7 @@ private:
     LaneGuide* m_lane_guide6;
     ThreePost* m_three_post1;
     ThreePost* m_three_post2;
-    ThreePost* m_three_post3;
+    ThreePostKicker* m_three_post3;
     ThreePost* m_three_post4;
     ThreePost* m_three_post5;
     ThreePost* m_three_post6;

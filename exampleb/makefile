@@ -61,6 +61,8 @@ HEADERS = view.h \
           pyramid_lane_guide.h \
           two_post.h \
           three_post.h \
+          three_post_kicker.h \
+          straight_kicker.h \
           convex_kicker.h \
           bumper.h \
           disc_shape.h \
@@ -131,6 +133,8 @@ OBJECTS = main.obj \
           pyramid_lane_guide.obj \
           two_post.obj \
           three_post.obj \
+          three_post_kicker.obj \
+          straight_kicker.obj \
           convex_kicker.obj \
           bumper.obj \
           disc_shape.obj \

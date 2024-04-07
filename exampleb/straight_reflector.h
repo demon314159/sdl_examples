@@ -23,7 +23,6 @@ public:
     void collide(Ball* ball) const;
     void translate(Float2 distance);
     void rotate(float angle);
-    void rotate(Float2& point, float angle) const;
     Float2 position() const;
     float length() const;
     float angle() const;
@@ -37,6 +36,7 @@ private:
     Float2 m_velocity_origin;
 
     void translate(Float2& point, Float2 distance) const;
+    void rotate(Float2& point, float angle) const;
 };
 
 #endif // _STRAIGHT_REFLECTOR_H_
