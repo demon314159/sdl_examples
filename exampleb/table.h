@@ -5,6 +5,7 @@
 #ifndef _TABLE_H_
 #define _TABLE_H_
 
+#include "disc_target.h"
 #include "bumper.h"
 #include "two_post.h"
 #include "three_post.h"
@@ -75,6 +76,7 @@ private:
     TwoPost* m_two_post3;
     Bumper* m_bumper1;
     Bumper* m_bumper2;
+    DiscTarget* m_disc_target;
 
     float R1 = 0.148;
     float R2 = 0.145;

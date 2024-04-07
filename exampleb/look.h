@@ -166,6 +166,14 @@
 #define BUMPER_MAJOR_SEGMENTS  120
 #define BUMPER_MINOR_SEGMENTS  20
 
+#define DISC_TARGET_RADIUS    0.008
+#define DISC_TARGET_WIDTH    0.002
+#define DISC_TARGET_COLOR1 PaintCan(1.0, 0.0, 0.0)
+#define DISC_TARGET_COLOR2 PaintCan(1.0, 1.0, 1.0)
+#define DISC_TARGET_COLOR3 PaintCan(0.0, 0.0, 1.0)
+#define DISC_TARGET_REFLECTIVITY 0.2
+#define DISC_TARGET_SEGMENTS  60
+
 #define METAL_COLOR PaintCan(0.42, 0.42, 0.42)
 
 class Look
