@@ -165,3 +165,33 @@ Quaternion Ball::next_orientation()
     return t;
 }
 
+void Ball::iteration()
+{
+    m_qa.iteration();
+}
+
+void Ball::heavy_test()
+{
+    m_qa.heavy_test();
+}
+
+void Ball::heavy_test_pass()
+{
+    m_qa.heavy_test_pass();
+}
+
+void Ball::sqrt_test()
+{
+    m_qa.sqrt_test();
+}
+
+void Ball::sqrt_test_pass()
+{
+    m_qa.sqrt_test_pass();
+}
+
+void Ball::report()
+{
+    m_qa.report();
+}
+

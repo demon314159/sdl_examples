@@ -5,6 +5,7 @@
 #ifndef _TOY_H_
 #define _TOY_H_
 
+#include "qa.h"
 #include "cad_model.h"
 #include "matrix4x4.h"
 #include "lamp.h"
@@ -36,6 +37,7 @@ public:
     const Lamp* get_lamp() const;
 
 private:
+    Qa m_qa;
     Ball* m_ball;
     Lamp* m_lamp;
     Table* m_table;

@@ -74,7 +74,9 @@ bool ConcaveReflector::within_distance(const Ball* ball) const
 
 void ConcaveReflector::collide(Ball* ball) const
 {
+    ball->sqrt_test();
     if (within_distance(ball)) {
+        ball->sqrt_test_pass();
         float dx = ball->position().v1 - m_position.v1;
         float dz = ball->position().v2 - m_position.v2;
         float angle = (180.0 / PI) * atan2(-dz, dx);

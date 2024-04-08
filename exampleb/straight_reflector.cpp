@@ -140,7 +140,9 @@ void StraightReflector::collide(Ball* ball) const
     ball_copy.rotate_frame(-m_angle);
     rotate(vo, -m_angle);
     // test for ball z position to be more than -radius
+    ball->heavy_test();
     if (within_range(&ball_copy)) { // collision
+        ball->heavy_test_pass();
         Float2 impact_velocity = {0.0, 0.0};
         // Adjust frame for velocity at point of impact
         if (m_angular_velocity != 0.0) {

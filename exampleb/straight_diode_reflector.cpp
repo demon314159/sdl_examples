@@ -59,7 +59,9 @@ void StraightDiodeReflector::collide(Ball* ball) const
     // rotate reflector by -angle and bring ball position and velocity
     ball_copy.rotate_frame(-m_angle);
     // test for ball z position to be more than -radius
+    ball->heavy_test();
     if (within_range(&ball_copy)) { // collision
+        ball->heavy_test_pass();
         if (ball_copy.velocity().v2 >= 0.0) {
             // negate ball z velocity
             Float2 temp = ball_copy.velocity();
