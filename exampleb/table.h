@@ -82,6 +82,18 @@ private:
     DropTarget* m_drop_target1;
     DropTarget* m_drop_target2;
     DropTarget* m_drop_target3;
+    DropTarget* m_drop_target4;
+    DropTarget* m_drop_target5;
+    DropTarget* m_drop_target6;
+    DropTarget* m_drop_target7;
+    DropTarget* m_drop_target8;
+    DropTarget* m_drop_target9;
+    DropTarget* m_drop_target10;
+    DropTarget* m_drop_target11;
+    DropTarget* m_drop_target12;
+    DropTarget* m_drop_target13;
+    DropTarget* m_drop_target14;
+    DropTarget* m_drop_target15;
 
     float R1 = 0.148;
     float R2 = 0.145;

@@ -31,9 +31,14 @@ void DropTarget::collide(Ball* ball) const
 
 CadModel DropTarget::model(float animation_id) const
 {
-    CadModel cube(CubeShape(m_width, m_height, m_thickness), m_color, animation_id);
-    cube.rotate_ay(m_angle);
+    CadModel cube1(CubeShape(m_width, m_thickness, m_height, true, false), m_color, 1.0);
+    CadModel cube2(CubeShape(m_width, m_thickness, m_height, false, true), m_color, animation_id);
+    cube1.rotate_ax(-90.0);
+    cube2.rotate_ax(-90.0);
+    cube1.rotate_ay(m_angle);
+    cube2.rotate_ay(m_angle);
     CadModel mm;
-    mm.add(cube, m_position.v1, m_height / 2.0, m_position.v2);
+    mm.add(cube1, m_position.v1, m_height / 2.0, m_position.v2);
+    mm.add(cube2, m_position.v1, m_height / 2.0, m_position.v2);
     return mm;
 }

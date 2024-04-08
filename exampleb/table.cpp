@@ -63,6 +63,18 @@ Table::Table()
     , m_drop_target1(NULL)
     , m_drop_target2(NULL)
     , m_drop_target3(NULL)
+    , m_drop_target4(NULL)
+    , m_drop_target5(NULL)
+    , m_drop_target6(NULL)
+    , m_drop_target7(NULL)
+    , m_drop_target8(NULL)
+    , m_drop_target9(NULL)
+    , m_drop_target10(NULL)
+    , m_drop_target11(NULL)
+    , m_drop_target12(NULL)
+    , m_drop_target13(NULL)
+    , m_drop_target14(NULL)
+    , m_drop_target15(NULL)
 {
     m_ball_home_position = {(X7 + X8) / 2.0f, Z7 - BALL_RADIUS};
     m_ball_z_limit = Z8;
@@ -117,6 +129,23 @@ Table::Table()
     m_drop_target2 = new DropTarget(lg.position(1), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS);
     m_drop_target3 = new DropTarget(lg.position(2), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS);
 
+    lg = LayoutGuide({0.2015, 0.2345}, {0.1485, 0.258}, DROP_TARGET_WIDTH, 3);
+    m_drop_target4 = new DropTarget(lg.position(1), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS);
+    m_drop_target5 = new DropTarget(lg.position(2), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS);
+    m_drop_target6 = new DropTarget(lg.position(3), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS);
+
+    lg = LayoutGuide({0.2655, 0.39675}, {0.2465, 0.32025}, DROP_TARGET_WIDTH, 4);
+    m_drop_target7 = new DropTarget(lg.position(1), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS);
+    m_drop_target8 = new DropTarget(lg.position(2), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS);
+    m_drop_target9 = new DropTarget(lg.position(3), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS);
+    m_drop_target10 = new DropTarget(lg.position(4), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS);
+
+    lg = LayoutGuide({0.106, 0.096}, {0.019, 0.1415}, DROP_TARGET_WIDTH, 5);
+    m_drop_target11 = new DropTarget(lg.position(1), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS);
+    m_drop_target12 = new DropTarget(lg.position(2), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS);
+    m_drop_target13 = new DropTarget(lg.position(3), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS);
+    m_drop_target14 = new DropTarget(lg.position(4), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS);
+    m_drop_target15 = new DropTarget(lg.position(5), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS);
 }
 
 Table::~Table()
@@ -164,6 +193,18 @@ Table::~Table()
     delete m_drop_target1;
     delete m_drop_target2;
     delete m_drop_target3;
+    delete m_drop_target4;
+    delete m_drop_target5;
+    delete m_drop_target6;
+    delete m_drop_target7;
+    delete m_drop_target8;
+    delete m_drop_target9;
+    delete m_drop_target10;
+    delete m_drop_target11;
+    delete m_drop_target12;
+    delete m_drop_target13;
+    delete m_drop_target14;
+    delete m_drop_target15;
 }
 
 float Table::ball_z_limit() const
@@ -221,6 +262,18 @@ void Table::collide(Ball* ball) const
     m_drop_target1->collide(ball);
     m_drop_target2->collide(ball);
     m_drop_target3->collide(ball);
+    m_drop_target4->collide(ball);
+    m_drop_target5->collide(ball);
+    m_drop_target6->collide(ball);
+    m_drop_target7->collide(ball);
+    m_drop_target8->collide(ball);
+    m_drop_target9->collide(ball);
+    m_drop_target10->collide(ball);
+    m_drop_target11->collide(ball);
+    m_drop_target12->collide(ball);
+    m_drop_target13->collide(ball);
+    m_drop_target14->collide(ball);
+    m_drop_target15->collide(ball);
 }
 
 CadModel Table::model() const
@@ -335,6 +388,18 @@ CadModel Table::model() const
     mm.add(m_drop_target1->model(0.0), 0.0, 0.0, 0.0);
     mm.add(m_drop_target2->model(0.0), 0.0, 0.0, 0.0);
     mm.add(m_drop_target3->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_drop_target4->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_drop_target5->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_drop_target6->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_drop_target7->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_drop_target8->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_drop_target9->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_drop_target10->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_drop_target11->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_drop_target12->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_drop_target13->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_drop_target14->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_drop_target15->model(0.0), 0.0, 0.0, 0.0);
 
     mm.add(top_playfield, PLAYFIELD_X / 2.0, 0.0, PLAYFIELD_Z / 2.0);
     return mm;
