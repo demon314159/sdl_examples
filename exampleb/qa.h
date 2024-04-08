@@ -10,6 +10,8 @@ class Qa
 public:
     Qa();
 
+    void light_test();
+    void light_test_pass();
     void sqrt_test();
     void sqrt_test_pass();
     void heavy_test();
@@ -19,6 +21,8 @@ public:
 
 protected:
     static int m_iterations;
+    static int m_light_test;
+    static int m_light_test_pass;
     static int m_sqrt_test;
     static int m_sqrt_test_pass;
     static int m_heavy_test;

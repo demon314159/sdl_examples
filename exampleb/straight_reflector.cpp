@@ -7,7 +7,8 @@
 #include <math.h>
 
 StraightReflector::StraightReflector(bool top, float r1, float r2, float length, float reflectivity)
-    : m_position({0.0, 0.0})
+    : m_perimeter({0.0, 0.0, 0.0, 0.0})
+    , m_position({0.0, 0.0})
     , m_length(1.0)
     , m_reflectivity(reflectivity)
     , m_angle(0.0)
@@ -29,20 +30,24 @@ StraightReflector::StraightReflector(bool top, float r1, float r2, float length,
         m_position = {(x1 + x2) / 2.0f, (z1 + z2) / 2.0f};
         m_angle = 180.0 + theta * (180.0f / PI);
     }
+    update_perimeter();
 }
 
 StraightReflector::StraightReflector(float length, float reflectivity)
-    : m_position({0.0, 0.0})
+    : m_perimeter({0.0, 0.0, 0.0, 0.0})
+    , m_position({0.0, 0.0})
     , m_length(length)
     , m_reflectivity(reflectivity)
     , m_angle(0.0)
     , m_angular_velocity(0.0)
     , m_velocity_origin({0.0, 0.0})
 {
+    update_perimeter();
 }
 
 StraightReflector::StraightReflector(Float2 p1, Float2 p2, float radius, float reflectivity)
-    : m_position({0.0, 0.0})
+    : m_perimeter({0.0, 0.0, 0.0, 0.0})
+    , m_position({0.0, 0.0})
     , m_reflectivity(reflectivity)
     , m_angle(0.0)
     , m_angular_velocity(0.0)
@@ -55,10 +60,36 @@ StraightReflector::StraightReflector(Float2 p1, Float2 p2, float radius, float r
     translate({0.0, -radius});
     rotate(angle);
     translate({(p1.v1 + p2.v1) / 2.0f, (p1.v2 + p2.v2) / 2.0f});
+    update_perimeter();
 }
 
 StraightReflector::~StraightReflector()
 {
+}
+
+void StraightReflector::update_perimeter()
+{
+    Float2 p1{-m_length / 2.0, 0.0};
+    Float2 p2{m_length / 2.0, 0.0};
+    rotate(p1, m_angle);
+    rotate(p2, m_angle);
+    translate(p1, m_position);
+    translate(p2, m_position);
+    if (p1.v1 < p2.v1) {
+        m_perimeter.xmin = p1.v1;
+        m_perimeter.xmax = p2.v1;
+    } else {
+        m_perimeter.xmin = p2.v1;
+        m_perimeter.xmax = p1.v1;
+    }
+    if (p1.v2 < p2.v2) {
+        m_perimeter.zmin = p1.v2;
+        m_perimeter.zmax = p2.v2;
+    } else {
+        m_perimeter.zmin = p2.v2;
+        m_perimeter.zmax = p1.v2;
+    }
+
 }
 
 void StraightReflector::set_angular_velocity(float angular_velocity)
@@ -72,6 +103,7 @@ void StraightReflector::translate(Float2 distance)
     m_position.v2 += distance.v2;
     m_velocity_origin.v1 += distance.v1;
     m_velocity_origin.v2 += distance.v2;
+    update_perimeter();
 }
 
 void StraightReflector::rotate(float angle)
@@ -84,6 +116,7 @@ void StraightReflector::rotate(float angle)
     m_position = {tx, tz};
 
     m_angle += angle;
+    update_perimeter();
 }
 
 bool StraightReflector::within_range(const Ball* ball) const
@@ -131,6 +164,10 @@ Float2 StraightReflector::velocity_at_impact(float x, Float2 velocity_origin) co
 
 void StraightReflector::collide(Ball* ball) const
 {
+    ball->light_test();
+    if (ball->quick_test(m_perimeter)) {
+    ball->light_test_pass();
+
     Float2 vo = m_velocity_origin;
     Ball ball_copy = *ball;
     // translate reflector to (0, 0) and bring ball position and velocity
@@ -168,6 +205,8 @@ void StraightReflector::collide(Ball* ball) const
         ball_copy.translate_frame({m_position.v1, m_position.v2});
         // replace ball with new info
         *ball = ball_copy;
+    }
+
     }
 }
 

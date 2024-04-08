@@ -26,6 +26,7 @@ HEADERS = view.h \
           quaternion.h \
           toy.h \
           \
+          perimeter.h \
           sphere_shape.h \
           toroid_shape.h \
           triangular_prism_shape.h \

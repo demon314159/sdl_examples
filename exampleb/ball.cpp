@@ -170,6 +170,16 @@ void Ball::iteration()
     m_qa.iteration();
 }
 
+void Ball::light_test()
+{
+    m_qa.light_test();
+}
+
+void Ball::light_test_pass()
+{
+    m_qa.light_test_pass();
+}
+
 void Ball::heavy_test()
 {
     m_qa.heavy_test();
@@ -195,3 +205,15 @@ void Ball::report()
     m_qa.report();
 }
 
+bool Ball::quick_test(const Perimeter& perimeter) const
+{
+    if (m_state.position().v1 < (perimeter.xmin - m_radius))
+        return false;
+    if (m_state,position().v1 > (perimeter.xmax + m_radius))
+        return false;
+    if (m_state.position().v2 < (perimeter.zmin - m_radius))
+        return false;
+    if (m_state.position().v2 > (perimeter.zmax + m_radius))
+        return false;
+    return true;
+}

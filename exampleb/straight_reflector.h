@@ -7,6 +7,7 @@
 
 #include "float3.h"
 #include "ball.h"
+#include "perimeter.h"
 
 class StraightReflector
 {
@@ -15,6 +16,7 @@ public:
     StraightReflector(float length, float reflectivity);
     StraightReflector(Float2 p1, Float2 p2, float radius, float reflectivity);
     ~StraightReflector();
+    void update_perimeter();
 
     void set_angular_velocity(float angular_velocity);
     Float2 velocity_at_impact(float x, Float2 velocity_origin) const;
@@ -28,6 +30,7 @@ public:
     float angle() const;
 
 private:
+    Perimeter m_perimeter;
     Float2 m_position;
     float m_length;
     float m_reflectivity;
