@@ -2,8 +2,8 @@
 // state.h
 //
 
-#ifndef STATE_H_
-#define STATE_H_
+#ifndef _STATE_H_
+#define _STATE_H_
 
 #include "float3.h"
 
@@ -31,5 +31,5 @@ protected:
     Float2 m_velocity;   // Linear Velocity
 };
 
-#endif // STATE_H_
+#endif // _STATE_H_
 

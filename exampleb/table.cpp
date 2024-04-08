@@ -2,6 +2,7 @@
 // table.cpp
 //
 
+#include "layout_guide.h"
 #include "table.h"
 #include "plane_shape.h"
 #include "cube_shape.h"
@@ -59,6 +60,9 @@ Table::Table()
     , m_bumper1(NULL)
     , m_bumper2(NULL)
     , m_disc_target(NULL)
+    , m_drop_target1(NULL)
+    , m_drop_target2(NULL)
+    , m_drop_target3(NULL)
 {
     m_ball_home_position = {(X7 + X8) / 2.0f, Z7 - BALL_RADIUS};
     m_ball_z_limit = Z8;
@@ -95,11 +99,7 @@ Table::Table()
     m_lane_guide6 = new LaneGuide(90.0, {0.256, 0.0, 0.249}, 0.039, BALL_RADIUS, LANE_GUIDE_WIDTH, LANE_GUIDE_COLOR, RED_LANE_GUIDE_COLOR, LANE_GUIDE_REFLECTIVITY, LANE_GUIDE_SEGMENTS);
     m_three_post1 = new ThreePost({0.27425, 0.296}, {0.275, 0.39475}, {0.25625, 0.318}, THREE_POST_RADIUS, BALL_RADIUS, THREE_POST_COLOR, THREE_POST_COLOR, THREE_POST_REFLECTIVITY, THREE_POST_SEGMENTS);
     m_three_post2 = new ThreePost({0.233, 0.435}, {0.2335, 0.469}, {0.2095, 0.48175}, THREE_POST_RADIUS, BALL_RADIUS, THREE_POST_COLOR, THREE_POST_COLOR, THREE_POST_REFLECTIVITY, THREE_POST_SEGMENTS);
-
-
     m_three_post3 = new ThreePostKicker({0.0555, 0.3985}, {0.080, 0.48175}, {0.05625, 0.46875}, THREE_POST_RADIUS, BALL_RADIUS, THREE_POST_COLOR, THREE_POST_COLOR, THREE_POST_REFLECTIVITY, THREE_POST_KICKER_VELOCITY, THREE_POST_SEGMENTS);
-
-
     m_three_post4 = new ThreePost({0.1715, 0.2135}, {0.1915, 0.22825}, {0.153, 0.246}, THREE_POST_RADIUS, BALL_RADIUS, THREE_POST_COLOR, THREE_POST_COLOR, THREE_POST_REFLECTIVITY, THREE_POST_SEGMENTS);
     m_three_post5 = new ThreePost({0.078, 0.071}, {0.0945, 0.09075}, {0.017, 0.131}, THREE_POST_RADIUS, BALL_RADIUS, THREE_POST_COLOR, THREE_POST_COLOR, THREE_POST_REFLECTIVITY, THREE_POST_SEGMENTS);
     m_three_post6 = new ThreePost({0.015, 0.3145}, {0.0265, 0.3605}, {0.015, 0.372}, THREE_POST_RADIUS, BALL_RADIUS, THREE_POST_COLOR, THREE_POST_COLOR, THREE_POST_REFLECTIVITY, THREE_POST_SEGMENTS);
@@ -109,6 +109,14 @@ Table::Table()
     m_bumper1 = new Bumper({0.208, 0.166}, BUMPER_RADIUS, BUMPER_KICKER_RADIUS, BUMPER_KICKER_VELOCITY, BALL_RADIUS, BUMPER_COLOR, BUMPER_MAJOR_SEGMENTS, BUMPER_MINOR_SEGMENTS);
     m_bumper2 = new Bumper({0.0735, 0.215}, BUMPER_RADIUS, BUMPER_KICKER_RADIUS, BUMPER_KICKER_VELOCITY, BALL_RADIUS, BUMPER_COLOR, BUMPER_MAJOR_SEGMENTS, BUMPER_MINOR_SEGMENTS);
     m_disc_target = new DiscTarget({0.2565, 0.116}, 160.0, DISC_TARGET_RADIUS, DISC_TARGET_WIDTH, DISC_TARGET_COLOR1, DISC_TARGET_COLOR2, DISC_TARGET_COLOR3, DISC_TARGET_REFLECTIVITY, DISC_TARGET_SEGMENTS);
+
+    LayoutGuide lg({0.0385, 0.3075}, {0.0215, 0.315}, DROP_TARGET_WIDTH, 1);
+    m_drop_target1 = new DropTarget(lg.position(1), lg.angle() , DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS);
+
+    lg = LayoutGuide({0.111, 0.275}, {0.076, 0.291}, DROP_TARGET_WIDTH, 2);
+    m_drop_target2 = new DropTarget(lg.position(1), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS);
+    m_drop_target3 = new DropTarget(lg.position(2), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS);
+
 }
 
 Table::~Table()
@@ -153,6 +161,9 @@ Table::~Table()
     delete m_bumper1;
     delete m_bumper2;
     delete m_disc_target;
+    delete m_drop_target1;
+    delete m_drop_target2;
+    delete m_drop_target3;
 }
 
 float Table::ball_z_limit() const
@@ -207,6 +218,9 @@ void Table::collide(Ball* ball) const
     m_bumper1->collide(ball);
     m_bumper2->collide(ball);
     m_disc_target->collide(ball);
+    m_drop_target1->collide(ball);
+    m_drop_target2->collide(ball);
+    m_drop_target3->collide(ball);
 }
 
 CadModel Table::model() const
@@ -318,6 +332,9 @@ CadModel Table::model() const
     mm.add(m_bumper1->model(0.0), 0.0, 0.0, 0.0);
     mm.add(m_bumper2->model(0.0), 0.0, 0.0, 0.0);
     mm.add(m_disc_target->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_drop_target1->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_drop_target2->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_drop_target3->model(0.0), 0.0, 0.0, 0.0);
 
     mm.add(top_playfield, PLAYFIELD_X / 2.0, 0.0, PLAYFIELD_Z / 2.0);
     return mm;

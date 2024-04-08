@@ -70,6 +70,8 @@ HEADERS = view.h \
           trim_shape.h \
           atomic_shape.h \
           disc_target.h \
+          drop_target.h \
+          layout_guide.h \
           \
           \
           \
@@ -142,6 +144,8 @@ OBJECTS = main.obj \
           trim_shape.obj \
           atomic_shape.obj \
           disc_target.obj \
+          drop_target.obj \
+          layout_guide.obj \
           \
           \
           \
