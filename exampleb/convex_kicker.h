@@ -7,12 +7,14 @@
 
 #include "float3.h"
 #include "ball.h"
+#include "perimeter.h"
 
 class ConvexKicker
 {
 public:
     ConvexKicker(float radius, float velocity);
     ~ConvexKicker();
+    void update_perimeter();
 
     bool angle_within_range(float angle) const;
     bool within_distance(const Ball* ball) const;
@@ -21,6 +23,7 @@ public:
     void rotate(float angle);
 
 private:
+    Perimeter m_perimeter;
     Float2 m_position;
     float m_radius;
     float m_velocity;

@@ -7,12 +7,14 @@
 
 #include "float3.h"
 #include "ball.h"
+#include "perimeter.h"
 
 class StraightKicker
 {
 public:
     StraightKicker(Float2 p1, Float2 p2, float radius, float velocity);
     ~StraightKicker();
+    void update_perimeter();
 
     bool within_range(const Ball* ball) const;
     void collide(Ball* ball) const;
@@ -23,6 +25,7 @@ public:
     float angle() const;
 
 private:
+    Perimeter m_perimeter;
     Float2 m_position;
     float m_length;
     float m_velocity;
