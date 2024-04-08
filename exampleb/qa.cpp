@@ -64,5 +64,9 @@ void Qa::report()
         printf("     light_test hit ratio %.6f\n", ((float) m_light_test_pass) / (float) m_light_test);
         printf("      sqrt_test hit ratio %.6f\n", ((float) m_sqrt_test_pass) / (float) m_sqrt_test);
         printf("     heavy_test hit ratio %.6f\n", ((float) m_heavy_test_pass) / (float) m_heavy_test);
+        printf("\n\n");
+        printf("     light_test %d\n", m_light_test);
+        printf("     sqrt_test %d\n", m_sqrt_test);
+        printf("     heavy_test %d\n", m_heavy_test);
     }
 }

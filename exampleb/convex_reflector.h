@@ -7,6 +7,7 @@
 
 #include "float3.h"
 #include "ball.h"
+#include "perimeter.h"
 
 class ConvexReflector
 {
@@ -17,6 +18,7 @@ public:
     ConvexReflector(Float2 p1, Float2 p2, Float2 p3, float radius, float reflectivity);
     ConvexReflector(Float2 p1, float radius, float angle_i, float angle_f, float reflectivity);
     ~ConvexReflector();
+    void update_perimeter();
 
     void set_angular_velocity(float angular_velocity);
     Float2 velocity_at_impact(float x, Float2 velocity_origin) const;
@@ -33,6 +35,7 @@ public:
     float angle_f() const;
 
 private:
+    Perimeter m_perimeter;
     Float2 m_position;
     float m_radius;
     float m_reflectivity;

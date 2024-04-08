@@ -89,7 +89,6 @@ void StraightReflector::update_perimeter()
         m_perimeter.zmin = p2.v2;
         m_perimeter.zmax = p1.v2;
     }
-
 }
 
 void StraightReflector::set_angular_velocity(float angular_velocity)
@@ -166,47 +165,45 @@ void StraightReflector::collide(Ball* ball) const
 {
     ball->light_test();
     if (ball->quick_test(m_perimeter)) {
-    ball->light_test_pass();
-
-    Float2 vo = m_velocity_origin;
-    Ball ball_copy = *ball;
-    // translate reflector to (0, 0) and bring ball position and velocity
-    ball_copy.translate_frame({-m_position.v1, -m_position.v2});
-    translate(vo, {-m_position.v1, -m_position.v2});
-    // rotate reflector by -angle and bring ball position and velocity
-    ball_copy.rotate_frame(-m_angle);
-    rotate(vo, -m_angle);
-    // test for ball z position to be more than -radius
-    ball->heavy_test();
-    if (within_range(&ball_copy)) { // collision
-        ball->heavy_test_pass();
-        Float2 impact_velocity = {0.0, 0.0};
-        // Adjust frame for velocity at point of impact
-        if (m_angular_velocity != 0.0) {
-            impact_velocity = velocity_at_impact(ball_copy.position().v1, vo);
-            ball_copy.translate_velocity_frame({-impact_velocity.v1, -impact_velocity.v2});
+        ball->light_test_pass();
+        Float2 vo = m_velocity_origin;
+        Ball ball_copy = *ball;
+        // translate reflector to (0, 0) and bring ball position and velocity
+        ball_copy.translate_frame({-m_position.v1, -m_position.v2});
+        translate(vo, {-m_position.v1, -m_position.v2});
+        // rotate reflector by -angle and bring ball position and velocity
+        ball_copy.rotate_frame(-m_angle);
+        rotate(vo, -m_angle);
+        // test for ball z position to be more than -radius
+        ball->heavy_test();
+        if (within_range(&ball_copy)) { // collision
+            ball->heavy_test_pass();
+            Float2 impact_velocity = {0.0, 0.0};
+            // Adjust frame for velocity at point of impact
+            if (m_angular_velocity != 0.0) {
+                impact_velocity = velocity_at_impact(ball_copy.position().v1, vo);
+                ball_copy.translate_velocity_frame({-impact_velocity.v1, -impact_velocity.v2});
+            }
+            // negate ball z velocity
+            Float2 temp = ball_copy.velocity();
+            if (temp.v2 > 0.0) {
+                temp.v2 *= m_reflectivity;
+                ball_copy.set_velocity({temp.v1, -temp.v2});
+            }
+            // ball z pos -= (ball_z + radius)
+            temp = ball_copy.position();
+            ball_copy.set_position({temp.v1, (float) -2.0 * ball_copy.radius() - temp.v2});
+            // Unadjust frame for velocity at point of impact
+            if (m_angular_velocity != 0.0) {
+                ball_copy.translate_velocity_frame(impact_velocity);
+            }
+            // rotate reflector by angle and bring ball position and velocity
+            ball_copy.rotate_frame(m_angle);
+            // translate reflector to position and bring ball position and velocity
+            ball_copy.translate_frame({m_position.v1, m_position.v2});
+            // replace ball with new info
+            *ball = ball_copy;
         }
-        // negate ball z velocity
-        Float2 temp = ball_copy.velocity();
-        if (temp.v2 > 0.0) {
-            temp.v2 *= m_reflectivity;
-            ball_copy.set_velocity({temp.v1, -temp.v2});
-        }
-        // ball z pos -= (ball_z + radius)
-        temp = ball_copy.position();
-        ball_copy.set_position({temp.v1, (float) -2.0 * ball_copy.radius() - temp.v2});
-        // Unadjust frame for velocity at point of impact
-        if (m_angular_velocity != 0.0) {
-            ball_copy.translate_velocity_frame(impact_velocity);
-        }
-        // rotate reflector by angle and bring ball position and velocity
-        ball_copy.rotate_frame(m_angle);
-        // translate reflector to position and bring ball position and velocity
-        ball_copy.translate_frame({m_position.v1, m_position.v2});
-        // replace ball with new info
-        *ball = ball_copy;
-    }
-
     }
 }
 
