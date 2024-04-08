@@ -102,12 +102,8 @@ bool ConvexKicker::within_distance(const Ball* ball) const
 
 void ConvexKicker::collide(Ball* ball) const
 {
-    ball->light_test();
     if (ball->quick_test(m_perimeter)) {
-        ball->light_test_pass();
-        ball->sqrt_test();
         if (within_distance(ball)) {
-            ball->sqrt_test_pass();
             float dx = ball->position().v1 - m_position.v1;
             float dz = ball->position().v2 - m_position.v2;
             float angle = (180.0 / PI) * atan2(-dz, dx);

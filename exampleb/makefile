@@ -73,7 +73,6 @@ HEADERS = view.h \
           disc_target.h \
           drop_target.h \
           layout_guide.h \
-          qa.h \
           \
           \
           \
@@ -148,7 +147,6 @@ OBJECTS = main.obj \
           disc_target.obj \
           drop_target.obj \
           layout_guide.obj \
-          qa.obj \
           \
           \
           \

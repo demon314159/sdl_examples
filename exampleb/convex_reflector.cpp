@@ -199,13 +199,9 @@ Float2 ConvexReflector::velocity_at_impact(float x, Float2 velocity_origin) cons
 
 void ConvexReflector::collide(Ball* ball) const
 {
-    ball->light_test();
     if (ball->quick_test(m_perimeter)) {
-        ball->light_test_pass();
         Float2 vo = m_velocity_origin;
-        ball->sqrt_test();
         if (within_distance(ball)) {
-            ball->sqrt_test_pass();
             float dx = ball->position().v1 - m_position.v1;
             float dz = ball->position().v2 - m_position.v2;
             float angle = (180.0 / PI) * atan2(-dz, dx);

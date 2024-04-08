@@ -5,7 +5,6 @@
 #ifndef _BALL_H_
 #define _BALL_H_
 
-#include "qa.h"
 #include "perimeter.h"
 #include "cad_model.h"
 #include "float3.h"
@@ -33,18 +32,9 @@ public:
     void translate_velocity_frame(Float2 velocity);
     void translate_frame(Float2 distance);
     Matrix4x4 animation_matrix() const;
-    void light_test();
-    void light_test_pass();
-    void heavy_test();
-    void heavy_test_pass();
-    void sqrt_test();
-    void sqrt_test_pass();
-    void iteration();
-    void report();
     bool quick_test(const Perimeter& perimeter) const;
 
 private:
-    Qa m_qa;
     float m_radius;
     PaintCan m_top_color;
     PaintCan m_middle_color;

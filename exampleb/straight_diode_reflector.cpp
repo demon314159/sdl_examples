@@ -22,8 +22,8 @@ StraightDiodeReflector::~StraightDiodeReflector()
 
 void StraightDiodeReflector::update_perimeter()
 {
-    Float2 p1{-m_length / 2.0, 0.0};
-    Float2 p2{m_length / 2.0, 0.0};
+    Float2 p1{-m_length / 2.0f, 0.0};
+    Float2 p2{m_length / 2.0f, 0.0};
     rotate(p1, m_angle);
     rotate(p2, m_angle);
     translate(p1, m_position);
@@ -81,18 +81,14 @@ bool StraightDiodeReflector::within_range(const Ball* ball) const
 
 void StraightDiodeReflector::collide(Ball* ball) const
 {
-    ball->light_test();
     if (ball->quick_test(m_perimeter)) {
-        ball->light_test_pass();
         Ball ball_copy = *ball;
         // translate reflector to (0, 0) and bring ball position and velocity
         ball_copy.translate_frame({-m_position.v1, -m_position.v2});
         // rotate reflector by -angle and bring ball position and velocity
         ball_copy.rotate_frame(-m_angle);
         // test for ball z position to be more than -radius
-        ball->heavy_test();
         if (within_range(&ball_copy)) { // collision
-            ball->heavy_test_pass();
             if (ball_copy.velocity().v2 >= 0.0) {
                 // negate ball z velocity
                 Float2 temp = ball_copy.velocity();

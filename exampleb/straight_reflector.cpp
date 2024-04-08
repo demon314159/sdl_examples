@@ -69,8 +69,8 @@ StraightReflector::~StraightReflector()
 
 void StraightReflector::update_perimeter()
 {
-    Float2 p1{-m_length / 2.0, 0.0};
-    Float2 p2{m_length / 2.0, 0.0};
+    Float2 p1{-m_length / 2.0f, 0.0};
+    Float2 p2{m_length / 2.0f, 0.0};
     rotate(p1, m_angle);
     rotate(p2, m_angle);
     translate(p1, m_position);
@@ -163,9 +163,7 @@ Float2 StraightReflector::velocity_at_impact(float x, Float2 velocity_origin) co
 
 void StraightReflector::collide(Ball* ball) const
 {
-    ball->light_test();
     if (ball->quick_test(m_perimeter)) {
-        ball->light_test_pass();
         Float2 vo = m_velocity_origin;
         Ball ball_copy = *ball;
         // translate reflector to (0, 0) and bring ball position and velocity
@@ -175,9 +173,7 @@ void StraightReflector::collide(Ball* ball) const
         ball_copy.rotate_frame(-m_angle);
         rotate(vo, -m_angle);
         // test for ball z position to be more than -radius
-        ball->heavy_test();
         if (within_range(&ball_copy)) { // collision
-            ball->heavy_test_pass();
             Float2 impact_velocity = {0.0, 0.0};
             // Adjust frame for velocity at point of impact
             if (m_angular_velocity != 0.0) {

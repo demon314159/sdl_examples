@@ -14,8 +14,7 @@
 #define BALL_ACCELERATION 0.25
 
 Toy::Toy()
-    : m_qa()
-    , m_ball(NULL)
+    : m_ball(NULL)
     , m_lamp(NULL)
     , m_table(NULL)
     , m_left_flipper(NULL)
@@ -90,7 +89,6 @@ Toy::Toy()
 
 Toy::~Toy()
 {
-    m_ball->report();
     delete m_ball;
     delete m_lamp;
     delete m_table;
@@ -125,7 +123,6 @@ void Toy::advance(int nanoseconds)
     m_left_flipper->collide(m_ball);
     m_right_flipper->collide(m_ball);
     m_top_flipper->collide(m_ball);
-    m_qa.iteration();
     m_ball->advance_orientation();
     m_ns_count += nanoseconds;
     if (m_ns_count > 500000000.0) {
