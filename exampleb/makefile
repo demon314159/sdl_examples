@@ -73,6 +73,7 @@ HEADERS = view.h \
           disc_target.h \
           drop_target.h \
           layout_guide.h \
+          rounded_cube_shape.h \
           \
           \
           \
@@ -147,6 +148,7 @@ OBJECTS = main.obj \
           disc_target.obj \
           drop_target.obj \
           layout_guide.obj \
+          rounded_cube_shape.obj \
           \
           \
           \
