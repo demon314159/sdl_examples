@@ -76,6 +76,7 @@ HEADERS = view.h \
           layout_guide.h \
           rounded_cube_shape.h \
           flat_rail.h \
+          flat_rail_shape.h \
           \
           \
           \
@@ -153,6 +154,7 @@ OBJECTS = main.obj \
           layout_guide.obj \
           rounded_cube_shape.obj \
           flat_rail.obj \
+          flat_rail_shape.obj \
           \
           \
           \

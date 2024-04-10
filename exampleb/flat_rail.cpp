@@ -3,10 +3,9 @@
 //
 
 #include "flat_rail.h"
+#include "flat_rail_shape.h"
 #include "pi.h"
 #include <math.h>
-
-#include "cube_shape.h"
 
 FlatRail::FlatRail(Float2 p, float length, float width, float thickness, float bend_radius, float height,
                    const PaintCan& color, float reflectivity, int steps)
@@ -48,8 +47,8 @@ CadModel FlatRail::model(float animation_id) const
 {
     CadModel mm;
 
-    CadModel cube(CubeShape(m_width, m_height, m_length), m_color, animation_id);
-//    mm.add(cube, m_p.v1 - m_width / 2.0, m_height / 2.0, m_p.v2);
+    CadModel rail(FlatRailShape(m_length, m_width, m_thickness, m_bend_radius, m_height, m_steps), m_color, animation_id);
+    mm.add(rail, m_p.v1, m_height / 2.0, m_p.v2);
 
     return mm;
 }
