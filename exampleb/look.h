@@ -7,6 +7,8 @@
 
 #include "paint_can.h"
 
+#define WHITE_COLOR PaintCan(1.0, 1.0, 1.0)
+
 #define ANIMATION_MATRICES 4
 #define ANIMATION_ID_0 2.0
 #define ANIMATION_ID_1 3.0

@@ -2,6 +2,8 @@
 // table.cpp
 //
 
+#include "rounded_cube_shape.h"
+
 #include "layout_guide.h"
 #include "table.h"
 #include "plane_shape.h"
