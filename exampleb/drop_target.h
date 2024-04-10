@@ -8,6 +8,7 @@
 #include "float3.h"
 #include "ball.h"
 #include "cad_model.h"
+#include "convex_reflector.h"
 #include "straight_reflector.h"
 
 class DropTarget
@@ -28,7 +29,9 @@ private:
     float m_thickness;
     PaintCan m_color;
     int m_steps;
-    StraightReflector m_reflector;
+    ConvexReflector m_reflector1;
+    ConvexReflector m_reflector2;
+    StraightReflector m_reflector3;
 };
 
 #endif // _DROP_TARGET_H_

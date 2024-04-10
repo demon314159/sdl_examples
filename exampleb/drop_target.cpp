@@ -15,10 +15,16 @@ DropTarget::DropTarget(Float2 position, float angle, float width, float height, 
     , m_thickness(thickness)
     , m_color(color)
     , m_steps(steps)
-    , m_reflector(width, reflectivity)
+    , m_reflector1({0.0, 0.0}, thickness / 4.0, 90.0, 180.0, reflectivity)
+    , m_reflector2({0.0, 0.0}, thickness / 4.0, 0.0, 90.0, reflectivity)
+    , m_reflector3(width - 2.0 * thickness / 4.0, reflectivity)
 {
-    m_reflector.rotate(angle);
-    m_reflector.translate({position.v1, position.v2 - thickness / 2.0f});
+    m_reflector1.translate({-width / 2.0f + thickness / 4.0f, -thickness / 2.0f + thickness / 4.0f});
+    m_reflector1.rotate(angle);
+    m_reflector2.translate({width / 2.0f - thickness / 4.0f, -thickness / 2.0f + thickness / 4.0f});
+    m_reflector2.rotate(angle);
+    m_reflector3.translate({0.0, - thickness / 2.0f});
+    m_reflector3.rotate(angle);
 }
 
 DropTarget::~DropTarget()
@@ -27,14 +33,16 @@ DropTarget::~DropTarget()
 
 void DropTarget::collide(Ball* ball) const
 {
-    m_reflector.collide(ball);
+    m_reflector1.collide(ball);
+    m_reflector2.collide(ball);
+    m_reflector3.collide(ball);
 }
 
 CadModel DropTarget::model(float animation_id) const
 {
     float w = m_width;
     float h = w * 1.325;
-    float t = w / 4.0;
+    float t = m_thickness;
     float r = t / 4.0;
     float sw = w * 0.575;
     float st = t - 2.0 * r;
