@@ -21,6 +21,7 @@
 
 #define LAMP_SIZE {0.020, 0.030}
 
+#define METAL_COLOR PaintCan(0.42, 0.42, 0.42)
 #define WOOD_COLOR PaintCan(0.9137, 0.7566, 0.4823)
 #define FACE_PLATE_COLOR PaintCan(1.0, 1.0, 1.0)
 
@@ -184,7 +185,11 @@
 #define DROP_TARGET_REFLECTIVITY 0.2
 #define DROP_TARGET_SEGMENTS  10
 
-#define METAL_COLOR PaintCan(0.42, 0.42, 0.42)
+#define ONE_POST_RADIUS 0.004
+#define ONE_POST_SEGMENTS 50
+#define ONE_POST_COLOR METAL_COLOR
+#define ONE_POST_REFLECTIVITY  0.2
+
 
 class Look
 {

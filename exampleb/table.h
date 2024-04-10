@@ -8,6 +8,7 @@
 #include "drop_target.h"
 #include "disc_target.h"
 #include "bumper.h"
+#include "one_post.h"
 #include "two_post.h"
 #include "three_post.h"
 #include "three_post_kicker.h"
@@ -94,6 +95,8 @@ private:
     DropTarget* m_drop_target13;
     DropTarget* m_drop_target14;
     DropTarget* m_drop_target15;
+    OnePost* m_one_post1;
+    OnePost* m_one_post2;
 
     float R1 = 0.148;
     float R2 = 0.145;

@@ -77,6 +77,8 @@ Table::Table()
     , m_drop_target13(NULL)
     , m_drop_target14(NULL)
     , m_drop_target15(NULL)
+    , m_one_post1(NULL)
+    , m_one_post2(NULL)
 {
     m_ball_home_position = {(X7 + X8) / 2.0f, Z7 - BALL_RADIUS};
     m_ball_z_limit = Z8;
@@ -148,6 +150,9 @@ Table::Table()
     m_drop_target13 = new DropTarget(lg.position(3), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS);
     m_drop_target14 = new DropTarget(lg.position(4), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS);
     m_drop_target15 = new DropTarget(lg.position(5), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS);
+
+    m_one_post1 = new OnePost({0.0105, 0.3965}, ONE_POST_RADIUS, BALL_RADIUS, ONE_POST_COLOR, ONE_POST_REFLECTIVITY, ONE_POST_SEGMENTS);
+    m_one_post2 = new OnePost({0.27875, 0.409125}, ONE_POST_RADIUS, BALL_RADIUS, ONE_POST_COLOR, ONE_POST_REFLECTIVITY, ONE_POST_SEGMENTS);
 }
 
 Table::~Table()
@@ -207,6 +212,8 @@ Table::~Table()
     delete m_drop_target13;
     delete m_drop_target14;
     delete m_drop_target15;
+    delete m_one_post1;
+    delete m_one_post2;
 }
 
 float Table::ball_z_limit() const
@@ -276,6 +283,8 @@ void Table::collide(Ball* ball) const
     m_drop_target13->collide(ball);
     m_drop_target14->collide(ball);
     m_drop_target15->collide(ball);
+    m_one_post1->collide(ball);
+    m_one_post2->collide(ball);
 }
 
 CadModel Table::model() const
@@ -402,6 +411,8 @@ CadModel Table::model() const
     mm.add(m_drop_target13->model(0.0), 0.0, 0.0, 0.0);
     mm.add(m_drop_target14->model(0.0), 0.0, 0.0, 0.0);
     mm.add(m_drop_target15->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_one_post1->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_one_post2->model(0.0), 0.0, 0.0, 0.0);
 
     mm.add(top_playfield, PLAYFIELD_X / 2.0, 0.0, PLAYFIELD_Z / 2.0);
     return mm;
