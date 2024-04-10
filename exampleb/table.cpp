@@ -79,6 +79,7 @@ Table::Table()
     , m_drop_target15(NULL)
     , m_one_post1(NULL)
     , m_one_post2(NULL)
+    , m_flat_rail(NULL)
 {
     m_ball_home_position = {(X7 + X8) / 2.0f, Z7 - BALL_RADIUS};
     m_ball_z_limit = Z8;
@@ -153,6 +154,7 @@ Table::Table()
 
     m_one_post1 = new OnePost({0.0105, 0.3965}, ONE_POST_RADIUS, BALL_RADIUS, ONE_POST_COLOR, ONE_POST_REFLECTIVITY, ONE_POST_SEGMENTS);
     m_one_post2 = new OnePost({0.27875, 0.409125}, ONE_POST_RADIUS, BALL_RADIUS, ONE_POST_COLOR, ONE_POST_REFLECTIVITY, ONE_POST_SEGMENTS);
+    m_flat_rail = new FlatRail({X6 - FLAT_RAIL_THICKNESS / 2.0f, 0.22825}, FLAT_RAIL_LENGTH, FLAT_RAIL_WIDTH, FLAT_RAIL_THICKNESS, FLAT_RAIL_BEND_RADIUS, 2.0 * BALL_RADIUS, FLAT_RAIL_COLOR, FLAT_RAIL_REFLECTIVITY, FLAT_RAIL_SEGMENTS);
 }
 
 Table::~Table()
@@ -214,6 +216,7 @@ Table::~Table()
     delete m_drop_target15;
     delete m_one_post1;
     delete m_one_post2;
+    delete m_flat_rail;
 }
 
 float Table::ball_z_limit() const
@@ -285,6 +288,7 @@ void Table::collide(Ball* ball) const
     m_drop_target15->collide(ball);
     m_one_post1->collide(ball);
     m_one_post2->collide(ball);
+    m_flat_rail->collide(ball);
 }
 
 CadModel Table::model() const
@@ -413,6 +417,7 @@ CadModel Table::model() const
     mm.add(m_drop_target15->model(0.0), 0.0, 0.0, 0.0);
     mm.add(m_one_post1->model(0.0), 0.0, 0.0, 0.0);
     mm.add(m_one_post2->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_flat_rail->model(0.0), 0.0, 0.0, 0.0);
 
     mm.add(top_playfield, PLAYFIELD_X / 2.0, 0.0, PLAYFIELD_Z / 2.0);
     return mm;

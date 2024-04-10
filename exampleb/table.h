@@ -5,6 +5,7 @@
 #ifndef _TABLE_H_
 #define _TABLE_H_
 
+#include "flat_rail.h"
 #include "drop_target.h"
 #include "disc_target.h"
 #include "bumper.h"
@@ -97,6 +98,7 @@ private:
     DropTarget* m_drop_target15;
     OnePost* m_one_post1;
     OnePost* m_one_post2;
+    FlatRail* m_flat_rail;
 
     float R1 = 0.148;
     float R2 = 0.145;
