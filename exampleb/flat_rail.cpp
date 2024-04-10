@@ -18,15 +18,19 @@ FlatRail::FlatRail(Float2 p, float length, float width, float thickness, float b
     , m_height(height)
     , m_color(color)
     , m_steps(steps)
-//    , m_reflector1(reflectivity)
-//    , m_reflector2(reflectivity)
-//    , m_reflector3(reflectivity)
-//    , m_reflector4(reflectivity)
-//    , m_reflector5(reflectivity)
-//    , m_reflector6(reflectivity)
-//    , m_reflector7(reflectivity)
-//    , m_reflector8(reflectivity)
+    , m_reflector1(bend_radius - thickness, 0.0, acos((bend_radius - width)/ bend_radius) * 180.0 / PI, reflectivity)
+    , m_reflector2(bend_radius - thickness, -acos((bend_radius - width)/ bend_radius) * 180.0 / PI, 0.0,  reflectivity)
+    , m_reflector3(length - 2.0 * bend_radius * sin(acos((bend_radius - width) / bend_radius)), reflectivity)
 {
+    float angle = acos((bend_radius - width) / bend_radius) * 180.0 / PI;
+    float k = bend_radius * sin(angle * PI / 180.0);
+    m_reflector1.translate({-bend_radius, -length / 2.0f + k});
+    m_reflector2.translate({-bend_radius, length / 2.0f - k});
+    m_reflector3.rotate(90.0);
+    m_reflector3.translate({-thickness, 0.0});
+    m_reflector1.translate(p);
+    m_reflector2.translate(p);
+    m_reflector3.translate(p);
 }
 
 FlatRail::~FlatRail()
@@ -35,14 +39,9 @@ FlatRail::~FlatRail()
 
 void FlatRail::collide(Ball* ball) const
 {
-//    m_reflector1.collide(ball);
-//    m_reflector2.collide(ball);
-//    m_reflector3.collide(ball);
-//    m_reflector4.collide(ball);
-//    m_reflector5.collide(ball);
-//    m_reflector6.collide(ball);
-//    m_reflector7.collide(ball);
-//    m_reflector8.collide(ball);
+    m_reflector1.collide(ball);
+    m_reflector2.collide(ball);
+    m_reflector3.collide(ball);
 }
 
 CadModel FlatRail::model(float animation_id) const
@@ -50,9 +49,7 @@ CadModel FlatRail::model(float animation_id) const
     CadModel mm;
 
     CadModel cube(CubeShape(m_width, m_height, m_length), m_color, animation_id);
-//    cube.rotate_ax(-90.0);
-//    cube.rotate_ay(90.0);
-    mm.add(cube, m_p.v1 - m_width / 2.0, m_height / 2.0, m_p.v2);
+//    mm.add(cube, m_p.v1 - m_width / 2.0, m_height / 2.0, m_p.v2);
 
     return mm;
 }

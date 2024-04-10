@@ -8,7 +8,6 @@
 #include "cad_model.h"
 #include "float3.h"
 #include "ball.h"
-#include "convex_reflector.h"
 #include "concave_reflector.h"
 #include "straight_reflector.h"
 
@@ -31,14 +30,9 @@ private:
     float m_height;
     PaintCan m_color;
     int m_steps;
-//    ConvexReflector m_reflector1;
-//    ConvexReflector m_reflector2;
-//    ConcaveReflector m_reflector3;
-//    StraightReflector m_reflector4;
-//    StraightReflector m_reflector5;
-//    ConvexReflector m_reflector6;
-//    ConcaveReflector m_reflector7;
-//    ConvexReflector m_reflector8;
+    ConcaveReflector m_reflector1;
+    ConcaveReflector m_reflector2;
+    StraightReflector m_reflector3;
 };
 
 #endif // _FLAT_RAIL_H_
