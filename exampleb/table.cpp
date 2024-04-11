@@ -296,7 +296,11 @@ CadModel Table::model() const
     CadModel mm;
     CadModel top_playfield(PlaneShape(PLAYFIELD_X, PLAYFIELD_Z, 1.0), PaintCan(1.0, 1.0, 1.0), 99.0);
     CadModel backlight(PlaneShape(PLAYFIELD_X, PLAYFIELD_Z, 0.0), PaintCan(0.0, 0.0, 0.0), 1.0);
-    mm.add(backlight, PLAYFIELD_X / 2.0, -PLAYFIELD_Y * 5.0 / 6.0, PLAYFIELD_Z / 2.0);
+    mm.add(backlight, PLAYFIELD_X / 2.0, -PLAYFIELD_Y * 9.0 / 10.0, PLAYFIELD_Z / 2.0);
+
+    CadModel plastic1(PlaneShape(0.060, 0.045, 2.0), PaintCan(1.0, 1.0, 1.0), 99.0);
+
+
     mm.add(m_strip1->model(0.0));
     mm.add(m_strip2->model(0.0));
     mm.add(m_strip3->model(0.0));
@@ -420,6 +424,7 @@ CadModel Table::model() const
     mm.add(m_flat_rail->model(0.0), 0.0, 0.0, 0.0);
 
     mm.add(top_playfield, PLAYFIELD_X / 2.0, 0.0, PLAYFIELD_Z / 2.0);
+    mm.add(plastic1, PLAYFIELD_X / 2.0, 2.0 * BALL_RADIUS, PLAYFIELD_Z / 2.0);
     return mm;
 }
 

@@ -70,10 +70,11 @@ private:
 
     GLint m_lamp_uniform;
     GLint m_texture1_uniform;
+    GLint m_texture2_uniform;
 
     unsigned int m_vao;
     unsigned int m_vbo;
-    unsigned int m_texture;
+    unsigned int m_texture[2];
     int m_frame;
     int m_max_vertex_count;
     int m_vertex_count;

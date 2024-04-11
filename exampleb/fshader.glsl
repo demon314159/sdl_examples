@@ -6,6 +6,7 @@ in vec2 v_texture_position;
 in float v_texture_id;
 
 uniform sampler2D texture1;
+uniform sampler2D texture2;
 
 void main()
 {
@@ -18,12 +19,21 @@ void main()
         billy.a = v_color.a;
         gl_FragColor = billy;
     } else {
-        c = 0.7;
-        billy = texture(texture1, v_texture_position);
-        billy.r = c * billy.r;
-        billy.g = c * billy.g;
-        billy.b = c * billy.b;
-        gl_FragColor = billy;
+        if (v_texture_id < 1.5) {
+            c = 0.7;
+            billy = texture(texture1, v_texture_position);
+            billy.r = c * billy.r;
+            billy.g = c * billy.g;
+            billy.b = c * billy.b;
+            gl_FragColor = billy;
+        } else {
+            c = 1.0;
+            billy = texture(texture2, v_texture_position);
+            billy.r = c * billy.r;
+            billy.g = c * billy.g;
+            billy.b = c * billy.b;
+            gl_FragColor = billy;
+        }
     }
 }
 
