@@ -3,7 +3,7 @@
 //
 
 #include "rounded_cube_shape.h"
-
+#include "plastic_guide.h"
 #include "layout_guide.h"
 #include "table.h"
 #include "plane_shape.h"
@@ -298,7 +298,6 @@ CadModel Table::model() const
     CadModel backlight(PlaneShape(PLAYFIELD_X, PLAYFIELD_Z, 0.0), PaintCan(0.0, 0.0, 0.0), 1.0);
     mm.add(backlight, PLAYFIELD_X / 2.0, -PLAYFIELD_Y * 9.0 / 10.0, PLAYFIELD_Z / 2.0);
 
-    CadModel plastic1(PlaneShape(0.060, 0.045, 2.0), PaintCan(1.0, 1.0, 1.0), 99.0);
 
 
     mm.add(m_strip1->model(0.0));
@@ -424,7 +423,12 @@ CadModel Table::model() const
     mm.add(m_flat_rail->model(0.0), 0.0, 0.0, 0.0);
 
     mm.add(top_playfield, PLAYFIELD_X / 2.0, 0.0, PLAYFIELD_Z / 2.0);
-    mm.add(plastic1, PLAYFIELD_X / 2.0, 2.0 * BALL_RADIUS, PLAYFIELD_Z / 2.0);
+    PlasticGuide pg({0.141125, 0.105875},
+                    {0.0835, 0.030}, {0.106, 0.06525}, {0.03475, 0.06725},
+                    {0.1715, 0.21375}, {0.1915, 0.22825}, {0.153, 0.246});
+    CadModel plastic1(PlaneShape(pg.blank_size().v1, pg.blank_size().v2, 2.0), PaintCan(1.0, 1.0, 1.0), 99.0);
+//    plastic1.rotate_ay(23.0);
+    mm.add(plastic1, pg.blank_position().v1, 1.5 * BALL_RADIUS, pg.blank_position().v2);
     return mm;
 }
 

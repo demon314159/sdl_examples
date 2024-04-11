@@ -143,10 +143,10 @@ void Toy::build_model()
 {
     m_model->add(m_ball->model(ANIMATION_ID_3));
     m_model->add(m_lamp->model());
-    m_model->add(m_table->model());
     m_model->add(m_left_flipper->model(ANIMATION_ID_0));
     m_model->add(m_right_flipper->model(ANIMATION_ID_1));
     m_model->add(m_top_flipper->model(ANIMATION_ID_2));
+    m_model->add(m_table->model());
 }
 
 Matrix4x4 Toy::get_animation_matrix(int i) const
