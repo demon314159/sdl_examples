@@ -6,11 +6,12 @@
 #include "pi.h"
 #include "math.h"
 
-FlipperShape::FlipperShape(float r1, float r2, float length, float height)
+FlipperShape::FlipperShape(float r1, float r2, float length, float height, int steps)
     : m_r1(r1)
     , m_r2(r2)
     , m_length(length)
     , m_height(height)
+    , m_steps(steps)
     , m_size_known(false)
     , m_facet_count(0)
     , m_facet(NULL)
@@ -48,17 +49,16 @@ void FlipperShape::define_shape()
 
 void FlipperShape::define_cylinders()
 {
-    int steps = 50;
     double theta = asin((m_r1 - m_r2) / m_length);
     float theta_i = PI / 2.0 - theta;
     float theta_f = 3.0 * PI / 2.0 + theta;
-    for (int i = 0; i < steps; i++) {
-        cylinder_slice(i, steps, m_r1, theta_i, theta_f, 0.0);
+    for (int i = 0; i < m_steps; i++) {
+        cylinder_slice(i, m_steps, m_r1, theta_i, theta_f, 0.0);
     }
     theta_i = 3.0 * PI / 2.0 + theta;
     theta_f = 2.0 * PI + PI / 2.0 - theta;
-    for (int i = 0; i < steps; i++) {
-        cylinder_slice(i, steps, m_r2, theta_i, theta_f, m_length);
+    for (int i = 0; i < m_steps; i++) {
+        cylinder_slice(i, m_steps, m_r2, theta_i, theta_f, m_length);
     }
 }
 

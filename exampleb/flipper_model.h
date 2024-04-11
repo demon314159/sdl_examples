@@ -13,7 +13,8 @@ public:
     FlipperModel(float animation_id,
                  const PaintCan& flipper_color, const PaintCan& rubber_color,
                  float r1, float r2, float length, float height,
-                 float rubber_thickness, float rubber_height);
+                 float rubber_thickness, float rubber_height, int steps,
+                 bool no_hat = false);
     ~FlipperModel();
 
 private:

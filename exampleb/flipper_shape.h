@@ -13,7 +13,7 @@
 class FlipperShape: public Shape
 {
 public:
-    FlipperShape(float r1, float r2, float length, float height);
+    FlipperShape(float r1, float r2, float length, float height, int steps);
     virtual ~FlipperShape();
     int facets() const override;
     Facet facet(int facet_ix) const override;
@@ -23,6 +23,7 @@ private:
     float m_r2;
     float m_length;
     float m_height;
+    int m_steps;
     bool m_size_known;
     int m_facet_count;
     Facet *m_facet;

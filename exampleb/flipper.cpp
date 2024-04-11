@@ -9,7 +9,7 @@
 Flipper::Flipper(float angle, Float3 position, float length, float major_radius, float minor_radius,
                  float height, float rubber_thickness, float rubber_height,
                  const PaintCan& body_color, const PaintCan& rubber_color,
-                float travel, float velocity, float reflectivity, int steps)
+                float travel, float velocity, float reflectivity, int steps, bool no_hat)
     : m_action_button(false)
     , m_angle(angle)
     , m_position(position)
@@ -24,6 +24,7 @@ Flipper::Flipper(float angle, Float3 position, float length, float major_radius,
     , m_travel(travel)
     , m_velocity(velocity)
     , m_steps(steps)
+    , m_no_hat(no_hat)
     , m_active_angle(0.0)
     , m_angular_velocity(0.0)
     , m_reflector1(true, major_radius + rubber_thickness, minor_radius + rubber_thickness, length, reflectivity)
@@ -143,7 +144,7 @@ void Flipper::collide(Ball* ball) const
 
 CadModel Flipper::model(float animation_id) const
 {
-    FlipperModel flipper(animation_id, m_body_color, m_rubber_color, m_major_radius, m_minor_radius, m_length, m_height, m_rubber_thickness, m_rubber_height);
+    FlipperModel flipper(animation_id, m_body_color, m_rubber_color, m_major_radius, m_minor_radius, m_length, m_height, m_rubber_thickness, m_rubber_height, m_steps, m_no_hat);
     flipper.rotate_ay(m_angle);
     Float3 pos = m_position;
     CadModel mm;

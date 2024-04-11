@@ -19,7 +19,7 @@ public:
     Flipper(float angle, Float3 position, float length, float major_radius, float minor_radius,
             float height, float rubber_thickness, float rubber_height,
             const PaintCan& body_color, const PaintCan& rubber_color,
-            float travel, float velocity, float reflectivity, int steps);
+            float travel, float velocity, float reflectivity, int steps, bool no_hat = false);
     ~Flipper();
 
     CadModel model(float animation_id) const;
@@ -48,6 +48,7 @@ private:
     float m_travel;
     float m_velocity;
     int m_steps;
+    bool m_no_hat;
     float m_active_angle;
     float m_angular_velocity;
     ConvexReflector m_reflector1;
