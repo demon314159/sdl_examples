@@ -400,6 +400,7 @@ CadModel Table::model() const
     mm.add(m_two_post1->model(0.0), 0.0, 0.0, 0.0);
     mm.add(m_two_post2->model(0.0), 0.0, 0.0, 0.0);
     mm.add(m_two_post3->model(0.0), 0.0, 0.0, 0.0);
+
     mm.add(m_bumper1->model(0.0), 0.0, 0.0, 0.0);
     mm.add(m_bumper2->model(0.0), 0.0, 0.0, 0.0);
     mm.add(m_disc_target->model(0.0), 0.0, 0.0, 0.0);
@@ -463,22 +464,29 @@ CadModel Table::model() const
     mm.add(plastic5, pg.blank_position().v1, 1.6 * BALL_RADIUS, pg.blank_position().v2);
     //
 
-    pg = PlasticGuide({0.496, 0.39625},
-                      {0.473, 0.021}, {0.075, 0.369},
-                      {0.01425, 0.147}, {0.0265, 0.3605});
-    CadModel plastic6(PlaneShape(pg.blank_size().v1, pg.blank_size().v2, 7.0), PaintCan(1.0, 1.0, 1.0), 99.0);
-    plastic6.rotate_ay(pg.blank_angle());
-    mm.add(plastic6, pg.blank_position().v1, 1.6 * BALL_RADIUS, pg.blank_position().v2);
-    //
-
     pg = PlasticGuide({0.25075, 0.16575},
                       {0.2035, 0.036}, {0.23125, 0.086}, {0.0365, 0.14325},
                       {0.078, 0.071}, {0.0945, 0.091}, {0.01725, 0.13125});
     CadModel plastic7(PlaneShape(pg.blank_size().v1, pg.blank_size().v2, 8.0), PaintCan(1.0, 1.0, 1.0), 99.0);
     plastic7.rotate_ay(pg.blank_angle());
-    mm.add(plastic7, pg.blank_position().v1, 1.6 * BALL_RADIUS + 0.0005, pg.blank_position().v2);
+    mm.add(plastic7, pg.blank_position().v1, 1.6 * BALL_RADIUS, pg.blank_position().v2);
+    //
 
+    pg = PlasticGuide({0.3245, 0.12625},
+                      {0.060, 0.0585}, {0.266, 0.0585},
+                      {0.078, 0.27975}, {0.102, 0.26875});
+    CadModel plastic8(PlaneShape(pg.blank_size().v1, pg.blank_size().v2, 9.0), PaintCan(1.0, 1.0, 1.0), 99.0);
+    plastic8.rotate_ay(pg.blank_angle());
+    mm.add(plastic8, pg.blank_position().v1, 1.6 * BALL_RADIUS - 0.0005, pg.blank_position().v2);
 
+    // Plastic 6 is a large piece that obscures other, it goes a little higher and last
+
+    pg = PlasticGuide({0.496, 0.39625},
+                      {0.473, 0.021}, {0.075, 0.369},
+                      {0.01425, 0.147}, {0.0265, 0.3605});
+    CadModel plastic6(PlaneShape(pg.blank_size().v1, pg.blank_size().v2, 7.0), PaintCan(1.0, 1.0, 1.0), 99.0);
+    plastic6.rotate_ay(pg.blank_angle());
+    mm.add(plastic6, pg.blank_position().v1, 1.6 * BALL_RADIUS + 0.0005, pg.blank_position().v2);
 
     return mm;
 }
