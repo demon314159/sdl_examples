@@ -461,6 +461,14 @@ CadModel Table::model() const
     CadModel plastic5(PlaneShape(pg.blank_size().v1, pg.blank_size().v2, 6.0), PaintCan(1.0, 1.0, 1.0), 99.0);
     plastic5.rotate_ay(pg.blank_angle());
     mm.add(plastic5, pg.blank_position().v1, 1.6 * BALL_RADIUS, pg.blank_position().v2);
+    //
+
+    pg = PlasticGuide({0.496, 0.39625},
+                      {0.473, 0.021}, {0.075, 0.369},
+                      {0.01425, 0.147}, {0.0265, 0.3605});
+    CadModel plastic6(PlaneShape(pg.blank_size().v1, pg.blank_size().v2, 7.0), PaintCan(1.0, 1.0, 1.0), 99.0);
+    plastic6.rotate_ay(pg.blank_angle());
+    mm.add(plastic6, pg.blank_position().v1, 1.6 * BALL_RADIUS, pg.blank_position().v2);
 
 
     return mm;
