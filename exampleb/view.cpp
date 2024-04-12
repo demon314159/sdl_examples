@@ -348,11 +348,6 @@ void View::sub_copy_facets(CadModel* model, VertexData* vertices, int& vix)
     for (int i = 0; i < model->facets(); i++) {
         an_id = model->facet_animation_id(i);
         tx_id = model->facet_texture_id(i);
-
-if (tx_id == 2.0) {
-    printf("Found tx_id = %.3f\n", tx_id);
-}
-
         vc = model->facet_color(i);
         vn = model->facet_normal(i);
         vp = model->facet_v1(i);

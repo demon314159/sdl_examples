@@ -19,13 +19,14 @@ public:
     float blank_angle() const;
 
 protected:
-    Float2 m_image_size;
-    Float2 m_image_p1;
-    Float2 m_image_p2;
-    Float2 m_image_p3;
-    Float2 m_blank_p1;
-    Float2 m_blank_p2;
-    Float2 m_blank_p3;
+    Float2 m_blank_size;
+    Float2 m_blank_position;
+    float m_blank_angle;
+
+    float angle(const Float2& p1, const Float2& p2) const;
+    float length(const Float2& p1, const Float2& p2) const;
+    Float2 position(const Float2& p1, const Float2& p2, const Float2& p3) const;
+    Float2 rotated(Float2 point, float angle) const;
 };
 
 #endif // _PLASTIC_GUIDE_H_
