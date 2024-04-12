@@ -42,6 +42,7 @@ View::View(SDL_Window* window)
     , m_texture5_uniform(0)
     , m_texture6_uniform(0)
     , m_texture7_uniform(0)
+    , m_texture8_uniform(0)
     , m_vao(0)
     , m_vbo(0)
     , m_frame(0)
@@ -72,6 +73,7 @@ View::View(SDL_Window* window)
     m_texture[4] = 0;
     m_texture[5] = 0;
     m_texture[6] = 0;
+    m_texture[7] = 0;
 
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
@@ -163,7 +165,7 @@ bool View::add_shader_from_source_file(GLuint shader, const char* name)
 
 void View::generate_textures()
 {
-    glGenTextures(7, m_texture);
+    glGenTextures(8, m_texture);
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_texture[0]);
@@ -192,6 +194,10 @@ void View::generate_textures()
     glActiveTexture(GL_TEXTURE6);
     glBindTexture(GL_TEXTURE_2D, m_texture[6]);
     generate_texture("plastic6.png");
+
+    glActiveTexture(GL_TEXTURE7);
+    glBindTexture(GL_TEXTURE_2D, m_texture[7]);
+    generate_texture("plastic7.png");
 }
 
 void View::generate_texture(const char* fname)
@@ -339,6 +345,11 @@ void View::initialize()
     m_texture7_uniform = glGetUniformLocation(m_program, "texture7");
     if (m_texture7_uniform == -1) {
         printf("texture7 is not a valid glsl variable\n");
+        exit(0);
+    }
+    m_texture8_uniform = glGetUniformLocation(m_program, "texture8");
+    if (m_texture8_uniform == -1) {
+        printf("texture8 is not a valid glsl variable\n");
         exit(0);
     }
     generate_textures();
@@ -491,10 +502,6 @@ void View::render()
     for (int i = 0; i < n; i++) {
         glUniformMatrix4fv(m_animation_matrix_uniform[i], 1, GL_TRUE, m_toy->get_animation_matrix(i).data());
     }
-
-
-
-
     const Lamp* lamp = m_toy->get_lamp();
     n = lamp->lamps();
     if (n > 0) {
@@ -515,6 +522,7 @@ void View::render()
     glUniform1i(m_texture5_uniform, 4);
     glUniform1i(m_texture6_uniform, 5);
     glUniform1i(m_texture7_uniform, 6);
+    glUniform1i(m_texture8_uniform, 7);
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glDrawArrays(GL_TRIANGLES, 0, m_vertex_count);

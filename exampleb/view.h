@@ -76,10 +76,11 @@ private:
     GLint m_texture5_uniform;
     GLint m_texture6_uniform;
     GLint m_texture7_uniform;
+    GLint m_texture8_uniform;
 
     unsigned int m_vao;
     unsigned int m_vbo;
-    unsigned int m_texture[7];
+    unsigned int m_texture[8];
     int m_frame;
     int m_max_vertex_count;
     int m_vertex_count;
