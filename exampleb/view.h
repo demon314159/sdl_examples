@@ -71,10 +71,11 @@ private:
     GLint m_lamp_uniform;
     GLint m_texture1_uniform;
     GLint m_texture2_uniform;
+    GLint m_texture3_uniform;
 
     unsigned int m_vao;
     unsigned int m_vbo;
-    unsigned int m_texture[2];
+    unsigned int m_texture[3];
     int m_frame;
     int m_max_vertex_count;
     int m_vertex_count;
@@ -101,6 +102,7 @@ private:
     void print_shader_log(GLuint shader);
 
     void generate_textures();
+    void generate_texture(const char* fname);
 };
 
 #endif // _VIEW_H_

@@ -16,7 +16,8 @@
 #include <math.h>
 
 LaneGuide::LaneGuide(float angle, Float3 position, float length, float height, float width,
-                     const PaintCan& color, const PaintCan& face_color, float reflectivity, int steps)
+                     const PaintCan& color, const PaintCan& face_color, float reflectivity, int steps,
+                     bool no_hat)
     : m_angle(angle)
     , m_position(position)
     , m_length(length)
@@ -25,6 +26,7 @@ LaneGuide::LaneGuide(float angle, Float3 position, float length, float height, f
     , m_color(color)
     , m_face_color(face_color)
     , m_steps(steps)
+    , m_no_hat(no_hat)
     , m_reflector1(true, width / 2.0, width / 2.0, length, reflectivity)
     , m_reflector2(false, width / 2.0, width / 2.0, length, reflectivity)
     , m_reflector3(true, width / 2.0, width / 2.0, length, reflectivity)
@@ -105,14 +107,16 @@ CadModel LaneGuide::model(float animation_id) const
     CadModel b3(PipeShape(rbumper, m_length, m_steps), PaintCan(1.0, 1.0, 1.0), animation_id);
 
     mm.add(base0, m_length / 2.0, m_width / 20.0, 0.0);
-    mm.add(base1a, m_length / 2.0, h3_post + m_width / 20.0, 0.0);
-    mm.add(base1b, m_length / 2.0, h3_post + m_width / 20.0, 0.0);
-    mm.add(base2a, 0.0, h3_post + m_width / 20.0, 0.0);
-    mm.add(base2b, 0.0, h3_post + m_width / 20.0, 0.0);
-    mm.add(base2a, m_length, h3_post + m_width / 20.0, 0.0);
-    mm.add(base2b, m_length, h3_post + m_width / 20.0, 0.0);
-    mm.add(base3, 0.0, h4_post, 0.0);
-    mm.add(base3, m_length, h4_post, 0.0);
+    if (!m_no_hat) {
+        mm.add(base1a, m_length / 2.0, h3_post + m_width / 20.0, 0.0);
+        mm.add(base1b, m_length / 2.0, h3_post + m_width / 20.0, 0.0);
+        mm.add(base2a, 0.0, h3_post + m_width / 20.0, 0.0);
+        mm.add(base2b, 0.0, h3_post + m_width / 20.0, 0.0);
+        mm.add(base2a, m_length, h3_post + m_width / 20.0, 0.0);
+        mm.add(base2b, m_length, h3_post + m_width / 20.0, 0.0);
+        mm.add(base3, 0.0, h4_post, 0.0);
+        mm.add(base3, m_length, h4_post, 0.0);
+    }
     mm.add(big_post1, 0.0,  0.0, 0.0);
     mm.add(big_post2, 0.0,  h1_post, 0.0);
     mm.add(big_post3, 0.0,  h2_post, 0.0);

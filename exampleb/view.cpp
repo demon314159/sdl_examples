@@ -37,6 +37,7 @@ View::View(SDL_Window* window)
     , m_lamp_uniform(0)
     , m_texture1_uniform(0)
     , m_texture2_uniform(0)
+    , m_texture3_uniform(0)
     , m_vao(0)
     , m_vbo(0)
     , m_frame(0)
@@ -62,6 +63,7 @@ View::View(SDL_Window* window)
 
     m_texture[0] = 0;
     m_texture[1] = 0;
+    m_texture[2] = 0;
 
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
@@ -153,9 +155,23 @@ bool View::add_shader_from_source_file(GLuint shader, const char* name)
 
 void View::generate_textures()
 {
-    glGenTextures(2, m_texture);
+    glGenTextures(3, m_texture);
+
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_texture[0]);
+    generate_texture("playfield.png");
+
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, m_texture[1]);
+    generate_texture("plastic1.png");
+
+    glActiveTexture(GL_TEXTURE2);
+    glBindTexture(GL_TEXTURE_2D, m_texture[2]);
+    generate_texture("plastic2.png");
+}
+
+void View::generate_texture(const char* fname)
+{
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
@@ -166,7 +182,7 @@ void View::generate_textures()
     height = 0;
     channels = 0;
 
-    unsigned char *data = stbi_load("playfield.png", &width, &height, &channels, 0);
+    unsigned char *data = stbi_load(fname, &width, &height, &channels, 0);
 //    printf("Image loaded width %d, height %d, channels %d\n", width, height, channels);
     if (data) {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
@@ -176,31 +192,7 @@ void View::generate_textures()
     } else {
         printf("failed to load texture\n");
     }
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, m_texture[1]);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    width = 0;
-    height = 0;
-    channels = 0;
-
-    data = stbi_load("plastic1.png", &width, &height, &channels, 0);
-//    printf("Image loaded width %d, height %d, channels %d\n", width, height, channels);
-    if (data) {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-        stbi_image_free(data);
-//        printf("texture width %d, height %d, channels %d\n", width, height, channels);
-    } else {
-        printf("failed to load texture\n");
-    }
-
 }
-
 
 void View::initialize()
 {
@@ -302,6 +294,11 @@ void View::initialize()
     m_texture2_uniform = glGetUniformLocation(m_program, "texture2");
     if (m_texture2_uniform == -1) {
         printf("texture2 is not a valid glsl variable\n");
+        exit(0);
+    }
+    m_texture3_uniform = glGetUniformLocation(m_program, "texture3");
+    if (m_texture3_uniform == -1) {
+        printf("texture3 is not a valid glsl variable\n");
         exit(0);
     }
     generate_textures();
@@ -473,6 +470,7 @@ void View::render()
     }
     glUniform1i(m_texture1_uniform, 0);
     glUniform1i(m_texture2_uniform, 1);
+    glUniform1i(m_texture3_uniform, 2);
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glDrawArrays(GL_TRIANGLES, 0, m_vertex_count);
