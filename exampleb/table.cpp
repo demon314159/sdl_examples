@@ -423,18 +423,29 @@ CadModel Table::model() const
     mm.add(m_flat_rail->model(0.0), 0.0, 0.0, 0.0);
 
     mm.add(top_playfield, PLAYFIELD_X / 2.0, 0.0, PLAYFIELD_Z / 2.0);
+    //
     PlasticGuide pg({0.141125, 0.105875},
                     {0.0835, 0.030}, {0.106, 0.06525}, {0.03475, 0.06725},
                     {0.1715, 0.21375}, {0.1915, 0.22825}, {0.153, 0.246});
     CadModel plastic1(PlaneShape(pg.blank_size().v1, pg.blank_size().v2, 2.0), PaintCan(1.0, 1.0, 1.0), 99.0);
     plastic1.rotate_ay(pg.blank_angle());
     mm.add(plastic1, pg.blank_position().v1, 1.5 * BALL_RADIUS, pg.blank_position().v2);
+    //
     pg = PlasticGuide({0.479, 0.3765},
                       {0.047, 0.0435}, {0.4085, 0.323}, {0.1295, 0.1785},
                       {0.24075, 0.07133}, {0.27425, 0.1605}, {0.24125, 0.10525});
     CadModel plastic2(PlaneShape(pg.blank_size().v1, pg.blank_size().v2, 3.0), PaintCan(1.0, 1.0, 1.0), 99.0);
     plastic2.rotate_ay(pg.blank_angle());
     mm.add(plastic2, pg.blank_position().v1, 1.6 * BALL_RADIUS, pg.blank_position().v2);
+    //
+
+    pg = PlasticGuide({0.22575, 0.34675},
+                      {0.048, 0.3015}, {0.1785, 0.0465},
+                      {0.2095, 0.48175}, {0.233, 0.43475});
+    CadModel plastic3(PlaneShape(pg.blank_size().v1, pg.blank_size().v2, 4.0), PaintCan(1.0, 1.0, 1.0), 99.0);
+    plastic3.rotate_ay(pg.blank_angle());
+    mm.add(plastic3, pg.blank_position().v1, 1.6 * BALL_RADIUS, pg.blank_position().v2);
+
 
     return mm;
 }

@@ -48,6 +48,34 @@ PlasticGuide::PlasticGuide(const Float2& image_size,
     m_blank_position = {blank_position.v1 - image_position.v1, blank_position.v2 - image_position.v2};
 }
 
+PlasticGuide::PlasticGuide(const Float2& image_size,
+                           const Float2& image_p1, const Float2& image_p2,
+                           const Float2& blank_p1, const Float2& blank_p2)
+    : m_blank_size({0.0, 0.0})
+    , m_blank_position({0.0, 0.0})
+    , m_blank_angle(0.0)
+{
+    float ia1 = angle(image_p1, image_p2);
+    float ba1 = angle(blank_p1, blank_p2);
+    float da1 = ia1 - ba1;
+    m_blank_angle = da1;
+
+    float il1 = length(image_p1, image_p2);
+    float bl1 = length(blank_p1, blank_p2);
+    float k1 = bl1 / il1;
+    float kavg = k1;
+    m_blank_size = {image_size.v1 * kavg, image_size.v2 * kavg};
+
+    Float2 blank_position = position(blank_p1, blank_p2);
+    Float2 image_position = position(image_p1, image_p2);
+    image_position.v1 -= (image_size.v1 / 2.0f);
+    image_position.v2 -= (image_size.v2 / 2.0f);
+    image_position.v1 = kavg * image_position.v1;
+    image_position.v2 = kavg * image_position.v2;
+    image_position = rotated(image_position, m_blank_angle);
+    m_blank_position = {blank_position.v1 - image_position.v1, blank_position.v2 - image_position.v2};
+}
+
 Float2 PlasticGuide::blank_size() const
 {
     return m_blank_size;
@@ -78,6 +106,11 @@ float PlasticGuide::length(const Float2& p1, const Float2& p2) const
 Float2 PlasticGuide::position(const Float2& p1, const Float2& p2, const Float2& p3) const
 {
     return {(p1.v1 + p2.v1 + p3.v1) / 3.0f, (p1.v2 + p2.v2 + p3.v2) / 3.0f};
+}
+
+Float2 PlasticGuide::position(const Float2& p1, const Float2& p2) const
+{
+    return {(p1.v1 + p2.v1) / 2.0f, (p1.v2 + p2.v2) / 2.0f};
 }
 
 Float2 PlasticGuide::rotated(Float2 point, float angle) const

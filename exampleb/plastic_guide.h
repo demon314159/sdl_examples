@@ -14,6 +14,10 @@ public:
                  const Float2& image_p1, const Float2& image_p2, const Float2& image_p3,
                  const Float2& blank_p1, const Float2& blank_p2, const Float2& blank_p3);
 
+    PlasticGuide(const Float2& image_size,
+                 const Float2& image_p1, const Float2& image_p2,
+                 const Float2& blank_p1, const Float2& blank_p2);
+
     Float2 blank_size() const;
     Float2 blank_position() const;
     float blank_angle() const;
@@ -26,6 +30,7 @@ protected:
     float angle(const Float2& p1, const Float2& p2) const;
     float length(const Float2& p1, const Float2& p2) const;
     Float2 position(const Float2& p1, const Float2& p2, const Float2& p3) const;
+    Float2 position(const Float2& p1, const Float2& p2) const;
     Float2 rotated(Float2 point, float angle) const;
 };
 

@@ -38,6 +38,7 @@ View::View(SDL_Window* window)
     , m_texture1_uniform(0)
     , m_texture2_uniform(0)
     , m_texture3_uniform(0)
+    , m_texture4_uniform(0)
     , m_vao(0)
     , m_vbo(0)
     , m_frame(0)
@@ -64,6 +65,7 @@ View::View(SDL_Window* window)
     m_texture[0] = 0;
     m_texture[1] = 0;
     m_texture[2] = 0;
+    m_texture[3] = 0;
 
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
@@ -155,7 +157,7 @@ bool View::add_shader_from_source_file(GLuint shader, const char* name)
 
 void View::generate_textures()
 {
-    glGenTextures(3, m_texture);
+    glGenTextures(4, m_texture);
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_texture[0]);
@@ -168,6 +170,10 @@ void View::generate_textures()
     glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, m_texture[2]);
     generate_texture("plastic2.png");
+
+    glActiveTexture(GL_TEXTURE3);
+    glBindTexture(GL_TEXTURE_2D, m_texture[3]);
+    generate_texture("plastic3.png");
 }
 
 void View::generate_texture(const char* fname)
@@ -201,10 +207,6 @@ void View::initialize()
 #endif
     const char* vshader_name = "vshader.glsl";
     const char* fshader_name = "fshader.glsl";
-
-
-
-
 
     GLuint vshader = 0;
     GLuint fshader = 0;
@@ -299,6 +301,11 @@ void View::initialize()
     m_texture3_uniform = glGetUniformLocation(m_program, "texture3");
     if (m_texture3_uniform == -1) {
         printf("texture3 is not a valid glsl variable\n");
+        exit(0);
+    }
+    m_texture4_uniform = glGetUniformLocation(m_program, "texture4");
+    if (m_texture4_uniform == -1) {
+        printf("texture4 is not a valid glsl variable\n");
         exit(0);
     }
     generate_textures();
@@ -471,6 +478,7 @@ void View::render()
     glUniform1i(m_texture1_uniform, 0);
     glUniform1i(m_texture2_uniform, 1);
     glUniform1i(m_texture3_uniform, 2);
+    glUniform1i(m_texture4_uniform, 3);
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glDrawArrays(GL_TRIANGLES, 0, m_vertex_count);
