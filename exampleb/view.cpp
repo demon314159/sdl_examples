@@ -540,9 +540,9 @@ void View::render()
         GLfloat* buf = new GLfloat[n];
         for (int i = 0; i < n; i++) {
 //            if (!(i & 1)) {
-//                buf[i] = DROP_TARGET_HEIGHT * 0.80;
+                buf[i] = DROP_TARGET_HEIGHT * 0.80;
 //            } else {
-                buf[i] = 0.0;
+//                buf[i] = 0.0;
 //            }
         }
         glUniform1fv(m_target_height_uniform, n, buf);

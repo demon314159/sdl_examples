@@ -76,9 +76,9 @@ CadModel DropTarget::model(float animation_id) const
     mm.add(target, 0.0, t / 2.0, 0.0);
 
     CadModel tile0(RoundedCubeShape(w, t, h, r, m_steps, false, true), m_color, animation_id);
-    CadModel stem(CubeShape(sw, st, h), m_color, animation_id);
+    CadModel stem(CubeShape(sw, st, h / 2.0), m_color, animation_id);
     mm.add(tile0);
-    mm.add(stem, 0.0, 0.0, -h);
+    mm.add(stem, 0.0, 0.0, -h + h / 4.0);
     mm.rotate_ax(-90.0);
 
     mm.translate(0.0, 0.0, OFFSET);

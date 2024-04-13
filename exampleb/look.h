@@ -16,7 +16,7 @@
 #define ANIMATION_ID_3 5.0
 
 #define PLAYFIELD_X  0.320675f
-#define PLAYFIELD_Y  0.020f
+#define PLAYFIELD_Y  0.030f
 #define PLAYFIELD_Z  0.663927777f
 
 #define LAMP_SIZE {0.020, 0.030}

@@ -297,9 +297,6 @@ CadModel Table::model() const
     CadModel top_playfield(PlaneShape(PLAYFIELD_X, PLAYFIELD_Z, 1.0), PaintCan(1.0, 1.0, 1.0), 99.0);
     CadModel backlight(PlaneShape(PLAYFIELD_X, PLAYFIELD_Z, 0.0), PaintCan(0.0, 0.0, 0.0), 1.0);
     mm.add(backlight, PLAYFIELD_X / 2.0, -PLAYFIELD_Y * 9.0 / 10.0, PLAYFIELD_Z / 2.0);
-
-
-
     mm.add(m_strip1->model(0.0));
     mm.add(m_strip2->model(0.0));
     mm.add(m_strip3->model(0.0));
@@ -320,16 +317,10 @@ CadModel Table::model() const
 //    diode.add(wall, -TDIODE / 2.0f + TC / 2.0f, 0.0, TDIODE / 2.0);
     diode.rotate_ay(ANGLE6);
     mm.add(diode, XC, Y1 / 2.0f, ZC);
-
-
     CadModel barrier1(CubeShape(T1, Y1, PLAYFIELD_Z - Z3), WOOD_COLOR, 0.0);
     mm.add(barrier1, X6 + T1 / 2.0f, Y1 / 2.0f, (Z3 + PLAYFIELD_Z) / 2.0f);
-
-
     CadModel cap(CylinderShape(T1 / 2.0f, Y1, 50), WOOD_COLOR, 0.0);
     mm.add(cap, X6 + T1 / 2.0f, Y1 / 2.0f, Z3);
-
-
     CadModel barrier2(CubeShape(T1, Y1 + PLAYFIELD_Y, PLAYFIELD_Z), WOOD_COLOR, 0.0);
     mm.add(barrier2, X8 + T1 / 2.0, Y1 / 2.0 - PLAYFIELD_Y / 2.0, PLAYFIELD_Z / 2.0);
     mm.add(barrier2, X1 - T1 / 2.0, Y1 / 2.0 - PLAYFIELD_Y / 2.0, PLAYFIELD_Z / 2.0);
