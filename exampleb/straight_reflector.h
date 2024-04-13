@@ -22,7 +22,7 @@ public:
     Float2 velocity_at_impact(float x, Float2 velocity_origin) const;
 
     bool within_range(const Ball* ball) const;
-    void collide(Ball* ball) const;
+    bool collide(Ball* ball) const;
     void translate(Float2 distance);
     void rotate(float angle);
     Float2 position() const;
