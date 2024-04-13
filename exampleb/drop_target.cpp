@@ -7,6 +7,8 @@
 #include "plane_shape.h"
 #include "rounded_cube_shape.h"
 
+#define OFFSET (-0.002f)
+
 DropTarget::DropTarget(Float2 position, float angle, float width, float height, float thickness,
                        const PaintCan& color, float reflectivity, int steps,
                        float texture_id, int section)
@@ -23,12 +25,15 @@ DropTarget::DropTarget(Float2 position, float angle, float width, float height, 
     , m_reflector2({0.0, 0.0}, thickness / 4.0, 0.0, 90.0, reflectivity)
     , m_reflector3(width - 2.0 * thickness / 4.0, reflectivity)
 {
-    m_reflector1.translate({-width / 2.0f + thickness / 4.0f, -thickness / 2.0f + thickness / 4.0f});
+    m_reflector1.translate({-width / 2.0f + thickness / 4.0f, OFFSET + thickness / 2.0f + thickness / 4.0f});
     m_reflector1.rotate(angle);
-    m_reflector2.translate({width / 2.0f - thickness / 4.0f, -thickness / 2.0f + thickness / 4.0f});
+    m_reflector2.translate({width / 2.0f - thickness / 4.0f, OFFSET - thickness / 2.0f + thickness / 4.0f});
     m_reflector2.rotate(angle);
-    m_reflector3.translate({0.0, - thickness / 2.0f});
+    m_reflector3.translate({0.0, OFFSET - thickness / 2.0f});
     m_reflector3.rotate(angle);
+    m_reflector1.translate(m_position);
+    m_reflector2.translate(m_position);
+    m_reflector3.translate(m_position);
 }
 
 DropTarget::~DropTarget()
@@ -75,6 +80,10 @@ CadModel DropTarget::model(float animation_id) const
     mm.add(tile0);
     mm.add(stem, 0.0, 0.0, -h);
     mm.rotate_ax(-90.0);
+
+    mm.translate(0.0, 0.0, OFFSET);
+
+
     mm.rotate_ay(m_angle);
     mm.translate(m_position.v1, h / 2.0 - 0.2 * h, m_position.v2);
     return mm;
