@@ -21,8 +21,16 @@ FlipperModel::FlipperModel(float animation_id,
         float k4 = k3 * k;
         float t =  0.0005;
 
-        CadModel fs1(FlipperShape(r1 * k2, r2 * k2, length, t, steps), flipper_color, animation_id);
-        CadModel fs2(FlipperShape(r1 * k3, r2 * k3, length, t, steps), flipper_color, animation_id);
+        Float3 ac = flipper_color.ambient_color();
+
+        float q = 0.9;
+        PaintCan pc = PaintCan(q * q * ac.v1, q * q * ac.v2, q * q * ac.v3);
+
+        CadModel fs1(FlipperShape(r1 * k2, r2 * k2, length, t, steps), pc, animation_id);
+
+        pc = PaintCan(q * ac.v1, q * ac.v2, q * ac.v3);
+        CadModel fs2(FlipperShape(r1 * k3, r2 * k3, length, t, steps), pc, animation_id);
+
         CadModel fs3(FlipperShape(r1 * k4, r2 * k4, length, t, steps), flipper_color, animation_id);
         add(fs1, 0.0, t / 2.0 + height / 2.0, 0.0);
         add(fs2, 0.0, t + t / 2.0 +height / 2.0, 0.0);
