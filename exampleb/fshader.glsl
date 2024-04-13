@@ -14,6 +14,7 @@ uniform sampler2D texture6;
 uniform sampler2D texture7;
 uniform sampler2D texture8;
 uniform sampler2D texture9;
+uniform sampler2D texture10;
 
 void main()
 {
@@ -82,9 +83,16 @@ void main()
             billy.g = c * billy.g;
             billy.b = c * billy.b;
             gl_FragColor = billy;
-        } else  {
+        } else if (v_texture_id < 9.5)  {
             c = 1.0;
             billy = texture(texture9, v_texture_position);
+            billy.r = c * billy.r;
+            billy.g = c * billy.g;
+            billy.b = c * billy.b;
+            gl_FragColor = billy;
+        } else  {
+            c = 1.0;
+            billy = texture(texture10, v_texture_position);
             billy.r = c * billy.r;
             billy.g = c * billy.g;
             billy.b = c * billy.b;

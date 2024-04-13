@@ -21,6 +21,8 @@
 #define INITIAL_XROT 50.0
 #define INITIAL_MAG 2.00
 
+#define TOTAL_TEXTURES  10
+
 class View
 {
 public:
@@ -78,10 +80,11 @@ private:
     GLint m_texture7_uniform;
     GLint m_texture8_uniform;
     GLint m_texture9_uniform;
+    GLint m_texture10_uniform;
 
     unsigned int m_vao;
     unsigned int m_vbo;
-    unsigned int m_texture[9];
+    unsigned int m_texture[TOTAL_TEXTURES];
     int m_frame;
     int m_max_vertex_count;
     int m_vertex_count;

@@ -5,10 +5,12 @@
 #include "plane_shape.h"
 #include <cstddef>
 
-PlaneShape::PlaneShape(float dimx, float dimz, float texture_id)
+PlaneShape::PlaneShape(float dimx, float dimz, float texture_id, const Float2& p1, const Float2& p2)
     : m_dimx(dimx)
     , m_dimz(dimz)
     , m_texture_id(texture_id)
+    , m_p1(p1)
+    , m_p2(p2)
     , m_size_known(false)
     , m_facet_count(0)
     , m_facet(NULL)
@@ -50,7 +52,7 @@ void PlaneShape::define_shape()
     float z = m_dimz / 2.0;
     // top face only
     add_face({-x, y, -z}, {-x, y, z}, {x, y, z}, {x, y, -z},
-             {0.0, 0.0}, {0.0, 1.0}, {1.0, 1.0}, {1.0, 0.0}, false);
+             {m_p1.v1, m_p1.v2}, {m_p1.v1, m_p2.v2}, {m_p2.v1, m_p2.v2}, {m_p2.v1, m_p1.v2}, false);
 }
 
 void PlaneShape::add_face(Float3 v1, Float3 v2, Float3 v3, Float3 v4,

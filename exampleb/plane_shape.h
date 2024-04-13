@@ -12,7 +12,7 @@
 class PlaneShape: public Shape
 {
 public:
-    PlaneShape(float dimx, float dimz, float texture_id = 0.0);
+    PlaneShape(float dimx, float dimz, float texture_id = 0.0, const Float2& p1 = {0.0, 0.0}, const Float2& p2 = {1.0, 1.0});
     virtual ~PlaneShape();
     int facets() const override;
     Facet facet(int facet_ix) const override;
@@ -22,6 +22,8 @@ private:
     float m_dimx;
     float m_dimz;
     float m_texture_id;
+    Float2 m_p1;
+    Float2 m_p2;
     bool m_size_known;
     int m_facet_count;
     Facet *m_facet;

@@ -44,6 +44,7 @@ View::View(SDL_Window* window)
     , m_texture7_uniform(0)
     , m_texture8_uniform(0)
     , m_texture9_uniform(0)
+    , m_texture10_uniform(0)
     , m_vao(0)
     , m_vbo(0)
     , m_frame(0)
@@ -66,17 +67,9 @@ View::View(SDL_Window* window)
 #ifdef VERBOSE
     printf("View::View(doc)\n");
 #endif
-
-    m_texture[0] = 0;
-    m_texture[1] = 0;
-    m_texture[2] = 0;
-    m_texture[3] = 0;
-    m_texture[4] = 0;
-    m_texture[5] = 0;
-    m_texture[6] = 0;
-    m_texture[7] = 0;
-    m_texture[8] = 0;
-
+    for (int i = 0; i < TOTAL_TEXTURES; i++) {
+        m_texture[i] = 0;
+    }
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
@@ -167,7 +160,7 @@ bool View::add_shader_from_source_file(GLuint shader, const char* name)
 
 void View::generate_textures()
 {
-    glGenTextures(9, m_texture);
+    glGenTextures(TOTAL_TEXTURES, m_texture);
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_texture[0]);
@@ -204,6 +197,10 @@ void View::generate_textures()
     glActiveTexture(GL_TEXTURE8);
     glBindTexture(GL_TEXTURE_2D, m_texture[8]);
     generate_texture("plastic8.png");
+
+    glActiveTexture(GL_TEXTURE9);
+    glBindTexture(GL_TEXTURE_2D, m_texture[9]);
+    generate_texture("plastic9.png");
 }
 
 void View::generate_texture(const char* fname)
@@ -361,6 +358,11 @@ void View::initialize()
     m_texture9_uniform = glGetUniformLocation(m_program, "texture9");
     if (m_texture9_uniform == -1) {
         printf("texture9 is not a valid glsl variable\n");
+        exit(0);
+    }
+    m_texture10_uniform = glGetUniformLocation(m_program, "texture10");
+    if (m_texture10_uniform == -1) {
+        printf("texture10 is not a valid glsl variable\n");
         exit(0);
     }
     generate_textures();
@@ -535,6 +537,7 @@ void View::render()
     glUniform1i(m_texture7_uniform, 6);
     glUniform1i(m_texture8_uniform, 7);
     glUniform1i(m_texture9_uniform, 8);
+    glUniform1i(m_texture10_uniform, 9);
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glDrawArrays(GL_TRIANGLES, 0, m_vertex_count);

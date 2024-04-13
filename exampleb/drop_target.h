@@ -15,7 +15,8 @@ class DropTarget
 {
 public:
     DropTarget(Float2 position, float angle, float width, float height, float thickness,
-               const PaintCan& color, float reflectivity, int steps);
+               const PaintCan& color, float reflectivity, int steps,
+               float texture_id, int section);
     ~DropTarget();
 
     CadModel model(float animation_id) const;
@@ -29,6 +30,8 @@ private:
     float m_thickness;
     PaintCan m_color;
     int m_steps;
+    float m_texture_id;
+    int m_section;
     ConvexReflector m_reflector1;
     ConvexReflector m_reflector2;
     StraightReflector m_reflector3;
