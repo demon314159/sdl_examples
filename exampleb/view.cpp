@@ -35,6 +35,7 @@ View::View(SDL_Window* window)
     , m_rot_matrix_uniform(0)
     , m_animation_matrix_uniform(nullptr)
     , m_lamp_uniform(0)
+    , m_target_height_uniform(0)
     , m_texture1_uniform(0)
     , m_texture2_uniform(0)
     , m_texture3_uniform(0)
@@ -315,6 +316,11 @@ void View::initialize()
         printf("lamp_color is not a valid glsl variable\n");
         exit(0);
     }
+    m_target_height_uniform = glGetUniformLocation(m_program, "target_height");
+    if (m_target_height_uniform == -1) {
+        printf("target_height is not a valid glsl variable\n");
+        exit(0);
+    }
     m_texture1_uniform = glGetUniformLocation(m_program, "texture1");
     if (m_texture1_uniform == -1) {
         printf("texture1 is not a valid glsl variable\n");
@@ -528,6 +534,17 @@ void View::render()
         glUniform3fv(m_lamp_uniform,  n, buf);
         delete [] buf;
     }
+
+    n = 15;
+    if (n > 0) {
+        GLfloat* buf = new GLfloat[n];
+        for (int i = 0; i < n; i++) {
+           buf[i] = DROP_TARGET_HEIGHT * 0.9;
+        }
+        glUniform1fv(m_target_height_uniform, n, buf);
+        delete [] buf;
+    }
+
     glUniform1i(m_texture1_uniform, 0);
     glUniform1i(m_texture2_uniform, 1);
     glUniform1i(m_texture3_uniform, 2);

@@ -71,6 +71,7 @@ private:
     GLint* m_animation_matrix_uniform;
 
     GLint m_lamp_uniform;
+    GLint m_target_height_uniform;
     GLint m_texture1_uniform;
     GLint m_texture2_uniform;
     GLint m_texture3_uniform;

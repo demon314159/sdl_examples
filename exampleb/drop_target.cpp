@@ -67,11 +67,11 @@ CadModel DropTarget::model(float animation_id) const
          p2.v2 = 0.0;
     }
 
-    CadModel target(PlaneShape(w - t / 2.0, h - t / 2.0, m_texture_id, p1, p2), m_color, 1.0);
+    CadModel target(PlaneShape(w - t / 2.0, h - t / 2.0, m_texture_id, p1, p2), m_color, animation_id);
     mm.add(target, 0.0, t / 2.0, 0.0);
 
-    CadModel tile0(RoundedCubeShape(w, t, h, r, m_steps, false, true), m_color, 0.0);
-    CadModel stem(CubeShape(sw, st, h), m_color, 0.0);
+    CadModel tile0(RoundedCubeShape(w, t, h, r, m_steps, false, true), m_color, animation_id);
+    CadModel stem(CubeShape(sw, st, h), m_color, animation_id);
     mm.add(tile0);
     mm.add(stem, 0.0, 0.0, -h);
     mm.rotate_ax(-90.0);
