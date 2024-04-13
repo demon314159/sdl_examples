@@ -92,12 +92,6 @@ View::View(SDL_Window* window)
 void View::position_camera()
 {
     BoundingBox bb = m_toy->get_model()->bounding_box();
-
-//    bb.vmin.v1 -= 2.0;
-//    bb.vmin.v3 -= 2.0;
-//    bb.vmax.v1 += 2.0;
-//    bb.vmax.v3 += 2.0;
-
     m_radius = fmax(fabs(bb.vmax.v1 - bb.vmin.v1) / 2.0, fabs(bb.vmax.v3 - bb.vmin.v3) / 2.0);
     m_radius = fmax(m_radius, (bb.vmax.v2 - bb.vmin.v2) / (2.0));
     m_radius = fmax(m_radius, 0.1);
@@ -540,9 +534,9 @@ void View::render()
         GLfloat* buf = new GLfloat[n];
         for (int i = 0; i < n; i++) {
 //            if (!(i & 1)) {
-                buf[i] = DROP_TARGET_HEIGHT * 0.80;
+//                buf[i] = DROP_TARGET_HEIGHT * 0.80;
 //            } else {
-//                buf[i] = 0.0;
+                buf[i] = 0.0;
 //            }
         }
         glUniform1fv(m_target_height_uniform, n, buf);

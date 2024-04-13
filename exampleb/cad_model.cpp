@@ -240,6 +240,11 @@ Facet CadModel::facet(int ix) const
     return m_facet[ix];
 }
 
+bool CadModel::facet_visible(int ix) const
+{
+    return m_facet[ix].animation_id != 99.0;
+}
+
 float CadModel::facet_animation_id(int facet_ix) const
 {
     if (facet_ix < m_facet_count)
@@ -441,27 +446,29 @@ BoundingBox CadModel::bounding_box() const
     bb.vmin = facet_v1(0);
     bb.vmax = facet_v1(0);
     for (int i = 0; i < m_facet_count; i++) {
-        Float3 v = facet_v1(i);
-        bb.vmin.v1 = fmin(bb.vmin.v1, v.v1);
-        bb.vmin.v2 = fmin(bb.vmin.v2, v.v2);
-        bb.vmin.v3 = fmin(bb.vmin.v3, v.v3);
-        bb.vmax.v1 = fmax(bb.vmax.v1, v.v1);
-        bb.vmax.v2 = fmax(bb.vmax.v2, v.v2);
-        bb.vmax.v3 = fmax(bb.vmax.v3, v.v3);
-        v = facet_v2(i);
-        bb.vmin.v1 = fmin(bb.vmin.v1, v.v1);
-        bb.vmin.v2 = fmin(bb.vmin.v2, v.v2);
-        bb.vmin.v3 = fmin(bb.vmin.v3, v.v3);
-        bb.vmax.v1 = fmax(bb.vmax.v1, v.v1);
-        bb.vmax.v2 = fmax(bb.vmax.v2, v.v2);
-        bb.vmax.v3 = fmax(bb.vmax.v3, v.v3);
-        v = facet_v3(i);
-        bb.vmin.v1 = fmin(bb.vmin.v1, v.v1);
-        bb.vmin.v2 = fmin(bb.vmin.v2, v.v2);
-        bb.vmin.v3 = fmin(bb.vmin.v3, v.v3);
-        bb.vmax.v1 = fmax(bb.vmax.v1, v.v1);
-        bb.vmax.v2 = fmax(bb.vmax.v2, v.v2);
-        bb.vmax.v3 = fmax(bb.vmax.v3, v.v3);
+        if (facet_visible(i)) {
+            Float3 v = facet_v1(i);
+            bb.vmin.v1 = fmin(bb.vmin.v1, v.v1);
+            bb.vmin.v2 = fmin(bb.vmin.v2, v.v2);
+            bb.vmin.v3 = fmin(bb.vmin.v3, v.v3);
+            bb.vmax.v1 = fmax(bb.vmax.v1, v.v1);
+            bb.vmax.v2 = fmax(bb.vmax.v2, v.v2);
+            bb.vmax.v3 = fmax(bb.vmax.v3, v.v3);
+            v = facet_v2(i);
+            bb.vmin.v1 = fmin(bb.vmin.v1, v.v1);
+            bb.vmin.v2 = fmin(bb.vmin.v2, v.v2);
+            bb.vmin.v3 = fmin(bb.vmin.v3, v.v3);
+            bb.vmax.v1 = fmax(bb.vmax.v1, v.v1);
+            bb.vmax.v2 = fmax(bb.vmax.v2, v.v2);
+            bb.vmax.v3 = fmax(bb.vmax.v3, v.v3);
+            v = facet_v3(i);
+            bb.vmin.v1 = fmin(bb.vmin.v1, v.v1);
+            bb.vmin.v2 = fmin(bb.vmin.v2, v.v2);
+            bb.vmin.v3 = fmin(bb.vmin.v3, v.v3);
+            bb.vmax.v1 = fmax(bb.vmax.v1, v.v1);
+            bb.vmax.v2 = fmax(bb.vmax.v2, v.v2);
+            bb.vmax.v3 = fmax(bb.vmax.v3, v.v3);
+        }
     }
     return bb;
 }
