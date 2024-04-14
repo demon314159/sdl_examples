@@ -6,6 +6,7 @@
 #include "pi.h"
 #include <math.h>
 #include "look.h"
+#include "layout_guide.h"
 #include <stdio.h>
 
 
@@ -14,8 +15,11 @@
 #define BALL_ACCELERATION 0.25
 
 Toy::Toy()
-    : m_ball(NULL)
+    : m_lamp_test(0)
+    , m_target_test(0)
+    , m_ball(NULL)
     , m_lamp(NULL)
+    , m_target(NULL)
     , m_table(NULL)
     , m_left_flipper(NULL)
     , m_right_flipper(NULL)
@@ -26,6 +30,7 @@ Toy::Toy()
 {
     m_ball = new Ball(BALL_RADIUS, BALL_TOP_COLOR, BALL_MIDDLE_COLOR, BALL_BOTTOM_COLOR, BALL_SEGMENTS);
     m_lamp = new Lamp();
+    m_target = new Target(DROP_TARGET_HEIGHT);
     m_table = new Table();
     m_left_flipper = new Flipper(
         LEFT_FLIPPER_ANGLE, LEFT_FLIPPER_POSITION, BOTTOM_FLIPPER_LENGTH,
@@ -81,6 +86,31 @@ Toy::Toy()
     m_lamp->set(LAMP4_IX, true);
     m_lamp->set(LAMP20_IX, true);
 
+    LayoutGuide lg({0.0385, 0.3075}, {0.0215, 0.315}, DROP_TARGET_WIDTH, 1);
+    m_target->add(new DropTarget(lg.position(1), lg.angle() , DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS, 10.0, 5));
+
+    lg = LayoutGuide({0.111, 0.275}, {0.076, 0.291}, DROP_TARGET_WIDTH, 2);
+    m_target->add(new DropTarget(lg.position(2), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS, 10.0, 1));
+    m_target->add(new DropTarget(lg.position(1), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS, 10.0, 6));
+
+    lg = LayoutGuide({0.2015, 0.2345}, {0.1485, 0.258}, DROP_TARGET_WIDTH, 3);
+    m_target->add(new DropTarget(lg.position(3), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS, 10.0, 7));
+    m_target->add(new DropTarget(lg.position(2), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS, 10.0, 2));
+    m_target->add(new DropTarget(lg.position(1), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS, 10.0, 7));
+
+    lg = LayoutGuide({0.2655, 0.39675}, {0.247, 0.32025}, DROP_TARGET_WIDTH, 4);
+    m_target->add(new DropTarget(lg.position(4), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS, 10.0, 3));
+    m_target->add(new DropTarget(lg.position(3), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS, 10.0, 8));
+    m_target->add(new DropTarget(lg.position(2), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS, 10.0, 3));
+    m_target->add(new DropTarget(lg.position(1), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS, 10.0, 8));
+
+    lg = LayoutGuide({0.106, 0.096}, {0.019, 0.141}, DROP_TARGET_WIDTH, 5);
+    m_target->add(new DropTarget(lg.position(5), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS, 10.0, 9));
+    m_target->add(new DropTarget(lg.position(4), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS, 10.0, 4));
+    m_target->add(new DropTarget(lg.position(3), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS, 10.0, 0));
+    m_target->add(new DropTarget(lg.position(2), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS, 10.0, 4));
+    m_target->add(new DropTarget(lg.position(1), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS, 10.0, 9));
+
     build_model();
 
     m_ball->set_position(m_table->ball_home_position());
@@ -92,6 +122,7 @@ Toy::~Toy()
 {
     delete m_ball;
     delete m_lamp;
+    delete m_target;
     delete m_table;
     delete m_left_flipper;
     delete m_right_flipper;
@@ -120,6 +151,7 @@ void Toy::advance(int nanoseconds)
         m_ball->set_position(m_table->ball_home_position());
         m_ball->set_velocity({0.0, 0.0});
     }
+    m_target->collide(m_ball);
     m_table->collide(m_ball);
     m_left_flipper->collide(m_ball);
     m_right_flipper->collide(m_ball);
@@ -128,9 +160,21 @@ void Toy::advance(int nanoseconds)
     m_ns_count += nanoseconds;
     if (m_ns_count > 500000000.0) {
         m_ns_count = 0.0;
-        for (int i = 0; i < m_lamp->lamps(); i++) {
-            m_lamp->toggle(i);
+        if (m_lamp_test > (m_lamp->lamps() - 1)) {
+            m_lamp_test = 0;
         }
+        for (int i = 0; i < m_lamp->lamps(); i++) {
+            m_lamp->set(i, i == m_lamp_test);
+        }
+        ++m_lamp_test;
+
+        if (m_target_test > (m_target->targets() - 1)) {
+            m_target_test = 0;
+        }
+        for (int i = 0; i < m_target->targets(); i++) {
+            m_target->set_dropped(i, i == m_target_test);
+        }
+        ++m_target_test;
     }
 }
 
@@ -139,10 +183,16 @@ const Lamp* Toy::get_lamp() const
     return m_lamp;
 }
 
+const Target* Toy::get_target() const
+{
+    return m_target;
+}
+
 void Toy::build_model()
 {
     m_model->add(m_ball->model(ANIMATION_ID_3));
     m_model->add(m_lamp->model());
+    m_model->add(m_target->model());
     m_model->add(m_left_flipper->model(ANIMATION_ID_0));
     m_model->add(m_right_flipper->model(ANIMATION_ID_1));
     m_model->add(m_top_flipper->model(ANIMATION_ID_2));

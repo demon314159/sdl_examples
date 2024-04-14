@@ -4,7 +4,6 @@
 
 #include "rounded_cube_shape.h"
 #include "plastic_guide.h"
-#include "layout_guide.h"
 #include "table.h"
 #include "plane_shape.h"
 #include "cube_shape.h"
@@ -62,21 +61,6 @@ Table::Table()
     , m_bumper1(NULL)
     , m_bumper2(NULL)
     , m_disc_target(NULL)
-    , m_drop_target1(NULL)
-    , m_drop_target2(NULL)
-    , m_drop_target3(NULL)
-    , m_drop_target4(NULL)
-    , m_drop_target5(NULL)
-    , m_drop_target6(NULL)
-    , m_drop_target7(NULL)
-    , m_drop_target8(NULL)
-    , m_drop_target9(NULL)
-    , m_drop_target10(NULL)
-    , m_drop_target11(NULL)
-    , m_drop_target12(NULL)
-    , m_drop_target13(NULL)
-    , m_drop_target14(NULL)
-    , m_drop_target15(NULL)
     , m_one_post1(NULL)
     , m_one_post2(NULL)
     , m_flat_rail(NULL)
@@ -127,31 +111,6 @@ Table::Table()
     m_bumper2 = new Bumper({0.0735, 0.215}, BUMPER_RADIUS, BUMPER_KICKER_RADIUS, BUMPER_KICKER_VELOCITY, BALL_RADIUS, BUMPER_COLOR, BUMPER_MAJOR_SEGMENTS, BUMPER_MINOR_SEGMENTS);
     m_disc_target = new DiscTarget({0.2565, 0.116}, 160.0, DISC_TARGET_RADIUS, DISC_TARGET_WIDTH, DISC_TARGET_COLOR1, DISC_TARGET_COLOR2, DISC_TARGET_COLOR3, DISC_TARGET_REFLECTIVITY, DISC_TARGET_SEGMENTS);
 
-    LayoutGuide lg({0.0385, 0.3075}, {0.0215, 0.315}, DROP_TARGET_WIDTH, 1);
-    m_drop_target1 = new DropTarget(lg.position(1), lg.angle() , DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS, 10.0, 5);
-
-    lg = LayoutGuide({0.111, 0.275}, {0.076, 0.291}, DROP_TARGET_WIDTH, 2);
-    m_drop_target2 = new DropTarget(lg.position(1), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS, 10.0, 6);
-    m_drop_target3 = new DropTarget(lg.position(2), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS, 10.0, 1);
-
-    lg = LayoutGuide({0.2015, 0.2345}, {0.1485, 0.258}, DROP_TARGET_WIDTH, 3);
-    m_drop_target4 = new DropTarget(lg.position(1), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS, 10.0, 7);
-    m_drop_target5 = new DropTarget(lg.position(2), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS, 10.0, 2);
-    m_drop_target6 = new DropTarget(lg.position(3), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS, 10.0, 7);
-
-    lg = LayoutGuide({0.2655, 0.39675}, {0.247, 0.32025}, DROP_TARGET_WIDTH, 4);
-    m_drop_target7 = new DropTarget(lg.position(1), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS, 10.0, 8);
-    m_drop_target8 = new DropTarget(lg.position(2), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS, 10.0, 3);
-    m_drop_target9 = new DropTarget(lg.position(3), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS, 10.0, 8);
-    m_drop_target10 = new DropTarget(lg.position(4), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS, 10.0, 3);
-
-    lg = LayoutGuide({0.106, 0.096}, {0.019, 0.141}, DROP_TARGET_WIDTH, 5);
-    m_drop_target11 = new DropTarget(lg.position(1), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS, 10.0, 9);
-    m_drop_target12 = new DropTarget(lg.position(2), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS, 10.0, 4);
-    m_drop_target13 = new DropTarget(lg.position(3), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS, 10.0, 0);
-    m_drop_target14 = new DropTarget(lg.position(4), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS, 10.0, 4);
-    m_drop_target15 = new DropTarget(lg.position(5), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS, 10.0, 9);
-
     m_one_post1 = new OnePost({0.0105, 0.3965}, ONE_POST_RADIUS, BALL_RADIUS, ONE_POST_COLOR, ONE_POST_REFLECTIVITY, ONE_POST_SEGMENTS);
     m_one_post2 = new OnePost({0.27875, 0.409125}, ONE_POST_RADIUS, BALL_RADIUS, ONE_POST_COLOR, ONE_POST_REFLECTIVITY, ONE_POST_SEGMENTS);
     m_flat_rail = new FlatRail({X6, 0.22885}, FLAT_RAIL_LENGTH, FLAT_RAIL_WIDTH, FLAT_RAIL_THICKNESS, FLAT_RAIL_BEND_RADIUS, Y1, FLAT_RAIL_COLOR, FLAT_RAIL_REFLECTIVITY, FLAT_RAIL_SEGMENTS);
@@ -199,21 +158,6 @@ Table::~Table()
     delete m_bumper1;
     delete m_bumper2;
     delete m_disc_target;
-    delete m_drop_target1;
-    delete m_drop_target2;
-    delete m_drop_target3;
-    delete m_drop_target4;
-    delete m_drop_target5;
-    delete m_drop_target6;
-    delete m_drop_target7;
-    delete m_drop_target8;
-    delete m_drop_target9;
-    delete m_drop_target10;
-    delete m_drop_target11;
-    delete m_drop_target12;
-    delete m_drop_target13;
-    delete m_drop_target14;
-    delete m_drop_target15;
     delete m_one_post1;
     delete m_one_post2;
     delete m_flat_rail;
@@ -271,21 +215,6 @@ void Table::collide(Ball* ball) const
     m_bumper1->collide(ball);
     m_bumper2->collide(ball);
     m_disc_target->collide(ball);
-    m_drop_target1->collide(ball);
-    m_drop_target2->collide(ball);
-    m_drop_target3->collide(ball);
-    m_drop_target4->collide(ball);
-    m_drop_target5->collide(ball);
-    m_drop_target6->collide(ball);
-    m_drop_target7->collide(ball);
-    m_drop_target8->collide(ball);
-    m_drop_target9->collide(ball);
-    m_drop_target10->collide(ball);
-    m_drop_target11->collide(ball);
-    m_drop_target12->collide(ball);
-    m_drop_target13->collide(ball);
-    m_drop_target14->collide(ball);
-    m_drop_target15->collide(ball);
     m_one_post1->collide(ball);
     m_one_post2->collide(ball);
     m_flat_rail->collide(ball);
@@ -395,21 +324,7 @@ CadModel Table::model() const
     mm.add(m_bumper1->model(0.0), 0.0, 0.0, 0.0);
     mm.add(m_bumper2->model(0.0), 0.0, 0.0, 0.0);
     mm.add(m_disc_target->model(0.0), 0.0, 0.0, 0.0);
-    mm.add(m_drop_target1->model(200.0), 0.0, 0.0, 0.0);
-    mm.add(m_drop_target2->model(201.0), 0.0, 0.0, 0.0);
-    mm.add(m_drop_target3->model(202.0), 0.0, 0.0, 0.0);
-    mm.add(m_drop_target4->model(203.0), 0.0, 0.0, 0.0);
-    mm.add(m_drop_target5->model(204.0), 0.0, 0.0, 0.0);
-    mm.add(m_drop_target6->model(205.0), 0.0, 0.0, 0.0);
-    mm.add(m_drop_target7->model(206.0), 0.0, 0.0, 0.0);
-    mm.add(m_drop_target8->model(207.0), 0.0, 0.0, 0.0);
-    mm.add(m_drop_target9->model(208.0), 0.0, 0.0, 0.0);
-    mm.add(m_drop_target10->model(209.0), 0.0, 0.0, 0.0);
-    mm.add(m_drop_target11->model(210.0), 0.0, 0.0, 0.0);
-    mm.add(m_drop_target12->model(211.0), 0.0, 0.0, 0.0);
-    mm.add(m_drop_target13->model(212.0), 0.0, 0.0, 0.0);
-    mm.add(m_drop_target14->model(213.0), 0.0, 0.0, 0.0);
-    mm.add(m_drop_target15->model(214.0), 0.0, 0.0, 0.0);
+
     mm.add(m_one_post1->model(0.0), 0.0, 0.0, 0.0);
     mm.add(m_one_post2->model(0.0), 0.0, 0.0, 0.0);
     mm.add(m_flat_rail->model(0.0), 0.0, 0.0, 0.0);

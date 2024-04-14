@@ -515,33 +515,8 @@ void View::render()
     for (int i = 0; i < n; i++) {
         glUniformMatrix4fv(m_animation_matrix_uniform[i], 1, GL_TRUE, m_toy->get_animation_matrix(i).data());
     }
-    const Lamp* lamp = m_toy->get_lamp();
-    n = lamp->lamps();
-    if (n > 0) {
-        GLfloat* buf = new GLfloat[n * 3];
-        for (int i = 0; i < n; i++) {
-            Float3 lc = lamp->color(i);
-            buf[3*i] = lc.v1;
-            buf[3*i + 1] = lc.v2;
-            buf[3*i + 2] = lc.v3;
-        }
-        glUniform3fv(m_lamp_uniform,  n, buf);
-        delete [] buf;
-    }
-
-    n = 15;
-    if (n > 0) {
-        GLfloat* buf = new GLfloat[n];
-        for (int i = 0; i < n; i++) {
-//            if (!(i & 1)) {
-//                buf[i] = DROP_TARGET_HEIGHT * 0.80;
-//            } else {
-                buf[i] = 0.0;
-//            }
-        }
-        glUniform1fv(m_target_height_uniform, n, buf);
-        delete [] buf;
-    }
+    glUniform3fv(m_lamp_uniform, m_toy->get_lamp()->lamps(), m_toy->get_lamp()->data());
+    glUniform1fv(m_target_height_uniform, m_toy->get_target()->targets(), m_toy->get_target()->data());
 
     glUniform1i(m_texture1_uniform, 0);
     glUniform1i(m_texture2_uniform, 1);

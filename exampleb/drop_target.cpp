@@ -12,7 +12,8 @@
 DropTarget::DropTarget(Float2 position, float angle, float width, float height, float thickness,
                        const PaintCan& color, float reflectivity, int steps,
                        float texture_id, int section)
-    : m_position(position)
+    : m_dropped(false)
+    , m_position(position)
     , m_angle(angle)
     , m_width(width)
     , m_height(height)
@@ -38,6 +39,16 @@ DropTarget::DropTarget(Float2 position, float angle, float width, float height, 
 
 DropTarget::~DropTarget()
 {
+}
+
+bool DropTarget::dropped() const
+{
+    return m_dropped;
+}
+
+void DropTarget::set_dropped(bool v)
+{
+    m_dropped = v;
 }
 
 void DropTarget::collide(Ball* ball) const

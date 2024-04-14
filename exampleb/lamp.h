@@ -24,6 +24,7 @@ public:
     Float3 color(int ix) const;
     void set(int ix, bool v);
     void toggle(int ix);
+    float* data() const;
 
 private:
     int m_lamps;
@@ -32,6 +33,7 @@ private:
     Float2 m_size[MAX_LAMPS];
     Float3 m_on_color[MAX_LAMPS];
     Float3 m_off_color[MAX_LAMPS];
+    float* m_data;
 };
 
 #endif // _LAMP_H_:

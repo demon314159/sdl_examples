@@ -8,6 +8,7 @@
 #include "cad_model.h"
 #include "matrix4x4.h"
 #include "lamp.h"
+#include "target.h"
 #include "ball.h"
 #include "flipper.h"
 #include "table.h"
@@ -34,10 +35,14 @@ public:
     void advance(int nanoseconds);
 
     const Lamp* get_lamp() const;
+    const Target* get_target() const;
 
 private:
+    int m_lamp_test;
+    int m_target_test;
     Ball* m_ball;
     Lamp* m_lamp;
+    Target* m_target;
     Table* m_table;
     Flipper* m_left_flipper;
     Flipper* m_right_flipper;

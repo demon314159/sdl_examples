@@ -21,8 +21,11 @@ public:
 
     CadModel model(float animation_id) const;
     void collide(Ball* ball) const;
+    bool dropped() const;
+    void set_dropped(bool v);
 
 private:
+    bool m_dropped;
     Float2 m_position;
     float m_angle;
     float m_width;

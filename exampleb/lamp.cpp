@@ -7,11 +7,24 @@
 
 Lamp::Lamp()
     : m_lamps(0)
+    , m_data(new float[MAX_LAMPS * 3])
 {
 }
 
 Lamp::~Lamp()
 {
+    delete m_data;
+}
+
+float* Lamp::data() const
+{
+    for (int i = 0; i < m_lamps; i++) {
+        Float3 lc = color(i);
+        m_data[3 * i] = lc.v1;
+        m_data[3 * i + 1] = lc.v2;
+        m_data[3 * i + 2] = lc.v3;
+    }
+    return m_data;
 }
 
 int Lamp::lamps() const
