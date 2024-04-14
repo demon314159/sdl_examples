@@ -6,6 +6,7 @@
 #define _VIEW_H_
 
 #include <SDL.h>
+#include <SDL_mixer.h>
 #include <GL/glew.h>
 #include <SDL_opengl.h>
 #include <stdio.h>

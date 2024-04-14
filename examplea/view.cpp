@@ -49,6 +49,10 @@ View::View(SDL_Window* window)
 #ifdef VERBOSE
     printf("View::View(doc)\n");
 #endif
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+        printf("Video Initialization Error: %s\n", SDL_GetError());
+        exit(0);
+    }
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
