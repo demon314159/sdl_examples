@@ -20,7 +20,7 @@ public:
     int lamps() const;
     void add(Float3 position, Float2 size, const PaintCan& on_color, const PaintCan& off_color);
 
-    CadModel model() const;
+    CadModel model(float animation_id) const;
     Float3 color(int ix) const;
     void set(int ix, bool v);
     void toggle(int ix);

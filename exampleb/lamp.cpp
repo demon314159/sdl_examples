@@ -53,11 +53,11 @@ Float3 Lamp::color(int ix) const
     }
 }
 
-CadModel Lamp::model() const
+CadModel Lamp::model(float animation_id) const
 {
     CadModel cm;
     for (int i = 0; i < m_lamps; i++) {
-        CadModel lamp(PlaneShape(m_size[i].v1, m_size[i].v2), m_off_color[i], ((float) i + 100));
+        CadModel lamp(PlaneShape(m_size[i].v1, m_size[i].v2), m_off_color[i], animation_id + (float) i);
         cm.add(lamp, m_position[i].v1, m_position[i].v2, m_position[i].v3);
     }
     return cm;

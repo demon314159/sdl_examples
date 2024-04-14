@@ -223,7 +223,7 @@ void Table::collide(Ball* ball) const
 CadModel Table::model() const
 {
     CadModel mm;
-    CadModel top_playfield(PlaneShape(PLAYFIELD_X, PLAYFIELD_Z, 1.0), PaintCan(1.0, 1.0, 1.0), 99.0);
+    CadModel top_playfield(PlaneShape(PLAYFIELD_X, PLAYFIELD_Z, TEXTURE_ID_PLAYFIELD), PaintCan(1.0, 1.0, 1.0), ANIMATION_ID_TRANSPARENT);
     CadModel backlight(PlaneShape(PLAYFIELD_X, PLAYFIELD_Z, 0.0), PaintCan(0.0, 0.0, 0.0), 1.0);
     mm.add(backlight, PLAYFIELD_X / 2.0, -PLAYFIELD_Y * 9.0 / 10.0, PLAYFIELD_Z / 2.0);
     mm.add(m_strip1->model(0.0));
@@ -334,14 +334,14 @@ CadModel Table::model() const
     PlasticGuide pg({0.141125, 0.105875},
                     {0.0835, 0.030}, {0.106, 0.06525}, {0.03475, 0.06725},
                     {0.1715, 0.21375}, {0.1915, 0.22825}, {0.153, 0.246});
-    CadModel plastic1(PlaneShape(pg.blank_size().v1, pg.blank_size().v2, 2.0), PaintCan(1.0, 1.0, 1.0), 99.0);
+    CadModel plastic1(PlaneShape(pg.blank_size().v1, pg.blank_size().v2, TEXTURE_ID_PLASTIC1), PaintCan(1.0, 1.0, 1.0), ANIMATION_ID_TRANSPARENT);
     plastic1.rotate_ay(pg.blank_angle());
     mm.add(plastic1, pg.blank_position().v1, 1.5 * BALL_RADIUS, pg.blank_position().v2);
     //
     pg = PlasticGuide({0.479, 0.3765},
                       {0.047, 0.0435}, {0.4085, 0.323}, {0.1295, 0.1785},
                       {0.24075, 0.07133}, {0.27425, 0.1605}, {0.24125, 0.10525});
-    CadModel plastic2(PlaneShape(pg.blank_size().v1, pg.blank_size().v2, 3.0), PaintCan(1.0, 1.0, 1.0), 99.0);
+    CadModel plastic2(PlaneShape(pg.blank_size().v1, pg.blank_size().v2, TEXTURE_ID_PLASTIC2), PaintCan(1.0, 1.0, 1.0), ANIMATION_ID_TRANSPARENT);
     plastic2.rotate_ay(pg.blank_angle());
     mm.add(plastic2, pg.blank_position().v1, 1.6 * BALL_RADIUS, pg.blank_position().v2);
     //
@@ -349,7 +349,7 @@ CadModel Table::model() const
     pg = PlasticGuide({0.22575, 0.34675},
                       {0.048, 0.3015}, {0.1785, 0.0465},
                       {0.2095, 0.48175}, {0.233, 0.43475});
-    CadModel plastic3(PlaneShape(pg.blank_size().v1, pg.blank_size().v2, 4.0), PaintCan(1.0, 1.0, 1.0), 99.0);
+    CadModel plastic3(PlaneShape(pg.blank_size().v1, pg.blank_size().v2, TEXTURE_ID_PLASTIC3), PaintCan(1.0, 1.0, 1.0), ANIMATION_ID_TRANSPARENT);
     plastic3.rotate_ay(pg.blank_angle());
     mm.add(plastic3, pg.blank_position().v1, 1.6 * BALL_RADIUS, pg.blank_position().v2);
     //
@@ -357,7 +357,7 @@ CadModel Table::model() const
     pg = PlasticGuide({0.16375, 0.3662},
                       {0.1335, 0.330}, {0.036, 0.032},
                       {0.080, 0.48175}, {0.0555, 0.3985});
-    CadModel plastic4(PlaneShape(pg.blank_size().v1, pg.blank_size().v2, 5.0), PaintCan(1.0, 1.0, 1.0), 99.0);
+    CadModel plastic4(PlaneShape(pg.blank_size().v1, pg.blank_size().v2, TEXTURE_ID_PLASTIC4), PaintCan(1.0, 1.0, 1.0), ANIMATION_ID_TRANSPARENT);
     plastic4.rotate_ay(pg.blank_angle());
     mm.add(plastic4, pg.blank_position().v1, 1.6 * BALL_RADIUS, pg.blank_position().v2);
     //
@@ -365,7 +365,7 @@ CadModel Table::model() const
     pg = PlasticGuide({0.3115, 0.09025},
                       {0.2605, 0.0655}, {0.0235, 0.069}, {0.2105, 0.022},
                       {0.2745, 0.296}, {0.2745, 0.3945}, {0.25625, 0.31775});
-    CadModel plastic5(PlaneShape(pg.blank_size().v1, pg.blank_size().v2, 6.0), PaintCan(1.0, 1.0, 1.0), 99.0);
+    CadModel plastic5(PlaneShape(pg.blank_size().v1, pg.blank_size().v2, TEXTURE_ID_PLASTIC5), PaintCan(1.0, 1.0, 1.0), ANIMATION_ID_TRANSPARENT);
     plastic5.rotate_ay(pg.blank_angle());
     mm.add(plastic5, pg.blank_position().v1, 1.6 * BALL_RADIUS, pg.blank_position().v2);
     //
@@ -373,7 +373,7 @@ CadModel Table::model() const
     pg = PlasticGuide({0.25075, 0.16575},
                       {0.2035, 0.036}, {0.23125, 0.086}, {0.0365, 0.14325},
                       {0.078, 0.071}, {0.0945, 0.091}, {0.01725, 0.13125});
-    CadModel plastic7(PlaneShape(pg.blank_size().v1, pg.blank_size().v2, 8.0), PaintCan(1.0, 1.0, 1.0), 99.0);
+    CadModel plastic7(PlaneShape(pg.blank_size().v1, pg.blank_size().v2, TEXTURE_ID_PLASTIC7), PaintCan(1.0, 1.0, 1.0), ANIMATION_ID_TRANSPARENT);
     plastic7.rotate_ay(pg.blank_angle());
     mm.add(plastic7, pg.blank_position().v1, 1.6 * BALL_RADIUS, pg.blank_position().v2);
     //
@@ -381,7 +381,7 @@ CadModel Table::model() const
     pg = PlasticGuide({0.3245, 0.12625},
                       {0.060, 0.0585}, {0.266, 0.0585},
                       {0.078, 0.27975}, {0.102, 0.26875});
-    CadModel plastic8(PlaneShape(pg.blank_size().v1, pg.blank_size().v2, 9.0), PaintCan(1.0, 1.0, 1.0), 99.0);
+    CadModel plastic8(PlaneShape(pg.blank_size().v1, pg.blank_size().v2, TEXTURE_ID_PLASTIC8), PaintCan(1.0, 1.0, 1.0), ANIMATION_ID_TRANSPARENT);
     plastic8.rotate_ay(pg.blank_angle());
     mm.add(plastic8, pg.blank_position().v1, 1.6 * BALL_RADIUS - 0.0005, pg.blank_position().v2);
 
@@ -390,7 +390,7 @@ CadModel Table::model() const
     pg = PlasticGuide({0.496, 0.39625},
                       {0.473, 0.021}, {0.075, 0.369},
                       {0.01425, 0.147}, {0.0265, 0.3605});
-    CadModel plastic6(PlaneShape(pg.blank_size().v1, pg.blank_size().v2, 7.0), PaintCan(1.0, 1.0, 1.0), 99.0);
+    CadModel plastic6(PlaneShape(pg.blank_size().v1, pg.blank_size().v2, TEXTURE_ID_PLASTIC6), PaintCan(1.0, 1.0, 1.0), ANIMATION_ID_TRANSPARENT);
     plastic6.rotate_ay(pg.blank_angle());
     mm.add(plastic6, pg.blank_position().v1, 1.6 * BALL_RADIUS + 0.0005, pg.blank_position().v2);
 

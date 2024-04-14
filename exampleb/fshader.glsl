@@ -27,70 +27,70 @@ void main()
         billy.a = v_color.a;
         gl_FragColor = billy;
     } else {
-        if (v_texture_id < 1.5) {
+        if (v_texture_id < 1.5) { // Playfield
             c = 0.7;
             billy = texture(texture1, v_texture_position);
             billy.r = c * billy.r;
             billy.g = c * billy.g;
             billy.b = c * billy.b;
             gl_FragColor = billy;
-        } else if (v_texture_id < 2.5)  {
+        } else if (v_texture_id < 2.5)  { // Plastic1
             c = 1.0;
             billy = texture(texture2, v_texture_position);
             billy.r = c * billy.r;
             billy.g = c * billy.g;
             billy.b = c * billy.b;
             gl_FragColor = billy;
-        } else if (v_texture_id < 3.5)  {
+        } else if (v_texture_id < 3.5)  { // Plastic2
             c = 1.0;
             billy = texture(texture3, v_texture_position);
             billy.r = c * billy.r;
             billy.g = c * billy.g;
             billy.b = c * billy.b;
             gl_FragColor = billy;
-        } else if (v_texture_id < 4.5)  {
+        } else if (v_texture_id < 4.5)  { // Plastic3
             c = 1.0;
             billy = texture(texture4, v_texture_position);
             billy.r = c * billy.r;
             billy.g = c * billy.g;
             billy.b = c * billy.b;
             gl_FragColor = billy;
-        } else if (v_texture_id < 5.5)  {
+        } else if (v_texture_id < 5.5)  { // Plastic4
             c = 1.0;
             billy = texture(texture5, v_texture_position);
             billy.r = c * billy.r;
             billy.g = c * billy.g;
             billy.b = c * billy.b;
             gl_FragColor = billy;
-        } else if (v_texture_id < 6.5)  {
+        } else if (v_texture_id < 6.5)  { // Plastic5
             c = 1.0;
             billy = texture(texture6, v_texture_position);
             billy.r = c * billy.r;
             billy.g = c * billy.g;
             billy.b = c * billy.b;
             gl_FragColor = billy;
-        } else if (v_texture_id < 7.5)  {
+        } else if (v_texture_id < 7.5)  { // Plastic6
             c = 1.0;
             billy = texture(texture7, v_texture_position);
             billy.r = c * billy.r;
             billy.g = c * billy.g;
             billy.b = c * billy.b;
             gl_FragColor = billy;
-        } else if (v_texture_id < 8.5)  {
+        } else if (v_texture_id < 8.5)  { // Plastic7
             c = 1.0;
             billy = texture(texture8, v_texture_position);
             billy.r = c * billy.r;
             billy.g = c * billy.g;
             billy.b = c * billy.b;
             gl_FragColor = billy;
-        } else if (v_texture_id < 9.5)  {
+        } else if (v_texture_id < 9.5)  { // Plastic8
             c = 1.0;
             billy = texture(texture9, v_texture_position);
             billy.r = c * billy.r;
             billy.g = c * billy.g;
             billy.b = c * billy.b;
             gl_FragColor = billy;
-        } else  {
+        } else  {                        // Drop Target
             c = 1.0;
             billy = texture(texture10, v_texture_position);
             billy.r = c * billy.r;

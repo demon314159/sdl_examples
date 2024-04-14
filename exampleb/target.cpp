@@ -41,11 +41,11 @@ void Target::add(DropTarget* t)
     ++m_targets;
 }
 
-CadModel Target::model() const
+CadModel Target::model(float animation_id) const
 {
     CadModel cm;
     for (int i = 0; i < m_targets; i++) {
-        cm.add(m_target[i]->model(200.0 + (float) i), 0.0, 0.0, 0.0);
+        cm.add(m_target[i]->model(animation_id + (float) i), 0.0, 0.0, 0.0);
     }
     return cm;
 }

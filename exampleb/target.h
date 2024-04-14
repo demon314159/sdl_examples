@@ -22,7 +22,7 @@ public:
     int targets() const;
     void add(DropTarget* t);
 
-    CadModel model() const;
+    CadModel model(float animation_id) const;
     void collide(Ball* ball) const;
     bool dropped(int ix) const;
     void set_dropped(int ix, bool v);
