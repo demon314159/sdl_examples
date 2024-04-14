@@ -51,11 +51,14 @@ void DropTarget::set_dropped(bool v)
     m_dropped = v;
 }
 
-void DropTarget::collide(Ball* ball) const
+void DropTarget::collide(Ball* ball)
 {
-    m_reflector1.collide(ball);
-    m_reflector2.collide(ball);
-    m_reflector3.collide(ball);
+    if (!m_dropped) {
+        bool a = m_reflector1.collide(ball);
+        bool b = m_reflector2.collide(ball);
+        bool c = m_reflector3.collide(ball);
+        m_dropped = a || b || c;
+    }
 }
 
 CadModel DropTarget::model(float animation_id) const

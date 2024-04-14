@@ -160,21 +160,21 @@ void Toy::advance(int nanoseconds)
     m_ns_count += nanoseconds;
     if (m_ns_count > 500000000.0) {
         m_ns_count = 0.0;
-        if (m_lamp_test > (m_lamp->lamps() - 1)) {
-            m_lamp_test = 0;
-        }
-        for (int i = 0; i < m_lamp->lamps(); i++) {
-            m_lamp->set(i, i == m_lamp_test);
-        }
-        ++m_lamp_test;
+//        if (m_lamp_test > (m_lamp->lamps() - 1)) {
+//            m_lamp_test = 0;
+//        }
+//        for (int i = 0; i < m_lamp->lamps(); i++) {
+//            m_lamp->set(i, i == m_lamp_test);
+//        }
+//        ++m_lamp_test;
 
-        if (m_target_test > (m_target->targets() - 1)) {
-            m_target_test = 0;
-        }
-        for (int i = 0; i < m_target->targets(); i++) {
-            m_target->set_dropped(i, i == m_target_test);
-        }
-        ++m_target_test;
+//        if (m_target_test > (m_target->targets() - 1)) {
+//            m_target_test = 0;
+//        }
+//        for (int i = 0; i < m_target->targets(); i++) {
+//            m_target->set_dropped(i, i == m_target_test);
+//        }
+//        ++m_target_test;
     }
 }
 

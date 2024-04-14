@@ -20,7 +20,7 @@ public:
     ~DropTarget();
 
     CadModel model(float animation_id) const;
-    void collide(Ball* ball) const;
+    void collide(Ball* ball);
     bool dropped() const;
     void set_dropped(bool v);
 
