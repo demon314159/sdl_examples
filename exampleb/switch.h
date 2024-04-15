@@ -16,15 +16,12 @@ class Switch
 public:
     Switch();
     ~Switch();
-    static void sample(int switch_id, bool v);
-
-    int switches() const;
-    void add();
-
-    bool state(int ix) const;
+    static void set(int switch_id);
+    static void clear();
+    static bool state(int switch_id);
 
 private:
-    int m_switches;
+    static bool m_v[MAX_SWITCHES];
 };
 
 #endif // _SWITCH_H_

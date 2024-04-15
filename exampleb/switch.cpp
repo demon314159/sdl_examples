@@ -4,10 +4,9 @@
 
 #include "switch.h"
 
-#include <stdio.h>
+bool Switch::m_v[MAX_SWITCHES];
 
 Switch::Switch()
-    : m_switches(0)
 {
 }
 
@@ -15,24 +14,21 @@ Switch::~Switch()
 {
 }
 
-void Switch::sample(int switch_id, bool v)
+void Switch::set(int switch_id)
 {
-    if (v) {
-        printf("Switch::sample(%d, %d)\n", switch_id, v ? 1 : 0);
+    m_v[switch_id] = true;
+}
+
+bool Switch::state(int switch_id)
+{
+    return m_v[switch_id];
+}
+
+void Switch::clear()
+{
+    for (int i = 0; i < MAX_SWITCHES; i++) {
+        m_v[i] = false;
     }
 }
 
-int Switch::switches() const
-{
-    return m_switches;
-}
-
-bool Switch::state(int ix) const
-{
-    return false;
-}
-
-void Switch::add()
-{
-}
 

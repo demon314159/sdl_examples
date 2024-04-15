@@ -21,6 +21,7 @@ Toy::Toy()
     , m_lamp(NULL)
     , m_target(NULL)
     , m_switch(NULL)
+    , m_sound(0)
     , m_table(NULL)
     , m_left_flipper(NULL)
     , m_right_flipper(NULL)
@@ -146,6 +147,8 @@ int Toy::animation_matrices() const
 void Toy::advance(int nanoseconds)
 {
     float seconds = 1.0e-9 * (float) nanoseconds;
+    Switch::clear();
+    m_sound = SOUND_ID_NONE;
     m_left_flipper->advance(seconds);
     m_right_flipper->advance(seconds);
     m_top_flipper->advance(seconds);
@@ -161,6 +164,7 @@ void Toy::advance(int nanoseconds)
     m_top_flipper->collide(m_ball);
     m_ball->advance_orientation();
     m_ns_count += nanoseconds;
+
     if (m_ns_count > 500000000.0) {
         m_ns_count = 0.0;
 //        if (m_lamp_test > (m_lamp->lamps() - 1)) {
@@ -179,6 +183,9 @@ void Toy::advance(int nanoseconds)
 //        }
 //        ++m_target_test;
     }
+    if (Switch::state(SWITCH_ID_SPECIAL)) {
+        m_sound = SOUND_ID_1;
+    }
 }
 
 const Lamp* Toy::get_lamp() const
@@ -189,6 +196,11 @@ const Lamp* Toy::get_lamp() const
 const Target* Toy::get_target() const
 {
     return m_target;
+}
+
+int Toy::get_sound() const
+{
+    return m_sound;
 }
 
 void Toy::build_model()

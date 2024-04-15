@@ -37,6 +37,7 @@ public:
 
     const Lamp* get_lamp() const;
     const Target* get_target() const;
+    int get_sound() const;
 
 private:
     int m_lamp_test;
@@ -45,6 +46,7 @@ private:
     Lamp* m_lamp;
     Target* m_target;
     Switch* m_switch;
+    int m_sound;
     Table* m_table;
     Flipper* m_left_flipper;
     Flipper* m_right_flipper;

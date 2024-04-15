@@ -43,6 +43,9 @@
 #define SWITCH_ID_SPECIAL      9
 
 
+#define SOUND_ID_NONE    0
+#define SOUND_ID_1       1
+
 #define PLAYFIELD_X  0.320675f
 #define PLAYFIELD_Y  0.030f
 #define PLAYFIELD_Z  0.663927777f

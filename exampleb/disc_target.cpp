@@ -35,8 +35,8 @@ void DiscTarget::embed_switch(int switch_id)
 void DiscTarget::collide(Ball* ball) const
 {
     bool res = m_reflector.collide(ball);
-    if (m_switch_id) {
-        Switch::sample(m_switch_id, res);
+    if (res && m_switch_id) {
+        Switch::set(m_switch_id);
     }
 }
 

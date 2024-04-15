@@ -58,9 +58,11 @@ float Rollover::diameter() const
 
 void Rollover::collide(const Ball* ball) const
 {
-    bool res = false;
-    if (m_switch_id) {
-        Switch::sample(m_switch_id, res);
+    float dx = ball->position().v1 - m_position.v1;
+    float dy = ball->position().v2 - m_position.v3;
+    bool res = fabs(dx) < ball->radius() && fabs(dy) < ball->radius();
+    if (res && m_switch_id) {
+        Switch::set(m_switch_id);
     }
 }
 

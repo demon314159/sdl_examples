@@ -499,6 +499,9 @@ void View::render()
     unsigned long real_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(this_time_point - m_last_time_point).count();
     m_last_time_point = this_time_point;
     m_toy->advance(real_ns);
+    if (m_toy->get_sound() == SOUND_ID_1) {
+        Mix_PlayChannel(-1, m_sound1, 0);
+    }
     Matrix4x4 matrix;
     matrix.unity();
     matrix.translate(m_xoff, m_yoff, -m_camz - m_radius);
@@ -706,7 +709,6 @@ void View::print_shader_log(GLuint shader)
 
 void View::left_action_button(bool on)
 {
-    Mix_PlayChannel(-1, m_sound1, 0);
     m_toy->left_action_button(on);
 }
 

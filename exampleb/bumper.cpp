@@ -40,8 +40,8 @@ void Bumper::embed_switch(int switch_id)
 void Bumper::collide(Ball* ball) const
 {
     bool res = m_kicker.collide(ball);
-    if (m_switch_id) {
-        Switch::sample(m_switch_id, res);
+    if (res && m_switch_id) {
+        Switch::set(m_switch_id);
     }
 }
 
