@@ -22,6 +22,7 @@ public:
     float width() const;
     float diameter() const;
     void collide(const Ball* ball) const;
+    void embed_switch(int switch_id);
 
 private:
     float m_angle;
@@ -31,6 +32,7 @@ private:
     float m_diameter;
     PaintCan m_color;
     int m_steps;
+    int m_switch_id;
 };
 
 #endif // _ROLLOVER_H_

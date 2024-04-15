@@ -79,6 +79,7 @@ HEADERS = view.h \
           flat_rail_shape.h \
           plastic_guide.h \
           target.h \
+          switch.h \
           \
           \
           \
@@ -159,6 +160,7 @@ OBJECTS = main.obj \
           flat_rail_shape.obj \
           plastic_guide.obj \
           target.obj \
+          switch.obj \
           \
           \
           \

@@ -19,6 +19,7 @@ public:
 
     CadModel model(float animation_id) const;
     void collide(Ball* ball) const;
+    void embed_switch(int switch_id);
 
 private:
     Float2 m_position;
@@ -29,6 +30,7 @@ private:
     PaintCan m_color;
     int m_major_steps;
     int m_minor_steps;
+    int m_switch_id;
     ConvexKicker m_kicker;
 };
 

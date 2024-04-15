@@ -12,7 +12,6 @@
 #include "top_panel_shape.h"
 #include "bottom_panel_shape.h"
 
-#include "rollover.h"
 #include "straight_wire_guide.h"
 
 
@@ -64,6 +63,14 @@ Table::Table()
     , m_one_post1(NULL)
     , m_one_post2(NULL)
     , m_flat_rail(NULL)
+    , m_rollover1(NULL)
+    , m_rollover2(NULL)
+    , m_rollover3(NULL)
+    , m_rollover4(NULL)
+    , m_rollover5(NULL)
+    , m_rollover6(NULL)
+    , m_rollover7(NULL)
+    , m_rollover8(NULL)
 {
     m_ball_home_position = {(X7 + X8) / 2.0f, Z7 - BALL_RADIUS};
     m_ball_z_limit = Z8;
@@ -110,10 +117,42 @@ Table::Table()
     m_bumper1 = new Bumper({0.208, 0.166}, BUMPER_RADIUS, BUMPER_KICKER_RADIUS, BUMPER_KICKER_VELOCITY, BALL_RADIUS, BUMPER_COLOR, BUMPER_MAJOR_SEGMENTS, BUMPER_MINOR_SEGMENTS);
     m_bumper2 = new Bumper({0.0735, 0.215}, BUMPER_RADIUS, BUMPER_KICKER_RADIUS, BUMPER_KICKER_VELOCITY, BALL_RADIUS, BUMPER_COLOR, BUMPER_MAJOR_SEGMENTS, BUMPER_MINOR_SEGMENTS);
     m_disc_target = new DiscTarget({0.2565, 0.116}, 160.0, DISC_TARGET_RADIUS, DISC_TARGET_WIDTH, DISC_TARGET_COLOR1, DISC_TARGET_COLOR2, DISC_TARGET_COLOR3, DISC_TARGET_REFLECTIVITY, DISC_TARGET_SEGMENTS);
-
     m_one_post1 = new OnePost({0.0105, 0.3965}, ONE_POST_RADIUS, BALL_RADIUS, ONE_POST_COLOR, ONE_POST_REFLECTIVITY, ONE_POST_SEGMENTS);
     m_one_post2 = new OnePost({0.27875, 0.409125}, ONE_POST_RADIUS, BALL_RADIUS, ONE_POST_COLOR, ONE_POST_REFLECTIVITY, ONE_POST_SEGMENTS);
     m_flat_rail = new FlatRail({X6, 0.22885}, FLAT_RAIL_LENGTH, FLAT_RAIL_WIDTH, FLAT_RAIL_THICKNESS, FLAT_RAIL_BEND_RADIUS, Y1, FLAT_RAIL_COLOR, FLAT_RAIL_REFLECTIVITY, FLAT_RAIL_SEGMENTS);
+
+    Float3 position1 = {0.17275, 0.0, 0.09125};
+    Float3 position2 = {0.19825, 0.0, 0.09125};
+    Float3 position3 = {0.22475, 0.0, 0.09125};
+    Float3 position4 = {0.2725, 0.0, 0.2295};
+    Float3 position5 = {0.01675, 0.0, 0.45588};
+    Float3 position6 = {0.03825, 0.0, 0.45125};
+    Float3 position7 = {0.25125, 0.0, 0.451375};
+    Float3 position8 = {0.27275, 0.0, 0.45525};
+    float type1_length = 0.0305;
+    float type2_length = 0.02125;
+    float width = 0.0025;
+    m_rollover1 = new Rollover(90.0, position1, type1_length, width, ROLLOVER_WIRE_DIAMETER, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
+    m_rollover2 = new Rollover(90.0, position2, type1_length, width, ROLLOVER_WIRE_DIAMETER, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
+    m_rollover3 = new Rollover(90.0, position3, type1_length, width, ROLLOVER_WIRE_DIAMETER, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
+    m_rollover4 = new Rollover(90.0, position4, type1_length, width, ROLLOVER_WIRE_DIAMETER, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
+    m_rollover5 = new Rollover(90.0, position5, type2_length, width, ROLLOVER_WIRE_DIAMETER, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
+    m_rollover6 = new Rollover(90.0, position6, type1_length, width, ROLLOVER_WIRE_DIAMETER, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
+    m_rollover7 = new Rollover(90.0, position7, type1_length, width, ROLLOVER_WIRE_DIAMETER, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
+    m_rollover8 = new Rollover(90.0, position8, type2_length, width, ROLLOVER_WIRE_DIAMETER, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
+
+    m_bumper1->embed_switch(SWITCH_ID_BUMPERS);
+    m_bumper2->embed_switch(SWITCH_ID_BUMPERS);
+    m_rollover1->embed_switch(SWITCH_ID_ROLLOVER_A);
+    m_rollover5->embed_switch(SWITCH_ID_ROLLOVER_A);
+    m_rollover2->embed_switch(SWITCH_ID_ROLLOVER_B);
+    m_rollover6->embed_switch(SWITCH_ID_ROLLOVER_B);
+    m_rollover7->embed_switch(SWITCH_ID_ROLLOVER_B);
+    m_rollover3->embed_switch(SWITCH_ID_ROLLOVER_C);
+    m_rollover8->embed_switch(SWITCH_ID_ROLLOVER_C);
+    m_disc_target->embed_switch(SWITCH_ID_EXTRA_BALL);
+
+    m_rollover4->embed_switch(SWITCH_ID_SPECIAL);
 }
 
 Table::~Table()
@@ -161,6 +200,14 @@ Table::~Table()
     delete m_one_post1;
     delete m_one_post2;
     delete m_flat_rail;
+    delete m_rollover1;
+    delete m_rollover2;
+    delete m_rollover3;
+    delete m_rollover4;
+    delete m_rollover5;
+    delete m_rollover6;
+    delete m_rollover7;
+    delete m_rollover8;
 }
 
 float Table::ball_z_limit() const
@@ -218,6 +265,14 @@ void Table::collide(Ball* ball) const
     m_one_post1->collide(ball);
     m_one_post2->collide(ball);
     m_flat_rail->collide(ball);
+    m_rollover1->collide(ball);
+    m_rollover2->collide(ball);
+    m_rollover3->collide(ball);
+    m_rollover4->collide(ball);
+    m_rollover5->collide(ball);
+    m_rollover6->collide(ball);
+    m_rollover7->collide(ball);
+    m_rollover8->collide(ball);
 }
 
 CadModel Table::model() const
@@ -264,34 +319,15 @@ CadModel Table::model() const
     CadModel bottom_panel(BottomPanelShape(X1, X3, X5, X6, Z5, Z6, Z9), FACE_PLATE_COLOR, 0.0);
     mm.add(bottom_panel, 0.0, Y1, 0.0);
 
-    Float3 position1 = {0.17275, 0.0, 0.09125};
-    Float3 position2 = {0.19825, 0.0, 0.09125};
-    Float3 position3 = {0.22475, 0.0, 0.09125};
-    Float3 position4 = {0.2725, 0.0, 0.2295};
-    Float3 position5 = {0.01675, 0.0, 0.45588};
-    Float3 position6 = {0.03825, 0.0, 0.45125};
-    Float3 position7 = {0.25125, 0.0, 0.451375};
-    Float3 position8 = {0.27275, 0.0, 0.45525};
-    float type1_length = 0.0305;
-    float type2_length = 0.02125;
-    float width = 0.0025;
 
-    Rollover rollover1(90.0, position1, type1_length, width, ROLLOVER_WIRE_DIAMETER, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
-    Rollover rollover2(90.0, position2, type1_length, width, ROLLOVER_WIRE_DIAMETER, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
-    Rollover rollover3(90.0, position3, type1_length, width, ROLLOVER_WIRE_DIAMETER, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
-    Rollover rollover4(90.0, position4, type1_length, width, ROLLOVER_WIRE_DIAMETER, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
-    Rollover rollover5(90.0, position5, type2_length, width, ROLLOVER_WIRE_DIAMETER, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
-    Rollover rollover6(90.0, position6, type1_length, width, ROLLOVER_WIRE_DIAMETER, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
-    Rollover rollover7(90.0, position7, type1_length, width, ROLLOVER_WIRE_DIAMETER, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
-    Rollover rollover8(90.0, position8, type2_length, width, ROLLOVER_WIRE_DIAMETER, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
-    mm.add(rollover1.model(0.0), 0.0, 0.0, 0.0);
-    mm.add(rollover2.model(0.0), 0.0, 0.0, 0.0);
-    mm.add(rollover3.model(0.0), 0.0, 0.0, 0.0);
-    mm.add(rollover4.model(0.0), 0.0, 0.0, 0.0);
-    mm.add(rollover5.model(0.0), 0.0, 0.0, 0.0);
-    mm.add(rollover6.model(0.0), 0.0, 0.0, 0.0);
-    mm.add(rollover7.model(0.0), 0.0, 0.0, 0.0);
-    mm.add(rollover8.model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_rollover1->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_rollover2->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_rollover3->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_rollover4->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_rollover5->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_rollover6->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_rollover7->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_rollover8->model(0.0), 0.0, 0.0, 0.0);
 
     mm.add(m_wire_guide1->model(0.0), 0.0, 0.0, 0.0);
     mm.add(m_wire_guide2->model(0.0), 0.0, 0.0, 0.0);

@@ -100,8 +100,9 @@ bool ConvexKicker::within_distance(const Ball* ball) const
     return distance <= (ball->radius() + m_radius);
 }
 
-void ConvexKicker::collide(Ball* ball) const
+bool ConvexKicker::collide(Ball* ball) const
 {
+    bool flag = false;
     if (ball->quick_test(m_perimeter)) {
         if (within_distance(ball)) {
             float dx = ball->position().v1 - m_position.v1;
@@ -118,23 +119,25 @@ void ConvexKicker::collide(Ball* ball) const
                 ball_copy.translate_frame({0.0, m_radius});
                 // negate ball z velocity
                 Float2 temp = ball_copy.velocity();
-                if (temp.v2 > 0.0) {
+                flag = (temp.v2 > 0.0);
+                if (flag) {
                     temp.v2 = m_velocity;
                     ball_copy.set_velocity({temp.v1, -temp.v2});
+                    // ball z pos -= (ball_z + radius)
+                    temp = ball_copy.position();
+                    ball_copy.set_position({temp.v1, (float) -2.0 * ball->radius() - temp.v2});
+                    // translate kicker by (0, -radius) and bring ball position and velocity
+                    ball_copy.translate_frame({0, -m_radius});
+                    // rotate kicker by angle and bring ball position and velocity
+                    ball_copy.rotate_frame(rot_angle);
+                    // translate kicker to position and bring ball position and velocity
+                    ball_copy.translate_frame({m_position.v1, m_position.v2});
+                    // replace ball with new info
+                    *ball = ball_copy;
                 }
-                // ball z pos -= (ball_z + radius)
-                temp = ball_copy.position();
-                ball_copy.set_position({temp.v1, (float) -2.0 * ball->radius() - temp.v2});
-                // translate kicker by (0, -radius) and bring ball position and velocity
-                ball_copy.translate_frame({0, -m_radius});
-                // rotate kicker by angle and bring ball position and velocity
-                ball_copy.rotate_frame(rot_angle);
-                // translate kicker to position and bring ball position and velocity
-                ball_copy.translate_frame({m_position.v1, m_position.v2});
-                // replace ball with new info
-                *ball = ball_copy;
             }
         }
     }
+    return flag;
 }
 

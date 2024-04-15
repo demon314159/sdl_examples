@@ -5,6 +5,7 @@
 #ifndef _TABLE_H_
 #define _TABLE_H_
 
+#include "rollover.h"
 #include "flat_rail.h"
 #include "disc_target.h"
 #include "bumper.h"
@@ -83,6 +84,14 @@ private:
     OnePost* m_one_post1;
     OnePost* m_one_post2;
     FlatRail* m_flat_rail;
+    Rollover* m_rollover1;
+    Rollover* m_rollover2;
+    Rollover* m_rollover3;
+    Rollover* m_rollover4;
+    Rollover* m_rollover5;
+    Rollover* m_rollover6;
+    Rollover* m_rollover7;
+    Rollover* m_rollover8;
 
     float R1 = 0.148;
     float R2 = 0.145;

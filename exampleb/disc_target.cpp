@@ -2,6 +2,7 @@
 // disc_target.cpp
 //
 
+#include "switch.h"
 #include "disc_target.h"
 #include "ring_shape.h"
 
@@ -15,6 +16,7 @@ DiscTarget::DiscTarget(Float2 position, float angle, float radius, float width, 
     , m_color2(color2)
     , m_color3(color3)
     , m_steps(steps)
+    , m_switch_id(0)
     , m_reflector(2.0f * radius, reflectivity)
 {
     m_reflector.rotate(angle);
@@ -25,9 +27,17 @@ DiscTarget::~DiscTarget()
 {
 }
 
+void DiscTarget::embed_switch(int switch_id)
+{
+    m_switch_id = switch_id;
+}
+
 void DiscTarget::collide(Ball* ball) const
 {
-    m_reflector.collide(ball);
+    bool res = m_reflector.collide(ball);
+    if (m_switch_id) {
+        Switch::sample(m_switch_id, res);
+    }
 }
 
 CadModel DiscTarget::model(float animation_id) const

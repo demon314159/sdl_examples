@@ -36,4 +36,4 @@ private:
     float* m_data;
 };
 
-#endif // _LAMP_H_:
+#endif // _LAMP_H_

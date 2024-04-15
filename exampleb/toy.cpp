@@ -20,6 +20,7 @@ Toy::Toy()
     , m_ball(NULL)
     , m_lamp(NULL)
     , m_target(NULL)
+    , m_switch(NULL)
     , m_table(NULL)
     , m_left_flipper(NULL)
     , m_right_flipper(NULL)
@@ -31,6 +32,7 @@ Toy::Toy()
     m_ball = new Ball(BALL_RADIUS, BALL_TOP_COLOR, BALL_MIDDLE_COLOR, BALL_BOTTOM_COLOR, BALL_SEGMENTS);
     m_lamp = new Lamp();
     m_target = new Target(DROP_TARGET_HEIGHT);
+    m_switch = new Switch();
     m_table = new Table();
     m_left_flipper = new Flipper(
         LEFT_FLIPPER_ANGLE, LEFT_FLIPPER_POSITION, BOTTOM_FLIPPER_LENGTH,
@@ -123,6 +125,7 @@ Toy::~Toy()
     delete m_ball;
     delete m_lamp;
     delete m_target;
+    delete m_switch;
     delete m_table;
     delete m_left_flipper;
     delete m_right_flipper;

@@ -2,6 +2,7 @@
 // bumper.cpp
 //
 
+#include "switch.h"
 #include "bumper.h"
 #include "cylinder_shape.h"
 #include "cone_shape.h"
@@ -21,6 +22,7 @@ Bumper::Bumper(Float2 position, float radius, float kicker_radius, float kicker_
     , m_color(color)
     , m_major_steps(major_steps)
     , m_minor_steps(minor_steps)
+    , m_switch_id(0)
     , m_kicker(kicker_radius, kicker_velocity)
 {
     m_kicker.translate(position);
@@ -30,9 +32,17 @@ Bumper::~Bumper()
 {
 }
 
+void Bumper::embed_switch(int switch_id)
+{
+    m_switch_id = switch_id;
+}
+
 void Bumper::collide(Ball* ball) const
 {
-    m_kicker.collide(ball);
+    bool res = m_kicker.collide(ball);
+    if (m_switch_id) {
+        Switch::sample(m_switch_id, res);
+    }
 }
 
 CadModel Bumper::model(float animation_id) const

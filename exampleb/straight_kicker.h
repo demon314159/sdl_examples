@@ -17,7 +17,7 @@ public:
     void update_perimeter();
 
     bool within_range(const Ball* ball) const;
-    void collide(Ball* ball) const;
+    bool collide(Ball* ball) const;
     void translate(Float2 distance);
     void rotate(float angle);
     Float2 position() const;

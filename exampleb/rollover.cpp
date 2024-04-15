@@ -3,6 +3,7 @@
 //
 
 #include "rollover.h"
+#include "switch.h"
 #include "pipe.h"
 #include "pipe_elbow.h"
 #include "pi.h"
@@ -17,11 +18,17 @@ Rollover::Rollover(float angle, Float3 position, float length, float width, floa
     , m_diameter(diameter)
     , m_color(color)
     , m_steps(steps)
+    , m_switch_id(0)
 {
 }
 
 Rollover::~Rollover()
 {
+}
+
+void Rollover::embed_switch(int switch_id)
+{
+    m_switch_id = switch_id;
 }
 
 float Rollover::angle() const
@@ -51,6 +58,10 @@ float Rollover::diameter() const
 
 void Rollover::collide(const Ball* ball) const
 {
+    bool res = false;
+    if (m_switch_id) {
+        Switch::sample(m_switch_id, res);
+    }
 }
 
 CadModel Rollover::model(float animation_id) const

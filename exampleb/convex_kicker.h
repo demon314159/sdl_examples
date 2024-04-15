@@ -18,7 +18,7 @@ public:
 
     bool angle_within_range(float angle) const;
     bool within_distance(const Ball* ball) const;
-    void collide(Ball* ball) const;
+    bool collide(Ball* ball) const;
     void translate(Float2 distance);
     void rotate(float angle);
 
