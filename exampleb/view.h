@@ -84,6 +84,8 @@ private:
     GLint m_texture9_uniform;
     GLint m_texture10_uniform;
 
+    Mix_Chunk* m_sound1;
+
     unsigned int m_vao;
     unsigned int m_vbo;
     unsigned int m_texture[TOTAL_TEXTURES];
