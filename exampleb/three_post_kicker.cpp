@@ -14,7 +14,7 @@
 
 ThreePostKicker::ThreePostKicker(Float2 p1, Float2 p2, Float2 p3, float radius, float height,
                      const PaintCan& color, const PaintCan& face_color, float reflectivity,
-                     float kicker_velocity, int steps)
+                     float kicker_velocity, int steps, int sensor_id, int sensor_side)
     : m_p1(p1)
     , m_p2(p2)
     , m_p3(p3)
@@ -23,6 +23,8 @@ ThreePostKicker::ThreePostKicker(Float2 p1, Float2 p2, Float2 p3, float radius, 
     , m_color(color)
     , m_face_color(face_color)
     , m_steps(steps)
+    , m_sensor_id(sensor_id)
+    , m_sensor_side(sensor_side)
     , m_reflector1(p3, p1, p2, radius, reflectivity)
     , m_reflector2(p1, p2, p3, radius, reflectivity)
     , m_reflector3(p2, p3, p1, radius, reflectivity)
@@ -36,14 +38,23 @@ ThreePostKicker::~ThreePostKicker()
 {
 }
 
-void ThreePostKicker::collide(Ball* ball) const
+void ThreePostKicker::collide(Ball* ball, Sensor* sensor) const
 {
     m_reflector1.collide(ball);
     m_reflector2.collide(ball);
     m_reflector3.collide(ball);
-    m_kicker4.collide(ball);
-    m_reflector5.collide(ball);
-    m_reflector6.collide(ball);
+    bool res = m_kicker4.collide(ball);
+    if (res && (m_sensor_side == 1) && m_sensor_id) {
+        sensor->set(m_sensor_id);
+    }
+    res = m_reflector5.collide(ball);
+    if (res && (m_sensor_side == 2) && m_sensor_id) {
+        sensor->set(m_sensor_id);
+    }
+    res = m_reflector6.collide(ball);
+    if (res && (m_sensor_side == 3) && m_sensor_id) {
+        sensor->set(m_sensor_id);
+    }
 }
 
 CadModel ThreePostKicker::model(float animation_id) const

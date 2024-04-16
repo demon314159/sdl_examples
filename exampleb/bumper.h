@@ -9,17 +9,17 @@
 #include "ball.h"
 #include "cad_model.h"
 #include "convex_kicker.h"
+#include "sensor.h"
 
 class Bumper
 {
 public:
     Bumper(Float2 position, float radius, float kicker_radius, float kicker_velocity, float ball_radius,
-           const PaintCan& color, int major_steps, int minor_steps);
+           const PaintCan& color, int major_steps, int minor_steps, int sensor_id);
     ~Bumper();
 
     CadModel model(float animation_id) const;
-    void collide(Ball* ball) const;
-    void embed_switch(int switch_id);
+    void collide(Ball* ball, Sensor* sensor) const;
 
 private:
     Float2 m_position;
@@ -30,7 +30,7 @@ private:
     PaintCan m_color;
     int m_major_steps;
     int m_minor_steps;
-    int m_switch_id;
+    int m_sensor_id;
     ConvexKicker m_kicker;
 };
 

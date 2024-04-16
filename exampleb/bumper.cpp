@@ -2,7 +2,6 @@
 // bumper.cpp
 //
 
-#include "switch.h"
 #include "bumper.h"
 #include "cylinder_shape.h"
 #include "cone_shape.h"
@@ -13,7 +12,7 @@
 #include "atomic_shape.h"
 
 Bumper::Bumper(Float2 position, float radius, float kicker_radius, float kicker_velocity, float ball_radius,
-               const PaintCan& color, int major_steps, int minor_steps)
+               const PaintCan& color, int major_steps, int minor_steps, int sensor_id)
     : m_position(position)
     , m_radius(radius)
     , m_kicker_radius(kicker_radius)
@@ -22,7 +21,7 @@ Bumper::Bumper(Float2 position, float radius, float kicker_radius, float kicker_
     , m_color(color)
     , m_major_steps(major_steps)
     , m_minor_steps(minor_steps)
-    , m_switch_id(0)
+    , m_sensor_id(sensor_id)
     , m_kicker(kicker_radius, kicker_velocity)
 {
     m_kicker.translate(position);
@@ -32,16 +31,11 @@ Bumper::~Bumper()
 {
 }
 
-void Bumper::embed_switch(int switch_id)
-{
-    m_switch_id = switch_id;
-}
-
-void Bumper::collide(Ball* ball) const
+void Bumper::collide(Ball* ball, Sensor* sensor) const
 {
     bool res = m_kicker.collide(ball);
-    if (res && m_switch_id) {
-        Switch::set(m_switch_id);
+    if (res && m_sensor_id) {
+        sensor->set(m_sensor_id);
     }
 }
 

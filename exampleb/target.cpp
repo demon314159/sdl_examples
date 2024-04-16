@@ -50,10 +50,10 @@ CadModel Target::model(float animation_id) const
     return cm;
 }
 
-void Target::collide(Ball* ball) const
+void Target::collide(Ball* ball, Sensor* sensor) const
 {
     for (int i = 0; i < m_targets; i++) {
-        m_target[i]->collide(ball);
+        m_target[i]->collide(ball, sensor);
     }
 }
 

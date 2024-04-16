@@ -11,7 +11,7 @@
 
 DropTarget::DropTarget(Float2 position, float angle, float width, float height, float thickness,
                        const PaintCan& color, float reflectivity, int steps,
-                       float texture_id, int section)
+                       float texture_id, int section, int sensor_id)
     : m_dropped(false)
     , m_position(position)
     , m_angle(angle)
@@ -22,6 +22,7 @@ DropTarget::DropTarget(Float2 position, float angle, float width, float height, 
     , m_steps(steps)
     , m_texture_id(texture_id)
     , m_section(section)
+    , m_sensor_id(sensor_id)
     , m_reflector1({0.0, 0.0}, thickness / 4.0, 90.0, 180.0, reflectivity)
     , m_reflector2({0.0, 0.0}, thickness / 4.0, 0.0, 90.0, reflectivity)
     , m_reflector3(width - 2.0 * thickness / 4.0, reflectivity)
@@ -51,13 +52,16 @@ void DropTarget::set_dropped(bool v)
     m_dropped = v;
 }
 
-void DropTarget::collide(Ball* ball)
+void DropTarget::collide(Ball* ball, Sensor* sensor)
 {
     if (!m_dropped) {
         bool a = m_reflector1.collide(ball);
         bool b = m_reflector2.collide(ball);
         bool c = m_reflector3.collide(ball);
         m_dropped = a || b || c;
+        if (a || b || c) {
+            sensor->set(m_sensor_id);
+        }
     }
 }
 

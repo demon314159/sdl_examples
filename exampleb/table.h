@@ -5,6 +5,7 @@
 #ifndef _TABLE_H_
 #define _TABLE_H_
 
+#include "sensor.h"
 #include "rollover.h"
 #include "flat_rail.h"
 #include "disc_target.h"
@@ -34,7 +35,7 @@ public:
     Table();
     ~Table();
     CadModel model() const;
-    void collide(Ball* ball) const;
+    void collide(Ball* ball, Sensor* sensor) const;
     float ball_z_limit() const;
     Float2 ball_home_position() const;
 

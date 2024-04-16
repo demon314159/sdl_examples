@@ -34,13 +34,31 @@
 #define TEXTURE_ID_PLASTIC8    9.0
 #define TEXTURE_ID_DROP_TARGET 10.0
 
-#define SWITCH_ID_BUMPERS      1
-#define SWITCH_ID_ROLLOVER_A   2
-#define SWITCH_ID_ROLLOVER_B   3
-#define SWITCH_ID_ROLLOVER_C   4
-#define SWITCH_ID_EXTRA_BALL   5
+#define SENSOR_ID_NONE         0
+#define SENSOR_ID_BUMPER       1
+#define SENSOR_ID_ROLLOVER_A   2
+#define SENSOR_ID_ROLLOVER_B   3
+#define SENSOR_ID_ROLLOVER_C   4
+#define SENSOR_ID_EXTRA_BALL   5
+#define SENSOR_ID_DROP_10      6
+#define SENSOR_ID_DROP_J1      7
+#define SENSOR_ID_DROP_J2      8
+#define SENSOR_ID_SPECIAL      9
+#define SENSOR_ID_DROP_Q1      10
+#define SENSOR_ID_DROP_Q2      11
+#define SENSOR_ID_DROP_Q3      12
+#define SENSOR_ID_ONE_POINT    13
+#define SENSOR_ID_DROP_K1      14
+#define SENSOR_ID_DROP_K2      15
+#define SENSOR_ID_DROP_K3      14
+#define SENSOR_ID_DROP_K4      17
+#define SENSOR_ID_DROP_A1      18
+#define SENSOR_ID_DROP_A2      19
+#define SENSOR_ID_DROP_JOKER   20
+#define SENSOR_ID_DROP_A3      21
+#define SENSOR_ID_DROP_A4      22
 
-#define SWITCH_ID_SPECIAL      9
+#define MAX_SENSORS            22
 
 
 #define SOUND_ID_NONE    0

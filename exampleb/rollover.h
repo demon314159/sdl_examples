@@ -8,11 +8,13 @@
 #include "cad_model.h"
 #include "float3.h"
 #include "ball.h"
+#include "sensor.h"
 
 class Rollover
 {
 public:
-    Rollover(float angle, Float3 position, float length, float width, float diameter, const PaintCan& color, int steps);
+    Rollover(float angle, Float3 position, float length, float width, float diameter,
+             const PaintCan& color, int steps, int sensor_id);
     ~Rollover();
 
     CadModel model(float animation_id) const;
@@ -21,8 +23,7 @@ public:
     float length() const;
     float width() const;
     float diameter() const;
-    void collide(const Ball* ball) const;
-    void embed_switch(int switch_id);
+    void collide(const Ball* ball, Sensor* sensor) const;
 
 private:
     float m_angle;
@@ -32,7 +33,7 @@ private:
     float m_diameter;
     PaintCan m_color;
     int m_steps;
-    int m_switch_id;
+    int m_sensor_id;
 };
 
 #endif // _ROLLOVER_H_

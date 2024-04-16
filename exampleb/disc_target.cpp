@@ -2,12 +2,12 @@
 // disc_target.cpp
 //
 
-#include "switch.h"
 #include "disc_target.h"
 #include "ring_shape.h"
 
 DiscTarget::DiscTarget(Float2 position, float angle, float radius, float width, const PaintCan& color1,
-                       const PaintCan& color2, const PaintCan& color3, float reflectivity, int steps)
+                       const PaintCan& color2, const PaintCan& color3, float reflectivity, int steps,
+                       int sensor_id)
     : m_position(position)
     , m_angle(angle)
     , m_radius(radius)
@@ -16,7 +16,7 @@ DiscTarget::DiscTarget(Float2 position, float angle, float radius, float width, 
     , m_color2(color2)
     , m_color3(color3)
     , m_steps(steps)
-    , m_switch_id(0)
+    , m_sensor_id(sensor_id)
     , m_reflector(2.0f * radius, reflectivity)
 {
     m_reflector.rotate(angle);
@@ -27,16 +27,11 @@ DiscTarget::~DiscTarget()
 {
 }
 
-void DiscTarget::embed_switch(int switch_id)
-{
-    m_switch_id = switch_id;
-}
-
-void DiscTarget::collide(Ball* ball) const
+void DiscTarget::collide(Ball* ball, Sensor* sensor) const
 {
     bool res = m_reflector.collide(ball);
-    if (res && m_switch_id) {
-        Switch::set(m_switch_id);
+    if (res && m_sensor_id) {
+        sensor->set(m_sensor_id);
     }
 }
 

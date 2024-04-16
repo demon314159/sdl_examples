@@ -11,17 +11,18 @@
 #include "convex_reflector.h"
 #include "straight_reflector.h"
 #include "straight_kicker.h"
+#include "sensor.h"
 
 class ThreePostKicker
 {
 public:
     ThreePostKicker(Float2 p1, Float2 p2, Float2 p3, float radius, float height,
               const PaintCan& color, const PaintCan& face_color,
-              float reflectivity, float kicker_velocity, int steps);
+              float reflectivity, float kicker_velocity, int steps, int sensor_id, int sensor_side);
     ~ThreePostKicker();
 
     CadModel model(float animation_id) const;
-    void collide(Ball* ball) const;
+    void collide(Ball* ball, Sensor* sensor) const;
 
 private:
     Float2 m_p1;
@@ -32,6 +33,8 @@ private:
     PaintCan m_color;
     PaintCan m_face_color;
     int m_steps;
+    int m_sensor_id;
+    int m_sensor_side;
     ConvexReflector m_reflector1;
     ConvexReflector m_reflector2;
     ConvexReflector m_reflector3;

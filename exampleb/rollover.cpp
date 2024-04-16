@@ -3,14 +3,13 @@
 //
 
 #include "rollover.h"
-#include "switch.h"
 #include "pipe.h"
 #include "pipe_elbow.h"
 #include "pi.h"
 #include <math.h>
 
 Rollover::Rollover(float angle, Float3 position, float length, float width, float diameter,
-           const PaintCan& color, int steps)
+           const PaintCan& color, int steps, int sensor_id)
     : m_angle(angle)
     , m_position(position)
     , m_length(length)
@@ -18,17 +17,12 @@ Rollover::Rollover(float angle, Float3 position, float length, float width, floa
     , m_diameter(diameter)
     , m_color(color)
     , m_steps(steps)
-    , m_switch_id(0)
+    , m_sensor_id(sensor_id)
 {
 }
 
 Rollover::~Rollover()
 {
-}
-
-void Rollover::embed_switch(int switch_id)
-{
-    m_switch_id = switch_id;
 }
 
 float Rollover::angle() const
@@ -56,13 +50,13 @@ float Rollover::diameter() const
     return m_diameter;
 }
 
-void Rollover::collide(const Ball* ball) const
+void Rollover::collide(const Ball* ball, Sensor* sensor) const
 {
     float dx = ball->position().v1 - m_position.v1;
     float dy = ball->position().v2 - m_position.v3;
     bool res = fabs(dx) < ball->radius() && fabs(dy) < ball->radius();
-    if (res && m_switch_id) {
-        Switch::set(m_switch_id);
+    if (res && m_sensor_id) {
+        sensor->set(m_sensor_id);
     }
 }
 

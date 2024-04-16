@@ -16,7 +16,8 @@
 
 
 TwoPost::TwoPost(Float2 p1, Float2 p2, float radius, float height,
-                 const PaintCan& color, const PaintCan& face_color, float reflectivity, int steps)
+                 const PaintCan& color, const PaintCan& face_color, float reflectivity, int steps,
+                 int sensor_id, int sensor_side)
     : m_p1(p1)
     , m_p2(p2)
     , m_radius(radius)
@@ -24,6 +25,8 @@ TwoPost::TwoPost(Float2 p1, Float2 p2, float radius, float height,
     , m_color(color)
     , m_face_color(face_color)
     , m_steps(steps)
+    , m_sensor_id(sensor_id)
+    , m_sensor_side(sensor_side)
     , m_reflector1(true, radius, reflectivity)
     , m_reflector2(false, radius, reflectivity)
     , m_reflector3(p1, p2, radius, reflectivity)
@@ -39,12 +42,18 @@ TwoPost::~TwoPost()
 {
 }
 
-void TwoPost::collide(Ball* ball) const
+void TwoPost::collide(Ball* ball, Sensor* sensor) const
 {
     m_reflector1.collide(ball);
     m_reflector2.collide(ball);
-    m_reflector3.collide(ball);
-    m_reflector4.collide(ball);
+    bool res = m_reflector3.collide(ball);
+    if (res && (m_sensor_side == 1) && m_sensor_id) {
+        sensor->set(m_sensor_id);
+    }
+    res = m_reflector4.collide(ball);
+    if (res && (m_sensor_side == 2) && m_sensor_id) {
+        sensor->set(m_sensor_id);
+    }
 }
 
 CadModel TwoPost::model(float animation_id) const

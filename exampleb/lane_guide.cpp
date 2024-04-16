@@ -17,7 +17,7 @@
 
 LaneGuide::LaneGuide(float angle, Float3 position, float length, float height, float width,
                      const PaintCan& color, const PaintCan& face_color, float reflectivity, int steps,
-                     bool no_hat)
+                     int sensor_id, int sensor_side, bool no_hat)
     : m_angle(angle)
     , m_position(position)
     , m_length(length)
@@ -26,6 +26,8 @@ LaneGuide::LaneGuide(float angle, Float3 position, float length, float height, f
     , m_color(color)
     , m_face_color(face_color)
     , m_steps(steps)
+    , m_sensor_id(sensor_id)
+    , m_sensor_side(sensor_side)
     , m_no_hat(no_hat)
     , m_reflector1(true, width / 2.0, width / 2.0, length, reflectivity)
     , m_reflector2(false, width / 2.0, width / 2.0, length, reflectivity)
@@ -71,12 +73,18 @@ float LaneGuide::width() const
     return m_width;
 }
 
-void LaneGuide::collide(Ball* ball) const
+void LaneGuide::collide(Ball* ball, Sensor* sensor) const
 {
     m_reflector1.collide(ball);
     m_reflector2.collide(ball);
-    m_reflector3.collide(ball);
-    m_reflector4.collide(ball);
+    bool res = m_reflector3.collide(ball);
+    if (res && (m_sensor_side == 1) && m_sensor_id) {
+        sensor->set(m_sensor_id);
+    }
+    res = m_reflector4.collide(ball);
+    if (res && (m_sensor_side == 2) && m_sensor_id) {
+        sensor->set(m_sensor_id);
+    }
 }
 
 CadModel LaneGuide::model(float animation_id) const

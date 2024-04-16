@@ -10,6 +10,7 @@
 #include "paint_can.h"
 #include "drop_target.h"
 #include "ball.h"
+#include "sensor.h"
 
 #define MAX_TARGETS 15
 
@@ -23,7 +24,7 @@ public:
     void add(DropTarget* t);
 
     CadModel model(float animation_id) const;
-    void collide(Ball* ball) const;
+    void collide(Ball* ball, Sensor* sensor) const;
     bool dropped(int ix) const;
     void set_dropped(int ix, bool v);
     void toggle_dropped(int ix);

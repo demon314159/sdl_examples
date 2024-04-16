@@ -9,7 +9,7 @@
 #include "matrix4x4.h"
 #include "lamp.h"
 #include "target.h"
-#include "switch.h"
+#include "sensor.h"
 #include "ball.h"
 #include "flipper.h"
 #include "table.h"
@@ -45,7 +45,7 @@ private:
     Ball* m_ball;
     Lamp* m_lamp;
     Target* m_target;
-    Switch* m_switch;
+    Sensor* m_sensor;
     int m_sound;
     Table* m_table;
     Flipper* m_left_flipper;

@@ -101,22 +101,25 @@ Table::Table()
     m_wire_guide8 = new StraightWireGuide({0.16475, 0.566}, {0.20725, 0.54125}, WIRE_GUIDE_RADIUS, WIRE_GUIDE_RADIUS, WIRE_GUIDE_COLOR, WIRE_GUIDE_REFLECTIVITY, WIRE_GUIDE_SEGMENTS);
     m_lane_guide1 = new PyramidLaneGuide(90.0, {0.185, 0.0, 0.105}, 0.032, BALL_RADIUS, PYRAMID_LANE_GUIDE_WIDTH, PYRAMID_LANE_GUIDE_COLOR, PYRAMID_LANE_GUIDE_MAJOR_REFLECTIVITY, PYRAMID_LANE_GUIDE_MINOR_REFLECTIVITY, PYRAMID_LANE_GUIDE_SEGMENTS);
     m_lane_guide2 = new PyramidLaneGuide(90.0, {0.2115, 0.0, 0.105}, 0.032, BALL_RADIUS, PYRAMID_LANE_GUIDE_WIDTH, PYRAMID_LANE_GUIDE_COLOR, PYRAMID_LANE_GUIDE_MAJOR_REFLECTIVITY, PYRAMID_LANE_GUIDE_MINOR_REFLECTIVITY, PYRAMID_LANE_GUIDE_SEGMENTS);
-    m_lane_guide3 = new LaneGuide(90.0, {0.15525, 0.0, 0.10525}, 0.0335, BALL_RADIUS, LANE_GUIDE_WIDTH, LANE_GUIDE_COLOR, LANE_GUIDE_COLOR, LANE_GUIDE_REFLECTIVITY, LANE_GUIDE_SEGMENTS);
-    m_lane_guide4 = new LaneGuide(90.0, {0.241, 0.0, 0.1055}, 0.034, BALL_RADIUS, LANE_GUIDE_WIDTH, LANE_GUIDE_COLOR, LANE_GUIDE_COLOR, LANE_GUIDE_REFLECTIVITY, LANE_GUIDE_SEGMENTS, true);
-    m_lane_guide5 = new LaneGuide(90.0, {0.2745, 0.0, 0.1605}, 0.0395, BALL_RADIUS, LANE_GUIDE_WIDTH, LANE_GUIDE_COLOR, LANE_GUIDE_COLOR, LANE_GUIDE_REFLECTIVITY, LANE_GUIDE_SEGMENTS, true);
-    m_lane_guide6 = new LaneGuide(90.0, {0.256, 0.0, 0.249}, 0.039, BALL_RADIUS, LANE_GUIDE_WIDTH, LANE_GUIDE_COLOR, RED_LANE_GUIDE_COLOR, LANE_GUIDE_REFLECTIVITY, LANE_GUIDE_SEGMENTS);
-    m_three_post1 = new ThreePost({0.27425, 0.296}, {0.275, 0.39475}, {0.25625, 0.318}, THREE_POST_RADIUS, BALL_RADIUS, THREE_POST_COLOR, THREE_POST_COLOR, THREE_POST_REFLECTIVITY, THREE_POST_SEGMENTS);
-    m_three_post2 = new ThreePost({0.233, 0.435}, {0.2335, 0.469}, {0.2095, 0.48175}, THREE_POST_RADIUS, BALL_RADIUS, THREE_POST_COLOR, THREE_POST_COLOR, THREE_POST_REFLECTIVITY, THREE_POST_SEGMENTS);
-    m_three_post3 = new ThreePostKicker({0.0555, 0.3985}, {0.080, 0.48175}, {0.05625, 0.46875}, THREE_POST_RADIUS, BALL_RADIUS, THREE_POST_COLOR, THREE_POST_COLOR, THREE_POST_REFLECTIVITY, THREE_POST_KICKER_VELOCITY, THREE_POST_SEGMENTS);
-    m_three_post4 = new ThreePost({0.1715, 0.2135}, {0.1915, 0.22825}, {0.153, 0.246}, THREE_POST_RADIUS, BALL_RADIUS, THREE_POST_COLOR, THREE_POST_COLOR, THREE_POST_REFLECTIVITY, THREE_POST_SEGMENTS);
-    m_three_post5 = new ThreePost({0.078, 0.071}, {0.0945, 0.09075}, {0.017, 0.131}, THREE_POST_RADIUS, BALL_RADIUS, THREE_POST_COLOR, THREE_POST_COLOR, THREE_POST_REFLECTIVITY, THREE_POST_SEGMENTS);
-    m_three_post6 = new ThreePost({0.015, 0.3145}, {0.0265, 0.3605}, {0.015, 0.372}, THREE_POST_RADIUS, BALL_RADIUS, THREE_POST_COLOR, THREE_POST_COLOR, THREE_POST_REFLECTIVITY, THREE_POST_SEGMENTS);
-    m_two_post1 = new TwoPost({0.078, 0.280}, {0.102, 0.26875}, TWO_POST_RADIUS, BALL_RADIUS, TWO_POST_COLOR, TWO_POST_COLOR, TWO_POST_REFLECTIVITY, TWO_POST_SEGMENTS);
-    m_two_post2 = new TwoPost({0.015, 0.248}, {0.0255, 0.303}, TWO_POST_RADIUS, BALL_RADIUS, TWO_POST_COLOR, TWO_POST_COLOR, TWO_POST_REFLECTIVITY, TWO_POST_SEGMENTS);
-    m_two_post3 = new TwoPost({0.01425, 0.147}, {0.015, 0.2335}, TWO_POST_RADIUS, BALL_RADIUS, TWO_POST_COLOR, TWO_POST_COLOR, TWO_POST_REFLECTIVITY, TWO_POST_SEGMENTS);
-    m_bumper1 = new Bumper({0.208, 0.166}, BUMPER_RADIUS, BUMPER_KICKER_RADIUS, BUMPER_KICKER_VELOCITY, BALL_RADIUS, BUMPER_COLOR, BUMPER_MAJOR_SEGMENTS, BUMPER_MINOR_SEGMENTS);
-    m_bumper2 = new Bumper({0.0735, 0.215}, BUMPER_RADIUS, BUMPER_KICKER_RADIUS, BUMPER_KICKER_VELOCITY, BALL_RADIUS, BUMPER_COLOR, BUMPER_MAJOR_SEGMENTS, BUMPER_MINOR_SEGMENTS);
-    m_disc_target = new DiscTarget({0.2565, 0.116}, 160.0, DISC_TARGET_RADIUS, DISC_TARGET_WIDTH, DISC_TARGET_COLOR1, DISC_TARGET_COLOR2, DISC_TARGET_COLOR3, DISC_TARGET_REFLECTIVITY, DISC_TARGET_SEGMENTS);
+    m_lane_guide3 = new LaneGuide(90.0, {0.15525, 0.0, 0.10525}, 0.0335, BALL_RADIUS, LANE_GUIDE_WIDTH, LANE_GUIDE_COLOR, LANE_GUIDE_COLOR, LANE_GUIDE_REFLECTIVITY, LANE_GUIDE_SEGMENTS, 0, 0);
+    m_lane_guide4 = new LaneGuide(90.0, {0.241, 0.0, 0.1055}, 0.034, BALL_RADIUS, LANE_GUIDE_WIDTH, LANE_GUIDE_COLOR, LANE_GUIDE_COLOR, LANE_GUIDE_REFLECTIVITY, LANE_GUIDE_SEGMENTS, 0, 0, true);
+
+    // 11 objects that all hit SENSOR_ID_ONE_POINT
+    m_lane_guide5 = new LaneGuide(90.0, {0.2745, 0.0, 0.1605}, 0.0395, BALL_RADIUS, LANE_GUIDE_WIDTH, LANE_GUIDE_COLOR, LANE_GUIDE_COLOR, LANE_GUIDE_REFLECTIVITY, LANE_GUIDE_SEGMENTS, SENSOR_ID_ONE_POINT, 1, true);
+    m_lane_guide6 = new LaneGuide(90.0, {0.256, 0.0, 0.249}, 0.039, BALL_RADIUS, LANE_GUIDE_WIDTH, LANE_GUIDE_COLOR, RED_LANE_GUIDE_COLOR, LANE_GUIDE_REFLECTIVITY, LANE_GUIDE_SEGMENTS, SENSOR_ID_ONE_POINT, 1);
+    m_three_post1 = new ThreePost({0.27425, 0.296}, {0.275, 0.39475}, {0.25625, 0.318}, THREE_POST_RADIUS, BALL_RADIUS, THREE_POST_COLOR, THREE_POST_COLOR, THREE_POST_REFLECTIVITY, THREE_POST_SEGMENTS, SENSOR_ID_ONE_POINT, 2);
+    m_three_post2 = new ThreePost({0.233, 0.435}, {0.2335, 0.469}, {0.2095, 0.48175}, THREE_POST_RADIUS, BALL_RADIUS, THREE_POST_COLOR, THREE_POST_COLOR, THREE_POST_REFLECTIVITY, THREE_POST_SEGMENTS, SENSOR_ID_ONE_POINT, 3);
+    m_three_post3 = new ThreePostKicker({0.0555, 0.3985}, {0.080, 0.48175}, {0.05625, 0.46875}, THREE_POST_RADIUS, BALL_RADIUS, THREE_POST_COLOR, THREE_POST_COLOR, THREE_POST_REFLECTIVITY, THREE_POST_KICKER_VELOCITY, THREE_POST_SEGMENTS, SENSOR_ID_ONE_POINT, 1);
+    m_three_post4 = new ThreePost({0.1715, 0.2135}, {0.1915, 0.22825}, {0.153, 0.246}, THREE_POST_RADIUS, BALL_RADIUS, THREE_POST_COLOR, THREE_POST_COLOR, THREE_POST_REFLECTIVITY, THREE_POST_SEGMENTS, SENSOR_ID_ONE_POINT, 2);
+    m_three_post5 = new ThreePost({0.078, 0.071}, {0.0945, 0.09075}, {0.017, 0.131}, THREE_POST_RADIUS, BALL_RADIUS, THREE_POST_COLOR, THREE_POST_COLOR, THREE_POST_REFLECTIVITY, THREE_POST_SEGMENTS, SENSOR_ID_ONE_POINT, 2);
+    m_three_post6 = new ThreePost({0.015, 0.3145}, {0.0265, 0.3605}, {0.015, 0.372}, THREE_POST_RADIUS, BALL_RADIUS, THREE_POST_COLOR, THREE_POST_COLOR, THREE_POST_REFLECTIVITY, THREE_POST_SEGMENTS, SENSOR_ID_ONE_POINT, 1);
+    m_two_post1 = new TwoPost({0.078, 0.280}, {0.102, 0.26875}, TWO_POST_RADIUS, BALL_RADIUS, TWO_POST_COLOR, TWO_POST_COLOR, TWO_POST_REFLECTIVITY, TWO_POST_SEGMENTS, SENSOR_ID_ONE_POINT, 2);
+    m_two_post2 = new TwoPost({0.015, 0.248}, {0.0255, 0.303}, TWO_POST_RADIUS, BALL_RADIUS, TWO_POST_COLOR, TWO_POST_COLOR, TWO_POST_REFLECTIVITY, TWO_POST_SEGMENTS, SENSOR_ID_ONE_POINT, 1);
+    m_two_post3 = new TwoPost({0.01425, 0.147}, {0.015, 0.2335}, TWO_POST_RADIUS, BALL_RADIUS, TWO_POST_COLOR, TWO_POST_COLOR, TWO_POST_REFLECTIVITY, TWO_POST_SEGMENTS, SENSOR_ID_ONE_POINT, 1);
+
+    m_bumper1 = new Bumper({0.208, 0.166}, BUMPER_RADIUS, BUMPER_KICKER_RADIUS, BUMPER_KICKER_VELOCITY, BALL_RADIUS, BUMPER_COLOR, BUMPER_MAJOR_SEGMENTS, BUMPER_MINOR_SEGMENTS, SENSOR_ID_BUMPER);
+    m_bumper2 = new Bumper({0.0735, 0.215}, BUMPER_RADIUS, BUMPER_KICKER_RADIUS, BUMPER_KICKER_VELOCITY, BALL_RADIUS, BUMPER_COLOR, BUMPER_MAJOR_SEGMENTS, BUMPER_MINOR_SEGMENTS, SENSOR_ID_BUMPER);
+    m_disc_target = new DiscTarget({0.2565, 0.116}, 160.0, DISC_TARGET_RADIUS, DISC_TARGET_WIDTH, DISC_TARGET_COLOR1, DISC_TARGET_COLOR2, DISC_TARGET_COLOR3, DISC_TARGET_REFLECTIVITY, DISC_TARGET_SEGMENTS, SENSOR_ID_EXTRA_BALL);
     m_one_post1 = new OnePost({0.0105, 0.3965}, ONE_POST_RADIUS, BALL_RADIUS, ONE_POST_COLOR, ONE_POST_REFLECTIVITY, ONE_POST_SEGMENTS);
     m_one_post2 = new OnePost({0.27875, 0.409125}, ONE_POST_RADIUS, BALL_RADIUS, ONE_POST_COLOR, ONE_POST_REFLECTIVITY, ONE_POST_SEGMENTS);
     m_flat_rail = new FlatRail({X6, 0.22885}, FLAT_RAIL_LENGTH, FLAT_RAIL_WIDTH, FLAT_RAIL_THICKNESS, FLAT_RAIL_BEND_RADIUS, Y1, FLAT_RAIL_COLOR, FLAT_RAIL_REFLECTIVITY, FLAT_RAIL_SEGMENTS);
@@ -132,27 +135,15 @@ Table::Table()
     float type1_length = 0.0305;
     float type2_length = 0.02125;
     float width = 0.0025;
-    m_rollover1 = new Rollover(90.0, position1, type1_length, width, ROLLOVER_WIRE_DIAMETER, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
-    m_rollover2 = new Rollover(90.0, position2, type1_length, width, ROLLOVER_WIRE_DIAMETER, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
-    m_rollover3 = new Rollover(90.0, position3, type1_length, width, ROLLOVER_WIRE_DIAMETER, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
-    m_rollover4 = new Rollover(90.0, position4, type1_length, width, ROLLOVER_WIRE_DIAMETER, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
-    m_rollover5 = new Rollover(90.0, position5, type2_length, width, ROLLOVER_WIRE_DIAMETER, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
-    m_rollover6 = new Rollover(90.0, position6, type1_length, width, ROLLOVER_WIRE_DIAMETER, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
-    m_rollover7 = new Rollover(90.0, position7, type1_length, width, ROLLOVER_WIRE_DIAMETER, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
-    m_rollover8 = new Rollover(90.0, position8, type2_length, width, ROLLOVER_WIRE_DIAMETER, ROLLOVER_COLOR, ROLLOVER_SEGMENTS);
 
-    m_bumper1->embed_switch(SWITCH_ID_BUMPERS);
-    m_bumper2->embed_switch(SWITCH_ID_BUMPERS);
-    m_rollover1->embed_switch(SWITCH_ID_ROLLOVER_A);
-    m_rollover5->embed_switch(SWITCH_ID_ROLLOVER_A);
-    m_rollover2->embed_switch(SWITCH_ID_ROLLOVER_B);
-    m_rollover6->embed_switch(SWITCH_ID_ROLLOVER_B);
-    m_rollover7->embed_switch(SWITCH_ID_ROLLOVER_B);
-    m_rollover3->embed_switch(SWITCH_ID_ROLLOVER_C);
-    m_rollover8->embed_switch(SWITCH_ID_ROLLOVER_C);
-    m_disc_target->embed_switch(SWITCH_ID_EXTRA_BALL);
-
-    m_rollover4->embed_switch(SWITCH_ID_SPECIAL);
+    m_rollover1 = new Rollover(90.0, position1, type1_length, width, ROLLOVER_WIRE_DIAMETER, ROLLOVER_COLOR, ROLLOVER_SEGMENTS, SENSOR_ID_ROLLOVER_A);
+    m_rollover2 = new Rollover(90.0, position2, type1_length, width, ROLLOVER_WIRE_DIAMETER, ROLLOVER_COLOR, ROLLOVER_SEGMENTS, SENSOR_ID_ROLLOVER_B);
+    m_rollover3 = new Rollover(90.0, position3, type1_length, width, ROLLOVER_WIRE_DIAMETER, ROLLOVER_COLOR, ROLLOVER_SEGMENTS, SENSOR_ID_ROLLOVER_C);
+    m_rollover4 = new Rollover(90.0, position4, type1_length, width, ROLLOVER_WIRE_DIAMETER, ROLLOVER_COLOR, ROLLOVER_SEGMENTS, SENSOR_ID_SPECIAL);
+    m_rollover5 = new Rollover(90.0, position5, type2_length, width, ROLLOVER_WIRE_DIAMETER, ROLLOVER_COLOR, ROLLOVER_SEGMENTS, SENSOR_ID_ROLLOVER_A);
+    m_rollover6 = new Rollover(90.0, position6, type1_length, width, ROLLOVER_WIRE_DIAMETER, ROLLOVER_COLOR, ROLLOVER_SEGMENTS, SENSOR_ID_ROLLOVER_B);
+    m_rollover7 = new Rollover(90.0, position7, type1_length, width, ROLLOVER_WIRE_DIAMETER, ROLLOVER_COLOR, ROLLOVER_SEGMENTS, SENSOR_ID_ROLLOVER_B);
+    m_rollover8 = new Rollover(90.0, position8, type2_length, width, ROLLOVER_WIRE_DIAMETER, ROLLOVER_COLOR, ROLLOVER_SEGMENTS, SENSOR_ID_ROLLOVER_C);
 }
 
 Table::~Table()
@@ -220,7 +211,7 @@ Float2 Table::ball_home_position() const
     return m_ball_home_position;
 }
 
-void Table::collide(Ball* ball) const
+void Table::collide(Ball* ball, Sensor* sensor) const
 {
     m_strip1->collide(ball);
     m_strip2->collide(ball);
@@ -246,33 +237,33 @@ void Table::collide(Ball* ball) const
     m_wire_guide8->collide(ball);
     m_lane_guide1->collide(ball);
     m_lane_guide2->collide(ball);
-    m_lane_guide3->collide(ball);
-    m_lane_guide4->collide(ball);
-    m_lane_guide5->collide(ball);
-    m_lane_guide6->collide(ball);
-    m_three_post1->collide(ball);
-    m_three_post2->collide(ball);
-    m_three_post3->collide(ball);
-    m_three_post4->collide(ball);
-    m_three_post5->collide(ball);
-    m_three_post6->collide(ball);
-    m_two_post1->collide(ball);
-    m_two_post2->collide(ball);
-    m_two_post3->collide(ball);
-    m_bumper1->collide(ball);
-    m_bumper2->collide(ball);
-    m_disc_target->collide(ball);
+    m_lane_guide3->collide(ball, sensor);
+    m_lane_guide4->collide(ball, sensor);
+    m_lane_guide5->collide(ball, sensor);
+    m_lane_guide6->collide(ball, sensor);
+    m_three_post1->collide(ball, sensor);
+    m_three_post2->collide(ball, sensor);
+    m_three_post3->collide(ball, sensor);
+    m_three_post4->collide(ball, sensor);
+    m_three_post5->collide(ball, sensor);
+    m_three_post6->collide(ball, sensor);
+    m_two_post1->collide(ball, sensor);
+    m_two_post2->collide(ball, sensor);
+    m_two_post3->collide(ball, sensor);
+    m_bumper1->collide(ball, sensor);
+    m_bumper2->collide(ball, sensor);
+    m_disc_target->collide(ball, sensor);
     m_one_post1->collide(ball);
     m_one_post2->collide(ball);
     m_flat_rail->collide(ball);
-    m_rollover1->collide(ball);
-    m_rollover2->collide(ball);
-    m_rollover3->collide(ball);
-    m_rollover4->collide(ball);
-    m_rollover5->collide(ball);
-    m_rollover6->collide(ball);
-    m_rollover7->collide(ball);
-    m_rollover8->collide(ball);
+    m_rollover1->collide(ball, sensor);
+    m_rollover2->collide(ball, sensor);
+    m_rollover3->collide(ball, sensor);
+    m_rollover4->collide(ball, sensor);
+    m_rollover5->collide(ball, sensor);
+    m_rollover6->collide(ball, sensor);
+    m_rollover7->collide(ball, sensor);
+    m_rollover8->collide(ball, sensor);
 }
 
 CadModel Table::model() const
@@ -372,14 +363,14 @@ CadModel Table::model() const
                     {0.1715, 0.21375}, {0.1915, 0.22825}, {0.153, 0.246});
     CadModel plastic1(PlaneShape(pg.blank_size().v1, pg.blank_size().v2, TEXTURE_ID_PLASTIC1), PaintCan(1.0, 1.0, 1.0), ANIMATION_ID_TRANSPARENT);
     plastic1.rotate_ay(pg.blank_angle());
-    mm.add(plastic1, pg.blank_position().v1, 1.5 * BALL_RADIUS, pg.blank_position().v2);
+//    mm.add(plastic1, pg.blank_position().v1, 1.5 * BALL_RADIUS, pg.blank_position().v2);
     //
     pg = PlasticGuide({0.479, 0.3765},
                       {0.047, 0.0435}, {0.4085, 0.323}, {0.1295, 0.1785},
                       {0.24075, 0.07133}, {0.27425, 0.1605}, {0.24125, 0.10525});
     CadModel plastic2(PlaneShape(pg.blank_size().v1, pg.blank_size().v2, TEXTURE_ID_PLASTIC2), PaintCan(1.0, 1.0, 1.0), ANIMATION_ID_TRANSPARENT);
     plastic2.rotate_ay(pg.blank_angle());
-    mm.add(plastic2, pg.blank_position().v1, 1.6 * BALL_RADIUS, pg.blank_position().v2);
+//    mm.add(plastic2, pg.blank_position().v1, 1.6 * BALL_RADIUS, pg.blank_position().v2);
     //
 
     pg = PlasticGuide({0.22575, 0.34675},
@@ -387,7 +378,7 @@ CadModel Table::model() const
                       {0.2095, 0.48175}, {0.233, 0.43475});
     CadModel plastic3(PlaneShape(pg.blank_size().v1, pg.blank_size().v2, TEXTURE_ID_PLASTIC3), PaintCan(1.0, 1.0, 1.0), ANIMATION_ID_TRANSPARENT);
     plastic3.rotate_ay(pg.blank_angle());
-    mm.add(plastic3, pg.blank_position().v1, 1.6 * BALL_RADIUS, pg.blank_position().v2);
+//    mm.add(plastic3, pg.blank_position().v1, 1.6 * BALL_RADIUS, pg.blank_position().v2);
     //
 
     pg = PlasticGuide({0.16375, 0.3662},
@@ -395,7 +386,7 @@ CadModel Table::model() const
                       {0.080, 0.48175}, {0.0555, 0.3985});
     CadModel plastic4(PlaneShape(pg.blank_size().v1, pg.blank_size().v2, TEXTURE_ID_PLASTIC4), PaintCan(1.0, 1.0, 1.0), ANIMATION_ID_TRANSPARENT);
     plastic4.rotate_ay(pg.blank_angle());
-    mm.add(plastic4, pg.blank_position().v1, 1.6 * BALL_RADIUS, pg.blank_position().v2);
+//    mm.add(plastic4, pg.blank_position().v1, 1.6 * BALL_RADIUS, pg.blank_position().v2);
     //
 
     pg = PlasticGuide({0.3115, 0.09025},
@@ -403,7 +394,7 @@ CadModel Table::model() const
                       {0.2745, 0.296}, {0.2745, 0.3945}, {0.25625, 0.31775});
     CadModel plastic5(PlaneShape(pg.blank_size().v1, pg.blank_size().v2, TEXTURE_ID_PLASTIC5), PaintCan(1.0, 1.0, 1.0), ANIMATION_ID_TRANSPARENT);
     plastic5.rotate_ay(pg.blank_angle());
-    mm.add(plastic5, pg.blank_position().v1, 1.6 * BALL_RADIUS, pg.blank_position().v2);
+//    mm.add(plastic5, pg.blank_position().v1, 1.6 * BALL_RADIUS, pg.blank_position().v2);
     //
 
     pg = PlasticGuide({0.25075, 0.16575},
@@ -411,7 +402,7 @@ CadModel Table::model() const
                       {0.078, 0.071}, {0.0945, 0.091}, {0.01725, 0.13125});
     CadModel plastic7(PlaneShape(pg.blank_size().v1, pg.blank_size().v2, TEXTURE_ID_PLASTIC7), PaintCan(1.0, 1.0, 1.0), ANIMATION_ID_TRANSPARENT);
     plastic7.rotate_ay(pg.blank_angle());
-    mm.add(plastic7, pg.blank_position().v1, 1.6 * BALL_RADIUS, pg.blank_position().v2);
+//    mm.add(plastic7, pg.blank_position().v1, 1.6 * BALL_RADIUS, pg.blank_position().v2);
     //
 
     pg = PlasticGuide({0.3245, 0.12625},
@@ -419,7 +410,7 @@ CadModel Table::model() const
                       {0.078, 0.27975}, {0.102, 0.26875});
     CadModel plastic8(PlaneShape(pg.blank_size().v1, pg.blank_size().v2, TEXTURE_ID_PLASTIC8), PaintCan(1.0, 1.0, 1.0), ANIMATION_ID_TRANSPARENT);
     plastic8.rotate_ay(pg.blank_angle());
-    mm.add(plastic8, pg.blank_position().v1, 1.6 * BALL_RADIUS - 0.0005, pg.blank_position().v2);
+//    mm.add(plastic8, pg.blank_position().v1, 1.6 * BALL_RADIUS - 0.0005, pg.blank_position().v2);
 
     // Plastic 6 is a large piece that obscures other, it goes a little higher and last
 
@@ -428,7 +419,7 @@ CadModel Table::model() const
                       {0.01425, 0.147}, {0.0265, 0.3605});
     CadModel plastic6(PlaneShape(pg.blank_size().v1, pg.blank_size().v2, TEXTURE_ID_PLASTIC6), PaintCan(1.0, 1.0, 1.0), ANIMATION_ID_TRANSPARENT);
     plastic6.rotate_ay(pg.blank_angle());
-    mm.add(plastic6, pg.blank_position().v1, 1.6 * BALL_RADIUS + 0.0005, pg.blank_position().v2);
+//    mm.add(plastic6, pg.blank_position().v1, 1.6 * BALL_RADIUS + 0.0005, pg.blank_position().v2);
 
     return mm;
 }

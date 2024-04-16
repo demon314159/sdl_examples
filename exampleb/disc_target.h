@@ -9,17 +9,18 @@
 #include "ball.h"
 #include "cad_model.h"
 #include "straight_reflector.h"
+#include "sensor.h"
 
 class DiscTarget
 {
 public:
     DiscTarget(Float2 position, float angle, float radius, float width, const PaintCan& color1,
-               const PaintCan& color2, const PaintCan& color3, float reflectivity, int steps);
+               const PaintCan& color2, const PaintCan& color3, float reflectivity, int steps,
+               int sensor_id);
     ~DiscTarget();
 
     CadModel model(float animation_id) const;
-    void collide(Ball* ball) const;
-    void embed_switch(int switch_id);
+    void collide(Ball* ball, Sensor* sensor) const;
 
 private:
     Float2 m_position;
@@ -30,7 +31,7 @@ private:
     PaintCan m_color2;
     PaintCan m_color3;
     int m_steps;
-    int m_switch_id;
+    int m_sensor_id;
     StraightReflector m_reflector;
 };
 
