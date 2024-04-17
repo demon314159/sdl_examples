@@ -13,7 +13,7 @@ Lamp::Lamp()
 
 Lamp::~Lamp()
 {
-    delete m_data;
+    delete [] m_data;
 }
 
 float* Lamp::data() const

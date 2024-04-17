@@ -9,8 +9,6 @@
 #include "layout_guide.h"
 #include <stdio.h>
 
-
-
 #define BALL_LAUNCH_SPEED 0.9
 #define BALL_ACCELERATION 0.25
 
@@ -21,6 +19,7 @@ Toy::Toy()
     , m_lamp(NULL)
     , m_target(NULL)
     , m_sensor(NULL)
+    , m_score(NULL)
     , m_sound(0)
     , m_table(NULL)
     , m_left_flipper(NULL)
@@ -34,6 +33,7 @@ Toy::Toy()
     m_lamp = new Lamp();
     m_target = new Target(DROP_TARGET_HEIGHT);
     m_sensor = new Sensor(MAX_SENSORS);
+    m_score = new Score(TEXTURE_ID_SCORE);
     m_table = new Table();
     m_left_flipper = new Flipper(
         LEFT_FLIPPER_ANGLE, LEFT_FLIPPER_POSITION, BOTTOM_FLIPPER_LENGTH,
@@ -127,6 +127,7 @@ Toy::~Toy()
     delete m_lamp;
     delete m_target;
     delete m_sensor;
+    delete m_score;
     delete m_table;
     delete m_left_flipper;
     delete m_right_flipper;
@@ -163,6 +164,7 @@ void Toy::advance(int nanoseconds)
     m_right_flipper->collide(m_ball);
     m_top_flipper->collide(m_ball);
     m_ball->advance_orientation();
+    m_score->advance(seconds);
     m_ns_count += nanoseconds;
 
     if (m_ns_count > 500000000.0) {
@@ -183,7 +185,7 @@ void Toy::advance(int nanoseconds)
 //        }
 //        ++m_target_test;
     }
-    if (m_sensor->state(SENSOR_ID_ONE_POINT)) {
+    if (m_sensor->state(SENSOR_ID_TEN_POINT)) {
         m_sound = SOUND_ID_1;
     }
 }
@@ -196,6 +198,11 @@ const Lamp* Toy::get_lamp() const
 const Target* Toy::get_target() const
 {
     return m_target;
+}
+
+const Score* Toy::get_score() const
+{
+    return m_score;
 }
 
 int Toy::get_sound() const
@@ -211,6 +218,7 @@ void Toy::build_model()
     m_model->add(m_left_flipper->model(ANIMATION_ID_LEFT_FLIPPER));
     m_model->add(m_right_flipper->model(ANIMATION_ID_RIGHT_FLIPPER));
     m_model->add(m_top_flipper->model(ANIMATION_ID_TOP_FLIPPER));
+    m_model->add(m_score->model(ANIMATION_ID_SCORE11));
     m_model->add(m_table->model());
 }
 

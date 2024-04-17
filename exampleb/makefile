@@ -80,6 +80,7 @@ HEADERS = view.h \
           plastic_guide.h \
           target.h \
           sensor.h \
+          score.h \
           \
           \
           \
@@ -161,6 +162,7 @@ OBJECTS = main.obj \
           plastic_guide.obj \
           target.obj \
           sensor.obj \
+          score.obj \
           \
           \
           \

@@ -20,6 +20,7 @@ out vec4 v_normal;
 out vec4 v_color;
 out vec2 v_texture_position;
 out float v_texture_id;
+out float v_animation_id;
 
 void main()
 {
@@ -148,5 +149,6 @@ void main()
     }
     v_texture_position = a_texture_position;
     v_texture_id = a_texture_id;
+    v_animation_id = a_animation_id;
 }
 

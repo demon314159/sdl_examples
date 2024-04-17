@@ -4,6 +4,9 @@ in vec4 v_normal;
 in vec4 v_color;
 in vec2 v_texture_position;
 in float v_texture_id;
+in float v_animation_id;
+
+uniform float score[24];
 
 uniform sampler2D texture1;
 uniform sampler2D texture2;
@@ -15,6 +18,7 @@ uniform sampler2D texture7;
 uniform sampler2D texture8;
 uniform sampler2D texture9;
 uniform sampler2D texture10;
+uniform sampler2D texture11;
 
 void main()
 {
@@ -90,9 +94,66 @@ void main()
             billy.g = c * billy.g;
             billy.b = c * billy.b;
             gl_FragColor = billy;
-        } else  {                        // Drop Target
+        } else if (v_texture_id < 10.5)  { // Drop Target
             c = 1.0;
             billy = texture(texture10, v_texture_position);
+            billy.r = c * billy.r;
+            billy.g = c * billy.g;
+            billy.b = c * billy.b;
+            gl_FragColor = billy;
+        } else  {                        // Score
+            c = 1.0;
+            vec2 ttt;
+            if (v_animation_id < 42.5) {
+              ttt = vec2(v_texture_position.x + score[0], v_texture_position.y);
+            } else if (v_animation_id < 43.5) {
+              ttt = vec2(v_texture_position.x + score[1], v_texture_position.y);
+            } else if (v_animation_id < 44.5) {
+              ttt = vec2(v_texture_position.x + score[2], v_texture_position.y);
+            } else if (v_animation_id < 45.5) {
+              ttt = vec2(v_texture_position.x + score[3], v_texture_position.y);
+            } else if (v_animation_id < 46.5) {
+              ttt = vec2(v_texture_position.x + score[4], v_texture_position.y);
+            } else if (v_animation_id < 47.5) {
+              ttt = vec2(v_texture_position.x + score[5], v_texture_position.y);
+            } else if (v_animation_id < 48.5) {
+              ttt = vec2(v_texture_position.x + score[6], v_texture_position.y);
+            } else if (v_animation_id < 49.5) {
+              ttt = vec2(v_texture_position.x + score[7], v_texture_position.y);
+            } else if (v_animation_id < 50.5) {
+              ttt = vec2(v_texture_position.x + score[8], v_texture_position.y);
+            } else if (v_animation_id < 51.5) {
+              ttt = vec2(v_texture_position.x + score[9], v_texture_position.y);
+            } else if (v_animation_id < 52.5) {
+              ttt = vec2(v_texture_position.x + score[10], v_texture_position.y);
+            } else if (v_animation_id < 53.5) {
+              ttt = vec2(v_texture_position.x + score[11], v_texture_position.y);
+            } else if (v_animation_id < 54.5) {
+              ttt = vec2(v_texture_position.x + score[12], v_texture_position.y);
+            } else if (v_animation_id < 55.5) {
+              ttt = vec2(v_texture_position.x + score[13], v_texture_position.y);
+            } else if (v_animation_id < 56.5) {
+              ttt = vec2(v_texture_position.x + score[14], v_texture_position.y);
+            } else if (v_animation_id < 57.5) {
+              ttt = vec2(v_texture_position.x + score[15], v_texture_position.y);
+            } else if (v_animation_id < 58.5) {
+              ttt = vec2(v_texture_position.x + score[16], v_texture_position.y);
+            } else if (v_animation_id < 59.5) {
+              ttt = vec2(v_texture_position.x + score[17], v_texture_position.y);
+            } else if (v_animation_id < 60.5) {
+              ttt = vec2(v_texture_position.x + score[18], v_texture_position.y);
+            } else if (v_animation_id < 61.5) {
+              ttt = vec2(v_texture_position.x + score[19], v_texture_position.y);
+            } else if (v_animation_id < 62.5) {
+              ttt = vec2(v_texture_position.x + score[20], v_texture_position.y);
+            } else if (v_animation_id < 63.5) {
+              ttt = vec2(v_texture_position.x + score[21], v_texture_position.y);
+            } else if (v_animation_id < 64.5) {
+              ttt = vec2(v_texture_position.x + score[22], v_texture_position.y);
+            } else {
+              ttt = vec2(v_texture_position.x + score[23], v_texture_position.y);
+            }
+            billy = texture(texture11, ttt);
             billy.r = c * billy.r;
             billy.g = c * billy.g;
             billy.b = c * billy.b;

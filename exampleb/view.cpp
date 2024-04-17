@@ -36,6 +36,7 @@ View::View(SDL_Window* window)
     , m_animation_matrix_uniform(nullptr)
     , m_lamp_uniform(0)
     , m_target_height_uniform(0)
+    , m_score_uniform(0)
     , m_texture1_uniform(0)
     , m_texture2_uniform(0)
     , m_texture3_uniform(0)
@@ -46,6 +47,7 @@ View::View(SDL_Window* window)
     , m_texture8_uniform(0)
     , m_texture9_uniform(0)
     , m_texture10_uniform(0)
+    , m_texture11_uniform(0)
     , m_sound1(NULL)
     , m_vao(0)
     , m_vbo(0)
@@ -206,6 +208,10 @@ void View::generate_textures()
     glActiveTexture(GL_TEXTURE9);
     glBindTexture(GL_TEXTURE_2D, m_texture[9]);
     generate_texture("plastic9.png");
+
+    glActiveTexture(GL_TEXTURE10);
+    glBindTexture(GL_TEXTURE_2D, m_texture[10]);
+    generate_texture("score.png");
 }
 
 void View::generate_texture(const char* fname)
@@ -336,6 +342,11 @@ void View::initialize()
         printf("target_height is not a valid glsl variable\n");
         exit(0);
     }
+    m_score_uniform = glGetUniformLocation(m_program, "score");
+    if (m_score_uniform == -1) {
+        printf("score_color is not a valid glsl variable\n");
+        exit(0);
+    }
     m_texture1_uniform = glGetUniformLocation(m_program, "texture1");
     if (m_texture1_uniform == -1) {
         printf("texture1 is not a valid glsl variable\n");
@@ -384,6 +395,11 @@ void View::initialize()
     m_texture10_uniform = glGetUniformLocation(m_program, "texture10");
     if (m_texture10_uniform == -1) {
         printf("texture10 is not a valid glsl variable\n");
+        exit(0);
+    }
+    m_texture11_uniform = glGetUniformLocation(m_program, "texture11");
+    if (m_texture11_uniform == -1) {
+        printf("texture11 is not a valid glsl variable\n");
         exit(0);
     }
     generate_textures();
@@ -541,6 +557,7 @@ void View::render()
     }
     glUniform3fv(m_lamp_uniform, m_toy->get_lamp()->lamps(), m_toy->get_lamp()->data());
     glUniform1fv(m_target_height_uniform, m_toy->get_target()->targets(), m_toy->get_target()->data());
+    glUniform1fv(m_score_uniform, m_toy->get_score()->digits(), m_toy->get_score()->data());
 
     glUniform1i(m_texture1_uniform, 0);
     glUniform1i(m_texture2_uniform, 1);
@@ -552,6 +569,7 @@ void View::render()
     glUniform1i(m_texture8_uniform, 7);
     glUniform1i(m_texture9_uniform, 8);
     glUniform1i(m_texture10_uniform, 9);
+    glUniform1i(m_texture11_uniform, 10);
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glDrawArrays(GL_TRIANGLES, 0, m_vertex_count);

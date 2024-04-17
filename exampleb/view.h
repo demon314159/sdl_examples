@@ -22,7 +22,7 @@
 #define INITIAL_XROT 50.0
 #define INITIAL_MAG 2.00
 
-#define TOTAL_TEXTURES  10
+#define TOTAL_TEXTURES  11
 
 class View
 {
@@ -73,6 +73,7 @@ private:
 
     GLint m_lamp_uniform;
     GLint m_target_height_uniform;
+    GLint m_score_uniform;
     GLint m_texture1_uniform;
     GLint m_texture2_uniform;
     GLint m_texture3_uniform;
@@ -83,6 +84,7 @@ private:
     GLint m_texture8_uniform;
     GLint m_texture9_uniform;
     GLint m_texture10_uniform;
+    GLint m_texture11_uniform;
 
     Mix_Chunk* m_sound1;
 
