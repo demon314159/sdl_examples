@@ -16,11 +16,14 @@ public:
     ~Sensor();
     void set(int sensor_id);
     void clear();
-    bool state(int sensor_id);
+    bool rising(int sensor_id);
+    bool falling(int sensor_id);
+    bool raw(int sensor_id);
 
 private:
     int m_sensors;
     bool* m_state;
+    bool* m_last_state;
 };
 
 #endif // _SENSOR_H_

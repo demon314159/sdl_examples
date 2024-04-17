@@ -185,9 +185,22 @@ void Toy::advance(int nanoseconds)
 //        }
 //        ++m_target_test;
     }
-    if (m_sensor->state(SENSOR_ID_TEN_POINT)) {
-        m_sound = SOUND_ID_1;
+    if (m_sensor->rising(SENSOR_ID_ROLLOVER_A)) {
+        m_score->add_thousands(0, 5, SOUND_ID_1);
     }
+    if (m_sensor->rising(SENSOR_ID_ROLLOVER_B)) {
+        m_score->add_thousands(0, 5, SOUND_ID_1);
+    }
+    if (m_sensor->rising(SENSOR_ID_ROLLOVER_C)) {
+        m_score->add_thousands(0, 5, SOUND_ID_1);
+    }
+    if (m_sensor->rising(SENSOR_ID_BUMPER)) {
+        m_score->add_hundreds(0, 1, SOUND_ID_1);
+    }
+    if (m_sensor->rising(SENSOR_ID_TEN_POINT)) {
+        m_score->add_tens(0, 1, SOUND_ID_1);
+    }
+    m_sound = m_score->sound();
 }
 
 const Lamp* Toy::get_lamp() const

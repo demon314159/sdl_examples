@@ -89,6 +89,8 @@
 
 #define SOUND_ID_NONE    0
 #define SOUND_ID_1       1
+#define SOUND_ID_2       2
+#define SOUND_ID_3       3
 
 #define PLAYFIELD_X  0.320675f
 #define PLAYFIELD_Y  0.030f

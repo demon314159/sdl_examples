@@ -81,6 +81,7 @@ HEADERS = view.h \
           target.h \
           sensor.h \
           score.h \
+          queue.h \
           \
           \
           \
@@ -163,6 +164,7 @@ OBJECTS = main.obj \
           target.obj \
           sensor.obj \
           score.obj \
+          queue.obj \
           \
           \
           \
