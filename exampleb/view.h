@@ -88,6 +88,7 @@ private:
     GLint m_texture11_uniform;
 
     Mix_Chunk* m_sound1;
+    Mix_Chunk* m_sound2;
 
     unsigned int m_vao;
     unsigned int m_vbo;

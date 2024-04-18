@@ -118,7 +118,7 @@ Toy::Toy()
     m_ball->set_velocity({0.0, 0.0});
     m_ball->set_acceleration({0.0, BALL_ACCELERATION});
 
-    m_score->add_hundreds(0, 8, SOLENOID_ID_HUNDREDS_CHIME);
+    m_score->add_hundreds(0, 1, SOLENOID_ID_HUNDREDS_CHIME);
 }
 
 Toy::~Toy()

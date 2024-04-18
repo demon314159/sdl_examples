@@ -49,6 +49,7 @@ View::View(SDL_Window* window)
     , m_texture10_uniform(0)
     , m_texture11_uniform(0)
     , m_sound1(NULL)
+    , m_sound2(NULL)
     , m_vao(0)
     , m_vbo(0)
     , m_frame(0)
@@ -253,6 +254,11 @@ void View::initialize()
 
     m_sound1 = Mix_LoadWAV("sound1.wav");
     if (!m_sound1) {
+        printf("Mixer LoadWAV Error: %s\n", Mix_GetError());
+        exit(0);
+    }
+    m_sound2 = Mix_LoadWAV("sound2.wav");
+    if (!m_sound2) {
         printf("Mixer LoadWAV Error: %s\n", Mix_GetError());
         exit(0);
     }
@@ -516,7 +522,11 @@ void View::render()
     m_last_time_point = this_time_point;
     m_toy->advance(real_ns);
     if (m_toy->get_solenoid_id() > 0) {
-        Mix_PlayChannel(-1, m_sound1, 0);
+        if (m_toy->get_solenoid_id() == SOLENOID_ID_OUT_HOLE) {
+            Mix_PlayChannel(-1, m_sound2, 0);
+        } else {
+            Mix_PlayChannel(-1, m_sound1, 0);
+        }
     }
     Matrix4x4 matrix;
     matrix.unity();
