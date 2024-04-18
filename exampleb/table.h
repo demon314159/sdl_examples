@@ -38,12 +38,14 @@ public:
     void collide(Ball* ball, Sensor* sensor) const;
     float ball_z_limit() const;
     Float2 ball_home_position() const;
+    Float2 out_hole_position() const;
 
 private:
     float m_ball_z_limit;
     Float2 m_ball_home_position;
     StraightStrip* m_strip1;
-    StraightStrip* m_strip2;
+    StraightStrip* m_strip2a;
+    StraightStrip* m_strip2b;
     StraightStrip* m_strip3;
     ConvexStrip* m_strip4;
     StraightStrip* m_strip5;
@@ -98,6 +100,9 @@ private:
     float R2 = 0.145;
     float T1 = 0.010;
     float Y1 = 0.010;
+    float Y2 = 0.017;
+    float Y3 = 0.018;
+    float Y4 = Y2 - 0.0005;
     float ANGLE1 = 0.0;
     float ANGLE2 = 145.452;
     float ANGLE3 = 30.12;
@@ -114,7 +119,9 @@ private:
     float Z4 = 0.161;
     float Z5 = 0.520;
     float Z7 = 0.57725;
-    float Z8 = 0.610;
+    float Z8 = 0.640;
+    float ZOH1 = 0.548;
+    float ZOH2 = 0.566;
     int TOP_PANEL_STEPS = 200;
     float X0 = X1 - T1;
     float X3 = X1 + R2 * cos(ANGLE3 * PI / 180.0);

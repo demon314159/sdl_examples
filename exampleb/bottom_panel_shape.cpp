@@ -7,11 +7,12 @@
 #include "pi.h"
 #include <math.h>
 
-BottomPanelShape::BottomPanelShape(float x1, float x2, float x3, float x4, float z1, float z2, float z3)
+BottomPanelShape::BottomPanelShape(float x1, float x2, float x3, float x4, float x5, float z1, float z2, float z3)
     : m_x1(x1)
     , m_x2(x2)
     , m_x3(x3)
     , m_x4(x4)
+    , m_x5(x5)
     , m_z1(z1)
     , m_z2(z2)
     , m_z3(z3)
@@ -49,6 +50,7 @@ void BottomPanelShape::define_shape()
     add_face({m_x1, 0.0, m_z3}, {m_x1, 0.0, m_z1}, {m_x2, 0.0, m_z2}, {m_x2, 0.0, m_z3}, true);
     add_face({m_x2, 0.0, m_z3}, {m_x2, 0.0, m_z2}, {m_x3, 0.0, m_z2}, {m_x3, 0.0, m_z3}, true);
     add_face({m_x3, 0.0, m_z3}, {m_x3, 0.0, m_z2}, {m_x4, 0.0, m_z1}, {m_x4, 0.0, m_z3}, true);
+    add_face({m_x4, 0.0, m_z3}, {m_x4, 0.0, m_z1}, {m_x5, 0.0, m_z1}, {m_x5, 0.0, m_z3}, true);
 }
 
 void BottomPanelShape::add_face(Float3 v1, Float3 v2, Float3 v3, Float3 v4, bool flip)

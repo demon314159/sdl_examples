@@ -12,7 +12,7 @@
 class BottomPanelShape: public Shape
 {
 public:
-    BottomPanelShape(float x1, float x2, float x3, float x4, float z1, float z2, float z3);
+    BottomPanelShape(float x1, float x2, float x3, float x4, float x5, float z1, float z2, float z3);
     virtual ~BottomPanelShape();
     int facets() const override;
     Facet facet(int facet_ix) const override;
@@ -22,6 +22,7 @@ private:
     float m_x2;
     float m_x3;
     float m_x4;
+    float m_x5;
     float m_z1;
     float m_z2;
     float m_z3;

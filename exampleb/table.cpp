@@ -21,7 +21,8 @@ Table::Table()
     : m_ball_z_limit(0.0)
     , m_ball_home_position({0.0, 0.0})
     , m_strip1(NULL)
-    , m_strip2(NULL)
+    , m_strip2a(NULL)
+    , m_strip2b(NULL)
     , m_strip3(NULL)
     , m_strip4(NULL)
     , m_strip5(NULL)
@@ -75,11 +76,12 @@ Table::Table()
     m_ball_home_position = {(X7 + X8) / 2.0f, Z7 - BALL_RADIUS};
     m_ball_z_limit = Z8;
     m_strip1 = new StraightStrip(90.0, {X8, Y1 / 2.0f, (Z7 + Z4) / 2.0f}, Z7 - Z4, Y1, WOOD_COLOR, 0.2);
-    m_strip2 = new StraightStrip(-90.0, {X7, Y1 / 2.0f, (Z3 + Z7) / 2.0f}, Z7 - Z3, Y1, WOOD_COLOR, 0.2);
+    m_strip2a = new StraightStrip(-90.0, {X7, Y1 / 2.0f, (Z3 + ZOH1) / 2.0f}, ZOH1 - Z3, Y1, WOOD_COLOR, 0.2);
+    m_strip2b = new StraightStrip(-90.0, {X7, Y1 / 2.0f, (ZOH2 + Z7) / 2.0f}, Z7 - ZOH2, Y1, WOOD_COLOR, 0.2);
     m_strip3 = new StraightStrip(90.0, {X6, Y1 / 2.0f, (Z3 + Z5) / 2.0f}, Z5 - Z3, Y1, WOOD_COLOR, 0.2);
     m_strip4 = new ConvexStrip(0.0, 180.0, {X6 + T1 / 2.0f, Y1 / 2.0f, Z3}, T1 / 2.0, Y1, WOOD_COLOR, 0.2, RING_SEGMENTS);
-    m_strip5 = new StraightStrip(ANGLE3, {(float) (X5 + X6) / 2.0f, (float) Y1 / 2.0f, (float) (Z5 + Z6) / 2.0f}, (float) R2, (float) Y1, WOOD_COLOR, (float) 0.2);
-    m_strip6 = new StraightStrip(-ANGLE3, {(X1 + X3) / 2.0f, Y1 / 2.0f, (Z5 + Z6) / 2.0f}, R2, Y1, WOOD_COLOR, 0.2);
+    m_strip5 = new StraightStrip(ANGLE3, {(float) (X5 + X6) / 2.0f, (float) Y2 / 2.0f, (float) (Z5 + Z6) / 2.0f}, (float) R2, (float) Y2, WOOD_COLOR, (float) 0.2);
+    m_strip6 = new StraightStrip(-ANGLE3, {(X1 + X3) / 2.0f, Y2 / 2.0f, (Z5 + Z6) / 2.0f}, R2, Y2, WOOD_COLOR, 0.2);
     m_strip7 = new StraightStrip(-90.0, {X1, Y1 / 2.0f, (ZA + Z5) / 2.0f}, (Z5 - ZA), Y1, WOOD_COLOR, 0.2);
     m_strip8 = new StraightStrip({X2, Z2}, {X1, ZA}, Y1, WOOD_COLOR, 0.2);
     m_strip9 = new ConcaveStrip(ANGLE1, ANGLE2, {X4, Y1 / 2.0f, Z4}, R1, Y1, WOOD_COLOR, 0.2, TOP_PANEL_STEPS);
@@ -149,7 +151,8 @@ Table::Table()
 Table::~Table()
 {
     delete m_strip1;
-    delete m_strip2;
+    delete m_strip2a;
+    delete m_strip2b;
     delete m_strip3;
     delete m_strip4;
     delete m_strip5;
@@ -211,10 +214,16 @@ Float2 Table::ball_home_position() const
     return m_ball_home_position;
 }
 
+Float2 Table::out_hole_position() const
+{
+    return {X4, Z8};
+}
+
 void Table::collide(Ball* ball, Sensor* sensor) const
 {
     m_strip1->collide(ball);
-    m_strip2->collide(ball);
+    m_strip2a->collide(ball);
+    m_strip2b->collide(ball);
     m_strip3->collide(ball);
     m_strip4->collide(ball);
     m_strip5->collide(ball);
@@ -273,7 +282,8 @@ CadModel Table::model() const
     CadModel backlight(PlaneShape(PLAYFIELD_X, PLAYFIELD_Z, 0.0), PaintCan(0.0, 0.0, 0.0), 1.0);
     mm.add(backlight, PLAYFIELD_X / 2.0, -PLAYFIELD_Y * 9.0 / 10.0, PLAYFIELD_Z / 2.0);
     mm.add(m_strip1->model(0.0));
-    mm.add(m_strip2->model(0.0));
+    mm.add(m_strip2a->model(0.0));
+    mm.add(m_strip2b->model(0.0));
     mm.add(m_strip3->model(0.0));
     mm.add(m_strip4->model(0.0));
     mm.add(m_strip5->model(0.0));
@@ -292,23 +302,32 @@ CadModel Table::model() const
 //    diode.add(wall, -TDIODE / 2.0f + TC / 2.0f, 0.0, TDIODE / 2.0);
     diode.rotate_ay(ANGLE6);
     mm.add(diode, XC, Y1 / 2.0f, ZC);
-    CadModel barrier1(CubeShape(T1, Y1, PLAYFIELD_Z - Z3), WOOD_COLOR, 0.0);
-    mm.add(barrier1, X6 + T1 / 2.0f, Y1 / 2.0f, (Z3 + PLAYFIELD_Z) / 2.0f);
-    CadModel cap(CylinderShape(T1 / 2.0f, Y1, 50), WOOD_COLOR, 0.0);
-    mm.add(cap, X6 + T1 / 2.0f, Y1 / 2.0f, Z3);
-    CadModel barrier2(CubeShape(T1, Y1 + PLAYFIELD_Y, PLAYFIELD_Z), WOOD_COLOR, 0.0);
-    mm.add(barrier2, X8 + T1 / 2.0, Y1 / 2.0 - PLAYFIELD_Y / 2.0, PLAYFIELD_Z / 2.0);
-    mm.add(barrier2, X1 - T1 / 2.0, Y1 / 2.0 - PLAYFIELD_Y / 2.0, PLAYFIELD_Z / 2.0);
-    CadModel barrier3(CubeShape(PLAYFIELD_X, Y1 + PLAYFIELD_Y, T1), WOOD_COLOR, 0.0);
-    mm.add(barrier3, PLAYFIELD_X / 2.0, Y1 / 2.0 - PLAYFIELD_Y / 2.0, T1 / 2.0);
-    mm.add(barrier3, PLAYFIELD_X / 2.0, Y1 / 2.0 - PLAYFIELD_Y / 2.0, PLAYFIELD_Z - T1 / 2.0);
+
+    CadModel barrier1a(CubeShape(T1, Y4, ZOH1 - Z3), WOOD_COLOR, 0.0);
+    CadModel barrier1b(CubeShape(T1, Y4, PLAYFIELD_Z - ZOH2), WOOD_COLOR, 0.0);
+    mm.add(barrier1a, X6 + T1 / 2.0f, Y4 / 2.0f, (Z3 + ZOH1) / 2.0f);
+    mm.add(barrier1b, X6 + T1 / 2.0f, Y4 / 2.0f, (ZOH2 + PLAYFIELD_Z) / 2.0f);
+
+
+    CadModel cap(CylinderShape(T1 / 2.0f, Y4, 50), WOOD_COLOR, 0.0);
+    mm.add(cap, X6 + T1 / 2.0f, Y4 / 2.0f, Z3);
+
+
+
+    CadModel barrier2(CubeShape(T1, Y3 + PLAYFIELD_Y, PLAYFIELD_Z), WOOD_COLOR, 0.0);
+    mm.add(barrier2, X8 + T1 / 2.0, Y3 / 2.0 - PLAYFIELD_Y / 2.0, PLAYFIELD_Z / 2.0);
+    mm.add(barrier2, X1 - T1 / 2.0, Y3 / 2.0 - PLAYFIELD_Y / 2.0, PLAYFIELD_Z / 2.0);
+    CadModel barrier3(CubeShape(PLAYFIELD_X, Y3 + PLAYFIELD_Y, T1), WOOD_COLOR, 0.0);
+    mm.add(barrier3, PLAYFIELD_X / 2.0, Y3 / 2.0 - PLAYFIELD_Y / 2.0, T1 / 2.0);
+    mm.add(barrier3, PLAYFIELD_X / 2.0, Y3 / 2.0 - PLAYFIELD_Y / 2.0, PLAYFIELD_Z - T1 / 2.0);
+
     CadModel under_panel(PlaneShape(PLAYFIELD_X, PLAYFIELD_Z), WOOD_COLOR, 0.0);
     under_panel.rotate_ax(180.0);
     mm.add(under_panel, PLAYFIELD_X / 2.0, -PLAYFIELD_Y, PLAYFIELD_Z / 2.0);
     CadModel top_panel(TopPanelShape(PLAYFIELD_X, R1, ANGLE1, ANGLE2, {X4, Z4}, X1, ZA, TOP_PANEL_STEPS), WOOD_COLOR, 0.0);
     mm.add(top_panel, 0.0, Y1, 0.0);
-    CadModel bottom_panel(BottomPanelShape(X1, X3, X5, X6, Z5, Z6, Z9), FACE_PLATE_COLOR, 0.0);
-//    mm.add(bottom_panel, 0.0, Y1, 0.0);
+    CadModel bottom_panel(BottomPanelShape(X1, X3, X5, X6, X7, Z5, Z6, Z9), FACE_PLATE_COLOR, 0.0);
+    mm.add(bottom_panel, 0.0, Y2, 0.0);
 
 
     mm.add(m_rollover1->model(0.0), 0.0, 0.0, 0.0);

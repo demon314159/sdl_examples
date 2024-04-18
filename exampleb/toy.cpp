@@ -9,6 +9,7 @@
 #include "layout_guide.h"
 #include <stdio.h>
 
+#define BALL_OUT_HOLE_SPEED 0.3
 #define BALL_LAUNCH_SPEED 0.9
 #define BALL_ACCELERATION 0.25
 
@@ -114,11 +115,9 @@ Toy::Toy()
 
     build_model();
 
-    m_ball->set_position(m_table->ball_home_position());
+    m_ball->set_position(m_table->out_hole_position());
     m_ball->set_velocity({0.0, 0.0});
     m_ball->set_acceleration({0.0, BALL_ACCELERATION});
-
-    m_score->add_hundreds(0, 1, SOLENOID_ID_HUNDREDS_CHIME);
 }
 
 Toy::~Toy()
@@ -168,6 +167,12 @@ void Toy::advance(int nanoseconds)
     m_ball->advance_orientation();
     m_score->advance(seconds);
     m_solenoid_id = apply_rules();
+    if (m_solenoid_id == SOLENOID_ID_OUT_HOLE) {
+        float vx = BALL_OUT_HOLE_SPEED * cos(20.0f * PI / 180.0f);
+        float vz = -BALL_OUT_HOLE_SPEED * sin(20.0f * PI / 180.0f);
+        m_ball->set_velocity({vx, vz});
+        m_ball->set_position({0.266, 0.564});
+    }
 }
 
 const Lamp* Toy::get_lamp() const

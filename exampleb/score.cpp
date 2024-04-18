@@ -5,6 +5,8 @@
 #include "score.h"
 #include "plane_shape.h"
 
+#include <stdio.h>
+
 #define SCORE_DELAY  0.15
 
 Score::Score(int max_players, int digits, float texture_id)
@@ -47,7 +49,7 @@ void Score::advance(float seconds)
         if (m_delay_time > m_queue->action_post_delay()) {
             m_delay_time = 0.0;
             m_queue->next_action();
-            while (m_queue->action_command() == QCOMMAND_CLEAR_DIGITS && non_zero_digits() == 0) {
+            while (!m_queue->empty() && m_queue->action_command() == QCOMMAND_CLEAR_DIGITS && non_zero_digits() == 0) {
                 m_queue->next_action();
             }
         }
