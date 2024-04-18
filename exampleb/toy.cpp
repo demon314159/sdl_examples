@@ -118,19 +118,7 @@ Toy::Toy()
     m_ball->set_velocity({0.0, 0.0});
     m_ball->set_acceleration({0.0, BALL_ACCELERATION});
 
-
-    m_score->add_tens(0, 4, SOUND_ID_1);
-    m_score->add_hundreds(0, 1, SOUND_ID_1);
-    m_score->add_thousands(0, 3, SOUND_ID_1);
-    m_score->add_tens(1, 9, SOUND_ID_1);
-    m_score->add_hundreds(1, 5, SOUND_ID_1);
-    m_score->add_thousands(1, 1, SOUND_ID_1);
-    m_score->add_tens(2, 3, SOUND_ID_1);
-    m_score->add_hundreds(2, 2, SOUND_ID_1);
-    m_score->add_thousands(2, 1, SOUND_ID_1);
-    m_score->add_tens(3, 6, SOUND_ID_1);
-    m_score->add_hundreds(3, 5, SOUND_ID_1);
-    m_score->add_thousands(3, 4, SOUND_ID_1);
+    m_score->add_tens(0, 5, SOUND_ID_1);
 }
 
 Toy::~Toy()

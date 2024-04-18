@@ -43,6 +43,7 @@ private:
     Queue m_queue;
 
     void perform_action(int digit, int sound_id);
+    bool non_zero_digits() const;
 };
 
 #endif // _SCORE_H_

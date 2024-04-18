@@ -46,17 +46,30 @@ void Score::advance(float seconds)
     }
 }
 
+bool Score::non_zero_digits() const
+{
+    for (int i = 0; i < TOTAL_DIGITS; i++) {
+        if (m_digit[i] != 0) {
+            return true;
+        }
+    }
+    return false;
+}
+
 void Score::perform_action(int digit, int sound_id)
 {
-    m_sound = sound_id;
     if (digit == TOTAL_DIGITS) {
-        for (int i = 0; i < TOTAL_DIGITS; i++) {
-            if (m_digit[i] != 0) {
-                bool cy = m_digit[i] == 9;
-                m_digit[i] = cy ? 0 : m_digit[i] + 1;
+        if (non_zero_digits()) {
+            m_sound = sound_id;
+            for (int i = 0; i < TOTAL_DIGITS; i++) {
+                if (m_digit[i] != 0) {
+                    bool cy = m_digit[i] == 9;
+                    m_digit[i] = cy ? 0 : m_digit[i] + 1;
+                }
             }
         }
     } else {
+        m_sound = sound_id;
         int i = digit;
         bool cy = m_digit[i] == 9;
         m_digit[i] = cy ? 0 : m_digit[i] + 1;
@@ -132,8 +145,16 @@ void Score::add_thousands(int player, int n, int sound_id)
 
 void Score::start_replay(int sound_id)
 {
-    for (int i = 0; i < 10; i++) {
-        m_queue.add_action(TOTAL_DIGITS, sound_id, SCORE_DELAY);
+    int nz_count = 0;
+    for (int i = 0; i < TOTAL_DIGITS; i++) {
+        if (m_digit[i] != 0) {
+            ++nz_count;
+        }
+    }
+    if (nz_count > 0) {
+        for (int i = 0; i < 10; i++) {
+            m_queue.add_action(TOTAL_DIGITS, sound_id, SCORE_DELAY);
+        }
     }
 }
 
