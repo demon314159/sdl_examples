@@ -49,18 +49,27 @@ void Score::advance(float seconds)
 void Score::perform_action(int digit, int sound_id)
 {
     m_sound = sound_id;
-    int i = digit;
-    bool cy = m_digit[i] == 9;
-    m_digit[i] = cy ? 0 : m_digit[i] + 1;
-    while (cy && i > 0) {
-        --i;
-        cy = m_digit[i] == 9;
+    if (digit == TOTAL_DIGITS) {
+        for (int i = 0; i < TOTAL_DIGITS; i++) {
+            if (m_digit[i] != 0) {
+                bool cy = m_digit[i] == 9;
+                m_digit[i] = cy ? 0 : m_digit[i] + 1;
+            }
+        }
+    } else {
+        int i = digit;
+        bool cy = m_digit[i] == 9;
         m_digit[i] = cy ? 0 : m_digit[i] + 1;
-    }
-    // Carry may extend into LSB of previous player and will stop there because it is zero
-    // Force all of the players LSB to zero all of the time to undo this
-    for (int i = (SCORE_DIGITS - 1); i < TOTAL_DIGITS; i += SCORE_DIGITS) {
-        m_digit[i] = 0;
+        while (cy && i > 0) {
+            --i;
+            cy = m_digit[i] == 9;
+            m_digit[i] = cy ? 0 : m_digit[i] + 1;
+        }
+        // Carry may extend into LSB of previous player and will stop there because it is zero
+        // Force all of the players LSB to zero all of the time to undo this
+        for (int i = (SCORE_DIGITS - 1); i < TOTAL_DIGITS; i += SCORE_DIGITS) {
+            m_digit[i] = 0;
+        }
     }
 }
 
@@ -118,6 +127,13 @@ void Score::add_thousands(int player, int n, int sound_id)
         if (!m_queue.full()) {
             m_queue.add_action(SCORE_DIGITS * player + SCORE_DIGITS - 4, sound_id, SCORE_DELAY);
         }
+    }
+}
+
+void Score::start_replay(int sound_id)
+{
+    for (int i = 0; i < 10; i++) {
+        m_queue.add_action(TOTAL_DIGITS, sound_id, SCORE_DELAY);
     }
 }
 

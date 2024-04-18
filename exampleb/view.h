@@ -43,6 +43,7 @@ public:
     void set_mag(float mag);
     int width() const;
     int height() const;
+    void replay_action_button(bool on);
     void left_action_button(bool on);
     void right_action_button(bool on);
     void launch_action_button(bool on);

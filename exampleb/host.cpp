@@ -57,6 +57,8 @@ void Host::key_press_event(SDL_Event* e)
         m_view.right_action_button(true);
     } else if (a == SDL_SCANCODE_L) {
         m_view.launch_action_button(true);
+    } else if (a == SDL_SCANCODE_R) {
+        m_view.replay_action_button(true);
     } else if (a == SDL_SCANCODE_UP) {
         if (shifted) {
             m_view.translate_y(-m_view.height() / 10);

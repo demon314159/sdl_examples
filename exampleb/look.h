@@ -103,28 +103,27 @@
 #define WOOD_COLOR PaintCan(0.9137, 0.7566, 0.4823)
 #define FACE_PLATE_COLOR PaintCan(1.0, 1.0, 1.0)
 
-#define LAMP28_IX  0
-#define LAMP8_IX   1
-#define LAMP10_IX  2
-#define LAMP9_IX   3
-#define LAMP11_IX  4
-#define LAMP12_IX  5
-#define LAMP14_IX  6
-#define LAMP13_IX  7
-#define LAMP15_IX  8
-#define LAMP16_IX  9
-#define LAMP18_IX  10
-#define LAMP23_IX  11
-#define LAMP21_IX  12
-#define LAMP22_IX  13
-#define LAMP27_IX  14
-#define LAMP25_IX  15
-#define LAMP26_IX  16
-#define LAMP24_IX  17
-
-#define LAMP4_IX   18
-#define LAMP20_IX  19
-#define LAMP19_IX  20
+#define LAMP_ID_5X_BONUS                 0
+#define LAMP_ID_ACES_BONUS               1
+#define LAMP_ID_KINGS_BONUS              2
+#define LAMP_ID_QUEENS_BONUS             3
+#define LAMP_ID_JACKS_BONUS              4
+#define LAMP_ID_TENS_BONUS               5
+#define LAMP_ID_5000_BONUS               6
+#define LAMP_ID_4000_BONUS               7
+#define LAMP_ID_3000_BONUS               8
+#define LAMP_ID_2000_BONUS               9
+#define LAMP_ID_1000_BONUS               10
+#define LAMP_ID_TOP_ROLLOVER_A           11
+#define LAMP_ID_TOP_ROLLOVER_B           12
+#define LAMP_ID_TOP_ROLLOVER_C           13
+#define LAMP_ID_BOTTOM_ROLLOVER_A        14
+#define LAMP_ID_BOTTOM_LEFT_ROLLOVER_B   15
+#define LAMP_ID_BOTTOM_RIGHT_ROLLOVER_B  16
+#define LAMP_ID_BOTTOM_ROLLOVER_C        17
+#define LAMP_ID_SHOOT_AGAIN              18
+#define LAMP_ID_EXTRA_BALL               19
+#define LAMP_ID_SPECIAL                  20
 
 #define LAMP_Y_POSITION (-0.0005)
 

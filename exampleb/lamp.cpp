@@ -53,6 +53,15 @@ Float3 Lamp::color(int ix) const
     }
 }
 
+bool Lamp::lit(int lamp_id) const
+{
+    if (lamp_id < 0 || lamp_id >= (MAX_LAMPS)) {
+        return false;
+    } else {
+        return m_state[lamp_id];
+    }
+}
+
 CadModel Lamp::model(float animation_id) const
 {
     CadModel cm;

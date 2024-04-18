@@ -308,7 +308,7 @@ CadModel Table::model() const
     CadModel top_panel(TopPanelShape(PLAYFIELD_X, R1, ANGLE1, ANGLE2, {X4, Z4}, X1, ZA, TOP_PANEL_STEPS), WOOD_COLOR, 0.0);
     mm.add(top_panel, 0.0, Y1, 0.0);
     CadModel bottom_panel(BottomPanelShape(X1, X3, X5, X6, Z5, Z6, Z9), FACE_PLATE_COLOR, 0.0);
-    mm.add(bottom_panel, 0.0, Y1, 0.0);
+//    mm.add(bottom_panel, 0.0, Y1, 0.0);
 
 
     mm.add(m_rollover1->model(0.0), 0.0, 0.0, 0.0);

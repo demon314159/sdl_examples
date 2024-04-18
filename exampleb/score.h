@@ -27,6 +27,7 @@ public:
     float* data() const;
 
     void clear();
+    void start_replay(int sound_id);
     void add_tens(int player, int n, int sound_id);
     void add_hundreds(int player, int n, int sound_id);
     void add_thousands(int player, int n, int sound_id);

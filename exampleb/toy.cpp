@@ -26,7 +26,6 @@ Toy::Toy()
     , m_right_flipper(NULL)
     , m_top_flipper(NULL)
     , m_model(NULL)
-    , m_ns_count(0.0)
     , m_last_launch_action_button(false)
 {
     m_ball = new Ball(BALL_RADIUS, BALL_TOP_COLOR, BALL_MIDDLE_COLOR, BALL_BOTTOM_COLOR, BALL_SEGMENTS);
@@ -80,14 +79,13 @@ Toy::Toy()
     m_lamp->add(LAMP20_POSITION, LAMP_SIZE, TYPE4_ON_COLOR, TYPE4_OFF_COLOR);
     m_lamp->add(LAMP19_POSITION, LAMP_SIZE, TYPE5_ON_COLOR, TYPE5_OFF_COLOR);
 
-    m_lamp->set(LAMP28_IX, true);
-    m_lamp->set(LAMP21_IX, true);
-    m_lamp->set(LAMP25_IX, true);
-    m_lamp->set(LAMP26_IX, true);
-    m_lamp->set(LAMP15_IX, true);
-    m_lamp->set(LAMP19_IX, true);
-    m_lamp->set(LAMP4_IX, true);
-    m_lamp->set(LAMP20_IX, true);
+    m_lamp->set(LAMP_ID_TOP_ROLLOVER_A, true);
+    m_lamp->set(LAMP_ID_TOP_ROLLOVER_B, true);
+    m_lamp->set(LAMP_ID_TOP_ROLLOVER_C, true);
+    m_lamp->set(LAMP_ID_BOTTOM_ROLLOVER_A, true);
+    m_lamp->set(LAMP_ID_BOTTOM_LEFT_ROLLOVER_B, true);
+    m_lamp->set(LAMP_ID_BOTTOM_RIGHT_ROLLOVER_B, true);
+    m_lamp->set(LAMP_ID_BOTTOM_ROLLOVER_C, true);
 
     LayoutGuide lg({0.0385, 0.3075}, {0.0215, 0.315}, DROP_TARGET_WIDTH, 1);
     m_target->add(new DropTarget(lg.position(1), lg.angle() , DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS, TEXTURE_ID_DROP_TARGET, 5, SENSOR_ID_DROP_10));
@@ -119,6 +117,20 @@ Toy::Toy()
     m_ball->set_position(m_table->ball_home_position());
     m_ball->set_velocity({0.0, 0.0});
     m_ball->set_acceleration({0.0, BALL_ACCELERATION});
+
+
+    m_score->add_tens(0, 4, SOUND_ID_1);
+    m_score->add_hundreds(0, 1, SOUND_ID_1);
+    m_score->add_thousands(0, 3, SOUND_ID_1);
+    m_score->add_tens(1, 9, SOUND_ID_1);
+    m_score->add_hundreds(1, 5, SOUND_ID_1);
+    m_score->add_thousands(1, 1, SOUND_ID_1);
+    m_score->add_tens(2, 3, SOUND_ID_1);
+    m_score->add_hundreds(2, 2, SOUND_ID_1);
+    m_score->add_thousands(2, 1, SOUND_ID_1);
+    m_score->add_tens(3, 6, SOUND_ID_1);
+    m_score->add_hundreds(3, 5, SOUND_ID_1);
+    m_score->add_thousands(3, 4, SOUND_ID_1);
 }
 
 Toy::~Toy()
@@ -153,11 +165,13 @@ void Toy::advance(int nanoseconds)
     m_left_flipper->advance(seconds);
     m_right_flipper->advance(seconds);
     m_top_flipper->advance(seconds);
-    m_ball->advance(seconds);
-    if (m_ball->position().v2 > m_table->ball_z_limit()) {
-        m_ball->set_position(m_table->ball_home_position());
-        m_ball->set_velocity({0.0, 0.0});
+    if (m_ball->position().v2 < m_table->ball_z_limit()) {
+        m_ball->advance(seconds);
     }
+//    if (m_ball->position().v2 > m_table->ball_z_limit()) {
+//         m_ball->set_position(m_table->ball_home_position());
+//         m_ball->set_velocity({0.0, 0.0});
+//   }
     m_target->collide(m_ball, m_sensor);
     m_table->collide(m_ball, m_sensor);
     m_left_flipper->collide(m_ball);
@@ -165,42 +179,7 @@ void Toy::advance(int nanoseconds)
     m_top_flipper->collide(m_ball);
     m_ball->advance_orientation();
     m_score->advance(seconds);
-    m_ns_count += nanoseconds;
-
-    if (m_ns_count > 500000000.0) {
-        m_ns_count = 0.0;
-//        if (m_lamp_test > (m_lamp->lamps() - 1)) {
-//            m_lamp_test = 0;
-//        }
-//        for (int i = 0; i < m_lamp->lamps(); i++) {
-//            m_lamp->set(i, i == m_lamp_test);
-//        }
-//        ++m_lamp_test;
-
-//        if (m_target_test > (m_target->targets() - 1)) {
-//            m_target_test = 0;
-//        }
-//        for (int i = 0; i < m_target->targets(); i++) {
-//            m_target->set_dropped(i, i == m_target_test);
-//        }
-//        ++m_target_test;
-    }
-    if (m_sensor->rising(SENSOR_ID_ROLLOVER_A)) {
-        m_score->add_thousands(0, 5, SOUND_ID_1);
-    }
-    if (m_sensor->rising(SENSOR_ID_ROLLOVER_B)) {
-        m_score->add_thousands(0, 5, SOUND_ID_1);
-    }
-    if (m_sensor->rising(SENSOR_ID_ROLLOVER_C)) {
-        m_score->add_thousands(0, 5, SOUND_ID_1);
-    }
-    if (m_sensor->rising(SENSOR_ID_BUMPER)) {
-        m_score->add_hundreds(0, 1, SOUND_ID_1);
-    }
-    if (m_sensor->rising(SENSOR_ID_TEN_POINT)) {
-        m_score->add_tens(0, 1, SOUND_ID_1);
-    }
-    m_sound = m_score->sound();
+    m_sound = apply_rules();
 }
 
 const Lamp* Toy::get_lamp() const
@@ -268,6 +247,7 @@ void Toy::right_action_button(bool on)
     m_right_flipper->action_button(on);
     m_top_flipper->action_button(on);
 }
+
 void Toy::launch_action_button(bool on)
 {
     if (on && !m_last_launch_action_button) {
@@ -277,5 +257,105 @@ void Toy::launch_action_button(bool on)
         }
     }
     m_last_launch_action_button = on;
+}
+
+void Toy::replay_action_button(bool on)
+{
+    m_score->start_replay(SOUND_ID_1);
+}
+
+
+
+#ifdef NEVERMORE
+#define SENSOR_ID_BUMPER       1
+#define SENSOR_ID_ROLLOVER_A   2
+#define SENSOR_ID_ROLLOVER_B   3
+#define SENSOR_ID_ROLLOVER_C   4
+#define SENSOR_ID_EXTRA_BALL   5
+#define SENSOR_ID_DROP_10      6
+#define SENSOR_ID_DROP_J1      7
+#define SENSOR_ID_DROP_J2      8
+#define SENSOR_ID_SPECIAL      9
+#define SENSOR_ID_DROP_Q1      10
+#define SENSOR_ID_DROP_Q2      11
+#define SENSOR_ID_DROP_Q3      12
+#define SENSOR_ID_TEN_POINT    13
+#define SENSOR_ID_DROP_K1      14
+#define SENSOR_ID_DROP_K2      15
+#define SENSOR_ID_DROP_K3      14
+#define SENSOR_ID_DROP_K4      17
+#define SENSOR_ID_DROP_A1      18
+#define SENSOR_ID_DROP_A2      19
+#define SENSOR_ID_DROP_JOKER   20
+#define SENSOR_ID_DROP_A3      21
+#define SENSOR_ID_DROP_A4      22
+
+#define LAMP_ID_5X_BONUS                 0
+#define LAMP_ID_ACES_BONUS               1
+#define LAMP_ID_KINGS_BONUS              2
+#define LAMP_ID_QUEENS_BONUS             3
+#define LAMP_ID_JACKS_BONUS              4
+#define LAMP_ID_TENS_BONUS               5
+#define LAMP_ID_5000_BONUS               6
+#define LAMP_ID_4000_BONUS               7
+#define LAMP_ID_3000_BONUS               8
+#define LAMP_ID_2000_BONUS               9
+#define LAMP_ID_1000_BONUS               10
+#define LAMP_ID_TOP_ROLLOVER_A           11
+#define LAMP_ID_TOP_ROLLOVER_B           12
+#define LAMP_ID_TOP_ROLLOVER_C           13
+#define LAMP_ID_BOTTOM_ROLLOVER_A        14
+#define LAMP_ID_LEFT_BOTTOM_ROLLOVER_B   15
+#define LAMP_ID_RIGHT_BOTTOM_ROLLOVER_B  16
+#define LAMP_ID_BOTTOM_ROLLOVER_C        17
+#define LAMP_ID_SHOOT_AGAIN              18
+#define LAMP_ID_EXTRA_BALL               19
+#define LAMP_ID_SPECIAL                  20
+#endif
+
+void Toy::rollover_rules()
+{
+    if (m_sensor->rising(SENSOR_ID_ROLLOVER_A)) {
+        if (m_lamp->lit(LAMP_ID_TOP_ROLLOVER_A)) {
+            m_score->add_thousands(0, 5, SOUND_ID_1);
+        } else {
+            m_score->add_hundreds(0, 5, SOUND_ID_1);
+        }
+        m_lamp->set(LAMP_ID_TOP_ROLLOVER_A, false);
+        m_lamp->set(LAMP_ID_BOTTOM_ROLLOVER_A, false);
+    }
+    if (m_sensor->rising(SENSOR_ID_ROLLOVER_B)) {
+        if (m_lamp->lit(LAMP_ID_TOP_ROLLOVER_B)) {
+            m_score->add_thousands(0, 5, SOUND_ID_1);
+        } else {
+            m_score->add_hundreds(0, 5, SOUND_ID_1);
+        }
+        m_lamp->set(LAMP_ID_TOP_ROLLOVER_B, false);
+        m_lamp->set(LAMP_ID_BOTTOM_LEFT_ROLLOVER_B, false);
+        m_lamp->set(LAMP_ID_BOTTOM_RIGHT_ROLLOVER_B, false);
+    }
+    if (m_sensor->rising(SENSOR_ID_ROLLOVER_C)) {
+        if (m_lamp->lit(LAMP_ID_TOP_ROLLOVER_C)) {
+            m_score->add_thousands(0, 5, SOUND_ID_1);
+        } else {
+            m_score->add_hundreds(0, 5, SOUND_ID_1);
+        }
+        m_lamp->set(LAMP_ID_TOP_ROLLOVER_C, false);
+        m_lamp->set(LAMP_ID_BOTTOM_ROLLOVER_C, false);
+    }
+}
+
+int Toy::apply_rules()
+{
+    rollover_rules();
+
+
+    if (m_sensor->rising(SENSOR_ID_BUMPER)) {
+        m_score->add_hundreds(0, 1, SOUND_ID_1);
+    }
+    if (m_sensor->rising(SENSOR_ID_TEN_POINT)) {
+        m_score->add_tens(0, 1, SOUND_ID_1);
+    }
+    return m_score->sound();
 }
 

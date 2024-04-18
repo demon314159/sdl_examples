@@ -33,6 +33,7 @@ public:
     void left_action_button(bool on);
     void right_action_button(bool on);
     void launch_action_button(bool on);
+    void replay_action_button(bool on);
 
     void advance(int nanoseconds);
 
@@ -56,8 +57,9 @@ private:
     Flipper* m_top_flipper;
     CadModel* m_model;
     bool m_last_launch_action_button;
-    double m_ns_count;
     void build_model();
+    int apply_rules(); // Returns a Sound ID
+    void rollover_rules();
 };
 
 #endif // _TOY_H_
