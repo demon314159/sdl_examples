@@ -8,6 +8,9 @@
 #include "paint_can.h"
 
 #define WHITE_COLOR PaintCan(1.0, 1.0, 1.0)
+#define MAX_PLAYERS  4
+#define SCORE_DIGITS 6
+
 
 #define ANIMATION_MATRICES 4
 #define ANIMATION_ID_NORMAL 0.0
@@ -87,10 +90,18 @@
 #define MAX_SENSORS            22
 
 
-#define SOUND_ID_NONE    0
-#define SOUND_ID_1       1
-#define SOUND_ID_2       2
-#define SOUND_ID_3       3
+#define SOLENOID_ID_NONE               0
+#define SOLENOID_ID_OUT_HOLE           1
+#define SOLENOID_ID_KNOCKER            2
+#define SOLENOID_ID_TENS_CHIME         3
+#define SOLENOID_ID_HUNDREDS_CHIME     4
+#define SOLENOID_ID_THOUSANDS_CHIME    5
+#define SOLENOID_ID_DROP_TARGET_JACKS  6
+#define SOLENOID_ID_DROP_TARGET_QUEENS 7
+#define SOLENOID_ID_DROP_TARGET_KINGS  8
+#define SOLENOID_ID_DROP_TARGET_ACES   9
+#define SOLENOID_ID_DROP_TARGET_ALL    10
+
 
 #define PLAYFIELD_X  0.320675f
 #define PLAYFIELD_Y  0.030f

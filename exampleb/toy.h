@@ -40,7 +40,7 @@ public:
     const Lamp* get_lamp() const;
     const Target* get_target() const;
     const Score* get_score() const;
-    int get_sound() const;
+    int get_solenoid_id() const;
 
 private:
     int m_lamp_test;
@@ -50,7 +50,7 @@ private:
     Target* m_target;
     Sensor* m_sensor;
     Score* m_score;
-    int m_sound;
+    int m_solenoid_id;
     Table* m_table;
     Flipper* m_left_flipper;
     Flipper* m_right_flipper;
@@ -58,7 +58,7 @@ private:
     CadModel* m_model;
     bool m_last_launch_action_button;
     void build_model();
-    int apply_rules(); // Returns a Sound ID
+    int apply_rules(); // Returns a Solenoid ID
     void rollover_rules();
 };
 

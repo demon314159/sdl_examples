@@ -515,7 +515,7 @@ void View::render()
     unsigned long real_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(this_time_point - m_last_time_point).count();
     m_last_time_point = this_time_point;
     m_toy->advance(real_ns);
-    if (m_toy->get_sound() == SOUND_ID_1) {
+    if (m_toy->get_solenoid_id() > 0) {
         Mix_PlayChannel(-1, m_sound1, 0);
     }
     Matrix4x4 matrix;

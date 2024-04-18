@@ -7,12 +7,15 @@
 
 #define SCORE_DELAY  0.15
 
-Score::Score(float texture_id)
-    : m_texture_id(texture_id)
-    , m_data(new float[TOTAL_DIGITS])
+Score::Score(int max_players, int digits, float texture_id)
+    : m_max_players(max_players)
+    , m_digits(digits)
+    , m_texture_id(texture_id)
+    , m_digit(new int[max_players * digits])
+    , m_data(new float[max_players * digits])
     , m_delay_time(0.0)
-    , m_queue()
-    , m_sound(0)
+    , m_solenoid_id(0)
+    , m_queue(new Queue())
 {
     clear();
 }
@@ -20,35 +23,40 @@ Score::Score(float texture_id)
 Score::~Score()
 {
     delete [] m_data;
+    delete [] m_digit;
+    delete m_queue;
 }
 
 void Score::clear()
 {
-    for (int i = 0; i < TOTAL_DIGITS; i++) {
+    for (int i = 0; i < (m_max_players * m_digits); i++) {
         m_digit[i] = 0;
     }
 }
 
 void Score::advance(float seconds)
 {
-    m_sound = 0;
-    if (m_queue.empty()) {
+    m_solenoid_id = 0;
+    if (m_queue->empty()) {
         m_delay_time = 0.0;
     } else {
         if (m_delay_time == 0.0) {
-           perform_action(m_queue.action_digit(), m_queue.action_sound_id());
+           perform_action(m_queue->action_command(), m_queue->action_digit(), m_queue->action_solenoid_id());
         }
         m_delay_time += seconds;
-        if (m_delay_time > m_queue.action_delay()) {
+        if (m_delay_time > m_queue->action_post_delay()) {
             m_delay_time = 0.0;
-            m_queue.next_action();
+            m_queue->next_action();
+            while (m_queue->action_command() == QCOMMAND_CLEAR_DIGITS && non_zero_digits() == 0) {
+                m_queue->next_action();
+            }
         }
     }
 }
 
 bool Score::non_zero_digits() const
 {
-    for (int i = 0; i < TOTAL_DIGITS; i++) {
+    for (int i = 0; i < (m_max_players * m_digits); i++) {
         if (m_digit[i] != 0) {
             return true;
         }
@@ -56,39 +64,57 @@ bool Score::non_zero_digits() const
     return false;
 }
 
-void Score::perform_action(int digit, int sound_id)
+void Score::command_clear_digits(int solenoid_id)
 {
-    if (digit == TOTAL_DIGITS) {
-        if (non_zero_digits()) {
-            m_sound = sound_id;
-            for (int i = 0; i < TOTAL_DIGITS; i++) {
-                if (m_digit[i] != 0) {
-                    bool cy = m_digit[i] == 9;
-                    m_digit[i] = cy ? 0 : m_digit[i] + 1;
-                }
+    if (non_zero_digits()) {
+        m_solenoid_id = solenoid_id;
+        for (int i = 0; i < (m_max_players * m_digits); i++) {
+            if (m_digit[i] != 0) {
+                bool cy = m_digit[i] == 9;
+                m_digit[i] = cy ? 0 : m_digit[i] + 1;
             }
         }
-    } else {
-        m_sound = sound_id;
-        int i = digit;
-        bool cy = m_digit[i] == 9;
+    }
+}
+
+void Score::command_increment_digit(int digit, int solenoid_id)
+{
+    m_solenoid_id = solenoid_id;
+    int i = digit;
+    bool cy = m_digit[i] == 9;
+    m_digit[i] = cy ? 0 : m_digit[i] + 1;
+    while (cy && i > 0) {
+        --i;
+        cy = m_digit[i] == 9;
         m_digit[i] = cy ? 0 : m_digit[i] + 1;
-        while (cy && i > 0) {
-            --i;
-            cy = m_digit[i] == 9;
-            m_digit[i] = cy ? 0 : m_digit[i] + 1;
-        }
-        // Carry may extend into LSB of previous player and will stop there because it is zero
-        // Force all of the players LSB to zero all of the time to undo this
-        for (int i = (SCORE_DIGITS - 1); i < TOTAL_DIGITS; i += SCORE_DIGITS) {
-            m_digit[i] = 0;
-        }
+    }
+    // Carry may extend into LSB of previous player and will stop there because it is zero
+    // Force all of the players LSB to zero all of the time to undo this
+    for (int i = (m_digits - 1); i < (m_max_players * m_digits); i += m_digits) {
+        m_digit[i] = 0;
+    }
+}
+
+void Score::command_out_hole(int solenoid_id)
+{
+    m_solenoid_id = solenoid_id;
+}
+
+void Score::perform_action(int command, int digit, int solenoid_id)
+{
+    m_solenoid_id = 0;
+    if (command == QCOMMAND_CLEAR_DIGITS) {
+        command_clear_digits(solenoid_id);
+    } else if (command == QCOMMAND_INCREMENT_DIGIT) {
+        command_increment_digit(digit, solenoid_id);
+    } else if (command == QCOMMAND_OUT_HOLE) {
+        command_out_hole(solenoid_id);
     }
 }
 
 int Score::digits() const
 {
-    return TOTAL_DIGITS;
+    return m_max_players * m_digits;
 }
 
 CadModel Score::model(float animation_id) const
@@ -97,9 +123,9 @@ CadModel Score::model(float animation_id) const
     float w = 0.040 * k;
     float h = 0.069 * k;
     CadModel mm;
-    for (int j = 0; j < MAX_PLAYERS; j++) {
-        for (int i = 0; i < SCORE_DIGITS; i++) {
-            CadModel score(PlaneShape(w, h, m_texture_id, {0.0, 0.0}, {0.1, 1.0}), PaintCan(1.0, 1.0, 1.0), animation_id + (float) i + (float) (j * SCORE_DIGITS));
+    for (int j = 0; j < m_max_players; j++) {
+        for (int i = 0; i < m_digits; i++) {
+            CadModel score(PlaneShape(w, h, m_texture_id, {0.0, 0.0}, {0.1, 1.0}), PaintCan(1.0, 1.0, 1.0), animation_id + (float) i + (float) (j * m_digits));
             mm.add(score, w * (float) i, 0.020, h * 1.2 *(float) j);
         }
     }
@@ -110,55 +136,56 @@ CadModel Score::model(float animation_id) const
 
 float* Score::data() const
 {
-    for (int i = 0; i < TOTAL_DIGITS; i++) {
+    for (int i = 0; i < (m_max_players * m_digits); i++) {
         m_data[i] = 0.1 * (float) m_digit[i];
     }
     return m_data;
 }
 
-void Score::add_tens(int player, int n, int sound_id)
+void Score::add_tens(int player, int n, int solenoid_id)
 {
     for (int i = 0; i < n; i++) {
-        if (!m_queue.full()) {
-            m_queue.add_action(SCORE_DIGITS * player + SCORE_DIGITS - 2, sound_id, SCORE_DELAY);
+        if (!m_queue->full()) {
+            m_queue->add_action(QCOMMAND_INCREMENT_DIGIT, m_digits * player + m_digits - 2, solenoid_id, SCORE_DELAY);
         }
     }
 }
 
-void Score::add_hundreds(int player, int n, int sound_id)
+void Score::add_hundreds(int player, int n, int solenoid_id)
 {
     for (int i = 0; i < n; i++) {
-        if (!m_queue.full()) {
-            m_queue.add_action(SCORE_DIGITS * player + SCORE_DIGITS - 3, sound_id, SCORE_DELAY);
+        if (!m_queue->full()) {
+            m_queue->add_action(QCOMMAND_INCREMENT_DIGIT, m_digits * player + m_digits - 3, solenoid_id, SCORE_DELAY);
         }
     }
 }
 
-void Score::add_thousands(int player, int n, int sound_id)
+void Score::add_thousands(int player, int n, int solenoid_id)
 {
     for (int i = 0; i < n; i++) {
-        if (!m_queue.full()) {
-            m_queue.add_action(SCORE_DIGITS * player + SCORE_DIGITS - 4, sound_id, SCORE_DELAY);
+        if (!m_queue->full()) {
+            m_queue->add_action(QCOMMAND_INCREMENT_DIGIT, m_digits * player + m_digits - 4, solenoid_id, SCORE_DELAY);
         }
     }
 }
 
-void Score::start_replay(int sound_id)
+void Score::start_replay(int sound_solenoid_id, int out_hole_solenoid_id)
 {
     int nz_count = 0;
-    for (int i = 0; i < TOTAL_DIGITS; i++) {
+    for (int i = 0; i < (m_max_players * m_digits); i++) {
         if (m_digit[i] != 0) {
             ++nz_count;
         }
     }
     if (nz_count > 0) {
         for (int i = 0; i < 10; i++) {
-            m_queue.add_action(TOTAL_DIGITS, sound_id, SCORE_DELAY);
+            m_queue->add_action(QCOMMAND_CLEAR_DIGITS, 0, sound_solenoid_id, SCORE_DELAY);
         }
     }
+    m_queue->add_action(QCOMMAND_OUT_HOLE, 0, out_hole_solenoid_id, SCORE_DELAY);
 }
 
-int Score::sound() const
+int Score::solenoid_id() const
 {
-    return m_sound;
+    return m_solenoid_id;
 }
