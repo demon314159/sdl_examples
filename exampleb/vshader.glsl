@@ -141,6 +141,10 @@ void main()
             gl_Position = mvp_matrix * vec4(a_position, 1.0);
             v_normal = vec4(0.0, 0.0, 1.0, 0.0);
             v_color = vec4(a_color, 0.0);
+        } else if (a_animation_id < 100.5) { // Fixed
+            gl_Position = vec4(a_position, 1.0);
+            v_normal = vec4(0.0, 0.0, 1.0, 0.0);
+            v_color = vec4(a_color, 0.0);
         } else { // Treat remaining like 0.0
             gl_Position = mvp_matrix * vec4(a_position, 1.0);
             v_normal = rot_matrix * vec4(billy, 0.0);

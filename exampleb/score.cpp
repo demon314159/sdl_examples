@@ -9,10 +9,11 @@
 
 #define SCORE_DELAY  0.15
 
-Score::Score(int max_players, int digits, float texture_id)
+Score::Score(int max_players, int digits, float texture_id_backglass, float texture_id_score)
     : m_max_players(max_players)
     , m_digits(digits)
-    , m_texture_id(texture_id)
+    , m_texture_id_backglass(texture_id_backglass)
+    , m_texture_id_score(texture_id_score)
     , m_digit(new int[max_players * digits])
     , m_data(new float[max_players * digits])
     , m_delay_time(0.0)
@@ -119,23 +120,6 @@ int Score::digits() const
     return m_max_players * m_digits;
 }
 
-CadModel Score::model(float animation_id) const
-{
-    float k = 0.8;
-    float w = 0.040 * k;
-    float h = 0.069 * k;
-    CadModel mm;
-    for (int j = 0; j < m_max_players; j++) {
-        for (int i = 0; i < m_digits; i++) {
-            CadModel score(PlaneShape(w, h, m_texture_id, {0.0, 0.0}, {0.1, 1.0}), PaintCan(1.0, 1.0, 1.0), animation_id + (float) i + (float) (j * m_digits));
-            mm.add(score, w * (float) i, 0.020, h * 1.2 *(float) j);
-        }
-    }
-    mm.rotate_ax(90.0 - 40.0);
-    mm.translate(-0.2, 0.05, 0.2);
-    return mm;
-}
-
 float* Score::data() const
 {
     for (int i = 0; i < (m_max_players * m_digits); i++) {
@@ -191,3 +175,30 @@ int Score::solenoid_id() const
 {
     return m_solenoid_id;
 }
+
+CadModel Score::model(float animation_id) const
+{
+//    float k = 0.8;
+//    float w = 0.040 * k;
+//    float h = 0.069 * k;
+    CadModel mm;
+//    for (int j = 0; j < m_max_players; j++) {
+//        for (int i = 0; i < m_digits; i++) {
+//            CadModel score(PlaneShape(w, h, m_texture_id, {0.0, 0.0}, {0.1, 1.0}), PaintCan(1.0, 1.0, 1.0), animation_id + (float) i + (float) (j * m_digits));
+//            mm.add(score, w * (float) i, 0.020, h * 1.2 *(float) j);
+//        }
+//    }
+
+// These are magic numbers for now
+    float k = 0.7;
+    float dimx = k;
+    float dimy = k * 1.280;
+    float shx = -0.64;
+    float shy = 0.54;
+    CadModel backglass(PlaneShape(dimx, dimy, m_texture_id_backglass), PaintCan(1.0, 1.0, 1.0), 100.0);
+    mm.add(backglass);
+    mm.rotate_ax(90.0);
+    mm.translate(shx, shy, 0.0);
+    return mm;
+}
+

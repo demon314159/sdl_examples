@@ -22,7 +22,7 @@
 #define INITIAL_XROT 50.0
 #define INITIAL_MAG 2.00
 
-#define TOTAL_TEXTURES  11
+#define TOTAL_TEXTURES  12
 
 class View
 {
@@ -86,6 +86,7 @@ private:
     GLint m_texture9_uniform;
     GLint m_texture10_uniform;
     GLint m_texture11_uniform;
+    GLint m_texture12_uniform;
 
     Mix_Chunk* m_sound1;
     Mix_Chunk* m_sound2;

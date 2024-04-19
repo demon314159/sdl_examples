@@ -33,7 +33,7 @@ public:
     void magnify(float factor);
     int facets() const;
     Facet facet(int ix) const;
-    bool facet_visible(int ix) const;
+    bool facet_regular(int ix) const;
     float facet_animation_id(int facet_ix) const;
     Float3 facet_v1(int facet_ix) const;
     Float3 facet_v2(int facet_ix) const;

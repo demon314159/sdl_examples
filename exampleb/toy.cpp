@@ -33,7 +33,7 @@ Toy::Toy()
     m_lamp = new Lamp();
     m_target = new Target(DROP_TARGET_HEIGHT);
     m_sensor = new Sensor(MAX_SENSORS);
-    m_score = new Score(MAX_PLAYERS, SCORE_DIGITS, TEXTURE_ID_SCORE);
+    m_score = new Score(MAX_PLAYERS, SCORE_DIGITS, TEXTURE_ID_BACKGLASS, TEXTURE_ID_SCORE);
     m_table = new Table();
     m_left_flipper = new Flipper(
         LEFT_FLIPPER_ANGLE, LEFT_FLIPPER_POSITION, BOTTOM_FLIPPER_LENGTH,

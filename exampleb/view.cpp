@@ -48,6 +48,7 @@ View::View(SDL_Window* window)
     , m_texture9_uniform(0)
     , m_texture10_uniform(0)
     , m_texture11_uniform(0)
+    , m_texture12_uniform(0)
     , m_sound1(NULL)
     , m_sound2(NULL)
     , m_vao(0)
@@ -213,6 +214,10 @@ void View::generate_textures()
     glActiveTexture(GL_TEXTURE10);
     glBindTexture(GL_TEXTURE_2D, m_texture[10]);
     generate_texture("score.png");
+
+    glActiveTexture(GL_TEXTURE11);
+    glBindTexture(GL_TEXTURE_2D, m_texture[11]);
+    generate_texture("backglass.png");
 }
 
 void View::generate_texture(const char* fname)
@@ -408,6 +413,11 @@ void View::initialize()
         printf("texture11 is not a valid glsl variable\n");
         exit(0);
     }
+    m_texture12_uniform = glGetUniformLocation(m_program, "texture12");
+    if (m_texture12_uniform == -1) {
+        printf("texture12 is not a valid glsl variable\n");
+        exit(0);
+    }
     generate_textures();
     int n = m_toy->animation_matrices();
     if (n > 0) {
@@ -580,6 +590,7 @@ void View::render()
     glUniform1i(m_texture9_uniform, 8);
     glUniform1i(m_texture10_uniform, 9);
     glUniform1i(m_texture11_uniform, 10);
+    glUniform1i(m_texture12_uniform, 11);
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glDrawArrays(GL_TRIANGLES, 0, m_vertex_count);

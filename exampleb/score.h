@@ -13,7 +13,7 @@
 class Score
 {
 public:
-    Score(int max_players, int digits, float texture_id);
+    Score(int max_players, int digits, float texture_id_backglass, float texture_id_score);
     ~Score();
 
     CadModel model(float animation_id) const;
@@ -32,7 +32,8 @@ public:
 private:
     int m_max_players;
     int m_digits;
-    float m_texture_id;
+    float m_texture_id_backglass;
+    float m_texture_id_score;
     int* m_digit;
     float* m_data;
     float m_delay_time;

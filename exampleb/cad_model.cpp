@@ -240,9 +240,9 @@ Facet CadModel::facet(int ix) const
     return m_facet[ix];
 }
 
-bool CadModel::facet_visible(int ix) const
+bool CadModel::facet_regular(int ix) const
 {
-    return m_facet[ix].animation_id != 99.0;
+    return m_facet[ix].animation_id < 99.0;
 }
 
 float CadModel::facet_animation_id(int facet_ix) const
@@ -446,7 +446,7 @@ BoundingBox CadModel::bounding_box() const
     bb.vmin = facet_v1(0);
     bb.vmax = facet_v1(0);
     for (int i = 0; i < m_facet_count; i++) {
-        if (facet_visible(i)) {
+        if (facet_regular(i)) {
             Float3 v = facet_v1(i);
             bb.vmin.v1 = fmin(bb.vmin.v1, v.v1);
             bb.vmin.v2 = fmin(bb.vmin.v2, v.v2);
