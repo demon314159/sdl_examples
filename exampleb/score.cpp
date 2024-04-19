@@ -190,15 +190,13 @@ CadModel Score::model(float animation_id) const
 //    }
 
 // These are magic numbers for now
-    float k = 0.7;
-    float dimx = k;
-    float dimy = k * 1.280;
-    float shx = -0.64;
-    float shy = 0.54;
+    float k = 2.0 / 2.0;
+    float dimx = k * 1.25 / 1.77;
+    float dimy = k * 1.0;
     CadModel backglass(PlaneShape(dimx, dimy, m_texture_id_backglass), PaintCan(1.0, 1.0, 1.0), 100.0);
     mm.add(backglass);
     mm.rotate_ax(90.0);
-    mm.translate(shx, shy, 0.0);
+    mm.translate(-0.75, 0.0, 0.0);
     return mm;
 }
 
