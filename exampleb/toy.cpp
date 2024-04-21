@@ -15,9 +15,7 @@
 #define BALL_ACCELERATION 0.25
 
 Toy::Toy()
-    : m_lamp_test(0)
-    , m_target_test(0)
-    , m_ball(NULL)
+    : m_ball(NULL)
     , m_lamp(NULL)
     , m_target(NULL)
     , m_sensor(NULL)
@@ -83,20 +81,24 @@ Toy::Toy()
     m_lamp->add(LAMP_SPECIAL_POSITION, LAMP_SIZE, TYPE5_ON_COLOR, TYPE5_OFF_COLOR);
 
     BackglassGuide bg({BACKGLASS_POSITION_X, BACKGLASS_POSITION_Y},{BACKGLASS_SIZE_X, BACKGLASS_SIZE_Y}, {BACKGLASS_IMAGE_SIZE_X, BACKGLASS_IMAGE_SIZE_Y});
-    m_lamp->add(bg.position(FIXED_LAMP_BALL_IN_PLAY_POSITION), bg.size({0.022, 0.026}), TYPE1_ON_COLOR, TYPE1_OFF_COLOR);
-    m_lamp->add(bg.position(FIXED_LAMP_NUMBER_TO_MATCH_POSITION), bg.size({0.022, 0.009}), TYPE1_ON_COLOR, TYPE1_OFF_COLOR);
-    m_lamp->add(bg.position(FIXED_LAMP_HIGH_GAME_TO_DATE_POSITION), bg.size({0.019, 0.0145}), TYPE1_ON_COLOR, TYPE1_OFF_COLOR);
-    m_lamp->add(bg.position(FIXED_LAMP_GAME_OVER_POSITION), bg.size({0.017, 0.013}), TYPE1_ON_COLOR, TYPE1_OFF_COLOR);
-    m_lamp->add(bg.position(FIXED_LAMP_SHOOT_AGAIN_POSITION), bg.size({0.018, 0.0105}), TYPE1_ON_COLOR, TYPE1_OFF_COLOR);
+    m_lamp->add(bg.position(FIXED_LAMP_BALL_IN_PLAY_POSITION), bg.size({0.022, 0.026}), TYPE10_ON_COLOR, TYPE10_OFF_COLOR);
+    m_lamp->add(bg.position(FIXED_LAMP_NUMBER_TO_MATCH_POSITION), bg.size({0.032, 0.017}), TYPE11_ON_COLOR, TYPE11_OFF_COLOR);
+    m_lamp->add(bg.position(FIXED_LAMP_HIGH_GAME_TO_DATE_POSITION), bg.size({0.027, 0.020}), TYPE8_ON_COLOR, TYPE8_OFF_COLOR);
+    m_lamp->add(bg.position(FIXED_LAMP_GAME_OVER_POSITION), bg.size({0.022, 0.014}), TYPE7_ON_COLOR, TYPE7_OFF_COLOR);
+    m_lamp->add(bg.position(FIXED_LAMP_SHOOT_AGAIN_POSITION), bg.size({0.023, 0.012}), TYPE9_ON_COLOR, TYPE9_OFF_COLOR);
     m_lamp->add(bg.position(FIXED_LAMP_PLAYER1_POSITION), bg.size({0.020, 0.017}), TYPE6_ON_COLOR, TYPE6_OFF_COLOR);
     m_lamp->add(bg.position(FIXED_LAMP_PLAYER2_POSITION), bg.size({0.020, 0.017}), TYPE6_ON_COLOR, TYPE6_OFF_COLOR);
     m_lamp->add(bg.position(FIXED_LAMP_PLAYER3_POSITION), bg.size({0.0195, 0.0155}), TYPE6_ON_COLOR, TYPE6_OFF_COLOR);
     m_lamp->add(bg.position(FIXED_LAMP_PLAYER4_POSITION), bg.size({0.020, 0.016}), TYPE6_ON_COLOR, TYPE6_OFF_COLOR);
 
-    m_lamp->set(FIXED_LAMP_ID_BALL_IN_PLAY, false);
-    m_lamp->set(FIXED_LAMP_ID_PLAYER_1, true);
-    m_lamp->set(FIXED_LAMP_ID_PLAYER_2, true);
-    m_lamp->set(FIXED_LAMP_ID_PLAYER_3, true);
+//    m_lamp->set(FIXED_LAMP_ID_BALL_IN_PLAY, true);
+//    m_lamp->set(FIXED_LAMP_ID_NUMBER_TO_MATCH, true);
+//    m_lamp->set(FIXED_LAMP_ID_HIGH_GAME_TO_DATE, true);
+//    m_lamp->set(FIXED_LAMP_ID_GAME_OVER, true);
+//    m_lamp->set(FIXED_LAMP_ID_SHOOT_AGAIN, true);
+//    m_lamp->set(FIXED_LAMP_ID_PLAYER_1, true);
+//    m_lamp->set(FIXED_LAMP_ID_PLAYER_2, true);
+//    m_lamp->set(FIXED_LAMP_ID_PLAYER_3, true);
 //    m_lamp->set(FIXED_LAMP_ID_PLAYER_4, true);
 
     m_lamp->set(LAMP_ID_TOP_ROLLOVER_A, true);

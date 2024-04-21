@@ -43,8 +43,6 @@ public:
     int get_solenoid_id() const;
 
 private:
-    int m_lamp_test;
-    int m_target_test;
     Ball* m_ball;
     Lamp* m_lamp;
     Target* m_target;
