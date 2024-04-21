@@ -179,7 +179,7 @@ int Score::solenoid_id() const
     return m_solenoid_id;
 }
 
-CadModel Score::model(float animation_id) const
+CadModel Score::model(float animation_id_first_digit, float animation_id_scoreboard) const
 {
 //    float k = 0.8;
 //    float w = 0.040 * k;
@@ -187,14 +187,14 @@ CadModel Score::model(float animation_id) const
     CadModel mm;
 //    for (int j = 0; j < m_max_players; j++) {
 //        for (int i = 0; i < m_digits; i++) {
-//            CadModel score(PlaneShape(w, h, m_texture_id, {0.0, 0.0}, {0.1, 1.0}), PaintCan(1.0, 1.0, 1.0), animation_id + (float) i + (float) (j * m_digits));
+//            CadModel score(PlaneShape(w, h, m_texture_id, {0.0, 0.0}, {0.1, 1.0}), PaintCan(1.0, 1.0, 1.0), animation_id_first_digit + (float) i + (float) (j * m_digits));
 //            mm.add(score, w * (float) i, 0.020, h * 1.2 *(float) j);
 //        }
 //    }
 
-    CadModel backglass(PlaneShape(m_size.v1, m_size.v2, m_texture_id_backglass), PaintCan(1.0, 1.0, 1.0), 0.0);
+    CadModel backglass(PlaneShape(m_size.v1, m_size.v2, m_texture_id_backglass), PaintCan(1.0, 1.0, 1.0), animation_id_scoreboard);
     mm.add(backglass);
-    mm.rotate_ax(40.0);
+    mm.rotate_ax(90.0);
     mm.translate(m_position.v1 + m_size.v1 / 2.0, m_position.v2, m_position.v3 - m_size.v2 / 2.0);
     return mm;
 }

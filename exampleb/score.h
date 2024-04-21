@@ -17,7 +17,7 @@ public:
           float texture_id_backglass, float texture_id_score);
     ~Score();
 
-    CadModel model(float animation_id) const;
+    CadModel model(float animation_id_first_digit, float animation_id_scoreboard) const;
     void advance(float seconds);
     int digits() const;
     float* data() const;

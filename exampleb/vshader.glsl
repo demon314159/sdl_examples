@@ -2,6 +2,7 @@
 
 uniform mat4 mvp_matrix;
 uniform mat4 rot_matrix;
+uniform mat4 scoreboard_matrix;
 uniform mat4 animation_0_matrix;
 uniform mat4 animation_1_matrix;
 uniform mat4 animation_2_matrix;
@@ -132,7 +133,7 @@ void main()
             }
             gl_Position = mvp_matrix * vec4(a_position, 1.0);
             v_normal = vec4(0.0, 0.0, 1.0, 0.0);
-        } else if (a_animation_id < 50.5) { // 8 Fixed Lamps
+        } else if (a_animation_id < 50.5) { // 9 Fixed Lamps
             if (a_animation_id < 42.5) {         // Lamp22 (Fixed)
                 v_color = vec4(lamp_color[21], 1.0);
             } else if (a_animation_id < 43.5) {  // Lamp23 (Fixed)
@@ -154,6 +155,10 @@ void main()
             }
             gl_Position = vec4(a_position, 1.0);
             v_normal = vec4(0.0, 0.0, 1.0, 0.0);
+        } else if (a_animation_id < 75.5) {      // Scoreboard
+            gl_Position = scoreboard_matrix * vec4(a_position, 1.0);
+            v_normal = vec4(0.0, 0.0, 1.0, 0.0);
+            v_color = vec4(a_color, 1.0);
         } else if (a_animation_id < 98.5) { // Reserved, treat like 0.0
             gl_Position = mvp_matrix * vec4(a_position, 1.0);
             v_normal = rot_matrix * vec4(billy, 0.0);

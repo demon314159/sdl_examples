@@ -224,7 +224,7 @@ void Toy::build_model()
     m_model->add(m_left_flipper->model(ANIMATION_ID_LEFT_FLIPPER));
     m_model->add(m_right_flipper->model(ANIMATION_ID_RIGHT_FLIPPER));
     m_model->add(m_top_flipper->model(ANIMATION_ID_TOP_FLIPPER));
-    m_model->add(m_score->model(ANIMATION_ID_SCORE11));
+    m_model->add(m_score->model(ANIMATION_ID_SCORE11, ANIMATION_ID_SCOREBOARD));
     m_model->add(m_table->model());
 }
 
