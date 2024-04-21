@@ -323,7 +323,7 @@ CadModel Table::model() const
 
     CadModel under_panel(PlaneShape(PLAYFIELD_X, PLAYFIELD_Z), WOOD_COLOR, 0.0);
     under_panel.rotate_ax(180.0);
-    mm.add(under_panel, PLAYFIELD_X / 2.0, -PLAYFIELD_Y, PLAYFIELD_Z / 2.0);
+    mm.add(under_panel, PLAYFIELD_X / 2.0, -PLAYFIELD_Y + 0.002, PLAYFIELD_Z / 2.0);
     CadModel top_panel(TopPanelShape(PLAYFIELD_X, R1, ANGLE1, ANGLE2, {X4, Z4}, X1, ZA, TOP_PANEL_STEPS), WOOD_COLOR, 0.0);
     mm.add(top_panel, 0.0, Y1, 0.0);
     CadModel bottom_panel(BottomPanelShape(X1, X3, X5, X6, X7, Z5, Z6, Z9), FACE_PLATE_COLOR, 0.0);

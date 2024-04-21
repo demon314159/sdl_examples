@@ -207,6 +207,11 @@ CadModel Score::model(float animation_id_first_digit, float animation_id_scorebo
     mm.add(barrier2, 0.0, -m_trim.v2 / 2.0, -m_size.v2 / 2.0 - m_trim.v1 / 2.0);
     mm.add(barrier2, 0.0, -m_trim.v2 / 2.0, m_size.v2 / 2.0 + m_trim.v1 / 2.0);
 
+    CadModel under_panel(PlaneShape(m_size.v1 + 2.0 * m_trim.v1, m_size.v2 + 2.0 * m_trim.v1), m_trim_color, animation_id_scoreboard);
+    under_panel.rotate_ax(180.0);
+    mm.add(under_panel,0.0, -m_trim.v2 + 0.002, 0.0);
+
+
     mm.rotate_ax(90.0);
     mm.translate(m_position.v1 + m_size.v1 / 2.0, m_position.v2, m_position.v3 - m_size.v2 / 2.0);
     return mm;

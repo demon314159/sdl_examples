@@ -33,7 +33,8 @@ View::View(SDL_Window* window)
     , m_texture_id_attr(0)
     , m_mvp_matrix_uniform(0)
     , m_rot_matrix_uniform(0)
-    , m_scoreboard_matrix_uniform(0)
+    , m_scoreboard_mvp_matrix_uniform(0)
+    , m_scoreboard_rot_matrix_uniform(0)
     , m_animation_matrix_uniform(nullptr)
     , m_lamp_uniform(0)
     , m_target_height_uniform(0)
@@ -344,9 +345,14 @@ void View::initialize()
         printf("rot_matrix is not a valid glsl variable\n");
         exit(0);
     }
-    m_scoreboard_matrix_uniform = glGetUniformLocation(m_program, "scoreboard_matrix");
-    if (m_scoreboard_matrix_uniform == -1) {
-        printf("scoreboard_matrix is not a valid glsl variable\n");
+    m_scoreboard_mvp_matrix_uniform = glGetUniformLocation(m_program, "scoreboard_mvp_matrix");
+    if (m_scoreboard_mvp_matrix_uniform == -1) {
+        printf("scoreboard_mvp_matrix is not a valid glsl variable\n");
+        exit(0);
+    }
+    m_scoreboard_rot_matrix_uniform = glGetUniformLocation(m_program, "scoreboard_rot_matrix");
+    if (m_scoreboard_rot_matrix_uniform == -1) {
+        printf("scoreboard_rot_matrix is not a valid glsl variable\n");
         exit(0);
     }
     m_lamp_uniform = glGetUniformLocation(m_program, "lamp_color");
@@ -559,7 +565,8 @@ void View::render()
 //    matrix.rotate_ax(-m_xrot);
     matrix.rotate_ay(m_yrot);
     matrix.translate(-m_center.v1, -m_center.v2, -m_center.v3);
-    m_scoreboard_matrix = m_projection * matrix;
+    m_scoreboard_mvp_matrix = m_projection * matrix;
+    m_scoreboard_rot_matrix = matrix;
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glUseProgram(m_program);
@@ -586,7 +593,8 @@ void View::render()
 
     glUniformMatrix4fv(m_mvp_matrix_uniform, 1, GL_TRUE, m_mvp_matrix.data());
     glUniformMatrix4fv(m_rot_matrix_uniform, 1, GL_TRUE, m_rot_matrix.data());
-    glUniformMatrix4fv(m_scoreboard_matrix_uniform, 1, GL_TRUE, m_scoreboard_matrix.data());
+    glUniformMatrix4fv(m_scoreboard_mvp_matrix_uniform, 1, GL_TRUE, m_scoreboard_mvp_matrix.data());
+    glUniformMatrix4fv(m_scoreboard_rot_matrix_uniform, 1, GL_TRUE, m_scoreboard_rot_matrix.data());
     int n = m_toy->animation_matrices();
     for (int i = 0; i < n; i++) {
         glUniformMatrix4fv(m_animation_matrix_uniform[i], 1, GL_TRUE, m_toy->get_animation_matrix(i).data());

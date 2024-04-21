@@ -70,7 +70,8 @@ private:
     GLint m_texture_id_attr;
     GLint m_mvp_matrix_uniform;
     GLint m_rot_matrix_uniform;
-    GLint m_scoreboard_matrix_uniform;
+    GLint m_scoreboard_mvp_matrix_uniform;
+    GLint m_scoreboard_rot_matrix_uniform;
     GLint* m_animation_matrix_uniform;
 
     GLint m_lamp_uniform;
@@ -113,7 +114,8 @@ private:
     float m_yoff;
     Matrix4x4 m_mvp_matrix;
     Matrix4x4 m_rot_matrix;
-    Matrix4x4 m_scoreboard_matrix;
+    Matrix4x4 m_scoreboard_mvp_matrix;
+    Matrix4x4 m_scoreboard_rot_matrix;
     Matrix4x4 m_projection;
     std::chrono::high_resolution_clock::time_point m_last_time_point;
 
