@@ -134,27 +134,27 @@ void main()
             }
             gl_Position = mvp_matrix * vec4(a_position, 1.0);
             v_normal = vec4(0.0, 0.0, 1.0, 0.0);
-        } else if (a_animation_id < 50.5) { // 9 Fixed Lamps
-            if (a_animation_id < 42.5) {         // Lamp22 (Fixed)
+        } else if (a_animation_id < 50.5) { // 9 Scoreboard Lamps
+            if (a_animation_id < 42.5) {         // Lamp22 (Scoreboard)
                 v_color = vec4(lamp_color[21], 1.0);
-            } else if (a_animation_id < 43.5) {  // Lamp23 (Fixed)
+            } else if (a_animation_id < 43.5) {  // Lamp23 (Scoreboard)
                 v_color = vec4(lamp_color[22], 1.0);
-            } else if (a_animation_id < 44.5) {  // Lamp24 (Fixed)
+            } else if (a_animation_id < 44.5) {  // Lamp24 (Scoreboard)
                 v_color = vec4(lamp_color[23], 1.0);
-            } else if (a_animation_id < 45.5) {  // Lamp25 (Fixed)
+            } else if (a_animation_id < 45.5) {  // Lamp25 (Scoreboard)
                 v_color = vec4(lamp_color[24], 1.0);
-            } else if (a_animation_id < 46.5) {  // Lamp26 (Fixed)
+            } else if (a_animation_id < 46.5) {  // Lamp26 (Scoreboard)
                 v_color = vec4(lamp_color[25], 1.0);
-            } else if (a_animation_id < 47.5) {  // Lamp27 (Fixed)
+            } else if (a_animation_id < 47.5) {  // Lamp27 (Scoreboard)
                 v_color = vec4(lamp_color[26], 1.0);
-            } else if (a_animation_id < 48.5) {  // Lamp28 (Fixed)
+            } else if (a_animation_id < 48.5) {  // Lamp28 (Scoreboard)
                 v_color = vec4(lamp_color[27], 1.0);
-            } else if (a_animation_id < 49.5) {  // Lamp29 (Fixed)
+            } else if (a_animation_id < 49.5) {  // Lamp29 (Scoreboard)
                 v_color = vec4(lamp_color[28], 1.0);
-            } else {                             // Lamp30 (Fixed)
+            } else {                             // Lamp30 (Scoreboard)
                 v_color = vec4(lamp_color[29], 1.0);
             }
-            gl_Position = vec4(a_position, 1.0);
+            gl_Position = scoreboard_mvp_matrix * vec4(a_position, 1.0);
             v_normal = vec4(0.0, 0.0, 1.0, 0.0);
         } else if (a_animation_id < 75.5) {      // Scoreboard
             gl_Position = scoreboard_mvp_matrix * vec4(a_position, 1.0);

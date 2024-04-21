@@ -68,9 +68,9 @@ View::View(SDL_Window* window)
     , m_fov(45.0)
     , m_camz(8.0)
     , m_xrot(INITIAL_XROT)
-    , m_yrot(0.0)
-    , m_xoff(0.0)
-    , m_yoff(0.0)
+    , m_yrot(INITIAL_YROT)
+    , m_xoff(INITIAL_XOFF)
+    , m_yoff(INITIAL_YOFF)
 {
 #ifdef VERBOSE
     printf("View::View(doc)\n");
@@ -650,8 +650,8 @@ void View::translate_y(int y)
 
 void View::translate_home()
 {
-    m_xoff = 0.0;
-    m_yoff = 0.0;
+    m_xoff = INITIAL_XOFF;
+    m_yoff = INITIAL_YOFF;
 }
 
 void View::rotate_ax(float degrees)
@@ -676,7 +676,7 @@ void View::rotate_home()
     printf("View::rotate_home()\n");
 #endif
     m_xrot = INITIAL_XROT;
-    m_yrot = 0.0;
+    m_yrot = INITIAL_YROT;
 }
 
 void View::zoom(float factor)

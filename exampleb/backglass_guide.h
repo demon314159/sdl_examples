@@ -10,13 +10,13 @@
 class BackglassGuide
 {
 public:
-    BackglassGuide(const Float2& position, const Float2& size, const Float2& image_size);
+    BackglassGuide(const Float3& position, const Float2& size, const Float2& image_size);
 
     Float3 position(const Float2& relative_position) const;
     Float2 size(const Float2& relative_size) const;
 
 protected:
-    Float2 m_position;
+    Float3 m_position;
     Float2 m_size;
     Float2 m_image_size;
 };

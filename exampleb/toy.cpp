@@ -33,7 +33,7 @@ Toy::Toy()
     m_target = new Target(DROP_TARGET_HEIGHT);
     m_sensor = new Sensor(MAX_SENSORS);
     m_table = new Table();
-    m_score = new Score(MAX_PLAYERS, SCORE_DIGITS, {BACKGLASS_POSITION_X, BACKGLASS_POSITION_Y, BACKGLASS_POSITION_Z}, {BACKGLASS_SIZE_X, BACKGLASS_SIZE_Z},
+    m_score = new Score(MAX_PLAYERS, SCORE_DIGITS, {SCOREBOARD_POSITION_X, SCOREBOARD_POSITION_Y, SCOREBOARD_POSITION_Z}, {BACKGLASS_SIZE_X, BACKGLASS_SIZE_Z},
                         m_table->trim(), m_table->trim_color(), TEXTURE_ID_BACKGLASS, TEXTURE_ID_SCORE);
 
     m_left_flipper = new Flipper(
@@ -82,7 +82,7 @@ Toy::Toy()
     m_lamp->add(LAMP_EXTRA_BALL_POSITION, LAMP_SIZE, TYPE4_ON_COLOR, TYPE4_OFF_COLOR);
     m_lamp->add(LAMP_SPECIAL_POSITION, LAMP_SIZE, TYPE5_ON_COLOR, TYPE5_OFF_COLOR);
 
-    BackglassGuide bg({BACKGLASS_POSITION_X, BACKGLASS_POSITION_Z},{BACKGLASS_SIZE_X, BACKGLASS_SIZE_Z}, {BACKGLASS_IMAGE_SIZE_X, BACKGLASS_IMAGE_SIZE_Z});
+    BackglassGuide bg({SCOREBOARD_POSITION_X, SCOREBOARD_POSITION_Y, SCOREBOARD_POSITION_Z},{BACKGLASS_SIZE_X, BACKGLASS_SIZE_Z}, {BACKGLASS_IMAGE_SIZE_X, BACKGLASS_IMAGE_SIZE_Z});
     m_lamp->add(bg.position(FIXED_LAMP_BALL_IN_PLAY_POSITION), bg.size({0.022, 0.026}), TYPE10_ON_COLOR, TYPE10_OFF_COLOR);
     m_lamp->add(bg.position(FIXED_LAMP_NUMBER_TO_MATCH_POSITION), bg.size({0.032, 0.017}), TYPE11_ON_COLOR, TYPE11_OFF_COLOR);
     m_lamp->add(bg.position(FIXED_LAMP_HIGH_GAME_TO_DATE_POSITION), bg.size({0.027, 0.020}), TYPE8_ON_COLOR, TYPE8_OFF_COLOR);
@@ -93,15 +93,15 @@ Toy::Toy()
     m_lamp->add(bg.position(FIXED_LAMP_PLAYER3_POSITION), bg.size({0.0195, 0.0155}), TYPE6_ON_COLOR, TYPE6_OFF_COLOR);
     m_lamp->add(bg.position(FIXED_LAMP_PLAYER4_POSITION), bg.size({0.020, 0.016}), TYPE6_ON_COLOR, TYPE6_OFF_COLOR);
 
-//    m_lamp->set(FIXED_LAMP_ID_BALL_IN_PLAY, true);
-//    m_lamp->set(FIXED_LAMP_ID_NUMBER_TO_MATCH, true);
-//    m_lamp->set(FIXED_LAMP_ID_HIGH_GAME_TO_DATE, true);
-//    m_lamp->set(FIXED_LAMP_ID_GAME_OVER, true);
-//    m_lamp->set(FIXED_LAMP_ID_SHOOT_AGAIN, true);
-//    m_lamp->set(FIXED_LAMP_ID_PLAYER_1, true);
-//    m_lamp->set(FIXED_LAMP_ID_PLAYER_2, true);
-//    m_lamp->set(FIXED_LAMP_ID_PLAYER_3, true);
-//    m_lamp->set(FIXED_LAMP_ID_PLAYER_4, true);
+    m_lamp->set(FIXED_LAMP_ID_BALL_IN_PLAY, true);
+    m_lamp->set(FIXED_LAMP_ID_NUMBER_TO_MATCH, true);
+    m_lamp->set(FIXED_LAMP_ID_HIGH_GAME_TO_DATE, true);
+    m_lamp->set(FIXED_LAMP_ID_GAME_OVER, true);
+    m_lamp->set(FIXED_LAMP_ID_SHOOT_AGAIN, true);
+    m_lamp->set(FIXED_LAMP_ID_PLAYER_1, true);
+    m_lamp->set(FIXED_LAMP_ID_PLAYER_2, true);
+    m_lamp->set(FIXED_LAMP_ID_PLAYER_3, true);
+    m_lamp->set(FIXED_LAMP_ID_PLAYER_4, true);
 
     m_lamp->set(LAMP_ID_TOP_ROLLOVER_A, true);
     m_lamp->set(LAMP_ID_TOP_ROLLOVER_B, true);

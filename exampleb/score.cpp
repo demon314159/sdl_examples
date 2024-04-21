@@ -213,7 +213,7 @@ CadModel Score::model(float animation_id_first_digit, float animation_id_scorebo
 
 
     mm.rotate_ax(90.0);
-    mm.translate(m_position.v1 + m_size.v1 / 2.0, m_position.v2, m_position.v3 - m_size.v2 / 2.0);
+    mm.translate(m_position.v1 + m_size.v1 / 2.0, m_position.v2, m_position.v3);
     return mm;
 }
 
