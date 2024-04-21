@@ -28,7 +28,6 @@ void Host::resize(int w, int h)
 void Host::initialize()
 {
     m_view.initialize();
-    m_view.translate_x(2.5 * m_view.width() / 10);
 }
 
 void Host::render()
@@ -62,32 +61,40 @@ void Host::key_press_event(SDL_Event* e)
         m_view.replay_action_button(true);
     } else if (a == SDL_SCANCODE_UP) {
         if (shifted) {
-            m_view.translate_y(-m_view.height() / 10);
+            m_view.translate_y(-m_view.height() / 20);
         } else {
             m_view.rotate_ax(-10.0);
         }
     } else if (a == SDL_SCANCODE_DOWN) {
         if (shifted) {
-            m_view.translate_y(m_view.height() / 10);
+            m_view.translate_y(m_view.height() / 20);
         } else {
             m_view.rotate_ax(10.0);
         }
     } else if (a == SDL_SCANCODE_LEFT) {
         if (shifted) {
-            m_view.translate_x(-m_view.width() / 10);
+            m_view.translate_x(-m_view.width() / 20);
         } else {
             m_view.rotate_ay(-10.0);
         }
     } else if (a == SDL_SCANCODE_RIGHT) {
         if (shifted) {
-            m_view.translate_x(m_view.width() / 10);
+            m_view.translate_x(m_view.width() / 20);
         } else {
             m_view.rotate_ay(10.0);
         }
     } else if (a == SDL_SCANCODE_I) {
-        m_view.zoom(3.0 / 2.0);
+        if (shifted) {
+            m_view.zoom(10.0 / 9.0);
+        } else {
+            m_view.zoom(3.0 / 2.0);
+        }
     } else if (a == SDL_SCANCODE_O) {
-        m_view.zoom(2.0 / 3.0);
+        if (shifted) {
+            m_view.zoom(9.0 / 10.0);
+        } else {
+            m_view.zoom(2.0 / 3.0);
+        }
     } else if (a == SDL_SCANCODE_H) {
         m_view.zoom_home();
         if (shifted) {

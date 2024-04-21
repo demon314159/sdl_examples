@@ -9,7 +9,7 @@
 
 #define SCORE_DELAY  0.15
 
-Score::Score(int max_players, int digits, const Float2& position, const Float2& size,
+Score::Score(int max_players, int digits, const Float3& position, const Float2& size,
              float texture_id_backglass, float texture_id_score)
     : m_max_players(max_players)
     , m_digits(digits)
@@ -192,10 +192,10 @@ CadModel Score::model(float animation_id) const
 //        }
 //    }
 
-    CadModel backglass(PlaneShape(m_size.v1, m_size.v2, m_texture_id_backglass), PaintCan(1.0, 1.0, 1.0), 100.0);
+    CadModel backglass(PlaneShape(m_size.v1, m_size.v2, m_texture_id_backglass), PaintCan(1.0, 1.0, 1.0), 0.0);
     mm.add(backglass);
-    mm.rotate_ax(90.0);
-    mm.translate(m_position.v1 + m_size.v1 / 2.0, m_position.v2 - m_size.v2 / 2.0, 0.0);
+    mm.rotate_ax(40.0);
+    mm.translate(m_position.v1 + m_size.v1 / 2.0, m_position.v2, m_position.v3 - m_size.v2 / 2.0);
     return mm;
 }
 

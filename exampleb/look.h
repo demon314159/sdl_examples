@@ -18,17 +18,15 @@
 // The backglass is a fixed object on a screen from (-1.0, 1.0) to (1.0, -1.0)
 // The aspect ratio is required to properly size the x dimension
 
-#define ASPECT_RATIO  1.816f  // This becomes incorrect if resized
+#define BACKGLASS_SIZE_X  (1.25 * PLAYFIELD_X)
+#define BACKGLASS_SIZE_Z  (BACKGLASS_SIZE_X / 1.25f)
 
-#define BACKGLASS_SIZE_X  ((1.25 / ASPECT_RATIO) * 1.2)
-#define BACKGLASS_SIZE_Y  (1.0 * 1.2)
-
-#define BACKGLASS_POSITION_X -1.0
-#define BACKGLASS_POSITION_Y 1.0
+#define BACKGLASS_POSITION_X (-BACKGLASS_SIZE_X - 0.010)
+#define BACKGLASS_POSITION_Y 0.016
+#define BACKGLASS_POSITION_Z 0.520
 
 #define BACKGLASS_IMAGE_SIZE_X  0.33875
-#define BACKGLASS_IMAGE_SIZE_Y  0.271
-
+#define BACKGLASS_IMAGE_SIZE_Z  0.271
 
 #define ANIMATION_MATRICES 4
 #define ANIMATION_ID_NORMAL 0.0

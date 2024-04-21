@@ -13,7 +13,7 @@
 class Score
 {
 public:
-    Score(int max_players, int digits, const Float2& position, const Float2& size,
+    Score(int max_players, int digits, const Float3& position, const Float2& size,
           float texture_id_backglass, float texture_id_score);
     ~Score();
 
@@ -33,7 +33,7 @@ public:
 private:
     int m_max_players;
     int m_digits;
-    Float2 m_position;
+    Float3 m_position;
     Float2 m_size;
     float m_texture_id_backglass;
     float m_texture_id_score;
