@@ -563,7 +563,7 @@ void View::render()
     matrix.unity();
     matrix.translate(m_xoff, m_yoff, -m_camz - m_radius);
 //    matrix.rotate_ax(-m_xrot);
-    matrix.rotate_ay(m_yrot);
+//    matrix.rotate_ay(m_yrot);
     matrix.translate(-m_center.v1, -m_center.v2, -m_center.v3);
     m_scoreboard_mvp_matrix = m_projection * matrix;
     m_scoreboard_rot_matrix = matrix;
