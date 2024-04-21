@@ -39,6 +39,8 @@ public:
     float ball_z_limit() const;
     Float2 ball_home_position() const;
     Float2 out_hole_position() const;
+    Float2 trim() const;
+    PaintCan trim_color() const;
 
 private:
     float m_ball_z_limit;

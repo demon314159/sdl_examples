@@ -14,6 +14,7 @@ class Score
 {
 public:
     Score(int max_players, int digits, const Float3& position, const Float2& size,
+          const Float2& trim, const PaintCan& trim_color,
           float texture_id_backglass, float texture_id_score);
     ~Score();
 
@@ -35,6 +36,8 @@ private:
     int m_digits;
     Float3 m_position;
     Float2 m_size;
+    Float2 m_trim;
+    PaintCan m_trim_color;
     float m_texture_id_backglass;
     float m_texture_id_score;
     int* m_digit;

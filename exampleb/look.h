@@ -15,14 +15,11 @@
 #define PLAYFIELD_Y  0.030f
 #define PLAYFIELD_Z  0.663927777f
 
-// The backglass is a fixed object on a screen from (-1.0, 1.0) to (1.0, -1.0)
-// The aspect ratio is required to properly size the x dimension
-
 #define BACKGLASS_SIZE_X  (1.25 * PLAYFIELD_X)
 #define BACKGLASS_SIZE_Z  (BACKGLASS_SIZE_X / 1.25f)
 
-#define BACKGLASS_POSITION_X (-BACKGLASS_SIZE_X - 0.010)
-#define BACKGLASS_POSITION_Y 0.016
+#define BACKGLASS_POSITION_X (-BACKGLASS_SIZE_X - 0.014)
+#define BACKGLASS_POSITION_Y -0.020
 #define BACKGLASS_POSITION_Z 0.520
 
 #define BACKGLASS_IMAGE_SIZE_X  0.33875

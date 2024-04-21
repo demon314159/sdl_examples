@@ -443,3 +443,12 @@ CadModel Table::model() const
     return mm;
 }
 
+Float2 Table::trim() const
+{
+    return {T1, Y4};
+}
+
+PaintCan Table::trim_color() const
+{
+    return WOOD_COLOR;
+}

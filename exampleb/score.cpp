@@ -4,17 +4,21 @@
 
 #include "score.h"
 #include "plane_shape.h"
+#include "cube_shape.h"
 
 #include <stdio.h>
 
 #define SCORE_DELAY  0.15
 
 Score::Score(int max_players, int digits, const Float3& position, const Float2& size,
+             const Float2& trim, const PaintCan& trim_color,
              float texture_id_backglass, float texture_id_score)
     : m_max_players(max_players)
     , m_digits(digits)
     , m_position(position)
     , m_size(size)
+    , m_trim(trim)
+    , m_trim_color(trim_color)
     , m_texture_id_backglass(texture_id_backglass)
     , m_texture_id_score(texture_id_score)
     , m_digit(new int[max_players * digits])
@@ -194,6 +198,15 @@ CadModel Score::model(float animation_id_first_digit, float animation_id_scorebo
 
     CadModel backglass(PlaneShape(m_size.v1, m_size.v2, m_texture_id_backglass), PaintCan(1.0, 1.0, 1.0), animation_id_scoreboard);
     mm.add(backglass);
+
+
+    CadModel barrier1(CubeShape(m_trim.v1, m_trim.v2, m_size.v2 + 2.0 * m_trim.v1), m_trim_color, animation_id_scoreboard);
+    CadModel barrier2(CubeShape(m_size.v1 + 2.0 * m_trim.v1, m_trim.v2, m_trim.v1), m_trim_color, animation_id_scoreboard);
+    mm.add(barrier1, -m_size.v1 / 2.0 - m_trim.v1 / 2.0, -m_trim.v2 / 2.0f, 0.0);
+    mm.add(barrier1, m_size.v1 / 2.0 + m_trim.v1 / 2.0, -m_trim.v2 / 2.0f, 0.0);
+    mm.add(barrier2, 0.0, -m_trim.v2 / 2.0, -m_size.v2 / 2.0 - m_trim.v1 / 2.0);
+    mm.add(barrier2, 0.0, -m_trim.v2 / 2.0, m_size.v2 / 2.0 + m_trim.v1 / 2.0);
+
     mm.rotate_ax(90.0);
     mm.translate(m_position.v1 + m_size.v1 / 2.0, m_position.v2, m_position.v3 - m_size.v2 / 2.0);
     return mm;
