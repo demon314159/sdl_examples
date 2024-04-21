@@ -28,6 +28,7 @@ void Host::resize(int w, int h)
 void Host::initialize()
 {
     m_view.initialize();
+    m_view.translate_x(m_view.width() / 10);
 }
 
 void Host::render()

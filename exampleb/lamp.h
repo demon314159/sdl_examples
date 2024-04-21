@@ -9,12 +9,12 @@
 #include "float3.h"
 #include "paint_can.h"
 
-#define MAX_LAMPS 25
+#define MAX_LAMPS 30
 
 class Lamp
 {
 public:
-    Lamp();
+    Lamp(float animation_id_fixed_lamp1);
     ~Lamp();
 
     int lamps() const;
@@ -28,6 +28,7 @@ public:
     float* data() const;
 
 private:
+    float m_animation_id_fixed_lamp1;
     int m_lamps;
     bool m_state[MAX_LAMPS];
     Float3 m_position[MAX_LAMPS];

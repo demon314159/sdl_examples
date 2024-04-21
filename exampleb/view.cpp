@@ -499,6 +499,7 @@ void View::resize(int w, int h)
     m_width = w;
     m_height = h;
     m_aspect = float(m_width) / float(m_height ? m_height : 1.0);
+
     glViewport(0, 0, m_width, m_height);
     resize_calc();
 }

@@ -7,6 +7,7 @@
 #include <math.h>
 #include "look.h"
 #include "layout_guide.h"
+#include "backglass_guide.h"
 #include <stdio.h>
 
 #define BALL_OUT_HOLE_SPEED 0.3
@@ -30,10 +31,10 @@ Toy::Toy()
     , m_last_launch_action_button(false)
 {
     m_ball = new Ball(BALL_RADIUS, BALL_TOP_COLOR, BALL_MIDDLE_COLOR, BALL_BOTTOM_COLOR, BALL_SEGMENTS);
-    m_lamp = new Lamp();
+    m_lamp = new Lamp(ANIMATION_ID_FIXED_LAMP1);
     m_target = new Target(DROP_TARGET_HEIGHT);
     m_sensor = new Sensor(MAX_SENSORS);
-    m_score = new Score(MAX_PLAYERS, SCORE_DIGITS, TEXTURE_ID_BACKGLASS, TEXTURE_ID_SCORE);
+    m_score = new Score(MAX_PLAYERS, SCORE_DIGITS, {BACKGLASS_POSITION_X, BACKGLASS_POSITION_Y}, {BACKGLASS_SIZE_X, BACKGLASS_SIZE_Y}, TEXTURE_ID_BACKGLASS, TEXTURE_ID_SCORE);
     m_table = new Table();
     m_left_flipper = new Flipper(
         LEFT_FLIPPER_ANGLE, LEFT_FLIPPER_POSITION, BOTTOM_FLIPPER_LENGTH,
@@ -80,6 +81,23 @@ Toy::Toy()
     m_lamp->add(LAMP_SHOOT_AGAIN_POSITION, LAMP_SIZE, TYPE4_ON_COLOR, TYPE4_OFF_COLOR);
     m_lamp->add(LAMP_EXTRA_BALL_POSITION, LAMP_SIZE, TYPE4_ON_COLOR, TYPE4_OFF_COLOR);
     m_lamp->add(LAMP_SPECIAL_POSITION, LAMP_SIZE, TYPE5_ON_COLOR, TYPE5_OFF_COLOR);
+
+    BackglassGuide bg({BACKGLASS_POSITION_X, BACKGLASS_POSITION_Y},{BACKGLASS_SIZE_X, BACKGLASS_SIZE_Y}, {BACKGLASS_IMAGE_SIZE_X, BACKGLASS_IMAGE_SIZE_Y});
+    m_lamp->add(bg.position(FIXED_LAMP_BALL_IN_PLAY_POSITION), bg.size({0.022, 0.026}), TYPE1_ON_COLOR, TYPE1_OFF_COLOR);
+    m_lamp->add(bg.position(FIXED_LAMP_NUMBER_TO_MATCH_POSITION), bg.size({0.022, 0.009}), TYPE1_ON_COLOR, TYPE1_OFF_COLOR);
+    m_lamp->add(bg.position(FIXED_LAMP_HIGH_GAME_TO_DATE_POSITION), bg.size({0.019, 0.0145}), TYPE1_ON_COLOR, TYPE1_OFF_COLOR);
+    m_lamp->add(bg.position(FIXED_LAMP_GAME_OVER_POSITION), bg.size({0.017, 0.013}), TYPE1_ON_COLOR, TYPE1_OFF_COLOR);
+    m_lamp->add(bg.position(FIXED_LAMP_SHOOT_AGAIN_POSITION), bg.size({0.018, 0.0105}), TYPE1_ON_COLOR, TYPE1_OFF_COLOR);
+    m_lamp->add(bg.position(FIXED_LAMP_PLAYER1_POSITION), bg.size({0.020, 0.017}), TYPE6_ON_COLOR, TYPE6_OFF_COLOR);
+    m_lamp->add(bg.position(FIXED_LAMP_PLAYER2_POSITION), bg.size({0.020, 0.017}), TYPE6_ON_COLOR, TYPE6_OFF_COLOR);
+    m_lamp->add(bg.position(FIXED_LAMP_PLAYER3_POSITION), bg.size({0.0195, 0.0155}), TYPE6_ON_COLOR, TYPE6_OFF_COLOR);
+    m_lamp->add(bg.position(FIXED_LAMP_PLAYER4_POSITION), bg.size({0.020, 0.016}), TYPE6_ON_COLOR, TYPE6_OFF_COLOR);
+
+    m_lamp->set(FIXED_LAMP_ID_BALL_IN_PLAY, false);
+    m_lamp->set(FIXED_LAMP_ID_PLAYER_1, true);
+    m_lamp->set(FIXED_LAMP_ID_PLAYER_2, true);
+    m_lamp->set(FIXED_LAMP_ID_PLAYER_3, true);
+//    m_lamp->set(FIXED_LAMP_ID_PLAYER_4, true);
 
     m_lamp->set(LAMP_ID_TOP_ROLLOVER_A, true);
     m_lamp->set(LAMP_ID_TOP_ROLLOVER_B, true);

@@ -9,9 +9,12 @@
 
 #define SCORE_DELAY  0.15
 
-Score::Score(int max_players, int digits, float texture_id_backglass, float texture_id_score)
+Score::Score(int max_players, int digits, const Float2& position, const Float2& size,
+             float texture_id_backglass, float texture_id_score)
     : m_max_players(max_players)
     , m_digits(digits)
+    , m_position(position)
+    , m_size(size)
     , m_texture_id_backglass(texture_id_backglass)
     , m_texture_id_score(texture_id_score)
     , m_digit(new int[max_players * digits])
@@ -189,14 +192,10 @@ CadModel Score::model(float animation_id) const
 //        }
 //    }
 
-// These are magic numbers for now
-    float k = 2.0 / 2.0;
-    float dimx = k * 1.25 / 1.77;
-    float dimy = k * 1.0;
-    CadModel backglass(PlaneShape(dimx, dimy, m_texture_id_backglass), PaintCan(1.0, 1.0, 1.0), 100.0);
+    CadModel backglass(PlaneShape(m_size.v1, m_size.v2, m_texture_id_backglass), PaintCan(1.0, 1.0, 1.0), 100.0);
     mm.add(backglass);
     mm.rotate_ax(90.0);
-    mm.translate(-0.75, 0.0, 0.0);
+    mm.translate(m_position.v1 + m_size.v1 / 2.0, m_position.v2 - m_size.v2 / 2.0, 0.0);
     return mm;
 }
 

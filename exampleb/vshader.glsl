@@ -6,7 +6,7 @@ uniform mat4 animation_0_matrix;
 uniform mat4 animation_1_matrix;
 uniform mat4 animation_2_matrix;
 uniform mat4 animation_3_matrix;
-uniform vec3 lamp_color[21];
+uniform vec3 lamp_color[30];
 uniform float target_height[15];
 
 in vec3 a_position;
@@ -52,7 +52,6 @@ void main()
                 v_normal = rot_matrix * animation_3_matrix * vec4(billy, 0.0);
             }
             v_color = vec4(a_color, 1.0);
-
         } else if (a_animation_id < 20.5) { // 15 Drop Targets
             if (a_animation_id < 6.5) {          // Drop Target1
                 gl_Position = mvp_matrix * vec4(a_position.x, a_position.y - target_height[0], a_position.z, 1.0);
@@ -132,6 +131,28 @@ void main()
                 v_color = vec4(lamp_color[20], 1.0);
             }
             gl_Position = mvp_matrix * vec4(a_position, 1.0);
+            v_normal = vec4(0.0, 0.0, 1.0, 0.0);
+        } else if (a_animation_id < 50.5) { // 8 Fixed Lamps
+            if (a_animation_id < 42.5) {         // Lamp22 (Fixed)
+                v_color = vec4(lamp_color[21], 1.0);
+            } else if (a_animation_id < 43.5) {  // Lamp23 (Fixed)
+                v_color = vec4(lamp_color[22], 1.0);
+            } else if (a_animation_id < 44.5) {  // Lamp24 (Fixed)
+                v_color = vec4(lamp_color[23], 1.0);
+            } else if (a_animation_id < 45.5) {  // Lamp25 (Fixed)
+                v_color = vec4(lamp_color[24], 1.0);
+            } else if (a_animation_id < 46.5) {  // Lamp26 (Fixed)
+                v_color = vec4(lamp_color[25], 1.0);
+            } else if (a_animation_id < 47.5) {  // Lamp27 (Fixed)
+                v_color = vec4(lamp_color[26], 1.0);
+            } else if (a_animation_id < 48.5) {  // Lamp28 (Fixed)
+                v_color = vec4(lamp_color[27], 1.0);
+            } else if (a_animation_id < 49.5) {  // Lamp29 (Fixed)
+                v_color = vec4(lamp_color[28], 1.0);
+            } else {                             // Lamp30 (Fixed)
+                v_color = vec4(lamp_color[29], 1.0);
+            }
+            gl_Position = vec4(a_position, 1.0);
             v_normal = vec4(0.0, 0.0, 1.0, 0.0);
         } else if (a_animation_id < 98.5) { // Reserved, treat like 0.0
             gl_Position = mvp_matrix * vec4(a_position, 1.0);

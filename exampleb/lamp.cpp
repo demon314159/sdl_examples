@@ -5,8 +5,9 @@
 #include "lamp.h"
 #include "plane_shape.h"
 
-Lamp::Lamp()
-    : m_lamps(0)
+Lamp::Lamp(float animation_id_fixed_lamp1)
+    : m_animation_id_fixed_lamp1(animation_id_fixed_lamp1)
+    , m_lamps(0)
     , m_data(new float[MAX_LAMPS * 3])
 {
 }
@@ -67,6 +68,9 @@ CadModel Lamp::model(float animation_id) const
     CadModel cm;
     for (int i = 0; i < m_lamps; i++) {
         CadModel lamp(PlaneShape(m_size[i].v1, m_size[i].v2), m_off_color[i], animation_id + (float) i);
+        if ((animation_id + (float) i) > (m_animation_id_fixed_lamp1 - 0.5)) {
+            lamp.rotate_ax(90.0);
+        }
         cm.add(lamp, m_position[i].v1, m_position[i].v2, m_position[i].v3);
     }
     return cm;

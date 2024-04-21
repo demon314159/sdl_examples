@@ -105,51 +105,51 @@ void main()
         } else if (v_texture_id < 11.5)  { // Score
             c = 1.0;
             vec2 ttt;
-            if (v_animation_id < 42.5) {
+            if (v_animation_id < 51.5) {
               ttt = vec2(v_texture_position.x + score[0], v_texture_position.y);
-            } else if (v_animation_id < 43.5) {
-              ttt = vec2(v_texture_position.x + score[1], v_texture_position.y);
-            } else if (v_animation_id < 44.5) {
-              ttt = vec2(v_texture_position.x + score[2], v_texture_position.y);
-            } else if (v_animation_id < 45.5) {
-              ttt = vec2(v_texture_position.x + score[3], v_texture_position.y);
-            } else if (v_animation_id < 46.5) {
-              ttt = vec2(v_texture_position.x + score[4], v_texture_position.y);
-            } else if (v_animation_id < 47.5) {
-              ttt = vec2(v_texture_position.x + score[5], v_texture_position.y);
-            } else if (v_animation_id < 48.5) {
-              ttt = vec2(v_texture_position.x + score[6], v_texture_position.y);
-            } else if (v_animation_id < 49.5) {
-              ttt = vec2(v_texture_position.x + score[7], v_texture_position.y);
-            } else if (v_animation_id < 50.5) {
-              ttt = vec2(v_texture_position.x + score[8], v_texture_position.y);
-            } else if (v_animation_id < 51.5) {
-              ttt = vec2(v_texture_position.x + score[9], v_texture_position.y);
             } else if (v_animation_id < 52.5) {
-              ttt = vec2(v_texture_position.x + score[10], v_texture_position.y);
+              ttt = vec2(v_texture_position.x + score[1], v_texture_position.y);
             } else if (v_animation_id < 53.5) {
-              ttt = vec2(v_texture_position.x + score[11], v_texture_position.y);
+              ttt = vec2(v_texture_position.x + score[2], v_texture_position.y);
             } else if (v_animation_id < 54.5) {
-              ttt = vec2(v_texture_position.x + score[12], v_texture_position.y);
+              ttt = vec2(v_texture_position.x + score[3], v_texture_position.y);
             } else if (v_animation_id < 55.5) {
-              ttt = vec2(v_texture_position.x + score[13], v_texture_position.y);
+              ttt = vec2(v_texture_position.x + score[4], v_texture_position.y);
             } else if (v_animation_id < 56.5) {
-              ttt = vec2(v_texture_position.x + score[14], v_texture_position.y);
+              ttt = vec2(v_texture_position.x + score[5], v_texture_position.y);
             } else if (v_animation_id < 57.5) {
-              ttt = vec2(v_texture_position.x + score[15], v_texture_position.y);
+              ttt = vec2(v_texture_position.x + score[6], v_texture_position.y);
             } else if (v_animation_id < 58.5) {
-              ttt = vec2(v_texture_position.x + score[16], v_texture_position.y);
+              ttt = vec2(v_texture_position.x + score[7], v_texture_position.y);
             } else if (v_animation_id < 59.5) {
-              ttt = vec2(v_texture_position.x + score[17], v_texture_position.y);
+              ttt = vec2(v_texture_position.x + score[8], v_texture_position.y);
             } else if (v_animation_id < 60.5) {
-              ttt = vec2(v_texture_position.x + score[18], v_texture_position.y);
+              ttt = vec2(v_texture_position.x + score[9], v_texture_position.y);
             } else if (v_animation_id < 61.5) {
-              ttt = vec2(v_texture_position.x + score[19], v_texture_position.y);
+              ttt = vec2(v_texture_position.x + score[10], v_texture_position.y);
             } else if (v_animation_id < 62.5) {
-              ttt = vec2(v_texture_position.x + score[20], v_texture_position.y);
+              ttt = vec2(v_texture_position.x + score[11], v_texture_position.y);
             } else if (v_animation_id < 63.5) {
-              ttt = vec2(v_texture_position.x + score[21], v_texture_position.y);
+              ttt = vec2(v_texture_position.x + score[12], v_texture_position.y);
             } else if (v_animation_id < 64.5) {
+              ttt = vec2(v_texture_position.x + score[13], v_texture_position.y);
+            } else if (v_animation_id < 65.5) {
+              ttt = vec2(v_texture_position.x + score[14], v_texture_position.y);
+            } else if (v_animation_id < 66.5) {
+              ttt = vec2(v_texture_position.x + score[15], v_texture_position.y);
+            } else if (v_animation_id < 67.5) {
+              ttt = vec2(v_texture_position.x + score[16], v_texture_position.y);
+            } else if (v_animation_id < 68.5) {
+              ttt = vec2(v_texture_position.x + score[17], v_texture_position.y);
+            } else if (v_animation_id < 69.5) {
+              ttt = vec2(v_texture_position.x + score[18], v_texture_position.y);
+            } else if (v_animation_id < 70.5) {
+              ttt = vec2(v_texture_position.x + score[19], v_texture_position.y);
+            } else if (v_animation_id < 71.5) {
+              ttt = vec2(v_texture_position.x + score[20], v_texture_position.y);
+            } else if (v_animation_id < 72.5) {
+              ttt = vec2(v_texture_position.x + score[21], v_texture_position.y);
+            } else if (v_animation_id < 73.5) {
               ttt = vec2(v_texture_position.x + score[22], v_texture_position.y);
             } else {
               ttt = vec2(v_texture_position.x + score[23], v_texture_position.y);

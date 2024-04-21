@@ -78,6 +78,7 @@ HEADERS = view.h \
           flat_rail.h \
           flat_rail_shape.h \
           plastic_guide.h \
+          backglass_guide.h \
           target.h \
           sensor.h \
           score.h \
@@ -161,6 +162,7 @@ OBJECTS = main.obj \
           flat_rail.obj \
           flat_rail_shape.obj \
           plastic_guide.obj \
+          backglass_guide.obj \
           target.obj \
           sensor.obj \
           score.obj \
