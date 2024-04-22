@@ -14,6 +14,7 @@ class Scoreboard
 {
 public:
     Scoreboard(int max_players, int digits, const Float3& position, const Float2& size,
+          const Float2& backglass_image_size,
           const Float2& trim, const PaintCan& trim_color,
           float texture_id_backglass, float texture_id_score);
     ~Scoreboard();
@@ -36,6 +37,7 @@ private:
     int m_digits;
     Float3 m_position;
     Float2 m_size;
+    Float2 m_backglass_image_size;
     Float2 m_trim;
     PaintCan m_trim_color;
     float m_texture_id_backglass;
@@ -51,6 +53,7 @@ private:
     void command_clear_digits(int solenoid_id);
     void command_increment_digit(int digit, int solenoid_id);
     void command_out_hole(int solenoid_id);
+    CadModel player_digits_model(int player, const Float2& position, const Float2& size, float animation_id_first_digit) const;
 };
 
 #endif // _SCOREBOARD_H_

@@ -35,6 +35,7 @@ Toy::Toy()
     m_table = new Table();
     m_scoreboard = new Scoreboard(MAX_PLAYERS, SCORE_DIGITS,
                             {SCOREBOARD_POSITION_X, SCOREBOARD_POSITION_Y, SCOREBOARD_POSITION_Z}, {BACKGLASS_SIZE_X, BACKGLASS_SIZE_Z},
+                            {BACKGLASS_IMAGE_SIZE_X, BACKGLASS_IMAGE_SIZE_Z},
                             m_table->trim(), m_table->trim_color(), TEXTURE_ID_BACKGLASS, TEXTURE_ID_SCORE);
 
     m_left_flipper = new Flipper(
