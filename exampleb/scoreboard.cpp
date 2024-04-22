@@ -1,8 +1,8 @@
 //
-// score.cpp
+// scoreboard.cpp
 //
 
-#include "score.h"
+#include "scoreboard.h"
 #include "plane_shape.h"
 #include "cube_shape.h"
 
@@ -10,9 +10,10 @@
 
 #define SCORE_DELAY  0.15
 
-Score::Score(int max_players, int digits, const Float3& position, const Float2& size,
-             const Float2& trim, const PaintCan& trim_color,
-             float texture_id_backglass, float texture_id_score)
+Scoreboard::Scoreboard(int max_players, int digits,
+                       const Float3& position, const Float2& size,
+                       const Float2& trim, const PaintCan& trim_color,
+                       float texture_id_backglass, float texture_id_score)
     : m_max_players(max_players)
     , m_digits(digits)
     , m_position(position)
@@ -30,21 +31,21 @@ Score::Score(int max_players, int digits, const Float3& position, const Float2& 
     clear();
 }
 
-Score::~Score()
+Scoreboard::~Scoreboard()
 {
     delete [] m_data;
     delete [] m_digit;
     delete m_queue;
 }
 
-void Score::clear()
+void Scoreboard::clear()
 {
     for (int i = 0; i < (m_max_players * m_digits); i++) {
         m_digit[i] = 0;
     }
 }
 
-void Score::advance(float seconds)
+void Scoreboard::advance(float seconds)
 {
     m_solenoid_id = 0;
     if (m_queue->empty()) {
@@ -64,7 +65,7 @@ void Score::advance(float seconds)
     }
 }
 
-bool Score::non_zero_digits() const
+bool Scoreboard::non_zero_digits() const
 {
     for (int i = 0; i < (m_max_players * m_digits); i++) {
         if (m_digit[i] != 0) {
@@ -74,7 +75,7 @@ bool Score::non_zero_digits() const
     return false;
 }
 
-void Score::command_clear_digits(int solenoid_id)
+void Scoreboard::command_clear_digits(int solenoid_id)
 {
     if (non_zero_digits()) {
         m_solenoid_id = solenoid_id;
@@ -87,7 +88,7 @@ void Score::command_clear_digits(int solenoid_id)
     }
 }
 
-void Score::command_increment_digit(int digit, int solenoid_id)
+void Scoreboard::command_increment_digit(int digit, int solenoid_id)
 {
     m_solenoid_id = solenoid_id;
     int i = digit;
@@ -105,12 +106,12 @@ void Score::command_increment_digit(int digit, int solenoid_id)
     }
 }
 
-void Score::command_out_hole(int solenoid_id)
+void Scoreboard::command_out_hole(int solenoid_id)
 {
     m_solenoid_id = solenoid_id;
 }
 
-void Score::perform_action(int command, int digit, int solenoid_id)
+void Scoreboard::perform_action(int command, int digit, int solenoid_id)
 {
     m_solenoid_id = 0;
     if (command == QCOMMAND_CLEAR_DIGITS) {
@@ -122,12 +123,12 @@ void Score::perform_action(int command, int digit, int solenoid_id)
     }
 }
 
-int Score::digits() const
+int Scoreboard::digits() const
 {
     return m_max_players * m_digits;
 }
 
-float* Score::data() const
+float* Scoreboard::data() const
 {
     for (int i = 0; i < (m_max_players * m_digits); i++) {
         m_data[i] = 0.1 * (float) m_digit[i];
@@ -135,7 +136,7 @@ float* Score::data() const
     return m_data;
 }
 
-void Score::add_tens(int player, int n, int solenoid_id)
+void Scoreboard::add_tens(int player, int n, int solenoid_id)
 {
     for (int i = 0; i < n; i++) {
         if (!m_queue->full()) {
@@ -144,7 +145,7 @@ void Score::add_tens(int player, int n, int solenoid_id)
     }
 }
 
-void Score::add_hundreds(int player, int n, int solenoid_id)
+void Scoreboard::add_hundreds(int player, int n, int solenoid_id)
 {
     for (int i = 0; i < n; i++) {
         if (!m_queue->full()) {
@@ -153,7 +154,7 @@ void Score::add_hundreds(int player, int n, int solenoid_id)
     }
 }
 
-void Score::add_thousands(int player, int n, int solenoid_id)
+void Scoreboard::add_thousands(int player, int n, int solenoid_id)
 {
     for (int i = 0; i < n; i++) {
         if (!m_queue->full()) {
@@ -162,7 +163,7 @@ void Score::add_thousands(int player, int n, int solenoid_id)
     }
 }
 
-void Score::start_replay(int sound_solenoid_id, int out_hole_solenoid_id)
+void Scoreboard::start_replay(int sound_solenoid_id, int out_hole_solenoid_id)
 {
     int nz_count = 0;
     for (int i = 0; i < (m_max_players * m_digits); i++) {
@@ -178,12 +179,12 @@ void Score::start_replay(int sound_solenoid_id, int out_hole_solenoid_id)
     m_queue->add_action(QCOMMAND_OUT_HOLE, 0, out_hole_solenoid_id, SCORE_DELAY);
 }
 
-int Score::solenoid_id() const
+int Scoreboard::solenoid_id() const
 {
     return m_solenoid_id;
 }
 
-CadModel Score::model(float animation_id_first_digit, float animation_id_scoreboard) const
+CadModel Scoreboard::model(float animation_id_first_digit, float animation_id_scoreboard) const
 {
 //    float k = 0.8;
 //    float w = 0.040 * k;

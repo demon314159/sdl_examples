@@ -1,22 +1,22 @@
 //
-// score.h
+// scoreboard.h
 //
 
-#ifndef _SCORE_H_
-#define _SCORE_H_
+#ifndef _SCOREBOARD_H_
+#define _SCOREBOARD_H_
 
 #include "cad_model.h"
 #include "float3.h"
 #include "paint_can.h"
 #include "queue.h"
 
-class Score
+class Scoreboard
 {
 public:
-    Score(int max_players, int digits, const Float3& position, const Float2& size,
+    Scoreboard(int max_players, int digits, const Float3& position, const Float2& size,
           const Float2& trim, const PaintCan& trim_color,
           float texture_id_backglass, float texture_id_score);
-    ~Score();
+    ~Scoreboard();
 
     CadModel model(float animation_id_first_digit, float animation_id_scoreboard) const;
     void advance(float seconds);
@@ -53,4 +53,4 @@ private:
     void command_out_hole(int solenoid_id);
 };
 
-#endif // _SCORE_H_
+#endif // _SCOREBOARD_H_

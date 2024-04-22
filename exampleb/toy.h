@@ -10,7 +10,7 @@
 #include "lamp.h"
 #include "target.h"
 #include "sensor.h"
-#include "score.h"
+#include "scoreboard.h"
 #include "ball.h"
 #include "flipper.h"
 #include "table.h"
@@ -39,7 +39,7 @@ public:
 
     const Lamp* get_lamp() const;
     const Target* get_target() const;
-    const Score* get_score() const;
+    const Scoreboard* get_scoreboard() const;
     int get_solenoid_id() const;
 
 private:
@@ -47,7 +47,7 @@ private:
     Lamp* m_lamp;
     Target* m_target;
     Sensor* m_sensor;
-    Score* m_score;
+    Scoreboard* m_scoreboard;
     int m_solenoid_id;
     Table* m_table;
     Flipper* m_left_flipper;

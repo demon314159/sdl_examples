@@ -81,7 +81,7 @@ HEADERS = view.h \
           backglass_guide.h \
           target.h \
           sensor.h \
-          score.h \
+          scoreboard.h \
           queue.h \
           \
           \
@@ -165,7 +165,7 @@ OBJECTS = main.obj \
           backglass_guide.obj \
           target.obj \
           sensor.obj \
-          score.obj \
+          scoreboard.obj \
           queue.obj \
           \
           \

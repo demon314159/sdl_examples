@@ -19,7 +19,7 @@ Toy::Toy()
     , m_lamp(NULL)
     , m_target(NULL)
     , m_sensor(NULL)
-    , m_score(NULL)
+    , m_scoreboard(NULL)
     , m_solenoid_id(0)
     , m_table(NULL)
     , m_left_flipper(NULL)
@@ -33,8 +33,9 @@ Toy::Toy()
     m_target = new Target(DROP_TARGET_HEIGHT);
     m_sensor = new Sensor(MAX_SENSORS);
     m_table = new Table();
-    m_score = new Score(MAX_PLAYERS, SCORE_DIGITS, {SCOREBOARD_POSITION_X, SCOREBOARD_POSITION_Y, SCOREBOARD_POSITION_Z}, {BACKGLASS_SIZE_X, BACKGLASS_SIZE_Z},
-                        m_table->trim(), m_table->trim_color(), TEXTURE_ID_BACKGLASS, TEXTURE_ID_SCORE);
+    m_scoreboard = new Scoreboard(MAX_PLAYERS, SCORE_DIGITS,
+                            {SCOREBOARD_POSITION_X, SCOREBOARD_POSITION_Y, SCOREBOARD_POSITION_Z}, {BACKGLASS_SIZE_X, BACKGLASS_SIZE_Z},
+                            m_table->trim(), m_table->trim_color(), TEXTURE_ID_BACKGLASS, TEXTURE_ID_SCORE);
 
     m_left_flipper = new Flipper(
         LEFT_FLIPPER_ANGLE, LEFT_FLIPPER_POSITION, BOTTOM_FLIPPER_LENGTH,
@@ -149,7 +150,7 @@ Toy::~Toy()
     delete m_lamp;
     delete m_target;
     delete m_sensor;
-    delete m_score;
+    delete m_scoreboard;
     delete m_table;
     delete m_left_flipper;
     delete m_right_flipper;
@@ -188,7 +189,7 @@ void Toy::advance(int nanoseconds)
     m_right_flipper->collide(m_ball);
     m_top_flipper->collide(m_ball);
     m_ball->advance_orientation();
-    m_score->advance(seconds);
+    m_scoreboard->advance(seconds);
     m_solenoid_id = apply_rules();
     if (m_solenoid_id == SOLENOID_ID_OUT_HOLE) {
         float vx = BALL_OUT_HOLE_SPEED * cos(20.0f * PI / 180.0f);
@@ -208,9 +209,9 @@ const Target* Toy::get_target() const
     return m_target;
 }
 
-const Score* Toy::get_score() const
+const Scoreboard* Toy::get_scoreboard() const
 {
-    return m_score;
+    return m_scoreboard;
 }
 
 int Toy::get_solenoid_id() const
@@ -226,7 +227,7 @@ void Toy::build_model()
     m_model->add(m_left_flipper->model(ANIMATION_ID_LEFT_FLIPPER));
     m_model->add(m_right_flipper->model(ANIMATION_ID_RIGHT_FLIPPER));
     m_model->add(m_top_flipper->model(ANIMATION_ID_TOP_FLIPPER));
-    m_model->add(m_score->model(ANIMATION_ID_SCORE11, ANIMATION_ID_SCOREBOARD));
+    m_model->add(m_scoreboard->model(ANIMATION_ID_SCORE11, ANIMATION_ID_SCOREBOARD));
     m_model->add(m_table->model());
 }
 
@@ -277,7 +278,7 @@ void Toy::launch_action_button(bool on)
 
 void Toy::replay_action_button(bool on)
 {
-    m_score->start_replay(SOLENOID_ID_TENS_CHIME, SOLENOID_ID_OUT_HOLE);
+    m_scoreboard->start_replay(SOLENOID_ID_TENS_CHIME, SOLENOID_ID_OUT_HOLE);
 }
 
 
@@ -333,18 +334,18 @@ void Toy::rollover_rules()
 {
     if (m_sensor->rising(SENSOR_ID_ROLLOVER_A)) {
         if (m_lamp->lit(LAMP_ID_TOP_ROLLOVER_A)) {
-            m_score->add_thousands(0, 5, SOLENOID_ID_THOUSANDS_CHIME);
+            m_scoreboard->add_thousands(0, 5, SOLENOID_ID_THOUSANDS_CHIME);
         } else {
-            m_score->add_hundreds(0, 5, SOLENOID_ID_HUNDREDS_CHIME);
+            m_scoreboard->add_hundreds(0, 5, SOLENOID_ID_HUNDREDS_CHIME);
         }
         m_lamp->set(LAMP_ID_TOP_ROLLOVER_A, false);
         m_lamp->set(LAMP_ID_BOTTOM_ROLLOVER_A, false);
     }
     if (m_sensor->rising(SENSOR_ID_ROLLOVER_B)) {
         if (m_lamp->lit(LAMP_ID_TOP_ROLLOVER_B)) {
-            m_score->add_thousands(0, 5, SOLENOID_ID_THOUSANDS_CHIME);
+            m_scoreboard->add_thousands(0, 5, SOLENOID_ID_THOUSANDS_CHIME);
         } else {
-            m_score->add_hundreds(0, 5, SOLENOID_ID_HUNDREDS_CHIME);
+            m_scoreboard->add_hundreds(0, 5, SOLENOID_ID_HUNDREDS_CHIME);
         }
         m_lamp->set(LAMP_ID_TOP_ROLLOVER_B, false);
         m_lamp->set(LAMP_ID_BOTTOM_LEFT_ROLLOVER_B, false);
@@ -352,9 +353,9 @@ void Toy::rollover_rules()
     }
     if (m_sensor->rising(SENSOR_ID_ROLLOVER_C)) {
         if (m_lamp->lit(LAMP_ID_TOP_ROLLOVER_C)) {
-            m_score->add_thousands(0, 5, SOLENOID_ID_THOUSANDS_CHIME);
+            m_scoreboard->add_thousands(0, 5, SOLENOID_ID_THOUSANDS_CHIME);
         } else {
-            m_score->add_hundreds(0, 5, SOLENOID_ID_HUNDREDS_CHIME);
+            m_scoreboard->add_hundreds(0, 5, SOLENOID_ID_HUNDREDS_CHIME);
         }
         m_lamp->set(LAMP_ID_TOP_ROLLOVER_C, false);
         m_lamp->set(LAMP_ID_BOTTOM_ROLLOVER_C, false);
@@ -366,11 +367,11 @@ int Toy::apply_rules()
     rollover_rules();
 
     if (m_sensor->rising(SENSOR_ID_BUMPER)) {
-        m_score->add_hundreds(0, 1, SOLENOID_ID_HUNDREDS_CHIME);
+        m_scoreboard->add_hundreds(0, 1, SOLENOID_ID_HUNDREDS_CHIME);
     }
     if (m_sensor->rising(SENSOR_ID_TEN_POINT)) {
-        m_score->add_tens(0, 1, SOLENOID_ID_TENS_CHIME);
+        m_scoreboard->add_tens(0, 1, SOLENOID_ID_TENS_CHIME);
     }
-    return m_score->solenoid_id();
+    return m_scoreboard->solenoid_id();
 }
 

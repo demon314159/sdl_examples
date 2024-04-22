@@ -601,7 +601,7 @@ void View::render()
     }
     glUniform3fv(m_lamp_uniform, m_toy->get_lamp()->lamps(), m_toy->get_lamp()->data());
     glUniform1fv(m_target_height_uniform, m_toy->get_target()->targets(), m_toy->get_target()->data());
-    glUniform1fv(m_score_uniform, m_toy->get_score()->digits(), m_toy->get_score()->data());
+    glUniform1fv(m_score_uniform, m_toy->get_scoreboard()->digits(), m_toy->get_scoreboard()->data());
 
     glUniform1i(m_texture1_uniform, 0);
     glUniform1i(m_texture2_uniform, 1);
