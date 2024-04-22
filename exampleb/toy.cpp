@@ -335,18 +335,18 @@ void Toy::rollover_rules()
 {
     if (m_sensor->rising(SENSOR_ID_ROLLOVER_A)) {
         if (m_lamp->lit(LAMP_ID_TOP_ROLLOVER_A)) {
-            m_scoreboard->add_thousands(0, 5, SOLENOID_ID_THOUSANDS_CHIME);
+            m_scoreboard->add_thousands(5, SOLENOID_ID_THOUSANDS_CHIME);
         } else {
-            m_scoreboard->add_hundreds(0, 5, SOLENOID_ID_HUNDREDS_CHIME);
+            m_scoreboard->add_hundreds(5, SOLENOID_ID_HUNDREDS_CHIME);
         }
         m_lamp->set(LAMP_ID_TOP_ROLLOVER_A, false);
         m_lamp->set(LAMP_ID_BOTTOM_ROLLOVER_A, false);
     }
     if (m_sensor->rising(SENSOR_ID_ROLLOVER_B)) {
         if (m_lamp->lit(LAMP_ID_TOP_ROLLOVER_B)) {
-            m_scoreboard->add_thousands(0, 5, SOLENOID_ID_THOUSANDS_CHIME);
+            m_scoreboard->add_thousands(5, SOLENOID_ID_THOUSANDS_CHIME);
         } else {
-            m_scoreboard->add_hundreds(0, 5, SOLENOID_ID_HUNDREDS_CHIME);
+            m_scoreboard->add_hundreds(5, SOLENOID_ID_HUNDREDS_CHIME);
         }
         m_lamp->set(LAMP_ID_TOP_ROLLOVER_B, false);
         m_lamp->set(LAMP_ID_BOTTOM_LEFT_ROLLOVER_B, false);
@@ -354,9 +354,9 @@ void Toy::rollover_rules()
     }
     if (m_sensor->rising(SENSOR_ID_ROLLOVER_C)) {
         if (m_lamp->lit(LAMP_ID_TOP_ROLLOVER_C)) {
-            m_scoreboard->add_thousands(0, 5, SOLENOID_ID_THOUSANDS_CHIME);
+            m_scoreboard->add_thousands(5, SOLENOID_ID_THOUSANDS_CHIME);
         } else {
-            m_scoreboard->add_hundreds(0, 5, SOLENOID_ID_HUNDREDS_CHIME);
+            m_scoreboard->add_hundreds(5, SOLENOID_ID_HUNDREDS_CHIME);
         }
         m_lamp->set(LAMP_ID_TOP_ROLLOVER_C, false);
         m_lamp->set(LAMP_ID_BOTTOM_ROLLOVER_C, false);
@@ -368,10 +368,10 @@ int Toy::apply_rules()
     rollover_rules();
 
     if (m_sensor->rising(SENSOR_ID_BUMPER)) {
-        m_scoreboard->add_hundreds(0, 1, SOLENOID_ID_HUNDREDS_CHIME);
+        m_scoreboard->add_hundreds(1, SOLENOID_ID_HUNDREDS_CHIME);
     }
     if (m_sensor->rising(SENSOR_ID_TEN_POINT)) {
-        m_scoreboard->add_tens(0, 1, SOLENOID_ID_TENS_CHIME);
+        m_scoreboard->add_tens(1, SOLENOID_ID_TENS_CHIME);
     }
     return m_scoreboard->solenoid_id();
 }

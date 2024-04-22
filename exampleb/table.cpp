@@ -308,11 +308,8 @@ CadModel Table::model() const
     mm.add(barrier1a, X6 + T1 / 2.0f, Y4 / 2.0f, (Z3 + ZOH1) / 2.0f);
     mm.add(barrier1b, X6 + T1 / 2.0f, Y4 / 2.0f, (ZOH2 + PLAYFIELD_Z) / 2.0f);
 
-
     CadModel cap(CylinderShape(T1 / 2.0f, Y4, 50), WOOD_COLOR, 0.0);
     mm.add(cap, X6 + T1 / 2.0f, Y4 / 2.0f, Z3);
-
-
 
     CadModel barrier2(CubeShape(T1, Y3 + PLAYFIELD_Y, PLAYFIELD_Z), WOOD_COLOR, 0.0);
     mm.add(barrier2, X8 + T1 / 2.0, Y3 / 2.0 - PLAYFIELD_Y / 2.0, PLAYFIELD_Z / 2.0);

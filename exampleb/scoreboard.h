@@ -26,11 +26,12 @@ public:
 
     void clear();
     void start_replay(int sound_solenoid_id, int out_hole_solenoid_id);
-    void add_tens(int player, int n, int solenoid_id);
-    void add_hundreds(int player, int n, int solenoid_id);
-    void add_thousands(int player, int n, int solenoid_id);
+    void add_tens(int n, int solenoid_id);
+    void add_hundreds(int n, int solenoid_id);
+    void add_thousands(int n, int solenoid_id);
 
     int solenoid_id() const;
+
 
 private:
     int m_max_players;
@@ -47,8 +48,8 @@ private:
     float m_delay_time;
     int m_solenoid_id;
     Queue* m_queue;
+    int m_player_up;
 
-    bool non_zero_digits() const;
     void perform_action(int command, int digit, int solenoid_id);
     void command_clear_digits(int solenoid_id);
     void command_increment_digit(int digit, int solenoid_id);

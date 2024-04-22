@@ -30,6 +30,7 @@ Scoreboard::Scoreboard(int max_players, int digits,
     , m_delay_time(0.0)
     , m_solenoid_id(0)
     , m_queue(new Queue())
+    , m_player_up(0)
 {
     clear();
 }
@@ -43,8 +44,10 @@ Scoreboard::~Scoreboard()
 
 void Scoreboard::clear()
 {
-    for (int i = 0; i < (m_max_players * m_digits); i++) {
-        m_digit[i] = 0;
+    for (int p = 0; p < m_max_players; p++) {
+        for (int i = 0; i < m_digits; i++) {
+            m_digit[p * m_digits + i] = (i < 4) ? 10 : 0;
+        }
     }
 }
 
@@ -61,46 +64,35 @@ void Scoreboard::advance(float seconds)
         if (m_delay_time > m_queue->action_post_delay()) {
             m_delay_time = 0.0;
             m_queue->next_action();
-            while (!m_queue->empty() && m_queue->action_command() == QCOMMAND_CLEAR_DIGITS && non_zero_digits() == 0) {
-                m_queue->next_action();
-            }
         }
     }
-}
-
-bool Scoreboard::non_zero_digits() const
-{
-    for (int i = 0; i < (m_max_players * m_digits); i++) {
-        if (m_digit[i] != 0) {
-            return true;
-        }
-    }
-    return false;
 }
 
 void Scoreboard::command_clear_digits(int solenoid_id)
 {
-    if (non_zero_digits()) {
-        m_solenoid_id = solenoid_id;
-        for (int i = 0; i < (m_max_players * m_digits); i++) {
-            if (m_digit[i] != 0) {
-                bool cy = m_digit[i] == 9;
-                m_digit[i] = cy ? 0 : m_digit[i] + 1;
-            }
-        }
-    }
+    clear();
 }
 
 void Scoreboard::command_increment_digit(int digit, int solenoid_id)
 {
     m_solenoid_id = solenoid_id;
     int i = digit;
+    if (m_digit[i] == 10) {
+        m_digit[i] = 0;
+    }
     bool cy = m_digit[i] == 9;
     m_digit[i] = cy ? 0 : m_digit[i] + 1;
     while (cy && i > 0) {
         --i;
+        if (m_digit[i] == 10) {
+            m_digit[i] = 0;
+        }
         cy = m_digit[i] == 9;
         m_digit[i] = cy ? 0 : m_digit[i] + 1;
+    }
+    // The previous digit needs to become zero if it is a blank
+    if (m_digit[digit + 1] == 10) {
+        m_digit[digit + 1] = 0;
     }
     // Carry may extend into LSB of previous player and will stop there because it is zero
     // Force all of the players LSB to zero all of the time to undo this
@@ -133,52 +125,60 @@ int Scoreboard::digits() const
 
 float* Scoreboard::data() const
 {
-    for (int i = 0; i < (m_max_players * m_digits); i++) {
-        m_data[i] = 0.1 * (float) m_digit[i];
+    for (int p = 0; p < m_max_players; p++) {
+        for (int i = 0; i < m_digits; i++) {
+            if (m_player_up == 0) {
+                m_data[p * m_digits + i] = (1.0f / 11.0f) * (float) m_digit[p * m_digits + i];
+            } else {
+                if (m_player_up == (p + 1)) {
+                    m_data[p * m_digits + i] = (1.0f / 11.0f) * (float) m_digit[p * m_digits + i];
+                } else {
+                    m_data[p * m_digits + i] = (1.0f / 11.0f) * (float) 10;
+                }
+            }
+        }
     }
+
     return m_data;
 }
 
-void Scoreboard::add_tens(int player, int n, int solenoid_id)
+void Scoreboard::add_tens(int n, int solenoid_id)
 {
-    for (int i = 0; i < n; i++) {
-        if (!m_queue->full()) {
-            m_queue->add_action(QCOMMAND_INCREMENT_DIGIT, m_digits * player + m_digits - 2, solenoid_id, SCORE_DELAY);
+    if (m_player_up > 0) {
+        for (int i = 0; i < n; i++) {
+            if (!m_queue->full()) {
+                m_queue->add_action(QCOMMAND_INCREMENT_DIGIT, m_digits * (m_player_up - 1) + m_digits - 2, solenoid_id, SCORE_DELAY);
+            }
         }
     }
 }
 
-void Scoreboard::add_hundreds(int player, int n, int solenoid_id)
+void Scoreboard::add_hundreds(int n, int solenoid_id)
 {
-    for (int i = 0; i < n; i++) {
-        if (!m_queue->full()) {
-            m_queue->add_action(QCOMMAND_INCREMENT_DIGIT, m_digits * player + m_digits - 3, solenoid_id, SCORE_DELAY);
+    if (m_player_up > 0) {
+        for (int i = 0; i < n; i++) {
+            if (!m_queue->full()) {
+                m_queue->add_action(QCOMMAND_INCREMENT_DIGIT, m_digits * (m_player_up - 1) + m_digits - 3, solenoid_id, SCORE_DELAY);
+            }
         }
     }
 }
 
-void Scoreboard::add_thousands(int player, int n, int solenoid_id)
+void Scoreboard::add_thousands(int n, int solenoid_id)
 {
-    for (int i = 0; i < n; i++) {
-        if (!m_queue->full()) {
-            m_queue->add_action(QCOMMAND_INCREMENT_DIGIT, m_digits * player + m_digits - 4, solenoid_id, SCORE_DELAY);
+    if (m_player_up > 0) {
+        for (int i = 0; i < n; i++) {
+            if (!m_queue->full()) {
+                m_queue->add_action(QCOMMAND_INCREMENT_DIGIT, m_digits * (m_player_up - 1) + m_digits - 4, solenoid_id, SCORE_DELAY);
+            }
         }
     }
 }
 
 void Scoreboard::start_replay(int sound_solenoid_id, int out_hole_solenoid_id)
 {
-    int nz_count = 0;
-    for (int i = 0; i < (m_max_players * m_digits); i++) {
-        if (m_digit[i] != 0) {
-            ++nz_count;
-        }
-    }
-    if (nz_count > 0) {
-        for (int i = 0; i < 10; i++) {
-            m_queue->add_action(QCOMMAND_CLEAR_DIGITS, 0, sound_solenoid_id, SCORE_DELAY);
-        }
-    }
+    m_player_up = 1;
+    m_queue->add_action(QCOMMAND_CLEAR_DIGITS, 0, sound_solenoid_id, SCORE_DELAY);
     m_queue->add_action(QCOMMAND_OUT_HOLE, 0, out_hole_solenoid_id, SCORE_DELAY);
 }
 
@@ -196,7 +196,7 @@ CadModel Scoreboard::player_digits_model(int player, const Float2& position, con
     for (int i = 0; i < m_digits; i++) {
         float h = fsize.v2 * 0.9;
         float w = h * (0.40 / 0.69);
-        CadModel single(PlaneShape(w, h, m_texture_id_score, {0.0, 0.0}, {0.1, 1.0}), PaintCan(0.0, 0.0, 0.0), animation_id_first_digit + (float) (i + (player - 1) * m_digits));
+        CadModel single(PlaneShape(w, h, m_texture_id_score, {0.0, 0.0}, {1.0f / 11.0f, 1.0}), PaintCan(0.0, 0.0, 0.0), animation_id_first_digit + (float) (i + (player - 1) * m_digits));
         single.rotate_ax(90.0);
         float gap = (i < (m_digits / 2)) ? -w / 4.0 : w / 4.0;
         mm.add(single, fpos.v1 - w * (float) m_digits / 2.0f + w * (float) i + w / 2.0 + gap, fpos.v2, fpos.v3 + 0.002);
