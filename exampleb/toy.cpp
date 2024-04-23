@@ -179,11 +179,9 @@ void Toy::advance(int nanoseconds)
     m_top_flipper->advance(seconds);
     if (m_ball->position().v2 < m_table->ball_z_limit()) {
         m_ball->advance(seconds);
+    } else {
+        m_sensor->set(SENSOR_ID_OUTHOLE);
     }
-//    if (m_ball->position().v2 > m_table->ball_z_limit()) {
-//         m_ball->set_position(m_table->ball_home_position());
-//         m_ball->set_velocity({0.0, 0.0});
-//   }
     m_target->collide(m_ball, m_sensor);
     m_table->collide(m_ball, m_sensor);
     m_left_flipper->collide(m_ball);

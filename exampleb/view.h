@@ -26,12 +26,6 @@
 #define INITIAL_XOFF  0.055
 #define INITIAL_YOFF  0.065
 
-//#define INITIAL_XROT 50.0
-//#define INITIAL_YROT 10.0
-//#define INITIAL_MAG 2.625
-//#define INITIAL_XOFF  0.055
-//#define INITIAL_YOFF  0.0
-
 #define TOTAL_TEXTURES  12
 
 class View

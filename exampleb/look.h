@@ -140,8 +140,9 @@
 #define SENSOR_ID_DROP_JOKER   20
 #define SENSOR_ID_DROP_A3      21
 #define SENSOR_ID_DROP_A4      22
+#define SENSOR_ID_OUTHOLE      23
 
-#define MAX_SENSORS            22
+#define MAX_SENSORS            23
 
 
 #define SOLENOID_ID_NONE               0
