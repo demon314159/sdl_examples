@@ -10,11 +10,13 @@
 #include "pipe_shape.h"
 #include "convex_plane_shape.h"
 #include "cylinder_shape.h"
+#include "crown_nut_shape.h"
 #include <math.h>
 
 ThreePost::ThreePost(Float2 p1, Float2 p2, Float2 p3, float radius, float height,
-                     const PaintCan& color, const PaintCan& face_color, float reflectivity, int steps,
-                     int sensor_id, int sensor_side)
+                     const PaintCan& color, const PaintCan& face_color,
+                     float reflectivity, int steps, int sensor_id, int sensor_side,
+                     bool no_nut1, bool no_nut2, bool no_nut3)
     : m_p1(p1)
     , m_p2(p2)
     , m_p3(p3)
@@ -25,6 +27,9 @@ ThreePost::ThreePost(Float2 p1, Float2 p2, Float2 p3, float radius, float height
     , m_steps(steps)
     , m_sensor_id(sensor_id)
     , m_sensor_side(sensor_side)
+    , m_no_nut1(no_nut1)
+    , m_no_nut2(no_nut2)
+    , m_no_nut3(no_nut3)
     , m_reflector1(p3, p1, p2, radius, reflectivity)
     , m_reflector2(p1, p2, p3, radius, reflectivity)
     , m_reflector3(p2, p3, p1, radius, reflectivity)
@@ -103,6 +108,17 @@ CadModel ThreePost::model(float animation_id) const
     mm.add(b4, m_reflector4.position().v1, m_height, m_reflector4.position().v2);
     mm.add(b5, m_reflector5.position().v1, m_height, m_reflector5.position().v2);
     mm.add(b6, m_reflector6.position().v1, m_height, m_reflector6.position().v2);
+
+    CadModel crown_nut(CrownNutShape(0.003, 0.003, 25, 25), PaintCan(1.0, 1.0, 1.0), 0.0);
+    if (!m_no_nut1) {
+        mm.add(crown_nut, m_p1.v1, h3_post, m_p1.v2);
+    }
+    if (!m_no_nut2) {
+        mm.add(crown_nut, m_p2.v1, h3_post, m_p2.v2);
+    }
+    if (!m_no_nut3) {
+        mm.add(crown_nut, m_p3.v1, h3_post, m_p3.v2);
+    }
     return mm;
 }
 

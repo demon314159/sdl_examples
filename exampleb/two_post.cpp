@@ -10,14 +10,16 @@
 #include "pipe_shape.h"
 #include "convex_plane_shape.h"
 #include "cylinder_shape.h"
+#include "crown_nut_shape.h"
 #include <math.h>
 
 #include <stdio.h>
 
 
 TwoPost::TwoPost(Float2 p1, Float2 p2, float radius, float height,
-                 const PaintCan& color, const PaintCan& face_color, float reflectivity, int steps,
-                 int sensor_id, int sensor_side)
+                 const PaintCan& color, const PaintCan& face_color,
+                 float reflectivity, int steps, int sensor_id, int sensor_side,
+                 bool no_nut1, bool no_nut2)
     : m_p1(p1)
     , m_p2(p2)
     , m_radius(radius)
@@ -27,6 +29,8 @@ TwoPost::TwoPost(Float2 p1, Float2 p2, float radius, float height,
     , m_steps(steps)
     , m_sensor_id(sensor_id)
     , m_sensor_side(sensor_side)
+    , m_no_nut1(no_nut1)
+    , m_no_nut2(no_nut2)
     , m_reflector1(true, radius, reflectivity)
     , m_reflector2(false, radius, reflectivity)
     , m_reflector3(p1, p2, radius, reflectivity)
@@ -94,6 +98,14 @@ CadModel TwoPost::model(float animation_id) const
     mm.add(b2, m_p2.v1, m_height, m_p2.v2);
     mm.add(b3, m_reflector3.position().v1, m_height, m_reflector3.position().v2);
     mm.add(b4, m_reflector4.position().v1, m_height, m_reflector4.position().v2);
+
+    CadModel crown_nut(CrownNutShape(0.003, 0.003, 25, 25), PaintCan(1.0, 1.0, 1.0), 0.0);
+    if (!m_no_nut1) {
+        mm.add(crown_nut, m_p1.v1, h3_post, m_p1.v2);
+    }
+    if (!m_no_nut2) {
+        mm.add(crown_nut, m_p2.v1, h3_post, m_p2.v2);
+    }
     return mm;
 }
 

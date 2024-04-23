@@ -17,7 +17,8 @@ class LaneGuide
 public:
     LaneGuide(float angle, Float3 position, float length, float height, float width,
               const PaintCan& color, const PaintCan& face_color,
-              float reflectivity, int steps, int sensor_id, int sensor_side, bool no_hat = false);
+              float reflectivity, int steps, int sensor_id, int sensor_side, bool no_hat = false,
+              bool no_nut1 = false, bool no_nut2 = false);
     ~LaneGuide();
 
     CadModel model(float animation_id) const;
@@ -40,6 +41,8 @@ private:
     int m_sensor_id;
     int m_sensor_side;
     bool m_no_hat;
+    bool m_no_nut1;
+    bool m_no_nut2;
     ConvexReflector m_reflector1;
     ConvexReflector m_reflector2;
     StraightReflector m_reflector3;

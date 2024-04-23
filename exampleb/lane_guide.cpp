@@ -12,12 +12,14 @@
 #include "toroid_shape.h"
 #include "triangular_prism_shape.h"
 #include "cone_shape.h"
+#include "crown_nut_shape.h"
 #include "pi.h"
 #include <math.h>
 
 LaneGuide::LaneGuide(float angle, Float3 position, float length, float height, float width,
-                     const PaintCan& color, const PaintCan& face_color, float reflectivity, int steps,
-                     int sensor_id, int sensor_side, bool no_hat)
+                     const PaintCan& color, const PaintCan& face_color,
+                     float reflectivity, int steps, int sensor_id, int sensor_side, bool no_hat,
+                     bool no_nut1, bool no_nut2)
     : m_angle(angle)
     , m_position(position)
     , m_length(length)
@@ -29,6 +31,8 @@ LaneGuide::LaneGuide(float angle, Float3 position, float length, float height, f
     , m_sensor_id(sensor_id)
     , m_sensor_side(sensor_side)
     , m_no_hat(no_hat)
+    , m_no_nut1(no_nut1)
+    , m_no_nut2(no_nut2)
     , m_reflector1(true, width / 2.0, width / 2.0, length, reflectivity)
     , m_reflector2(false, width / 2.0, width / 2.0, length, reflectivity)
     , m_reflector3(true, width / 2.0, width / 2.0, length, reflectivity)
@@ -124,6 +128,14 @@ CadModel LaneGuide::model(float animation_id) const
         mm.add(base2b, m_length, h3_post + m_width / 20.0, 0.0);
         mm.add(base3, 0.0, h4_post, 0.0);
         mm.add(base3, m_length, h4_post, 0.0);
+    } else {
+        CadModel crown_nut(CrownNutShape(0.003, 0.003, 25, 25), PaintCan(1.0, 1.0, 1.0), 0.0);
+        if (!m_no_nut1) {
+            mm.add(crown_nut, 0.0, h3_post, 0.0);
+        }
+        if (!m_no_nut2) {
+            mm.add(crown_nut, m_length, h3_post, 0.0);
+        }
     }
     mm.add(big_post1, 0.0,  0.0, 0.0);
     mm.add(big_post2, 0.0,  h1_post, 0.0);

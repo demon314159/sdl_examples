@@ -18,7 +18,8 @@ class ThreePostKicker
 public:
     ThreePostKicker(Float2 p1, Float2 p2, Float2 p3, float radius, float height,
               const PaintCan& color, const PaintCan& face_color,
-              float reflectivity, float kicker_velocity, int steps, int sensor_id, int sensor_side);
+              float reflectivity, float kicker_velocity, int steps, int sensor_id, int sensor_side,
+              bool no_nut1 = false, bool no_nut2 = false, bool no_nut3 = false);
     ~ThreePostKicker();
 
     CadModel model(float animation_id) const;
@@ -35,6 +36,9 @@ private:
     int m_steps;
     int m_sensor_id;
     int m_sensor_side;
+    bool m_no_nut1;
+    bool m_no_nut2;
+    bool m_no_nut3;
     ConvexReflector m_reflector1;
     ConvexReflector m_reflector2;
     ConvexReflector m_reflector3;

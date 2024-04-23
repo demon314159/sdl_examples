@@ -83,6 +83,7 @@ HEADERS = view.h \
           sensor.h \
           scoreboard.h \
           queue.h \
+          crown_nut_shape.h \
           \
           \
           \
@@ -167,6 +168,7 @@ OBJECTS = main.obj \
           sensor.obj \
           scoreboard.obj \
           queue.obj \
+          crown_nut_shape.obj \
           \
           \
           \
