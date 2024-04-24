@@ -84,6 +84,8 @@ HEADERS = view.h \
           scoreboard.h \
           queue.h \
           crown_nut_shape.h \
+          gate.h \
+          rounded_plane_shape.h \
           \
           \
           \
@@ -169,6 +171,8 @@ OBJECTS = main.obj \
           scoreboard.obj \
           queue.obj \
           crown_nut_shape.obj \
+          gate.obj \
+          rounded_plane_shape.obj \
           \
           \
           \

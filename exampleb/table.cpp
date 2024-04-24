@@ -2,6 +2,10 @@
 // table.cpp
 //
 
+
+
+#include "gate.h"
+
 #include "rounded_cube_shape.h"
 #include "plastic_guide.h"
 #include "table.h"
@@ -302,7 +306,7 @@ CadModel Table::model() const
     diode.translate(0.0, Y1 / 2.0, 0.0);
 //    diode.add(wall, -TDIODE / 2.0f + TC / 2.0f, 0.0, TDIODE / 2.0);
     diode.rotate_ay(ANGLE6);
-    mm.add(diode, XC, Y1 / 2.0f, ZC);
+//    mm.add(diode, XC, Y1 / 2.0f, ZC);
 
     CadModel barrier1a(CubeShape(T1, Y4, ZOH1 - Z3), WOOD_COLOR, 0.0);
     CadModel barrier1b(CubeShape(T1, Y4, PLAYFIELD_Z - ZOH2), WOOD_COLOR, 0.0);
@@ -438,6 +442,9 @@ CadModel Table::model() const
     CadModel plastic6(PlaneShape(pg.blank_size().v1, pg.blank_size().v2, TEXTURE_ID_PLASTIC6), PaintCan(1.0, 1.0, 1.0), ANIMATION_ID_TRANSPARENT);
     plastic6.rotate_ay(pg.blank_angle());
     mm.add(plastic6, pg.blank_position().v1, 1.6 * BALL_RADIUS + 0.0005, pg.blank_position().v2);
+
+    Gate gate({PLAYFIELD_X, PLAYFIELD_Z}, 0.050, 0.050, 0.050, 0.0, METAL_COLOR, 0.6, 25);
+    mm.add(gate.model(0.0), 0.0, 0.10, 0.0);
 
     return mm;
 }
