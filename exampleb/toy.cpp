@@ -234,7 +234,7 @@ void Toy::build_model()
 //    m_model->add(m_table->model());
 
 
-    Gate gate({PLAYFIELD_X, PLAYFIELD_Z}, 0.050, 0.050, 0.050, 0.0, METAL_COLOR, 0.6, 25);
+    Gate gate({PLAYFIELD_X, PLAYFIELD_Z}, 0.019, 0.019, 0.012, 0.0, METAL_COLOR, 0.6, 25);
     m_model->add(gate.model(0.0), 0.0, 0.10, 0.0);
 
 }

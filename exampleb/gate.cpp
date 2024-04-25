@@ -4,9 +4,11 @@
 
 #include "gate.h"
 #include "pi.h"
+#include "cube_shape.h"
 #include "rounded_plane_shape.h"
 #include "bent_plane_shape.h"
 #include "tapered_cube_shape.h"
+#include "crown_nut_shape.h"
 #include <math.h>
 
 
@@ -35,33 +37,65 @@ CadModel Gate::model(float animation_id) const
 {
     CadModel mm;
 
-    float t1 = 0.004;
-    float br1 = 0.010;
-    float br2 = 0.0075;
+    float t1 = 0.08 * m_width;
+    float br1 = 0.2 * m_width;
+    float br2 = 0.15 * m_width;
     float wall_height = m_height - 2.0 * br2;
+    float nut_radius = 0.16 * m_width;
 
+    CadModel nut(CrownNutShape(nut_radius, nut_radius / 2.0, 25, 25), m_color, animation_id);
     CadModel base(RoundedPlaneShape(m_width, t1, m_length, br1, 0.0, 25), m_color, animation_id);
     CadModel bend(BentPlaneShape(br2, t1, m_length, 25), m_color, animation_id);
+    mm.add(nut, -m_width / 3.0, t1, 0.0);
+    mm.add(nut, -m_width * 3.0 / 4.0, t1, -m_length / 4.0);
+    mm.add(nut, -m_width * 3.0 / 4.0, t1, m_length / 4.0);
+    mm.add(base, -m_width / 2.0, t1 / 2.0, 0.0);
+    mm.add(bend, br2 / 2.0, br2 / 2.0, 0.0);
+    mm.translate(-br2, 0.0, 0.0);
 
     float x = t1 / 2.0;
     float y = wall_height / 2.0;
     float z = m_length / 2.0;
-    float tz = z - 0.020;
+    float tz = z - 0.4 * m_width;
 
-    float top_length = m_length * 0.8;
+    float top_length = m_length * 0.7;
 
     CadModel wall(TaperedCubeShape(t1, wall_height, m_length, 0.0, 0.0, -(m_length - top_length), 0.0), m_color, animation_id);
+    mm.add(wall, -t1 / 2.0, wall_height / 2.0 + br2, 0.0);
     CadModel top_bend(BentPlaneShape(br2, t1, top_length, 25), m_color, animation_id);
     top_bend.rotate_az(180.0);
     top_bend.translate(0.0, wall_height + br2 + br2 / 2.0, -(m_length - top_length) / 2.0);
-
-
-    mm.add(base, -m_width / 2.0, t1 / 2.0, 0.0);
-    mm.add(bend, br2 / 2.0, br2 / 2.0, 0.0);
-    mm.translate(-br2, 0.0, 0.0);
-    mm.add(wall, -t1 / 2.0, wall_height / 2.0 + br2, 0.0);
-
     mm.add(top_bend, -br2 / 2.0 + br2 - t1, 0.0, 0.0);
+    mm.translate(-br2 + t1, 0.0, 0.0);
+
+    CadModel top_base1(TaperedCubeShape(t1, m_width / 3.0, top_length, 0.0, 0.0, (m_length - top_length), 0.0), m_color, animation_id);
+    top_base1.rotate_az(-90.0);
+    top_base1.translate(m_width / 3.0, m_height - t1 / 2.0, -(m_length - top_length) / 2.0);
+    mm.add(top_base1, -m_width /6.0, 0.0, 0.0);
+    mm.translate(-m_width / 3.0, 0.0, 0.0);
+
+    CadModel top_base2(CubeShape(m_width / 3.0, t1, m_length), m_color, animation_id);
+    top_base2.translate(m_width / 3.0, m_height - t1 / 2.0, 0.0);
+    mm.add(top_base2, -m_width /6.0, 0.0, 0.0);
+    mm.translate(-m_width / 3.0, 0.0, 0.0);
+
+    CadModel top_base3(TaperedCubeShape(t1, m_width / 3.0, m_length, 0.0, 0.0, -(m_length - top_length), 0.0), m_color, animation_id);
+    top_base3.rotate_az(-90.0);
+    top_base3.translate(m_width / 3.0, m_height - t1 / 2.0, 0.0);
+    mm.add(top_base3, -m_width /6.0, 0.0, 0.0);
+    mm.translate(-m_width / 3.0, 0.0, 0.0);
+
+    CadModel top_bend2(BentPlaneShape(br2, t1, top_length, 25), m_color, animation_id);
+    top_bend2.rotate_az(90.0);
+    top_bend2.translate(br2 / 2.0, m_height - br2 / 2.0, -(m_length - top_length) / 2.0);
+    mm.add(top_bend2, 0.0, 0.0, 0.0);
+
+    CadModel wall2(TaperedCubeShape(t1, wall_height / 2.0, top_length, 0.0, 0.0, -top_length / 6.0, 4.0 * top_length / 6.0), m_color, animation_id);
+    wall2.rotate_az(180.0);
+    wall2.translate(br2 - t1 / 2.0, -wall_height / 4.0 + m_height - br2, -(m_length - top_length) / 2.0);
+
+
+    mm.add(wall2, 0.0, 0.0, 0.0);
 
     return mm;
 }

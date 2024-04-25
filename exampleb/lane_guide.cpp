@@ -129,7 +129,7 @@ CadModel LaneGuide::model(float animation_id) const
         mm.add(base3, 0.0, h4_post, 0.0);
         mm.add(base3, m_length, h4_post, 0.0);
     } else {
-        CadModel crown_nut(CrownNutShape(0.003, 0.003, 25, 25), PaintCan(1.0, 1.0, 1.0), 0.0);
+        CadModel crown_nut(CrownNutShape(0.003, 0.0015, 25, 25), PaintCan(1.0, 1.0, 1.0), 0.0);
         if (!m_no_nut1) {
             mm.add(crown_nut, 0.0, h3_post, 0.0);
         }
