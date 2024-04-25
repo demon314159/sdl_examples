@@ -88,6 +88,7 @@ HEADERS = view.h \
           rounded_plane_shape.h \
           bent_plane_shape.h \
           tapered_cube_shape.h \
+          diamond_plane_shape.h \
           \
           \
           \
@@ -177,6 +178,7 @@ OBJECTS = main.obj \
           rounded_plane_shape.obj \
           bent_plane_shape.obj \
           tapered_cube_shape.obj \
+          diamond_plane_shape.obj \
           \
           \
           \

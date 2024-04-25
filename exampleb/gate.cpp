@@ -8,6 +8,7 @@
 #include "rounded_plane_shape.h"
 #include "bent_plane_shape.h"
 #include "tapered_cube_shape.h"
+#include "diamond_plane_shape.h"
 #include "crown_nut_shape.h"
 #include <math.h>
 
@@ -44,7 +45,7 @@ CadModel Gate::model(float animation_id) const
     float nut_radius = 0.16 * m_width;
 
     CadModel nut(CrownNutShape(nut_radius, nut_radius / 2.0, 25, 25), m_color, animation_id);
-    CadModel base(RoundedPlaneShape(m_width, t1, m_length, br1, 0.0, 25), m_color, animation_id);
+    CadModel base(RoundedPlaneShape(m_width, t1, m_length, br1, 0.0, m_steps), m_color, animation_id);
     CadModel bend(BentPlaneShape(br2, t1, m_length, 25), m_color, animation_id);
     mm.add(nut, -m_width / 3.0, t1, 0.0);
     mm.add(nut, -m_width * 3.0 / 4.0, t1, -m_length / 4.0);
@@ -62,7 +63,7 @@ CadModel Gate::model(float animation_id) const
 
     CadModel wall(TaperedCubeShape(t1, wall_height, m_length, 0.0, 0.0, -(m_length - top_length), 0.0), m_color, animation_id);
     mm.add(wall, -t1 / 2.0, wall_height / 2.0 + br2, 0.0);
-    CadModel top_bend(BentPlaneShape(br2, t1, top_length, 25), m_color, animation_id);
+    CadModel top_bend(BentPlaneShape(br2, t1, top_length, m_steps), m_color, animation_id);
     top_bend.rotate_az(180.0);
     top_bend.translate(0.0, wall_height + br2 + br2 / 2.0, -(m_length - top_length) / 2.0);
     mm.add(top_bend, -br2 / 2.0 + br2 - t1, 0.0, 0.0);
@@ -74,7 +75,20 @@ CadModel Gate::model(float animation_id) const
     mm.add(top_base1, -m_width /6.0, 0.0, 0.0);
     mm.translate(-m_width / 3.0, 0.0, 0.0);
 
-    CadModel top_base2(CubeShape(m_width / 3.0, t1, m_length), m_color, animation_id);
+    CadModel top_base2(DiamondPlaneShape(m_width / 3.0, t1, m_length, m_width / 6.0, m_length / 2.0), m_color, animation_id);
+
+    CadModel bend3(BentPlaneShape(br2, t1, m_width / 3.0, m_steps), m_color, animation_id);
+    bend3.rotate_az(90.0);
+    bend3.rotate_ay(-90.0);
+    bend3.translate(m_width / 6.0, m_height - br2 / 2.0, m_length / 2.0 + br2 / 2.0);
+    mm.add(bend3);
+    float br3 = 0.05 * m_width;
+CadModel tab(RoundedPlaneShape(m_width / 8.0, t1, m_width / 3.0, br3, 0.0, m_steps), m_color, animation_id);
+tab.rotate_az(90.0);
+tab.rotate_ay(90.0);
+tab.translate(m_width / 6.0, m_height - br2 - m_width / 16.0, m_length / 2.0 + br2 - t1 / 2.0);
+mm.add(tab);
+
     top_base2.translate(m_width / 3.0, m_height - t1 / 2.0, 0.0);
     mm.add(top_base2, -m_width /6.0, 0.0, 0.0);
     mm.translate(-m_width / 3.0, 0.0, 0.0);
@@ -85,7 +99,7 @@ CadModel Gate::model(float animation_id) const
     mm.add(top_base3, -m_width /6.0, 0.0, 0.0);
     mm.translate(-m_width / 3.0, 0.0, 0.0);
 
-    CadModel top_bend2(BentPlaneShape(br2, t1, top_length, 25), m_color, animation_id);
+    CadModel top_bend2(BentPlaneShape(br2, t1, top_length, m_steps), m_color, animation_id);
     top_bend2.rotate_az(90.0);
     top_bend2.translate(br2 / 2.0, m_height - br2 / 2.0, -(m_length - top_length) / 2.0);
     mm.add(top_bend2, 0.0, 0.0, 0.0);
