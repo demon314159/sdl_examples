@@ -86,6 +86,8 @@ HEADERS = view.h \
           crown_nut_shape.h \
           gate.h \
           rounded_plane_shape.h \
+          bent_plane_shape.h \
+          tapered_cube_shape.h \
           \
           \
           \
@@ -173,6 +175,8 @@ OBJECTS = main.obj \
           crown_nut_shape.obj \
           gate.obj \
           rounded_plane_shape.obj \
+          bent_plane_shape.obj \
+          tapered_cube_shape.obj \
           \
           \
           \

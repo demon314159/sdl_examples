@@ -2,6 +2,10 @@
 // toy.cpp
 //
 
+#include "gate.h" // experiment
+
+
+
 #include "toy.h"
 #include "pi.h"
 #include <math.h>
@@ -220,14 +224,19 @@ int Toy::get_solenoid_id() const
 
 void Toy::build_model()
 {
-    m_model->add(m_ball->model(ANIMATION_ID_BALL));
-    m_model->add(m_lamp->model(ANIMATION_ID_LAMP1));
-    m_model->add(m_target->model(ANIMATION_ID_DROP_TARGET1));
-    m_model->add(m_left_flipper->model(ANIMATION_ID_LEFT_FLIPPER));
-    m_model->add(m_right_flipper->model(ANIMATION_ID_RIGHT_FLIPPER));
-    m_model->add(m_top_flipper->model(ANIMATION_ID_TOP_FLIPPER));
-    m_model->add(m_scoreboard->model(ANIMATION_ID_SCORE11, ANIMATION_ID_SCOREBOARD));
-    m_model->add(m_table->model());
+//    m_model->add(m_ball->model(ANIMATION_ID_BALL));
+//    m_model->add(m_lamp->model(ANIMATION_ID_LAMP1));
+//    m_model->add(m_target->model(ANIMATION_ID_DROP_TARGET1));
+//    m_model->add(m_left_flipper->model(ANIMATION_ID_LEFT_FLIPPER));
+//    m_model->add(m_right_flipper->model(ANIMATION_ID_RIGHT_FLIPPER));
+//    m_model->add(m_top_flipper->model(ANIMATION_ID_TOP_FLIPPER));
+//    m_model->add(m_scoreboard->model(ANIMATION_ID_SCORE11, ANIMATION_ID_SCOREBOARD));
+//    m_model->add(m_table->model());
+
+
+    Gate gate({PLAYFIELD_X, PLAYFIELD_Z}, 0.050, 0.050, 0.050, 0.0, METAL_COLOR, 0.6, 25);
+    m_model->add(gate.model(0.0), 0.0, 0.10, 0.0);
+
 }
 
 Matrix4x4 Toy::get_animation_matrix(int i) const

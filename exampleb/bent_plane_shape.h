@@ -1,19 +1,19 @@
 //
-// rounded_plane_shape.h
+// bent_plane_shape.h
 //
 
-#ifndef _ROUNDED_PLANE_SHAPE_H_
-#define _ROUNDED_PLANE_SHAPE_H_
+#ifndef _BENT_PLANE_SHAPE_H_
+#define _BENT_PLANE_SHAPE_H_
 
 #include "shape.h"
 #include "float3.h"
 #include "facet.h"
 
-class RoundedPlaneShape: public Shape
+class BentPlaneShape: public Shape
 {
 public:
-    RoundedPlaneShape(float dimx, float dimy, float dimz, float left_bend_radius, float right_bend_radius, int steps);
-    virtual ~RoundedPlaneShape();
+    BentPlaneShape(float dimx, float dimy, float dimz, int steps);
+    virtual ~BentPlaneShape();
     int facets() const override;
     Facet facet(int facet_ix) const override;
 
@@ -21,8 +21,6 @@ private:
     float m_dimx;
     float m_dimy;
     float m_dimz;
-    float m_left_bend_radius;
-    float m_right_bend_radius;
     int m_steps;
     bool m_size_known;
     int m_facet_count;
@@ -32,7 +30,7 @@ private:
     void add_face(Float3 v1, Float3 v2, Float3 v3, bool flip = false);
     void add_face(Float3 v1, Float3 v2, Float3 v3, Float3 v4, bool flip = false);
 
-    void add_round(float xc, float zc, float radius, float angle_i, float angle_f);
+    void az_slice(int step);
 };
 
-#endif // _ROUNDED_PLANE_SHAPE_
+#endif // _BENT_PLANE_SHAPE_

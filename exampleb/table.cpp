@@ -443,9 +443,6 @@ CadModel Table::model() const
     plastic6.rotate_ay(pg.blank_angle());
     mm.add(plastic6, pg.blank_position().v1, 1.6 * BALL_RADIUS + 0.0005, pg.blank_position().v2);
 
-    Gate gate({PLAYFIELD_X, PLAYFIELD_Z}, 0.050, 0.050, 0.050, 0.0, METAL_COLOR, 0.6, 25);
-    mm.add(gate.model(0.0), 0.0, 0.10, 0.0);
-
     return mm;
 }
 
