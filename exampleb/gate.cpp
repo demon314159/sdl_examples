@@ -5,6 +5,7 @@
 #include "gate.h"
 #include "pi.h"
 #include "cube_shape.h"
+#include "cylinder_shape.h"
 #include "rounded_plane_shape.h"
 #include "bent_plane_shape.h"
 #include "tapered_cube_shape.h"
@@ -83,12 +84,20 @@ CadModel Gate::model(float animation_id) const
     bend3.translate(m_width / 6.0, m_height - br2 / 2.0, m_length / 2.0 + br2 / 2.0);
     mm.add(bend3);
     float br3 = 0.05 * m_width;
-CadModel tab(RoundedPlaneShape(m_width / 8.0, t1, m_width / 3.0, br3, 0.0, m_steps), m_color, animation_id);
-tab.rotate_az(90.0);
-tab.rotate_ay(90.0);
-tab.translate(m_width / 6.0, m_height - br2 - m_width / 16.0, m_length / 2.0 + br2 - t1 / 2.0);
-mm.add(tab);
+    CadModel tab(RoundedPlaneShape(m_width / 8.0, t1, m_width / 3.0, br3, 0.0, m_steps), m_color, animation_id);
+   tab.rotate_az(90.0);
+   tab.rotate_ay(90.0);
+   tab.translate(m_width / 6.0, m_height - br2 - m_width / 16.0, m_length / 2.0 + br2 - t1 / 2.0);
+   mm.add(tab);
 
+CadModel tongue(TaperedCubeShape(m_width * 0.9, m_height * 1.6, t1 / 2.0, m_width / 6.0, -m_width / 6.0, 0.0, 0.0), m_color, animation_id);
+tongue.rotate_ax(180.0);
+tongue.translate(m_width / 6.0, 0.0, 0.0);
+mm.add(tongue);
+CadModel pin(CylinderShape(0.00025, (m_width + br2 * 2.0) * 1.1, 25), PaintCan(0.0, 0.0, 0.0), animation_id);
+pin.rotate_az(90.0);
+pin.translate(m_width / 6.0, m_height - 2.0 * t1, 0.0);
+mm.add(pin);
     top_base2.translate(m_width / 3.0, m_height - t1 / 2.0, 0.0);
     mm.add(top_base2, -m_width /6.0, 0.0, 0.0);
     mm.translate(-m_width / 3.0, 0.0, 0.0);
