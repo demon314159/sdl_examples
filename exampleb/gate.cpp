@@ -13,8 +13,6 @@
 #include "crown_nut_shape.h"
 #include <math.h>
 
-
-
 Gate::Gate(Float2 position, float width, float length, float height, float angle,
                  const PaintCan& color, float reflectivity, int steps)
     : m_position(position)
@@ -85,19 +83,19 @@ CadModel Gate::model(float animation_id) const
     mm.add(bend3);
     float br3 = 0.05 * m_width;
     CadModel tab(RoundedPlaneShape(m_width / 8.0, t1, m_width / 3.0, br3, 0.0, m_steps), m_color, animation_id);
-   tab.rotate_az(90.0);
-   tab.rotate_ay(90.0);
-   tab.translate(m_width / 6.0, m_height - br2 - m_width / 16.0, m_length / 2.0 + br2 - t1 / 2.0);
-   mm.add(tab);
+    tab.rotate_az(90.0);
+    tab.rotate_ay(90.0);
+    tab.translate(m_width / 6.0, m_height - br2 - m_width / 16.0, m_length / 2.0 + br2 - t1 / 2.0);
+    mm.add(tab);
 
-CadModel tongue(TaperedCubeShape(m_width * 0.9, m_height * 1.6, t1 / 2.0, m_width / 6.0, -m_width / 6.0, 0.0, 0.0), m_color, animation_id);
-tongue.rotate_ax(180.0);
-tongue.translate(m_width / 6.0, 0.0, 0.0);
-mm.add(tongue);
-CadModel pin(CylinderShape(0.00025, (m_width + br2 * 2.0) * 1.1, 25), PaintCan(0.0, 0.0, 0.0), animation_id);
-pin.rotate_az(90.0);
-pin.translate(m_width / 6.0, m_height - 2.0 * t1, 0.0);
-mm.add(pin);
+    CadModel tongue(TaperedCubeShape(m_width * 0.9, m_height * 1.6, t1 / 2.0, m_width / 6.0, -m_width / 6.0, 0.0, 0.0), m_color, animation_id);
+    tongue.rotate_ax(180.0);
+    tongue.translate(m_width / 6.0, 0.0, 0.0);
+    mm.add(tongue);
+    CadModel pin(CylinderShape(0.00025, (m_width + br2 * 2.0) * 1.1, 25), PaintCan(0.0, 0.0, 0.0), animation_id);
+    pin.rotate_az(90.0);
+    pin.translate(m_width / 6.0, m_height - 2.0 * t1, 0.0);
+    mm.add(pin);
     top_base2.translate(m_width / 3.0, m_height - t1 / 2.0, 0.0);
     mm.add(top_base2, -m_width /6.0, 0.0, 0.0);
     mm.translate(-m_width / 3.0, 0.0, 0.0);
@@ -119,6 +117,10 @@ mm.add(pin);
 
 
     mm.add(wall2, 0.0, 0.0, 0.0);
+    mm.translate(m_width - br2, 0.0, 0.0);
+    mm.rotate_ay(180.0 + m_angle);
+    mm.translate(m_position.v1, 0.0, m_position.v2);
+
 
     return mm;
 }
