@@ -109,7 +109,7 @@ private:
     float ANGLE2 = 145.452;
     float ANGLE3 = 30.12;
     float ANGLE4 = 59.7693;
-    float ANGLE5 = ANGLE2 - 9.0;
+    float ANGLE5 = ANGLE2 - 10.0;
     float ANGLE6 = 53.0;
     float X1 =  0.007;
     float X6 = 0.283;
@@ -139,7 +139,7 @@ private:
     float R4 = sqrt((X2 - X1) * (X2 - X1) + (ZA - Z2) * (ZA - Z2));
     float TB = (X8 - X7) * 0.7;
     float TDIODE = (X8 - X7) * 1.4;
-    float YB = BALL_RADIUS * 2.5 * 1.414;
+    float YB = BALL_RADIUS * 2.0 * 1.414;
     float XB = X4 + (R1 - TB / 2.0) * cos(ANGLE5 * PI / 180.0);
     float ZB = Z4 - (R1 - TB / 2.0) * sin(ANGLE5 * PI / 180.0);
     float XC = X4 + (R1 - TB / 2.0) * cos(ANGLE6 * PI / 180.0);

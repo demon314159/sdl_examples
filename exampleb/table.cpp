@@ -92,20 +92,6 @@ Table::Table()
     m_strip10 = new StraightStrip(0.0, {(X7 + X8) / 2.0f, Y1 / 2.0f, Z7}, X8 - X7, Y1, WOOD_COLOR, 0.0);
     m_strip11 = new StraightDiodeStrip(ANGLE6, {XC, Y1 / 2.0f, ZC}, TDIODE, Y1, METAL_COLOR, RING_MAJOR_REFLECTIVITY);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     m_ring1 = new Ring(ANGLE5, {XB, YB / 2.0f, ZB}, YB / 2.0f - TB / 4.0f, YB / 8.0f, TB / 2.0f, RING_COLOR, RING_MAJOR_REFLECTIVITY, RING_MINOR_REFLECTIVITY, RING_SEGMENTS);
 
     m_wire_guide1 = new StraightWireGuide({0.028, 0.411}, {0.02775, 0.4765}, WIRE_GUIDE_RADIUS, BALL_RADIUS, WIRE_GUIDE_COLOR, WIRE_GUIDE_REFLECTIVITY, WIRE_GUIDE_SEGMENTS);

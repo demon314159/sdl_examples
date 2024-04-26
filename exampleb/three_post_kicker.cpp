@@ -109,7 +109,7 @@ CadModel ThreePostKicker::model(float animation_id) const
     mm.add(b5, m_reflector5.position().v1, m_height, m_reflector5.position().v2);
     mm.add(b6, m_reflector6.position().v1, m_height, m_reflector6.position().v2);
 
-    CadModel crown_nut(CrownNutShape(0.003, 0.0015, 25, 25), PaintCan(1.0, 1.0, 1.0), 0.0);
+    CadModel crown_nut(CrownNutShape(0.003, 0.002, 25, 25), PaintCan(1.0, 1.0, 1.0), 0.0);
     if (!m_no_nut1) {
         mm.add(crown_nut, m_p1.v1, h3_post, m_p1.v2);
     }

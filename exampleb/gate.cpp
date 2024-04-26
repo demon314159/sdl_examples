@@ -43,7 +43,7 @@ CadModel Gate::model(float animation_id) const
     float wall_height = m_height - 2.0 * br2;
     float nut_radius = 0.16 * m_width;
 
-    CadModel nut(CrownNutShape(nut_radius, nut_radius / 2.0, 25, 25), m_color, animation_id);
+    CadModel nut(CrownNutShape(nut_radius, 2.0 * nut_radius / 3.0, 25, 25), m_color, animation_id);
     CadModel base(RoundedPlaneShape(m_width, t1, m_length, br1, 0.0, m_steps), m_color, animation_id);
     CadModel bend(BentPlaneShape(br2, t1, m_length, 25), m_color, animation_id);
     mm.add(nut, -m_width / 3.0, t1, 0.0);
