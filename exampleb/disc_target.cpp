@@ -49,6 +49,6 @@ CadModel DiscTarget::model(float animation_id) const
     disc.rotate_ax(90.0);
     disc.rotate_ay(m_angle);
     CadModel mm;
-    mm.add(disc, m_position.v1, m_radius, m_position.v2);
+    mm.add(disc, m_position.v1, m_radius + 0.002, m_position.v2);
     return mm;
 }
