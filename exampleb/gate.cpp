@@ -117,7 +117,7 @@ CadModel Gate::model(float animation_id) const
 
 
     mm.add(wall2, 0.0, 0.0, 0.0);
-    mm.translate(m_width - br2, 0.0, 0.0);
+    mm.translate(m_width - br2 - 0.0015, 0.0, 0.0);
     mm.rotate_ay(180.0 + m_angle);
     mm.translate(m_position.v1, 0.0, m_position.v2);
 
