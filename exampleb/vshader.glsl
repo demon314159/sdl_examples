@@ -156,7 +156,7 @@ void main()
             }
             gl_Position = scoreboard_mvp_matrix * vec4(a_position, 1.0);
             v_normal = vec4(0.0, 0.0, 1.0, 0.0);
-        } else if (a_animation_id < 75.5) {      // Scoreboard
+        } else if (a_animation_id < 79.5) {      // Scoreboard
             gl_Position = scoreboard_mvp_matrix * vec4(a_position, 1.0);
             v_normal = scoreboard_rot_matrix * vec4(billy, 0.0);
             v_color = vec4(a_color, 1.0);

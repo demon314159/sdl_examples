@@ -6,7 +6,7 @@ in vec2 v_texture_position;
 in float v_texture_id;
 in float v_animation_id;
 
-uniform float score[24];
+uniform float score[28];
 
 uniform sampler2D texture1;
 uniform sampler2D texture2;
@@ -151,8 +151,16 @@ void main()
               ttt = vec2(v_texture_position.x + score[21], v_texture_position.y);
             } else if (v_animation_id < 73.5) {
               ttt = vec2(v_texture_position.x + score[22], v_texture_position.y);
-            } else {
+            } else if (v_animation_id < 74.5) {
               ttt = vec2(v_texture_position.x + score[23], v_texture_position.y);
+            } else if (v_animation_id < 75.5) {
+              ttt = vec2(v_texture_position.x + score[24], v_texture_position.y);
+            } else if (v_animation_id < 76.5) {
+              ttt = vec2(v_texture_position.x + score[25], v_texture_position.y);
+            } else if (v_animation_id < 77.5) {
+              ttt = vec2(v_texture_position.x + score[26], v_texture_position.y);
+            } else {
+              ttt = vec2(v_texture_position.x + score[27], v_texture_position.y);
             }
             billy = texture(texture11, ttt);
             billy.r = c * billy.r;

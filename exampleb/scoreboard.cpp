@@ -10,6 +10,7 @@
 #include <stdio.h>
 
 #define SCORE_DELAY  0.15
+#define EXTRA_DIGITS 4
 
 Scoreboard::Scoreboard(int max_players, int digits,
                        const Float3& position, const Float2& size,
@@ -25,8 +26,8 @@ Scoreboard::Scoreboard(int max_players, int digits,
     , m_trim_color(trim_color)
     , m_texture_id_backglass(texture_id_backglass)
     , m_texture_id_score(texture_id_score)
-    , m_digit(new int[max_players * digits])
-    , m_data(new float[max_players * digits])
+    , m_digit(new int[max_players * digits + EXTRA_DIGITS])
+    , m_data(new float[max_players * digits + EXTRA_DIGITS])
     , m_delay_time(0.0)
     , m_solenoid_id(0)
     , m_queue(new Queue())
@@ -48,6 +49,10 @@ void Scoreboard::clear()
         for (int i = 0; i < m_digits; i++) {
             m_digit[p * m_digits + i] = (i < 4) ? 10 : 0;
         }
+    }
+    int id_off = m_max_players * m_digits;
+    for (int i = 0; i < EXTRA_DIGITS; i++) {
+        m_digit[id_off + i] = i + 1;
     }
 }
 
@@ -120,7 +125,7 @@ void Scoreboard::perform_action(int command, int digit, int solenoid_id)
 
 int Scoreboard::digits() const
 {
-    return m_max_players * m_digits;
+    return m_max_players * m_digits + EXTRA_DIGITS;
 }
 
 float* Scoreboard::data() const
@@ -138,7 +143,10 @@ float* Scoreboard::data() const
             }
         }
     }
-
+    int id_off = m_max_players * m_digits;
+    for (int i = 0; i < EXTRA_DIGITS; i++) {
+        m_data[i + id_off] = (1.0f / 11.0f) * (float) m_digit[id_off + i];
+    }
     return m_data;
 }
 
@@ -204,6 +212,40 @@ CadModel Scoreboard::player_digits_model(int player, const Float2& position, con
     return mm;
 }
 
+CadModel Scoreboard::credits_model(const Float2& position, const Float2& size, float animation_id_first_digit) const
+{
+    BackglassGuide bg(m_position, m_size, m_backglass_image_size);
+    Float3 fpos = bg.position(position);
+    Float2 fsize = bg.size(size);
+    CadModel mm;
+    int id_off = m_max_players * m_digits;
+    for (int i = 0; i < 2; i++) {
+        float h = fsize.v2 * 0.9;
+        float w = h * (0.40 / 0.69);
+        CadModel single(PlaneShape(w, h, m_texture_id_score, {0.0, 0.0}, {1.0f / 11.0f, 1.0}), PaintCan(0.0, 0.0, 0.0), animation_id_first_digit + (float) (id_off + i));
+        single.rotate_ax(90.0);
+        mm.add(single, fpos.v1 - w  + w * (float) i + w / 2.0, fpos.v2, fpos.v3 + 0.002);
+    }
+    return mm;
+}
+
+CadModel Scoreboard::ball_in_play_model(const Float2& position, const Float2& size, float animation_id_first_digit) const
+{
+    BackglassGuide bg(m_position, m_size, m_backglass_image_size);
+    Float3 fpos = bg.position(position);
+    Float2 fsize = bg.size(size);
+    CadModel mm;
+    int id_off = m_max_players * m_digits + 2;
+    for (int i = 0; i < 2; i++) {
+        float h = fsize.v2 * 0.9;
+        float w = h * (0.40 / 0.69);
+        CadModel single(PlaneShape(w, h, m_texture_id_score, {0.0, 0.0}, {1.0f / 11.0f, 1.0}), PaintCan(0.0, 0.0, 0.0), animation_id_first_digit + (float) (id_off + i));
+        single.rotate_ax(90.0);
+        mm.add(single, fpos.v1 - w  + w * (float) i + w / 2.0, fpos.v2, fpos.v3 + 0.002);
+    }
+    return mm;
+}
+
 CadModel Scoreboard::model(float animation_id_first_digit, float animation_id_scoreboard) const
 {
     CadModel mm;
@@ -221,9 +263,11 @@ CadModel Scoreboard::model(float animation_id_first_digit, float animation_id_sc
     mm.rotate_ax(90.0);
     mm.translate(m_position.v1 + m_size.v1 / 2.0, m_position.v2, m_position.v3);
     mm.add(player_digits_model(1, {0.058, 0.04575}, {0.082, 0.0195}, animation_id_first_digit));
-    mm .add(player_digits_model(2, {0.2805, 0.04425}, {0.082, 0.0195}, animation_id_first_digit));
-    mm .add(player_digits_model(3, {0.057, 0.2005}, {0.083, 0.018}, animation_id_first_digit));
-    mm .add(player_digits_model(4, {0.27925, 0.198}, {0.0835, 0.018}, animation_id_first_digit));
+    mm.add(player_digits_model(2, {0.2805, 0.04425}, {0.082, 0.0195}, animation_id_first_digit));
+    mm.add(player_digits_model(3, {0.057, 0.2005}, {0.083, 0.018}, animation_id_first_digit));
+    mm.add(player_digits_model(4, {0.27925, 0.198}, {0.0835, 0.018}, animation_id_first_digit));
+    mm.add(credits_model({0.158125, 0.232125}, {0.01825, 0.01025}, animation_id_first_digit));
+    mm.add(ball_in_play_model({0.177625, 0.231875}, {0.01825, 0.01025}, animation_id_first_digit));
     return mm;
 }
 

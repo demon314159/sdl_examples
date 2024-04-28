@@ -55,6 +55,8 @@ private:
     void command_increment_digit(int digit, int solenoid_id);
     void command_out_hole(int solenoid_id);
     CadModel player_digits_model(int player, const Float2& position, const Float2& size, float animation_id_first_digit) const;
+    CadModel credits_model(const Float2& position, const Float2& size, float animation_id_first_digit) const;
+    CadModel ball_in_play_model(const Float2& position, const Float2& size, float animation_id_first_digit) const;
 };
 
 #endif // _SCOREBOARD_H_
