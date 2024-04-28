@@ -15,7 +15,8 @@
 #define BALL_ACCELERATION 0.25
 
 Toy::Toy()
-    : m_ball(NULL)
+    : m_seconds(0.0)
+    , m_ball(NULL)
     , m_lamp(NULL)
     , m_target(NULL)
     , m_sensor(NULL)
@@ -171,30 +172,34 @@ int Toy::animation_matrices() const
 
 void Toy::advance(int nanoseconds)
 {
-    float seconds = 1.0e-9 * (float) nanoseconds;
-    m_sensor->clear();
-    m_solenoid_id = SOLENOID_ID_NONE;
-    m_left_flipper->advance(seconds);
-    m_right_flipper->advance(seconds);
-    m_top_flipper->advance(seconds);
-    if (m_ball->position().v2 < m_table->ball_z_limit()) {
-        m_ball->advance(seconds);
-    } else {
-        m_sensor->set(SENSOR_ID_OUTHOLE);
-    }
-    m_target->collide(m_ball, m_sensor);
-    m_table->collide(m_ball, m_sensor);
-    m_left_flipper->collide(m_ball);
-    m_right_flipper->collide(m_ball);
-    m_top_flipper->collide(m_ball);
-    m_ball->advance_orientation();
-    m_scoreboard->advance(seconds);
-    m_solenoid_id = apply_rules();
-    if (m_solenoid_id == SOLENOID_ID_OUT_HOLE) {
-        float vx = BALL_OUT_HOLE_SPEED * cos(20.0f * PI / 180.0f);
-        float vz = -BALL_OUT_HOLE_SPEED * sin(20.0f * PI / 180.0f);
-        m_ball->set_velocity({vx, vz});
-        m_ball->set_position({0.266, 0.564});
+    m_seconds += (1.0e-9 * (float) nanoseconds);
+    float seconds = 1.0e-3;
+    while (m_seconds > seconds) {
+        m_seconds -= seconds;
+        m_sensor->clear();
+        m_solenoid_id = SOLENOID_ID_NONE;
+        m_left_flipper->advance(seconds);
+        m_right_flipper->advance(seconds);
+        m_top_flipper->advance(seconds);
+        if (m_ball->position().v2 < m_table->ball_z_limit()) {
+            m_ball->advance(seconds);
+        } else {
+            m_sensor->set(SENSOR_ID_OUTHOLE);
+        }
+        m_target->collide(m_ball, m_sensor);
+        m_table->collide(m_ball, m_sensor);
+        m_left_flipper->collide(m_ball);
+        m_right_flipper->collide(m_ball);
+        m_top_flipper->collide(m_ball);
+        m_ball->advance_orientation();
+        m_scoreboard->advance(seconds);
+        m_solenoid_id = apply_rules();
+        if (m_solenoid_id == SOLENOID_ID_OUT_HOLE) {
+            float vx = BALL_OUT_HOLE_SPEED * cos(20.0f * PI / 180.0f);
+            float vz = -BALL_OUT_HOLE_SPEED * sin(20.0f * PI / 180.0f);
+            m_ball->set_velocity({vx, vz});
+            m_ball->set_position({0.266, 0.564});
+        }
     }
 }
 

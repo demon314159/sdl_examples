@@ -43,6 +43,9 @@ public:
     int get_solenoid_id() const;
 
 private:
+    double m_average;
+    int m_samples;
+    float m_seconds;
     Ball* m_ball;
     Lamp* m_lamp;
     Target* m_target;
