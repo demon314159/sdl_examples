@@ -6,7 +6,6 @@
 #define _VIEW_H_
 
 #include <SDL.h>
-#include <SDL_mixer.h>
 #include <GL/glew.h>
 #include <SDL_opengl.h>
 #include <stdio.h>
@@ -93,9 +92,6 @@ private:
     GLint m_texture10_uniform;
     GLint m_texture11_uniform;
     GLint m_texture12_uniform;
-
-    Mix_Chunk* m_sound1;
-    Mix_Chunk* m_sound2;
 
     unsigned int m_vao;
     unsigned int m_vbo;

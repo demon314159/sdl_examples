@@ -14,6 +14,7 @@
 #include "ball.h"
 #include "flipper.h"
 #include "table.h"
+#include <SDL_mixer.h>
 
 class Toy
 {
@@ -26,6 +27,7 @@ public:
     Toy();
     ~Toy();
 
+    void initialize();
     CadModel* get_model() const;
     int animation_matrices() const;
     Matrix4x4 get_animation_matrix(int i) const;
@@ -57,6 +59,8 @@ private:
     Flipper* m_right_flipper;
     Flipper* m_top_flipper;
     CadModel* m_model;
+    Mix_Chunk* m_sound1;
+    Mix_Chunk* m_sound2;
     bool m_last_launch_action_button;
     void build_model();
     int apply_rules(); // Returns a Solenoid ID
