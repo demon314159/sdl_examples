@@ -10,11 +10,11 @@
 #include "lamp.h"
 #include "target.h"
 #include "sensor.h"
+#include "sound.h"
 #include "scoreboard.h"
 #include "ball.h"
 #include "flipper.h"
 #include "table.h"
-#include <SDL_mixer.h>
 
 class Toy
 {
@@ -45,13 +45,12 @@ public:
     int get_solenoid_id() const;
 
 private:
-    double m_average;
-    int m_samples;
     float m_seconds;
     Ball* m_ball;
     Lamp* m_lamp;
     Target* m_target;
     Sensor* m_sensor;
+    Sound* m_sound;
     Scoreboard* m_scoreboard;
     int m_solenoid_id;
     Table* m_table;
@@ -59,8 +58,6 @@ private:
     Flipper* m_right_flipper;
     Flipper* m_top_flipper;
     CadModel* m_model;
-    Mix_Chunk* m_sound1;
-    Mix_Chunk* m_sound2;
     bool m_last_launch_action_button;
     void build_model();
     int apply_rules(); // Returns a Solenoid ID

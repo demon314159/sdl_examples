@@ -89,6 +89,7 @@ HEADERS = view.h \
           bent_plane_shape.h \
           tapered_cube_shape.h \
           diamond_plane_shape.h \
+          sound.h \
           \
           \
           \
@@ -179,6 +180,7 @@ OBJECTS = main.obj \
           bent_plane_shape.obj \
           tapered_cube_shape.obj \
           diamond_plane_shape.obj \
+          sound.obj \
           \
           \
           \

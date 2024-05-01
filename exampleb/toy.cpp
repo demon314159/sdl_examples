@@ -20,6 +20,7 @@ Toy::Toy()
     , m_lamp(NULL)
     , m_target(NULL)
     , m_sensor(NULL)
+    , m_sound(NULL)
     , m_scoreboard(NULL)
     , m_solenoid_id(0)
     , m_table(NULL)
@@ -27,14 +28,13 @@ Toy::Toy()
     , m_right_flipper(NULL)
     , m_top_flipper(NULL)
     , m_model(NULL)
-    , m_sound1(NULL)
-    , m_sound2(NULL)
     , m_last_launch_action_button(false)
 {
     m_ball = new Ball(BALL_RADIUS, BALL_TOP_COLOR, BALL_MIDDLE_COLOR, BALL_BOTTOM_COLOR, BALL_SEGMENTS);
     m_lamp = new Lamp(ANIMATION_ID_FIXED_LAMP1);
     m_target = new Target(DROP_TARGET_HEIGHT);
     m_sensor = new Sensor(MAX_SENSORS);
+    m_sound = new Sound();
     m_table = new Table();
     m_scoreboard = new Scoreboard(MAX_PLAYERS, SCORE_DIGITS,
                             {SCOREBOARD_POSITION_X, SCOREBOARD_POSITION_Y, SCOREBOARD_POSITION_Z}, {BACKGLASS_SIZE_X, BACKGLASS_SIZE_Z},
@@ -154,6 +154,7 @@ Toy::~Toy()
     delete m_lamp;
     delete m_target;
     delete m_sensor;
+    delete m_sound;
     delete m_scoreboard;
     delete m_table;
     delete m_left_flipper;
@@ -164,26 +165,7 @@ Toy::~Toy()
 
 void Toy::initialize()
 {
-    if (Mix_Init(0) < 0) {
-        printf("Mixer Initialization Error: %s\n", Mix_GetError());
-        exit(0);
-    }
-    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT,2, 1024) < 0) {
-        printf("Mixer Open Error: %s\n", Mix_GetError());
-        exit(0);
-    }
-
-    m_sound1 = Mix_LoadWAV("sound1.wav");
-    if (!m_sound1) {
-        printf("Mixer LoadWAV Error: %s\n", Mix_GetError());
-        exit(0);
-    }
-    m_sound2 = Mix_LoadWAV("sound2.wav");
-    if (!m_sound2) {
-        printf("Mixer LoadWAV Error: %s\n", Mix_GetError());
-        exit(0);
-    }
-
+    m_sound->initialize();
 }
 
 CadModel* Toy::get_model() const
@@ -221,14 +203,15 @@ void Toy::advance(int nanoseconds)
         m_scoreboard->advance(seconds);
         m_solenoid_id = apply_rules();
         if (m_solenoid_id != 0) {
-            if (m_solenoid_id == SOLENOID_ID_OUT_HOLE) {
-                Mix_PlayChannel(-1, m_sound2, 0);
+            if (m_solenoid_id == SOLENOID_ID_OUT_HOLE_SOUND) {
+                m_sound->play(0);
+            } else if (m_solenoid_id == SOLENOID_ID_OUT_HOLE) {
                 float vx = BALL_OUT_HOLE_SPEED * cos(20.0f * PI / 180.0f);
                 float vz = -BALL_OUT_HOLE_SPEED * sin(20.0f * PI / 180.0f);
                 m_ball->set_velocity({vx, vz});
                 m_ball->set_position({0.266, 0.564});
             } else {
-                Mix_PlayChannel(-1, m_sound1, 0);
+                m_sound->play(1);
             }
         }
     }
@@ -313,7 +296,7 @@ void Toy::launch_action_button(bool on)
 
 void Toy::replay_action_button(bool on)
 {
-    m_scoreboard->start_replay(SOLENOID_ID_TENS_CHIME, SOLENOID_ID_OUT_HOLE);
+    m_scoreboard->start_replay(SOLENOID_ID_TENS_CHIME, SOLENOID_ID_OUT_HOLE_SOUND, SOLENOID_ID_OUT_HOLE);
 }
 
 

@@ -75,6 +75,7 @@ void Scoreboard::advance(float seconds)
 
 void Scoreboard::command_clear_digits(int solenoid_id)
 {
+    m_solenoid_id = solenoid_id;
     clear();
 }
 
@@ -111,6 +112,11 @@ void Scoreboard::command_out_hole(int solenoid_id)
     m_solenoid_id = solenoid_id;
 }
 
+void Scoreboard::command_out_hole_sound(int solenoid_id)
+{
+    m_solenoid_id = solenoid_id;
+}
+
 void Scoreboard::perform_action(int command, int digit, int solenoid_id)
 {
     m_solenoid_id = 0;
@@ -118,6 +124,8 @@ void Scoreboard::perform_action(int command, int digit, int solenoid_id)
         command_clear_digits(solenoid_id);
     } else if (command == QCOMMAND_INCREMENT_DIGIT) {
         command_increment_digit(digit, solenoid_id);
+    } else if (command == QCOMMAND_OUT_HOLE_SOUND) {
+        command_out_hole_sound(solenoid_id);
     } else if (command == QCOMMAND_OUT_HOLE) {
         command_out_hole(solenoid_id);
     }
@@ -183,10 +191,11 @@ void Scoreboard::add_thousands(int n, int solenoid_id)
     }
 }
 
-void Scoreboard::start_replay(int sound_solenoid_id, int out_hole_solenoid_id)
+void Scoreboard::start_replay(int sound_solenoid_id, int out_hole_sound_solenoid_id, int out_hole_solenoid_id)
 {
     m_player_up = 1;
     m_queue->add_action(QCOMMAND_CLEAR_DIGITS, 0, sound_solenoid_id, SCORE_DELAY);
+    m_queue->add_action(QCOMMAND_OUT_HOLE_SOUND, 0, out_hole_sound_solenoid_id, 3.0 * SCORE_DELAY);
     m_queue->add_action(QCOMMAND_OUT_HOLE, 0, out_hole_solenoid_id, SCORE_DELAY);
 }
 

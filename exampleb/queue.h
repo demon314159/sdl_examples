@@ -14,7 +14,8 @@
 #define QCOMMAND_NOP             0
 #define QCOMMAND_CLEAR_DIGITS    1
 #define QCOMMAND_INCREMENT_DIGIT 2
-#define QCOMMAND_OUT_HOLE        3
+#define QCOMMAND_OUT_HOLE_SOUND  3
+#define QCOMMAND_OUT_HOLE        4
 
 class Queue
 {

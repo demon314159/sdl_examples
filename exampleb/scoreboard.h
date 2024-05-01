@@ -25,7 +25,7 @@ public:
     float* data() const;
 
     void clear();
-    void start_replay(int sound_solenoid_id, int out_hole_solenoid_id);
+    void start_replay(int sound_solenoid_id, int out_hole_sound_solenoid_id, int out_hole_solenoid_id);
     void add_tens(int n, int solenoid_id);
     void add_hundreds(int n, int solenoid_id);
     void add_thousands(int n, int solenoid_id);
@@ -54,6 +54,7 @@ private:
     void command_clear_digits(int solenoid_id);
     void command_increment_digit(int digit, int solenoid_id);
     void command_out_hole(int solenoid_id);
+    void command_out_hole_sound(int solenoid_id);
     CadModel player_digits_model(int player, const Float2& position, const Float2& size, float animation_id_first_digit) const;
     CadModel credits_model(const Float2& position, const Float2& size, float animation_id_first_digit) const;
     CadModel ball_in_play_model(const Float2& position, const Float2& size, float animation_id_first_digit) const;
