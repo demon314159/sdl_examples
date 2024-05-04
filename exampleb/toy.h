@@ -62,6 +62,18 @@ private:
     void build_model();
     int apply_rules(); // Returns a Solenoid ID
     void rollover_rules();
+    void target_rules();
+    void target_score(int lamp_id);
+    bool jacks_dropped() const;
+    bool queens_dropped() const;
+    bool kings_dropped() const;
+    bool aces_dropped() const;
+    void jacks_test();
+    void queens_test();
+    void kings_test();
+    void aces_test();
+
+    void activate_solenoid();
 };
 
 #endif // _TOY_H_

@@ -178,6 +178,46 @@ int Toy::animation_matrices() const
     return ANIMATION_MATRICES;
 }
 
+void Toy::activate_solenoid()
+{
+    if (m_solenoid_id != 0) {
+        if (m_solenoid_id == SOLENOID_ID_OUT_HOLE) {
+            float vx = BALL_OUT_HOLE_SPEED * cos(20.0f * PI / 180.0f);
+            float vz = -BALL_OUT_HOLE_SPEED * sin(20.0f * PI / 180.0f);
+            m_ball->set_velocity({vx, vz});
+            m_ball->set_position({0.266, 0.564});
+        } else if (m_solenoid_id == SOLENOID_ID_KNOCKER) {
+
+        } else if (m_solenoid_id == SOLENOID_ID_TENS_CHIME) {
+            m_sound->play(SOUND_ID_TENS_CHIME);
+        } else if (m_solenoid_id == SOLENOID_ID_HUNDREDS_CHIME) {
+            m_sound->play(SOUND_ID_HUNDREDS_CHIME);
+        } else if (m_solenoid_id == SOLENOID_ID_THOUSANDS_CHIME) {
+            m_sound->play(SOUND_ID_THOUSANDS_CHIME);
+        } else if (m_solenoid_id == SOLENOID_ID_KNOCKER) {
+        } else if (m_solenoid_id == SOLENOID_ID_DROP_TARGET_JACKS) {
+            m_target->set_dropped(DROP_TARGET_ID_10, false);
+            m_target->set_dropped(DROP_TARGET_ID_J1, false);
+            m_target->set_dropped(DROP_TARGET_ID_J2, false);
+        } else if (m_solenoid_id == SOLENOID_ID_DROP_TARGET_QUEENS) {
+            m_target->set_dropped(DROP_TARGET_ID_Q1, false);
+            m_target->set_dropped(DROP_TARGET_ID_Q2, false);
+            m_target->set_dropped(DROP_TARGET_ID_Q3, false);
+        } else if (m_solenoid_id == SOLENOID_ID_DROP_TARGET_KINGS) {
+            m_target->set_dropped(DROP_TARGET_ID_K1, false);
+            m_target->set_dropped(DROP_TARGET_ID_K2, false);
+            m_target->set_dropped(DROP_TARGET_ID_K3, false);
+            m_target->set_dropped(DROP_TARGET_ID_K4, false);
+        } else if (m_solenoid_id == SOLENOID_ID_DROP_TARGET_ACES) {
+            m_target->set_dropped(DROP_TARGET_ID_A1, false);
+            m_target->set_dropped(DROP_TARGET_ID_A2, false);
+            m_target->set_dropped(DROP_TARGET_ID_JOKER, false);
+            m_target->set_dropped(DROP_TARGET_ID_A3, false);
+            m_target->set_dropped(DROP_TARGET_ID_A4, false);
+        }
+    }
+}
+
 void Toy::advance(int nanoseconds)
 {
     m_seconds += (1.0e-9 * (float) nanoseconds);
@@ -202,18 +242,9 @@ void Toy::advance(int nanoseconds)
         m_ball->advance_orientation();
         m_scoreboard->advance(seconds);
         m_solenoid_id = apply_rules();
-        if (m_solenoid_id != 0) {
-            if (m_solenoid_id == SOLENOID_ID_OUT_HOLE_SOUND) {
-                m_sound->play(0);
-            } else if (m_solenoid_id == SOLENOID_ID_OUT_HOLE) {
-                float vx = BALL_OUT_HOLE_SPEED * cos(20.0f * PI / 180.0f);
-                float vz = -BALL_OUT_HOLE_SPEED * sin(20.0f * PI / 180.0f);
-                m_ball->set_velocity({vx, vz});
-                m_ball->set_position({0.266, 0.564});
-            } else {
-                m_sound->play(1);
-            }
-        }
+        activate_solenoid();
+
+
     }
 }
 
@@ -296,7 +327,7 @@ void Toy::launch_action_button(bool on)
 
 void Toy::replay_action_button(bool on)
 {
-    m_scoreboard->start_replay(SOLENOID_ID_TENS_CHIME, SOLENOID_ID_OUT_HOLE_SOUND, SOLENOID_ID_OUT_HOLE);
+    m_scoreboard->start_replay(SOLENOID_ID_HUNDREDS_CHIME, SOLENOID_ID_OUT_HOLE);
 }
 
 
@@ -380,10 +411,83 @@ void Toy::rollover_rules()
     }
 }
 
+void Toy::target_score(int lamp_id)
+{
+    if (m_lamp->lit(lamp_id)) {
+        m_scoreboard->add_thousands(5, SOLENOID_ID_THOUSANDS_CHIME);
+    } else {
+        m_scoreboard->add_hundreds(5, SOLENOID_ID_HUNDREDS_CHIME);
+    }
+}
+
+void Toy::target_rules()
+{
+    if (m_sensor->rising(SENSOR_ID_DROP_10)) {
+        target_score(LAMP_ID_TENS_BONUS);
+        jacks_test();
+    }
+    if (m_sensor->rising(SENSOR_ID_DROP_J1)) {
+        target_score(LAMP_ID_JACKS_BONUS);
+        jacks_test();
+    }
+    if (m_sensor->rising(SENSOR_ID_DROP_J2)) {
+        target_score(LAMP_ID_JACKS_BONUS);
+        jacks_test();
+    }
+    if (m_sensor->rising(SENSOR_ID_DROP_Q1)) {
+        target_score(LAMP_ID_QUEENS_BONUS);
+        queens_test();
+    }
+    if (m_sensor->rising(SENSOR_ID_DROP_Q2)) {
+        target_score(LAMP_ID_QUEENS_BONUS);
+        queens_test();
+    }
+    if (m_sensor->rising(SENSOR_ID_DROP_Q3)) {
+        target_score(LAMP_ID_QUEENS_BONUS);
+        queens_test();
+    }
+    if (m_sensor->rising(SENSOR_ID_DROP_K1)) {
+        target_score(LAMP_ID_KINGS_BONUS);
+        kings_test();
+    }
+    if (m_sensor->rising(SENSOR_ID_DROP_K2)) {
+        target_score(LAMP_ID_KINGS_BONUS);
+        kings_test();
+    }
+    if (m_sensor->rising(SENSOR_ID_DROP_K3)) {
+        target_score(LAMP_ID_KINGS_BONUS);
+        kings_test();
+    }
+    if (m_sensor->rising(SENSOR_ID_DROP_K4)) {
+        target_score(LAMP_ID_KINGS_BONUS);
+        kings_test();
+    }
+    if (m_sensor->rising(SENSOR_ID_DROP_A1)) {
+        target_score(LAMP_ID_ACES_BONUS);
+        aces_test();
+    }
+    if (m_sensor->rising(SENSOR_ID_DROP_A2)) {
+        target_score(LAMP_ID_ACES_BONUS);
+        aces_test();
+    }
+    if (m_sensor->rising(SENSOR_ID_DROP_A3)) {
+        target_score(LAMP_ID_ACES_BONUS);
+        aces_test();
+    }
+    if (m_sensor->rising(SENSOR_ID_DROP_A4)) {
+        target_score(LAMP_ID_ACES_BONUS);
+        aces_test();
+    }
+    if (m_sensor->rising(SENSOR_ID_DROP_JOKER)) {
+        target_score(LAMP_ID_ACES_BONUS);
+        aces_test();
+    }
+}
+
 int Toy::apply_rules()
 {
     rollover_rules();
-
+    target_rules();
     if (m_sensor->rising(SENSOR_ID_BUMPER)) {
         m_scoreboard->add_hundreds(1, SOLENOID_ID_HUNDREDS_CHIME);
     }
@@ -392,4 +496,90 @@ int Toy::apply_rules()
     }
     return m_scoreboard->solenoid_id();
 }
+
+bool Toy::jacks_dropped() const
+{
+    if (!m_target->dropped(DROP_TARGET_ID_10))
+        return false;
+    if (!m_target->dropped(DROP_TARGET_ID_J1))
+        return false;
+    if (!m_target->dropped(DROP_TARGET_ID_J2))
+        return false;
+    return true;
+}
+
+bool Toy::queens_dropped() const
+{
+    if (!m_target->dropped(DROP_TARGET_ID_Q1))
+        return false;
+    if (!m_target->dropped(DROP_TARGET_ID_Q2))
+        return false;
+    if (!m_target->dropped(DROP_TARGET_ID_Q3))
+        return false;
+    return true;
+}
+
+bool Toy::kings_dropped() const
+{
+    if (!m_target->dropped(DROP_TARGET_ID_K1))
+        return false;
+    if (!m_target->dropped(DROP_TARGET_ID_K2))
+        return false;
+    if (!m_target->dropped(DROP_TARGET_ID_K3))
+        return false;
+    if (!m_target->dropped(DROP_TARGET_ID_K4))
+        return false;
+    return true;
+}
+
+bool Toy::aces_dropped() const
+{
+    if (!m_target->dropped(DROP_TARGET_ID_A1))
+        return false;
+    if (!m_target->dropped(DROP_TARGET_ID_A2))
+        return false;
+    if (!m_target->dropped(DROP_TARGET_ID_JOKER))
+        return false;
+    if (!m_target->dropped(DROP_TARGET_ID_A3))
+        return false;
+    if (!m_target->dropped(DROP_TARGET_ID_A4))
+        return false;
+    return true;
+}
+
+void Toy::jacks_test()
+{
+    if (jacks_dropped()) {
+        m_scoreboard->add_thousands(5, SOLENOID_ID_THOUSANDS_CHIME);
+        m_scoreboard->add_solenoid(SOLENOID_ID_DROP_TARGET_JACKS);
+    }
+}
+
+void Toy::queens_test()
+{
+    if (queens_dropped()) {
+        m_scoreboard->add_thousands(5, SOLENOID_ID_THOUSANDS_CHIME);
+        m_scoreboard->add_solenoid(SOLENOID_ID_DROP_TARGET_QUEENS);
+    }
+}
+
+void Toy::kings_test()
+{
+    if (kings_dropped()) {
+        m_scoreboard->add_thousands(5, SOLENOID_ID_THOUSANDS_CHIME);
+        m_scoreboard->add_solenoid(SOLENOID_ID_DROP_TARGET_KINGS);
+    }
+}
+
+void Toy::aces_test()
+{
+    if (aces_dropped()) {
+        m_scoreboard->add_thousands(5, SOLENOID_ID_THOUSANDS_CHIME);
+        m_scoreboard->add_solenoid(SOLENOID_ID_DROP_TARGET_ACES);
+    }
+}
+
+
+
+
 

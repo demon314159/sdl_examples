@@ -25,10 +25,11 @@ public:
     float* data() const;
 
     void clear();
-    void start_replay(int sound_solenoid_id, int out_hole_sound_solenoid_id, int out_hole_solenoid_id);
+    void start_replay(int sound_solenoid_id, int out_hole_solenoid_id);
     void add_tens(int n, int solenoid_id);
     void add_hundreds(int n, int solenoid_id);
     void add_thousands(int n, int solenoid_id);
+    void add_solenoid(int solenoid_id);
 
     int solenoid_id() const;
 

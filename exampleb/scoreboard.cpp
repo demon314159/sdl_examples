@@ -128,6 +128,8 @@ void Scoreboard::perform_action(int command, int digit, int solenoid_id)
         command_out_hole_sound(solenoid_id);
     } else if (command == QCOMMAND_OUT_HOLE) {
         command_out_hole(solenoid_id);
+    } else if (command == QCOMMAND_DROP_TARGET) {
+        m_solenoid_id = solenoid_id;
     }
 }
 
@@ -156,6 +158,13 @@ float* Scoreboard::data() const
         m_data[i + id_off] = (1.0f / 11.0f) * (float) m_digit[id_off + i];
     }
     return m_data;
+}
+
+void Scoreboard::add_solenoid(int solenoid_id)
+{
+    if (!m_queue->full()) {
+        m_queue->add_action(QCOMMAND_DROP_TARGET, 0, solenoid_id, SCORE_DELAY);
+    }
 }
 
 void Scoreboard::add_tens(int n, int solenoid_id)
@@ -191,11 +200,10 @@ void Scoreboard::add_thousands(int n, int solenoid_id)
     }
 }
 
-void Scoreboard::start_replay(int sound_solenoid_id, int out_hole_sound_solenoid_id, int out_hole_solenoid_id)
+void Scoreboard::start_replay(int sound_solenoid_id, int out_hole_solenoid_id)
 {
     m_player_up = 1;
     m_queue->add_action(QCOMMAND_CLEAR_DIGITS, 0, sound_solenoid_id, SCORE_DELAY);
-    m_queue->add_action(QCOMMAND_OUT_HOLE_SOUND, 0, out_hole_sound_solenoid_id, 3.0 * SCORE_DELAY);
     m_queue->add_action(QCOMMAND_OUT_HOLE, 0, out_hole_solenoid_id, SCORE_DELAY);
 }
 

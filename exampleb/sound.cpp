@@ -28,9 +28,9 @@ void Sound::initialize()
         printf("Mixer Open Error: %s\n", Mix_GetError());
         exit(0);
     }
-    add("sound1.wav");
-    add("sound2.wav");
-    add("sound3.wav");
+    add("sound1.wav"); // SOUND_ID_THOUSANDS_CHIME
+    add("sound2.wav"); // SOUND_ID_HUNDREDS_CHIME
+    add("sound3.wav"); // SOUND_ID_TENS_CHIME
 }
 
 int Sound::sounds() const
