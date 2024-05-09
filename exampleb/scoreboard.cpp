@@ -167,6 +167,11 @@ void Scoreboard::add_solenoid(int solenoid_id)
     }
 }
 
+void Scoreboard::add_credit()
+{
+
+}
+
 void Scoreboard::add_tens(int n, int solenoid_id)
 {
     if (m_player_up > 0) {

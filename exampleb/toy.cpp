@@ -409,6 +409,13 @@ void Toy::rollover_rules()
         m_lamp->set(LAMP_ID_TOP_ROLLOVER_C, false);
         m_lamp->set(LAMP_ID_BOTTOM_ROLLOVER_C, false);
     }
+    if (m_sensor->rising(SENSOR_ID_SPECIAL)) {
+        m_scoreboard->add_hundreds(5, SOLENOID_ID_HUNDREDS_CHIME);
+        if (m_lamp->lit(LAMP_ID_SPECIAL)) {
+            m_scoreboard->add_credit();
+            m_lamp->set(LAMP_ID_SPECIAL, false);
+        }
+    }
 }
 
 void Toy::target_score(int lamp_id)

@@ -30,6 +30,7 @@ public:
     void add_hundreds(int n, int solenoid_id);
     void add_thousands(int n, int solenoid_id);
     void add_solenoid(int solenoid_id);
+    void add_credit();
 
     int solenoid_id() const;
 

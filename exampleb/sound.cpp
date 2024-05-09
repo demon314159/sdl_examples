@@ -16,6 +16,9 @@ Sound::Sound()
 
 Sound::~Sound()
 {
+    for (int i = 0; i < m_sounds; i++) {
+        Mix_FreeChunk(m_sound[i]);
+    }
 }
 
 void Sound::initialize()

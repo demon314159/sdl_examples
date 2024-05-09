@@ -90,6 +90,7 @@ HEADERS = view.h \
           tapered_cube_shape.h \
           diamond_plane_shape.h \
           sound.h \
+          game.h \
           \
           \
           \
@@ -181,6 +182,7 @@ OBJECTS = main.obj \
           tapered_cube_shape.obj \
           diamond_plane_shape.obj \
           sound.obj \
+          game.obj \
           \
           \
           \
