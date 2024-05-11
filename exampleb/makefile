@@ -91,6 +91,9 @@ HEADERS = view.h \
           diamond_plane_shape.h \
           sound.h \
           game.h \
+          score.h \
+          field.h \
+          digit.h \
           \
           \
           \
@@ -183,6 +186,7 @@ OBJECTS = main.obj \
           diamond_plane_shape.obj \
           sound.obj \
           game.obj \
+          score.obj \
           \
           \
           \

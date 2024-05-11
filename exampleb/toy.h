@@ -12,6 +12,7 @@
 #include "sensor.h"
 #include "sound.h"
 #include "scoreboard.h"
+#include "score.h"
 #include "ball.h"
 #include "flipper.h"
 #include "table.h"
@@ -52,6 +53,7 @@ private:
     Sensor* m_sensor;
     Sound* m_sound;
     Scoreboard* m_scoreboard;
+    Score* m_score;
     int m_solenoid_id;
     Table* m_table;
     Flipper* m_left_flipper;

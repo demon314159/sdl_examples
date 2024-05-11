@@ -22,6 +22,7 @@ Toy::Toy()
     , m_sensor(NULL)
     , m_sound(NULL)
     , m_scoreboard(NULL)
+    , m_score(NULL)
     , m_solenoid_id(0)
     , m_table(NULL)
     , m_left_flipper(NULL)
@@ -36,11 +37,10 @@ Toy::Toy()
     m_sensor = new Sensor(MAX_SENSORS);
     m_sound = new Sound();
     m_table = new Table();
-    m_scoreboard = new Scoreboard(MAX_PLAYERS, SCORE_DIGITS,
-                            {SCOREBOARD_POSITION_X, SCOREBOARD_POSITION_Y, SCOREBOARD_POSITION_Z}, {BACKGLASS_SIZE_X, BACKGLASS_SIZE_Z},
-                            {BACKGLASS_IMAGE_SIZE_X, BACKGLASS_IMAGE_SIZE_Z},
-                            m_table->trim(), m_table->trim_color(), TEXTURE_ID_BACKGLASS, TEXTURE_ID_SCORE);
-
+    m_scoreboard = new Scoreboard({SCOREBOARD_POSITION_X, SCOREBOARD_POSITION_Y, SCOREBOARD_POSITION_Z}, {BACKGLASS_SIZE_X, BACKGLASS_SIZE_Z},
+                                  {BACKGLASS_IMAGE_SIZE_X, BACKGLASS_IMAGE_SIZE_Z},
+                                   m_table->trim(), m_table->trim_color(), TEXTURE_ID_BACKGLASS, TEXTURE_ID_SCORE);
+    m_score = new Score(m_scoreboard);
     m_left_flipper = new Flipper(
         LEFT_FLIPPER_ANGLE, LEFT_FLIPPER_POSITION, BOTTOM_FLIPPER_LENGTH,
         BOTTOM_FLIPPER_MAJOR_RADIUS, BOTTOM_FLIPPER_MINOR_RADIUS,
@@ -155,6 +155,7 @@ Toy::~Toy()
     delete m_target;
     delete m_sensor;
     delete m_sound;
+    delete m_score;
     delete m_scoreboard;
     delete m_table;
     delete m_left_flipper;
@@ -327,7 +328,7 @@ void Toy::launch_action_button(bool on)
 
 void Toy::replay_action_button(bool on)
 {
-    m_scoreboard->start_replay(SOLENOID_ID_HUNDREDS_CHIME, SOLENOID_ID_OUT_HOLE);
+//    m_scoreboard->start_replay(SOLENOID_ID_HUNDREDS_CHIME, SOLENOID_ID_OUT_HOLE);
 }
 
 
@@ -383,18 +384,18 @@ void Toy::rollover_rules()
 {
     if (m_sensor->rising(SENSOR_ID_ROLLOVER_A)) {
         if (m_lamp->lit(LAMP_ID_TOP_ROLLOVER_A)) {
-            m_scoreboard->add_thousands(5, SOLENOID_ID_THOUSANDS_CHIME);
+//            m_scoreboard->add_thousands(5, SOLENOID_ID_THOUSANDS_CHIME);
         } else {
-            m_scoreboard->add_hundreds(5, SOLENOID_ID_HUNDREDS_CHIME);
+//            m_scoreboard->add_hundreds(5, SOLENOID_ID_HUNDREDS_CHIME);
         }
         m_lamp->set(LAMP_ID_TOP_ROLLOVER_A, false);
         m_lamp->set(LAMP_ID_BOTTOM_ROLLOVER_A, false);
     }
     if (m_sensor->rising(SENSOR_ID_ROLLOVER_B)) {
         if (m_lamp->lit(LAMP_ID_TOP_ROLLOVER_B)) {
-            m_scoreboard->add_thousands(5, SOLENOID_ID_THOUSANDS_CHIME);
+//            m_scoreboard->add_thousands(5, SOLENOID_ID_THOUSANDS_CHIME);
         } else {
-            m_scoreboard->add_hundreds(5, SOLENOID_ID_HUNDREDS_CHIME);
+//            m_scoreboard->add_hundreds(5, SOLENOID_ID_HUNDREDS_CHIME);
         }
         m_lamp->set(LAMP_ID_TOP_ROLLOVER_B, false);
         m_lamp->set(LAMP_ID_BOTTOM_LEFT_ROLLOVER_B, false);
@@ -402,17 +403,17 @@ void Toy::rollover_rules()
     }
     if (m_sensor->rising(SENSOR_ID_ROLLOVER_C)) {
         if (m_lamp->lit(LAMP_ID_TOP_ROLLOVER_C)) {
-            m_scoreboard->add_thousands(5, SOLENOID_ID_THOUSANDS_CHIME);
+//            m_scoreboard->add_thousands(5, SOLENOID_ID_THOUSANDS_CHIME);
         } else {
-            m_scoreboard->add_hundreds(5, SOLENOID_ID_HUNDREDS_CHIME);
+//            m_scoreboard->add_hundreds(5, SOLENOID_ID_HUNDREDS_CHIME);
         }
         m_lamp->set(LAMP_ID_TOP_ROLLOVER_C, false);
         m_lamp->set(LAMP_ID_BOTTOM_ROLLOVER_C, false);
     }
     if (m_sensor->rising(SENSOR_ID_SPECIAL)) {
-        m_scoreboard->add_hundreds(5, SOLENOID_ID_HUNDREDS_CHIME);
+//        m_scoreboard->add_hundreds(5, SOLENOID_ID_HUNDREDS_CHIME);
         if (m_lamp->lit(LAMP_ID_SPECIAL)) {
-            m_scoreboard->add_credit();
+//            m_scoreboard->add_credit();
             m_lamp->set(LAMP_ID_SPECIAL, false);
         }
     }
@@ -421,9 +422,9 @@ void Toy::rollover_rules()
 void Toy::target_score(int lamp_id)
 {
     if (m_lamp->lit(lamp_id)) {
-        m_scoreboard->add_thousands(5, SOLENOID_ID_THOUSANDS_CHIME);
+//        m_scoreboard->add_thousands(5, SOLENOID_ID_THOUSANDS_CHIME);
     } else {
-        m_scoreboard->add_hundreds(5, SOLENOID_ID_HUNDREDS_CHIME);
+//        m_scoreboard->add_hundreds(5, SOLENOID_ID_HUNDREDS_CHIME);
     }
 }
 
@@ -496,12 +497,13 @@ int Toy::apply_rules()
     rollover_rules();
     target_rules();
     if (m_sensor->rising(SENSOR_ID_BUMPER)) {
-        m_scoreboard->add_hundreds(1, SOLENOID_ID_HUNDREDS_CHIME);
+//        m_scoreboard->add_hundreds(1, SOLENOID_ID_HUNDREDS_CHIME);
     }
     if (m_sensor->rising(SENSOR_ID_TEN_POINT)) {
-        m_scoreboard->add_tens(1, SOLENOID_ID_TENS_CHIME);
+//        m_scoreboard->add_tens(1, SOLENOID_ID_TENS_CHIME);
     }
-    return m_scoreboard->solenoid_id();
+//    return m_scoreboard->solenoid_id();
+    return 0;
 }
 
 bool Toy::jacks_dropped() const
@@ -557,32 +559,32 @@ bool Toy::aces_dropped() const
 void Toy::jacks_test()
 {
     if (jacks_dropped()) {
-        m_scoreboard->add_thousands(5, SOLENOID_ID_THOUSANDS_CHIME);
-        m_scoreboard->add_solenoid(SOLENOID_ID_DROP_TARGET_JACKS);
+//        m_scoreboard->add_thousands(5, SOLENOID_ID_THOUSANDS_CHIME);
+//        m_scoreboard->add_solenoid(SOLENOID_ID_DROP_TARGET_JACKS);
     }
 }
 
 void Toy::queens_test()
 {
     if (queens_dropped()) {
-        m_scoreboard->add_thousands(5, SOLENOID_ID_THOUSANDS_CHIME);
-        m_scoreboard->add_solenoid(SOLENOID_ID_DROP_TARGET_QUEENS);
+//        m_scoreboard->add_thousands(5, SOLENOID_ID_THOUSANDS_CHIME);
+//        m_scoreboard->add_solenoid(SOLENOID_ID_DROP_TARGET_QUEENS);
     }
 }
 
 void Toy::kings_test()
 {
     if (kings_dropped()) {
-        m_scoreboard->add_thousands(5, SOLENOID_ID_THOUSANDS_CHIME);
-        m_scoreboard->add_solenoid(SOLENOID_ID_DROP_TARGET_KINGS);
+//        m_scoreboard->add_thousands(5, SOLENOID_ID_THOUSANDS_CHIME);
+//        m_scoreboard->add_solenoid(SOLENOID_ID_DROP_TARGET_KINGS);
     }
 }
 
 void Toy::aces_test()
 {
     if (aces_dropped()) {
-        m_scoreboard->add_thousands(5, SOLENOID_ID_THOUSANDS_CHIME);
-        m_scoreboard->add_solenoid(SOLENOID_ID_DROP_TARGET_ACES);
+//        m_scoreboard->add_thousands(5, SOLENOID_ID_THOUSANDS_CHIME);
+//        m_scoreboard->add_solenoid(SOLENOID_ID_DROP_TARGET_ACES);
     }
 }
 
