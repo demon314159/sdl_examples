@@ -25,7 +25,6 @@ public:
 
     void advance(float seconds);
     void set_digit(int ix, const Digit& digit);
-    Digit get_digit(int ix) const;
     int max_players() const;
     int player_digits() const;
 

@@ -40,7 +40,6 @@ Toy::Toy()
     m_scoreboard = new Scoreboard({SCOREBOARD_POSITION_X, SCOREBOARD_POSITION_Y, SCOREBOARD_POSITION_Z}, {BACKGLASS_SIZE_X, BACKGLASS_SIZE_Z},
                                   {BACKGLASS_IMAGE_SIZE_X, BACKGLASS_IMAGE_SIZE_Z},
                                    m_table->trim(), m_table->trim_color(), TEXTURE_ID_BACKGLASS, TEXTURE_ID_SCORE);
-    m_score = new Score(m_scoreboard);
     m_left_flipper = new Flipper(
         LEFT_FLIPPER_ANGLE, LEFT_FLIPPER_POSITION, BOTTOM_FLIPPER_LENGTH,
         BOTTOM_FLIPPER_MAJOR_RADIUS, BOTTOM_FLIPPER_MINOR_RADIUS,
@@ -98,16 +97,6 @@ Toy::Toy()
     m_lamp->add(bg.position(FIXED_LAMP_PLAYER3_POSITION), bg.size({0.0195, 0.0155}), TYPE6_ON_COLOR, TYPE6_OFF_COLOR);
     m_lamp->add(bg.position(FIXED_LAMP_PLAYER4_POSITION), bg.size({0.020, 0.016}), TYPE6_ON_COLOR, TYPE6_OFF_COLOR);
 
-    m_lamp->set(FIXED_LAMP_ID_BALL_IN_PLAY, true);
-    m_lamp->set(FIXED_LAMP_ID_NUMBER_TO_MATCH, true);
-    m_lamp->set(FIXED_LAMP_ID_HIGH_GAME_TO_DATE, true);
-    m_lamp->set(FIXED_LAMP_ID_GAME_OVER, true);
-    m_lamp->set(FIXED_LAMP_ID_SHOOT_AGAIN, true);
-    m_lamp->set(FIXED_LAMP_ID_PLAYER_1, true);
-    m_lamp->set(FIXED_LAMP_ID_PLAYER_2, true);
-    m_lamp->set(FIXED_LAMP_ID_PLAYER_3, true);
-    m_lamp->set(FIXED_LAMP_ID_PLAYER_4, true);
-
     m_lamp->set(LAMP_ID_TOP_ROLLOVER_A, true);
     m_lamp->set(LAMP_ID_TOP_ROLLOVER_B, true);
     m_lamp->set(LAMP_ID_TOP_ROLLOVER_C, true);
@@ -142,6 +131,11 @@ Toy::Toy()
     m_target->add(new DropTarget(lg.position(1), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS, TEXTURE_ID_DROP_TARGET, 9, SENSOR_ID_DROP_A4));
 
     build_model();
+    m_score = new Score(m_scoreboard, m_lamp);
+    m_score->set_high_game(120000);
+    m_score->set_match(70);
+    m_score->set_ball_in_play(1);
+    m_score->set_player_focus(2);
 
     m_ball->set_position(m_table->out_hole_position());
     m_ball->set_velocity({0.0, 0.0});
@@ -244,8 +238,7 @@ void Toy::advance(int nanoseconds)
         m_scoreboard->advance(seconds);
         m_solenoid_id = apply_rules();
         activate_solenoid();
-
-
+        m_score->advance(seconds);
     }
 }
 

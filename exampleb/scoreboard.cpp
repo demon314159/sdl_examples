@@ -44,7 +44,7 @@ Scoreboard::~Scoreboard()
 void Scoreboard::advance(float seconds)
 {
     m_flash_timer -= seconds;
-    if (m_flash_timer <= 0) {
+    if (m_flash_timer <= 0.0) {
         if (m_flash_template) {
             m_flash_template = false;
             m_flash_timer += FLASH_OFF_TIME;
@@ -153,11 +153,6 @@ CadModel Scoreboard::model(float animation_id_first_digit, float animation_id_sc
 void Scoreboard::set_digit(int ix, const Digit& digit)
 {
     m_digit[ix] = digit;
-}
-
-Digit Scoreboard::get_digit(int ix) const
-{
-    return m_digit[ix];
 }
 
 int Scoreboard::max_players() const
