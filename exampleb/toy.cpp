@@ -134,8 +134,8 @@ Toy::Toy()
     m_score = new Score(m_scoreboard, m_lamp);
     m_score->set_high_game(120000);
     m_score->set_match(70);
-    m_score->set_ball_in_play(1);
-    m_score->set_player_focus(2);
+//    m_score->set_ball_in_play(1);
+//    m_score->set_player_focus(2);
 
     m_ball->set_position(m_table->out_hole_position());
     m_ball->set_velocity({0.0, 0.0});

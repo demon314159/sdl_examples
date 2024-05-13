@@ -9,7 +9,7 @@
 #define PLAYER1_FIELD 2
 
 #define FLASH_ON_TIME  1.0
-#define FLASH_OFF_TIME 2.0
+#define FLASH_OFF_TIME 5.0
 
 Score::Score(Scoreboard* scoreboard, Lamp* lamp)
     : m_scoreboard(scoreboard)
@@ -104,6 +104,19 @@ void Score::apply_high_game(int ix, int high_game)
 }
 void Score::set_credit(int v)
 {
+    if (v > 15) {
+        v = 15;
+    }
+    m_field[CREDIT_FIELD].value = v;
+    apply_field(CREDIT_FIELD);
+}
+
+void Score::add_credit(int v)
+{
+    v += m_field[CREDIT_FIELD].value;
+    if (v > 15) {
+        v = 15;
+    }
     m_field[CREDIT_FIELD].value = v;
     apply_field(CREDIT_FIELD);
 }
@@ -180,24 +193,6 @@ int Score::get_player_score(int player) const
     return m_field[ix].value;
 }
 
-void Score::set_player_focus(int player)
-{
-    for (int i = 0; i < m_scoreboard->max_players(); i++) {
-        if (i == (player - 1)) {
-            m_field[PLAYER1_FIELD + i].flash = true;
-            m_field[PLAYER1_FIELD + i].blank = false;
-        } else {
-            m_field[PLAYER1_FIELD + i].flash = false;
-            m_field[PLAYER1_FIELD + i].blank = true;
-        }
-        apply_field(PLAYER1_FIELD + i);
-    }
-    m_lamp->set(FIXED_LAMP_ID_PLAYER_1, player == 1);
-    m_lamp->set(FIXED_LAMP_ID_PLAYER_2, player == 2);
-    m_lamp->set(FIXED_LAMP_ID_PLAYER_3, player == 3);
-    m_lamp->set(FIXED_LAMP_ID_PLAYER_4, player == 4);
-}
-
 void Score::set_high_game(int high_game)
 {
     m_high_game = high_game;
@@ -215,4 +210,14 @@ void Score::update_high_game(int score)
     }
 }
 
+void Score::set_player_flash(int player, bool v)
+{
+    int ix = PLAYER1_FIELD + (player - 1);
+    m_field[ix].flash = v;
+}
 
+void Score::set_player_blank(int player, bool v)
+{
+    int ix = PLAYER1_FIELD + (player - 1);
+    m_field[ix].blank = v;
+}

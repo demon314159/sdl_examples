@@ -94,6 +94,7 @@ HEADERS = view.h \
           score.h \
           field.h \
           digit.h \
+          execute.h \
           \
           \
           \
@@ -187,6 +188,7 @@ OBJECTS = main.obj \
           sound.obj \
           game.obj \
           score.obj \
+          execute.obj \
           \
           \
           \

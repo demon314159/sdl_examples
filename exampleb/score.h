@@ -18,6 +18,7 @@ public:
     void advance(float seconds);
 
     void set_credit(int v);
+    void add_credit(int v);
     int get_credit() const;
 
     void set_ball_in_play(int v);
@@ -30,9 +31,11 @@ public:
     void add_player_score(int player, int v);
     int get_player_score(int player) const;
 
-    void set_player_focus(int player);
     void set_high_game(int high_game);
     int get_high_game() const;
+
+    void set_player_flash(int player, bool v);
+    void set_player_blank(int player, bool v);
 
 private:
     Scoreboard* m_scoreboard;
