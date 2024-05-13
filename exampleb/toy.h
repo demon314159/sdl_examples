@@ -16,6 +16,8 @@
 #include "ball.h"
 #include "flipper.h"
 #include "table.h"
+#include "queue.h"
+#include "execute.h"
 
 class Toy
 {
@@ -43,10 +45,10 @@ public:
     const Lamp* get_lamp() const;
     const Target* get_target() const;
     const Scoreboard* get_scoreboard() const;
-    int get_solenoid_id() const;
 
 private:
     float m_seconds;
+    int m_player;
     Ball* m_ball;
     Lamp* m_lamp;
     Target* m_target;
@@ -54,7 +56,8 @@ private:
     Sound* m_sound;
     Scoreboard* m_scoreboard;
     Score* m_score;
-    int m_solenoid_id;
+    Queue* m_queue;
+    Execute* m_execute;
     Table* m_table;
     Flipper* m_left_flipper;
     Flipper* m_right_flipper;
@@ -62,7 +65,7 @@ private:
     CadModel* m_model;
     bool m_last_launch_action_button;
     void build_model();
-    int apply_rules(); // Returns a Solenoid ID
+    void apply_rules();
     void rollover_rules();
     void target_rules();
     void target_score(int lamp_id);
@@ -75,7 +78,9 @@ private:
     void kings_test();
     void aces_test();
 
-    void activate_solenoid();
+    void activate_solenoid(int solenoid_id);
+    void eject_from_out_hole();
+    void multiscore(int n, int solenoid_id, int score);
 };
 
 #endif // _TOY_H_

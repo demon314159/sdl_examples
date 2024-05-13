@@ -10,12 +10,14 @@
 #include "backglass_guide.h"
 #include <stdio.h>
 
+#define SCORE_DELAY 150 // milliseconds
 #define BALL_OUT_HOLE_SPEED 0.3
 #define BALL_LAUNCH_SPEED 0.9
 #define BALL_ACCELERATION 0.25
 
 Toy::Toy()
     : m_seconds(0.0)
+    , m_player(1)
     , m_ball(NULL)
     , m_lamp(NULL)
     , m_target(NULL)
@@ -23,7 +25,8 @@ Toy::Toy()
     , m_sound(NULL)
     , m_scoreboard(NULL)
     , m_score(NULL)
-    , m_solenoid_id(0)
+    , m_queue(NULL)
+    , m_execute(NULL)
     , m_table(NULL)
     , m_left_flipper(NULL)
     , m_right_flipper(NULL)
@@ -131,11 +134,12 @@ Toy::Toy()
     m_target->add(new DropTarget(lg.position(1), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS, TEXTURE_ID_DROP_TARGET, 9, SENSOR_ID_DROP_A4));
 
     build_model();
+    m_queue = new Queue();
     m_score = new Score(m_scoreboard, m_lamp);
+
     m_score->set_high_game(120000);
     m_score->set_match(70);
-//    m_score->set_ball_in_play(1);
-//    m_score->set_player_focus(2);
+    m_execute = new Execute(m_queue, m_score);
 
     m_ball->set_position(m_table->out_hole_position());
     m_ball->set_velocity({0.0, 0.0});
@@ -150,6 +154,8 @@ Toy::~Toy()
     delete m_sensor;
     delete m_sound;
     delete m_score;
+    delete m_queue;
+    delete m_execute;
     delete m_scoreboard;
     delete m_table;
     delete m_left_flipper;
@@ -173,43 +179,75 @@ int Toy::animation_matrices() const
     return ANIMATION_MATRICES;
 }
 
-void Toy::activate_solenoid()
+void Toy::eject_from_out_hole()
 {
-    if (m_solenoid_id != 0) {
-        if (m_solenoid_id == SOLENOID_ID_OUT_HOLE) {
-            float vx = BALL_OUT_HOLE_SPEED * cos(20.0f * PI / 180.0f);
-            float vz = -BALL_OUT_HOLE_SPEED * sin(20.0f * PI / 180.0f);
-            m_ball->set_velocity({vx, vz});
-            m_ball->set_position({0.266, 0.564});
-        } else if (m_solenoid_id == SOLENOID_ID_KNOCKER) {
+    float vx = BALL_OUT_HOLE_SPEED * cos(20.0f * PI / 180.0f);
+    float vz = -BALL_OUT_HOLE_SPEED * sin(20.0f * PI / 180.0f);
+    m_ball->set_velocity({vx, vz});
+    m_ball->set_position({0.266, 0.564});
+}
 
-        } else if (m_solenoid_id == SOLENOID_ID_TENS_CHIME) {
+void Toy::activate_solenoid(int solenoid_id)
+{
+    switch (solenoid_id) {
+        case SOLENOID_ID_NONE:
+            break;
+        case SOLENOID_ID_OUT_HOLE:
+            eject_from_out_hole();
+            break;
+        case SOLENOID_ID_KNOCKER:
+            break;
+        case SOLENOID_ID_TENS_CHIME:
             m_sound->play(SOUND_ID_TENS_CHIME);
-        } else if (m_solenoid_id == SOLENOID_ID_HUNDREDS_CHIME) {
+            break;
+        case SOLENOID_ID_HUNDREDS_CHIME:
             m_sound->play(SOUND_ID_HUNDREDS_CHIME);
-        } else if (m_solenoid_id == SOLENOID_ID_THOUSANDS_CHIME) {
+            break;
+        case SOLENOID_ID_THOUSANDS_CHIME:
             m_sound->play(SOUND_ID_THOUSANDS_CHIME);
-        } else if (m_solenoid_id == SOLENOID_ID_KNOCKER) {
-        } else if (m_solenoid_id == SOLENOID_ID_DROP_TARGET_JACKS) {
+            break;
+        case SOLENOID_ID_DROP_TARGET_JACKS:
             m_target->set_dropped(DROP_TARGET_ID_10, false);
             m_target->set_dropped(DROP_TARGET_ID_J1, false);
             m_target->set_dropped(DROP_TARGET_ID_J2, false);
-        } else if (m_solenoid_id == SOLENOID_ID_DROP_TARGET_QUEENS) {
+            break;
+        case SOLENOID_ID_DROP_TARGET_QUEENS:
             m_target->set_dropped(DROP_TARGET_ID_Q1, false);
             m_target->set_dropped(DROP_TARGET_ID_Q2, false);
             m_target->set_dropped(DROP_TARGET_ID_Q3, false);
-        } else if (m_solenoid_id == SOLENOID_ID_DROP_TARGET_KINGS) {
+            break;
+        case SOLENOID_ID_DROP_TARGET_KINGS:
             m_target->set_dropped(DROP_TARGET_ID_K1, false);
             m_target->set_dropped(DROP_TARGET_ID_K2, false);
             m_target->set_dropped(DROP_TARGET_ID_K3, false);
             m_target->set_dropped(DROP_TARGET_ID_K4, false);
-        } else if (m_solenoid_id == SOLENOID_ID_DROP_TARGET_ACES) {
+            break;
+        case SOLENOID_ID_DROP_TARGET_ACES:
             m_target->set_dropped(DROP_TARGET_ID_A1, false);
             m_target->set_dropped(DROP_TARGET_ID_A2, false);
             m_target->set_dropped(DROP_TARGET_ID_JOKER, false);
             m_target->set_dropped(DROP_TARGET_ID_A3, false);
             m_target->set_dropped(DROP_TARGET_ID_A4, false);
-        }
+            break;
+        case SOLENOID_ID_DROP_TARGET_ALL:
+            m_target->set_dropped(DROP_TARGET_ID_10, false);
+            m_target->set_dropped(DROP_TARGET_ID_J1, false);
+            m_target->set_dropped(DROP_TARGET_ID_J2, false);
+            m_target->set_dropped(DROP_TARGET_ID_Q1, false);
+            m_target->set_dropped(DROP_TARGET_ID_Q2, false);
+            m_target->set_dropped(DROP_TARGET_ID_Q3, false);
+            m_target->set_dropped(DROP_TARGET_ID_K1, false);
+            m_target->set_dropped(DROP_TARGET_ID_K2, false);
+            m_target->set_dropped(DROP_TARGET_ID_K3, false);
+            m_target->set_dropped(DROP_TARGET_ID_K4, false);
+            m_target->set_dropped(DROP_TARGET_ID_A1, false);
+            m_target->set_dropped(DROP_TARGET_ID_A2, false);
+            m_target->set_dropped(DROP_TARGET_ID_JOKER, false);
+            m_target->set_dropped(DROP_TARGET_ID_A3, false);
+            m_target->set_dropped(DROP_TARGET_ID_A4, false);
+            break;
+        default:
+            break;
     }
 }
 
@@ -220,7 +258,6 @@ void Toy::advance(int nanoseconds)
     while (m_seconds > seconds) {
         m_seconds -= seconds;
         m_sensor->clear();
-        m_solenoid_id = SOLENOID_ID_NONE;
         m_left_flipper->advance(seconds);
         m_right_flipper->advance(seconds);
         m_top_flipper->advance(seconds);
@@ -236,9 +273,10 @@ void Toy::advance(int nanoseconds)
         m_top_flipper->collide(m_ball);
         m_ball->advance_orientation();
         m_scoreboard->advance(seconds);
-        m_solenoid_id = apply_rules();
-        activate_solenoid();
+        apply_rules();
         m_score->advance(seconds);
+        int solenoid_id = m_execute->advance(seconds);
+        activate_solenoid(solenoid_id);
     }
 }
 
@@ -255,11 +293,6 @@ const Target* Toy::get_target() const
 const Scoreboard* Toy::get_scoreboard() const
 {
     return m_scoreboard;
-}
-
-int Toy::get_solenoid_id() const
-{
-    return m_solenoid_id;
 }
 
 void Toy::build_model()
@@ -321,7 +354,11 @@ void Toy::launch_action_button(bool on)
 
 void Toy::replay_action_button(bool on)
 {
-//    m_scoreboard->start_replay(SOLENOID_ID_HUNDREDS_CHIME, SOLENOID_ID_OUT_HOLE);
+    m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_HUNDREDS_CHIME);
+    m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_DROP_TARGET_ALL);
+    m_queue->put(QCOMMAND_DELAY, 0, SCORE_DELAY);
+    m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_OUT_HOLE);
+    m_queue->put(QCOMMAND_SET_BALL, 0, 1);
 }
 
 
@@ -373,22 +410,31 @@ void Toy::replay_action_button(bool on)
 #define LAMP_ID_SPECIAL                  20
 #endif
 
+void Toy::multiscore(int n, int solenoid_id, int score)
+{
+    for (int i = 0; i < n; i++) {
+        m_queue->put(QCOMMAND_SOLENOID, 0, solenoid_id);
+        m_queue->put(QCOMMAND_ADD_SCORE, m_player, score);
+        m_queue->put(QCOMMAND_DELAY, 0, SCORE_DELAY);
+    }
+}
+
 void Toy::rollover_rules()
 {
     if (m_sensor->rising(SENSOR_ID_ROLLOVER_A)) {
         if (m_lamp->lit(LAMP_ID_TOP_ROLLOVER_A)) {
-//            m_scoreboard->add_thousands(5, SOLENOID_ID_THOUSANDS_CHIME);
+            multiscore(5, SOLENOID_ID_THOUSANDS_CHIME, 1000);
         } else {
-//            m_scoreboard->add_hundreds(5, SOLENOID_ID_HUNDREDS_CHIME);
+            multiscore(5, SOLENOID_ID_HUNDREDS_CHIME, 100);
         }
         m_lamp->set(LAMP_ID_TOP_ROLLOVER_A, false);
         m_lamp->set(LAMP_ID_BOTTOM_ROLLOVER_A, false);
     }
     if (m_sensor->rising(SENSOR_ID_ROLLOVER_B)) {
         if (m_lamp->lit(LAMP_ID_TOP_ROLLOVER_B)) {
-//            m_scoreboard->add_thousands(5, SOLENOID_ID_THOUSANDS_CHIME);
+            multiscore(5, SOLENOID_ID_THOUSANDS_CHIME, 1000);
         } else {
-//            m_scoreboard->add_hundreds(5, SOLENOID_ID_HUNDREDS_CHIME);
+            multiscore(5, SOLENOID_ID_HUNDREDS_CHIME, 100);
         }
         m_lamp->set(LAMP_ID_TOP_ROLLOVER_B, false);
         m_lamp->set(LAMP_ID_BOTTOM_LEFT_ROLLOVER_B, false);
@@ -396,15 +442,15 @@ void Toy::rollover_rules()
     }
     if (m_sensor->rising(SENSOR_ID_ROLLOVER_C)) {
         if (m_lamp->lit(LAMP_ID_TOP_ROLLOVER_C)) {
-//            m_scoreboard->add_thousands(5, SOLENOID_ID_THOUSANDS_CHIME);
+            multiscore(5, SOLENOID_ID_THOUSANDS_CHIME, 1000);
         } else {
-//            m_scoreboard->add_hundreds(5, SOLENOID_ID_HUNDREDS_CHIME);
+            multiscore(5, SOLENOID_ID_HUNDREDS_CHIME, 100);
         }
         m_lamp->set(LAMP_ID_TOP_ROLLOVER_C, false);
         m_lamp->set(LAMP_ID_BOTTOM_ROLLOVER_C, false);
     }
     if (m_sensor->rising(SENSOR_ID_SPECIAL)) {
-//        m_scoreboard->add_hundreds(5, SOLENOID_ID_HUNDREDS_CHIME);
+        multiscore(5, SOLENOID_ID_HUNDREDS_CHIME, 100);
         if (m_lamp->lit(LAMP_ID_SPECIAL)) {
 //            m_scoreboard->add_credit();
             m_lamp->set(LAMP_ID_SPECIAL, false);
@@ -415,9 +461,9 @@ void Toy::rollover_rules()
 void Toy::target_score(int lamp_id)
 {
     if (m_lamp->lit(lamp_id)) {
-//        m_scoreboard->add_thousands(5, SOLENOID_ID_THOUSANDS_CHIME);
+            multiscore(5, SOLENOID_ID_THOUSANDS_CHIME, 1000);
     } else {
-//        m_scoreboard->add_hundreds(5, SOLENOID_ID_HUNDREDS_CHIME);
+            multiscore(5, SOLENOID_ID_HUNDREDS_CHIME, 100);
     }
 }
 
@@ -485,18 +531,16 @@ void Toy::target_rules()
     }
 }
 
-int Toy::apply_rules()
+void Toy::apply_rules()
 {
     rollover_rules();
     target_rules();
     if (m_sensor->rising(SENSOR_ID_BUMPER)) {
-//        m_scoreboard->add_hundreds(1, SOLENOID_ID_HUNDREDS_CHIME);
+            multiscore(1, SOLENOID_ID_HUNDREDS_CHIME, 100);
     }
     if (m_sensor->rising(SENSOR_ID_TEN_POINT)) {
-//        m_scoreboard->add_tens(1, SOLENOID_ID_TENS_CHIME);
+            multiscore(1, SOLENOID_ID_TENS_CHIME, 10);
     }
-//    return m_scoreboard->solenoid_id();
-    return 0;
 }
 
 bool Toy::jacks_dropped() const
@@ -552,32 +596,32 @@ bool Toy::aces_dropped() const
 void Toy::jacks_test()
 {
     if (jacks_dropped()) {
-//        m_scoreboard->add_thousands(5, SOLENOID_ID_THOUSANDS_CHIME);
-//        m_scoreboard->add_solenoid(SOLENOID_ID_DROP_TARGET_JACKS);
+        m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_DROP_TARGET_JACKS);
+        multiscore(5, SOLENOID_ID_THOUSANDS_CHIME, 1000);
     }
 }
 
 void Toy::queens_test()
 {
     if (queens_dropped()) {
-//        m_scoreboard->add_thousands(5, SOLENOID_ID_THOUSANDS_CHIME);
-//        m_scoreboard->add_solenoid(SOLENOID_ID_DROP_TARGET_QUEENS);
+        m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_DROP_TARGET_QUEENS);
+        multiscore(5, SOLENOID_ID_THOUSANDS_CHIME, 1000);
     }
 }
 
 void Toy::kings_test()
 {
     if (kings_dropped()) {
-//        m_scoreboard->add_thousands(5, SOLENOID_ID_THOUSANDS_CHIME);
-//        m_scoreboard->add_solenoid(SOLENOID_ID_DROP_TARGET_KINGS);
+        m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_DROP_TARGET_KINGS);
+        multiscore(5, SOLENOID_ID_THOUSANDS_CHIME, 1000);
     }
 }
 
 void Toy::aces_test()
 {
     if (aces_dropped()) {
-//        m_scoreboard->add_thousands(5, SOLENOID_ID_THOUSANDS_CHIME);
-//        m_scoreboard->add_solenoid(SOLENOID_ID_DROP_TARGET_ACES);
+        m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_DROP_TARGET_ACES);
+        multiscore(5, SOLENOID_ID_THOUSANDS_CHIME, 1000);
     }
 }
 

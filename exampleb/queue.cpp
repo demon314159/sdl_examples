@@ -35,6 +35,15 @@ void Queue::put(const QueueRec& rec)
     }
 }
 
+void Queue::put(int command, int which_one, int value)
+{
+    QueueRec t = {command, which_one, value};
+    if (!full()) {
+        m_rec[m_put_ix] = t;
+        m_put_ix = next_put_ix();
+    }
+}
+
 QueueRec Queue::get()
 {
     QueueRec t;

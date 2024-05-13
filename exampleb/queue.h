@@ -11,18 +11,17 @@ struct QueueRec {
     int value;
 };
 
-#define MAX_ENTRIES 100
+#define MAX_ENTRIES 200
 
 #define QCOMMAND_NOP             0
 #define QCOMMAND_DELAY           1
 #define QCOMMAND_ADD_CREDIT      2
-#define QCOMMAND_EJECT_BALL      3
+#define QCOMMAND_SOLENOID        3
 #define QCOMMAND_SET_SCORE       4
 #define QCOMMAND_ADD_SCORE       5
 #define QCOMMAND_SET_BLANK       6
 #define QCOMMAND_SET_FLASH       7
-#define QCOMMAND_DROP_TARGET     8
-#define QCOMMAND_PLAY_CHIME      9
+#define QCOMMAND_SET_BALL        8
 
 class Queue
 {
@@ -33,6 +32,7 @@ public:
     bool empty() const;
     bool full() const;
     void put(const QueueRec& rec);
+    void put(int command, int which_one, int value);
     QueueRec get();
 
 private:
