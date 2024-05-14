@@ -63,6 +63,12 @@ void Game::add_player()
                 m_queue->put(QCOMMAND_SET_BALL, 0, 1);
                 m_queue->put(QCOMMAND_DELAY, 0, SCORE_DELAY);
                 m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_OUT_HOLE);
+            } else {
+                m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_HUNDREDS_CHIME);
+                m_queue->put(QCOMMAND_ADD_CREDIT, 0, -1);
+                m_queue->put(QCOMMAND_SET_BLANK, m_players, 0);
+                m_queue->put(QCOMMAND_SET_FLASH, m_players, 0);
+                m_queue->put(QCOMMAND_DELAY, 0, SCORE_DELAY);
             }
         }
     }

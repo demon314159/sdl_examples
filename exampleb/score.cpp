@@ -133,6 +133,7 @@ void Score::set_ball_in_play(int v)
     m_field[BALL_IN_PLAY_FIELD].leading_zeroes = false;
     apply_field(BALL_IN_PLAY_FIELD);
     m_flash_high_game = false;
+    m_lamp->set(FIXED_LAMP_ID_HIGH_GAME_TO_DATE, false);
     m_lamp->set(FIXED_LAMP_ID_GAME_OVER, false);
     m_lamp->set(FIXED_LAMP_ID_BALL_IN_PLAY, true);
     m_lamp->set(FIXED_LAMP_ID_NUMBER_TO_MATCH, false);
@@ -171,30 +172,42 @@ int Score::get_match() const
 
 void Score::set_player_score(int player, int v)
 {
-    if (player == 0) {
-        for (int i = 0; i < m_scoreboard->max_players(); i++) {
-            int ix = PLAYER1_FIELD + i;
+    for (int i = 0; i < m_scoreboard->max_players(); i++) {
+        int ix = PLAYER1_FIELD + i;
+        if (player == 0) {
             m_field[ix].value = v;
             update_high_game(v);
             m_field[ix].flash = false;
-            apply_field(ix);
+           apply_field(ix);
+        } else {
+            int ix = PLAYER1_FIELD + (player - 1);
+            if (i == (player - 1)) {
+                m_field[ix].value = v;
+                update_high_game(v);
+                m_field[ix].flash = false;
+                apply_field(ix);
+            } else {
+                m_field[ix].blank = true;
+                apply_field(ix);
+            }
         }
-    } else {
-        int ix = PLAYER1_FIELD + (player - 1);
-        m_field[ix].value = v;
-        update_high_game(v);
-        m_field[ix].flash = false;
-        apply_field(ix);
     }
 }
 
 void Score::add_player_score(int player, int v)
 {
-    int ix = PLAYER1_FIELD + (player - 1);
-    m_field[ix].value = m_field[ix].value + v;
-    update_high_game(m_field[ix].value);
-    m_field[ix].flash = false;
-    apply_field(ix);
+    for (int i = 0; i < m_scoreboard->max_players(); i++) {
+        int ix = PLAYER1_FIELD + i;
+        if (i == (player - 1)) {
+            m_field[ix].value = m_field[ix].value + v;
+            update_high_game(m_field[ix].value);
+            m_field[ix].flash = false;
+            apply_field(ix);
+        } else {
+            m_field[ix].blank = true;
+            apply_field(ix);
+        }
+    }
 }
 
 int Score::get_player_score(int player) const
