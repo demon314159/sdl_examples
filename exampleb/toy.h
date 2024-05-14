@@ -18,6 +18,7 @@
 #include "table.h"
 #include "queue.h"
 #include "execute.h"
+#include "game.h"
 
 class Toy
 {
@@ -57,6 +58,7 @@ private:
     Scoreboard* m_scoreboard;
     Score* m_score;
     Queue* m_queue;
+    Game* m_game;
     Execute* m_execute;
     Table* m_table;
     Flipper* m_left_flipper;

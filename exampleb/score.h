@@ -37,6 +37,8 @@ public:
     void set_player_flash(int player, bool v);
     void set_player_blank(int player, bool v);
 
+    void set_player(int player);
+
 private:
     Scoreboard* m_scoreboard;
     Lamp* m_lamp;

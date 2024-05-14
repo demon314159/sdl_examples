@@ -171,11 +171,21 @@ int Score::get_match() const
 
 void Score::set_player_score(int player, int v)
 {
-    int ix = PLAYER1_FIELD + (player - 1);
-    m_field[ix].value = v;
-    update_high_game(v);
-    m_field[ix].flash = false;
-    apply_field(ix);
+    if (player == 0) {
+        for (int i = 0; i < m_scoreboard->max_players(); i++) {
+            int ix = PLAYER1_FIELD + i;
+            m_field[ix].value = v;
+            update_high_game(v);
+            m_field[ix].flash = false;
+            apply_field(ix);
+        }
+    } else {
+        int ix = PLAYER1_FIELD + (player - 1);
+        m_field[ix].value = v;
+        update_high_game(v);
+        m_field[ix].flash = false;
+        apply_field(ix);
+    }
 }
 
 void Score::add_player_score(int player, int v)
@@ -214,10 +224,27 @@ void Score::set_player_flash(int player, bool v)
 {
     int ix = PLAYER1_FIELD + (player - 1);
     m_field[ix].flash = v;
+    apply_field(ix);
 }
 
 void Score::set_player_blank(int player, bool v)
 {
     int ix = PLAYER1_FIELD + (player - 1);
     m_field[ix].blank = v;
+    apply_field(ix);
+}
+
+void Score::set_player(int player)
+{
+    m_lamp->set(FIXED_LAMP_ID_PLAYER_1, player == 1);
+    m_lamp->set(FIXED_LAMP_ID_PLAYER_2, player == 2);
+    m_lamp->set(FIXED_LAMP_ID_PLAYER_3, player == 3);
+    m_lamp->set(FIXED_LAMP_ID_PLAYER_4, player == 4);
+    for (int i = 1; i <= m_scoreboard->max_players(); i++) {
+        if (i == player) {
+            set_player_flash(i, true);
+        } else {
+            set_player_blank(i, true);
+        }
+    }
 }

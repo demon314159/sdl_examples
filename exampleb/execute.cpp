@@ -50,6 +50,9 @@ int Execute::advance(float seconds)
                 case QCOMMAND_SET_BALL:
                     m_score->set_ball_in_play(t.value);
                     break;
+                case QCOMMAND_SET_PLAYER:
+                    m_score->set_player(t.value);
+                    break;
                 default:;
                     break;
             }

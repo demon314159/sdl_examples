@@ -10,6 +10,10 @@
 #include "backglass_guide.h"
 #include <stdio.h>
 
+
+#define INITIAL_CREDITS 8
+#define MAX_BALLS 4
+
 #define SCORE_DELAY 150 // milliseconds
 #define BALL_OUT_HOLE_SPEED 0.3
 #define BALL_LAUNCH_SPEED 0.9
@@ -26,6 +30,7 @@ Toy::Toy()
     , m_scoreboard(NULL)
     , m_score(NULL)
     , m_queue(NULL)
+    , m_game(NULL)
     , m_execute(NULL)
     , m_table(NULL)
     , m_left_flipper(NULL)
@@ -139,6 +144,7 @@ Toy::Toy()
 
     m_score->set_high_game(120000);
     m_score->set_match(70);
+    m_game = new Game(INITIAL_CREDITS, m_scoreboard->max_players(), MAX_BALLS, m_lamp, m_queue);
     m_execute = new Execute(m_queue, m_score);
 
     m_ball->set_position(m_table->out_hole_position());
@@ -155,6 +161,7 @@ Toy::~Toy()
     delete m_sound;
     delete m_score;
     delete m_queue;
+    delete m_game;
     delete m_execute;
     delete m_scoreboard;
     delete m_table;
@@ -354,11 +361,8 @@ void Toy::launch_action_button(bool on)
 
 void Toy::replay_action_button(bool on)
 {
-    m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_HUNDREDS_CHIME);
-    m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_DROP_TARGET_ALL);
-    m_queue->put(QCOMMAND_DELAY, 0, SCORE_DELAY);
-    m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_OUT_HOLE);
-    m_queue->put(QCOMMAND_SET_BALL, 0, 1);
+    m_game->add_player();
+
 }
 
 
