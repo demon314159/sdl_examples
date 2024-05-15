@@ -137,6 +137,25 @@ void Score::set_ball_in_play(int v)
     m_lamp->set(FIXED_LAMP_ID_GAME_OVER, false);
     m_lamp->set(FIXED_LAMP_ID_BALL_IN_PLAY, true);
     m_lamp->set(FIXED_LAMP_ID_NUMBER_TO_MATCH, false);
+    switch (v) {
+        case 1:
+            m_lamp->set(LAMP_ID_TENS_BONUS, true);
+            break;
+        case 2:
+            m_lamp->set(LAMP_ID_JACKS_BONUS, true);
+            break;
+        case 3:
+            m_lamp->set(LAMP_ID_QUEENS_BONUS, true);
+            break;
+        case 4:
+            m_lamp->set(LAMP_ID_KINGS_BONUS, true);
+            break;
+        case 5:
+            m_lamp->set(LAMP_ID_ACES_BONUS, true);
+            break;
+        default:
+            break;
+    }
 }
 
 int Score::get_ball_in_play() const

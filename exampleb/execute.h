@@ -7,11 +7,12 @@
 
 #include "queue.h"
 #include "score.h"
+#include "lamp.h"
 
 class Execute
 {
 public:
-    Execute(Queue* queue, Score* score);
+    Execute(Queue* queue, Score* score, Lamp* lamp);
     ~Execute();
 
     int advance(float seconds);
@@ -19,6 +20,7 @@ public:
 private:
     Queue* m_queue;
     Score* m_score;
+    Lamp* m_lamp;
     float m_timer;
 };
 

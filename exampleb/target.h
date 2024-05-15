@@ -14,6 +14,23 @@
 
 #define MAX_TARGETS 15
 
+#define DROP_TARGET_ID_10    0
+#define DROP_TARGET_ID_J1    1
+#define DROP_TARGET_ID_J2    2
+#define DROP_TARGET_ID_Q1    3
+#define DROP_TARGET_ID_Q2    4
+#define DROP_TARGET_ID_Q3    5
+#define DROP_TARGET_ID_K1    6
+#define DROP_TARGET_ID_K2    7
+#define DROP_TARGET_ID_K3    8
+#define DROP_TARGET_ID_K4    9
+#define DROP_TARGET_ID_A1    10
+#define DROP_TARGET_ID_A2    11
+#define DROP_TARGET_ID_JOKER 12
+#define DROP_TARGET_ID_A3    13
+#define DROP_TARGET_ID_A4    14
+
+
 class Target
 {
 public:

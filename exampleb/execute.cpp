@@ -4,9 +4,10 @@
 
 #include "execute.h"
 
-Execute::Execute(Queue* queue, Score* score)
+Execute::Execute(Queue* queue, Score* score, Lamp* lamp)
     : m_queue(queue)
     , m_score(score)
+    , m_lamp(lamp)
     , m_timer(0.0)
 {
 }
@@ -52,6 +53,9 @@ int Execute::advance(float seconds)
                     break;
                 case QCOMMAND_SET_PLAYER:
                     m_score->set_player(t.value);
+                    break;
+                case QCOMMAND_SET_LAMP:
+                    m_lamp->set(t.which_one, t.value ? true : false);
                     break;
                 default:;
                     break;

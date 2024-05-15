@@ -15,22 +15,6 @@
 #define PLAYFIELD_Y  0.030f
 #define PLAYFIELD_Z  0.663927777f
 
-#define DROP_TARGET_ID_10    0
-#define DROP_TARGET_ID_J1    1
-#define DROP_TARGET_ID_J2    2
-#define DROP_TARGET_ID_Q1    3
-#define DROP_TARGET_ID_Q2    4
-#define DROP_TARGET_ID_Q3    5
-#define DROP_TARGET_ID_K1    6
-#define DROP_TARGET_ID_K2    7
-#define DROP_TARGET_ID_K3    8
-#define DROP_TARGET_ID_K4    9
-#define DROP_TARGET_ID_A1    10
-#define DROP_TARGET_ID_A2    11
-#define DROP_TARGET_ID_JOKER 12
-#define DROP_TARGET_ID_A3    13
-#define DROP_TARGET_ID_A4    14
-
 #define BACKGLASS_SIZE_X  (1.5 * PLAYFIELD_X)
 #define BACKGLASS_SIZE_Z  (BACKGLASS_SIZE_X / 1.25f)
 
@@ -105,32 +89,7 @@
 #define TEXTURE_ID_SCORE       11.0
 #define TEXTURE_ID_BACKGLASS   12.0
 
-#define SENSOR_ID_NONE         0
-#define SENSOR_ID_BUMPER       1
-#define SENSOR_ID_ROLLOVER_A   2
-#define SENSOR_ID_ROLLOVER_B   3
-#define SENSOR_ID_ROLLOVER_C   4
-#define SENSOR_ID_EXTRA_BALL   5
-#define SENSOR_ID_DROP_10      6
-#define SENSOR_ID_DROP_J1      7
-#define SENSOR_ID_DROP_J2      8
-#define SENSOR_ID_SPECIAL      9
-#define SENSOR_ID_DROP_Q1      10
-#define SENSOR_ID_DROP_Q2      11
-#define SENSOR_ID_DROP_Q3      12
-#define SENSOR_ID_TEN_POINT    13
-#define SENSOR_ID_DROP_K1      14
-#define SENSOR_ID_DROP_K2      15
-#define SENSOR_ID_DROP_K3      14
-#define SENSOR_ID_DROP_K4      17
-#define SENSOR_ID_DROP_A1      18
-#define SENSOR_ID_DROP_A2      19
-#define SENSOR_ID_DROP_JOKER   20
-#define SENSOR_ID_DROP_A3      21
-#define SENSOR_ID_DROP_A4      22
-#define SENSOR_ID_OUTHOLE      23
 
-#define MAX_SENSORS            23
 
 #define SOUND_ID_THOUSANDS_CHIME 0
 #define SOUND_ID_HUNDREDS_CHIME  1

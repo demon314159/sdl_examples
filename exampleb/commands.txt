@@ -12,6 +12,7 @@ adding first paid player:
     set match to 0
     sets player to 1
     sets ball to 1
+    spot the 10 bonus
     sets player1 flashing
     blank other players
 

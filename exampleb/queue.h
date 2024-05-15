@@ -11,7 +11,7 @@ struct QueueRec {
     int value;
 };
 
-#define MAX_ENTRIES 200
+#define MAX_ENTRIES 1024
 
 #define QCOMMAND_NOP             0
 #define QCOMMAND_DELAY           1
@@ -23,6 +23,7 @@ struct QueueRec {
 #define QCOMMAND_SET_FLASH       7
 #define QCOMMAND_SET_BALL        8
 #define QCOMMAND_SET_PLAYER      9
+#define QCOMMAND_SET_LAMP        10
 
 #define SOLENOID_ID_NONE               0
 #define SOLENOID_ID_OUT_HOLE           1
