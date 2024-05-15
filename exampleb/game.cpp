@@ -18,7 +18,9 @@ Game::Game(int credit, int max_players, int max_balls,
     , m_queue(queue)
     , m_players(0)
     , m_player_up(0)
+    , m_ball_in_play(0)
     , m_game_in_progress(false)
+    , m_match_value(0)
 {
     m_queue->put(QCOMMAND_ADD_CREDIT, 0, credit);
 }
@@ -58,14 +60,16 @@ void Game::add_player()
         if (m_players < m_max_players) {
             ++m_players;
             m_player_up = 1;
+            m_ball_in_play = 1;
             --m_credit;
             if (m_players == 1) {
                 m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_HUNDREDS_CHIME);
                 m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_DROP_TARGET_ALL);
                 m_queue->put(QCOMMAND_ADD_CREDIT, 0, -1);
                 m_queue->put(QCOMMAND_SET_SCORE, 0, 0);
-                m_queue->put(QCOMMAND_SET_PLAYER, 0, 1);
-                m_queue->put(QCOMMAND_SET_BALL, 0, 1);
+                m_queue->put(QCOMMAND_SET_PLAYER, 0, m_player_up);
+                m_queue->put(QCOMMAND_SET_BALL, 0, m_ball_in_play);
+                set_rollover_lamps();
                 m_queue->put(QCOMMAND_DELAY, 0, SCORE_DELAY);
                 m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_OUT_HOLE);
             } else {
@@ -79,19 +83,46 @@ void Game::add_player()
     }
 }
 
+void Game::set_rollover_lamps()
+{
+    m_queue->put(QCOMMAND_SET_LAMP, LAMP_ID_TOP_ROLLOVER_A, 1);
+    m_queue->put(QCOMMAND_SET_LAMP, LAMP_ID_TOP_ROLLOVER_B, 1);
+    m_queue->put(QCOMMAND_SET_LAMP, LAMP_ID_TOP_ROLLOVER_C, 1);
+    m_queue->put(QCOMMAND_SET_LAMP, LAMP_ID_BOTTOM_ROLLOVER_A, 1);
+    m_queue->put(QCOMMAND_SET_LAMP, LAMP_ID_BOTTOM_LEFT_ROLLOVER_B, 1);
+    m_queue->put(QCOMMAND_SET_LAMP, LAMP_ID_BOTTOM_RIGHT_ROLLOVER_B, 1);
+    m_queue->put(QCOMMAND_SET_LAMP, LAMP_ID_BOTTOM_ROLLOVER_C, 1);
+}
+
 void Game::next_player()
 {
-//    if (m_player_up == m_players) {
-//        if (m_ball_in_play == MAX_BALLS) {
-//            m_ball_in_play = 0;
-//            m_player_up = 0;
-//        } else {
-//            m_player_up = 1;
-//            ++m_ball_in_play;
-//        }
-//    } else {
-//        ++m_player_up;
-//    }
+    if (m_player_up == m_players) {
+        if (m_ball_in_play == (m_max_balls + 1)) {
+            m_ball_in_play = 0;
+            m_player_up = 0;
+        } else {
+            m_player_up = 1;
+            ++m_ball_in_play;
+        }
+    } else {
+        ++m_player_up;
+    }
+    if (m_ball_in_play > 0 && m_player_up > 0) {
+        m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_HUNDREDS_CHIME);
+        m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_DROP_TARGET_ALL);
+        m_queue->put(QCOMMAND_SET_PLAYER, 0, m_player_up);
+        m_queue->put(QCOMMAND_SET_BALL, 0, m_ball_in_play);
+        for (int i = 0; i < m_players; i++) {
+            m_queue->put(QCOMMAND_SET_BLANK, i + 1, 0);
+        }
+        set_rollover_lamps();
+        m_queue->put(QCOMMAND_DELAY, 0, SCORE_DELAY);
+        m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_OUT_HOLE);
+    } else {
+        m_queue->put(QCOMMAND_SET_MATCH, 0, m_match_value * 10);
+        m_game_in_progress = false;
+        m_players = 0;
+    }
 }
 
 void Game::apply_rules()
@@ -182,6 +213,8 @@ void Game::multiscore(int n, int solenoid_id, int score)
         m_queue->put(QCOMMAND_SOLENOID, 0, solenoid_id);
         m_queue->put(QCOMMAND_ADD_SCORE, m_player_up, score);
         m_queue->put(QCOMMAND_DELAY, 0, SCORE_DELAY);
+        ++m_match_value;
+        m_match_value = m_match_value % 10;
     }
 }
 
@@ -233,70 +266,150 @@ void Game::target_score(int lamp_id)
     }
 }
 
+void Game::tens_bonus_test()
+{
+    if (one_ten_dropped()) {
+        if (m_ball_in_play == 1) {
+            m_queue->put(QCOMMAND_SET_LAMP, LAMP_ID_5X_BONUS, 1);
+        }
+        m_queue->put(QCOMMAND_SET_LAMP, LAMP_ID_TENS_BONUS, 1);
+    }
+}
+
+void Game::jacks_bonus_test()
+{
+    if (two_jacks_dropped()) {
+        if (m_ball_in_play == 2) {
+            m_queue->put(QCOMMAND_SET_LAMP, LAMP_ID_5X_BONUS, 1);
+        }
+        m_queue->put(QCOMMAND_SET_LAMP, LAMP_ID_JACKS_BONUS, 1);
+    }
+}
+
+void Game::queens_bonus_test()
+{
+    if (queens_dropped()) {
+        if (m_ball_in_play == 3) {
+            m_queue->put(QCOMMAND_SET_LAMP, LAMP_ID_5X_BONUS, 1);
+        }
+        m_queue->put(QCOMMAND_SET_LAMP, LAMP_ID_QUEENS_BONUS, 1);
+    }
+}
+
+void Game::kings_bonus_test()
+{
+    if (kings_dropped()) {
+        if (m_ball_in_play == 4) {
+            m_queue->put(QCOMMAND_SET_LAMP, LAMP_ID_5X_BONUS, 1);
+        }
+        m_queue->put(QCOMMAND_SET_LAMP, LAMP_ID_KINGS_BONUS, 1);
+    }
+}
+
+void Game::aces_bonus_test()
+{
+    if (aces_dropped()) {
+        if (m_ball_in_play == 5) {
+            m_queue->put(QCOMMAND_SET_LAMP, LAMP_ID_5X_BONUS, 1);
+        }
+        m_queue->put(QCOMMAND_SET_LAMP, LAMP_ID_ACES_BONUS, 1);
+    }
+}
+
 void Game::target_rules()
 {
     if (m_sensor->rising(SENSOR_ID_DROP_10)) {
         target_score(LAMP_ID_TENS_BONUS);
+        tens_bonus_test();
         jacks_test();
     }
     if (m_sensor->rising(SENSOR_ID_DROP_J1)) {
+        jacks_bonus_test();
         target_score(LAMP_ID_JACKS_BONUS);
         jacks_test();
     }
     if (m_sensor->rising(SENSOR_ID_DROP_J2)) {
+        jacks_bonus_test();
         target_score(LAMP_ID_JACKS_BONUS);
         jacks_test();
     }
     if (m_sensor->rising(SENSOR_ID_DROP_Q1)) {
+        queens_bonus_test();
         target_score(LAMP_ID_QUEENS_BONUS);
         queens_test();
     }
     if (m_sensor->rising(SENSOR_ID_DROP_Q2)) {
+        queens_bonus_test();
         target_score(LAMP_ID_QUEENS_BONUS);
         queens_test();
     }
     if (m_sensor->rising(SENSOR_ID_DROP_Q3)) {
+        queens_bonus_test();
         target_score(LAMP_ID_QUEENS_BONUS);
         queens_test();
     }
     if (m_sensor->rising(SENSOR_ID_DROP_K1)) {
+        kings_bonus_test();
         target_score(LAMP_ID_KINGS_BONUS);
         kings_test();
     }
     if (m_sensor->rising(SENSOR_ID_DROP_K2)) {
+        kings_bonus_test();
         target_score(LAMP_ID_KINGS_BONUS);
         kings_test();
     }
     if (m_sensor->rising(SENSOR_ID_DROP_K3)) {
+        kings_bonus_test();
         target_score(LAMP_ID_KINGS_BONUS);
         kings_test();
     }
     if (m_sensor->rising(SENSOR_ID_DROP_K4)) {
+        kings_bonus_test();
         target_score(LAMP_ID_KINGS_BONUS);
         kings_test();
     }
     if (m_sensor->rising(SENSOR_ID_DROP_A1)) {
+        aces_bonus_test();
         target_score(LAMP_ID_ACES_BONUS);
         aces_test();
     }
     if (m_sensor->rising(SENSOR_ID_DROP_A2)) {
+        aces_bonus_test();
         target_score(LAMP_ID_ACES_BONUS);
         aces_test();
     }
     if (m_sensor->rising(SENSOR_ID_DROP_A3)) {
+        aces_bonus_test();
         target_score(LAMP_ID_ACES_BONUS);
         aces_test();
     }
     if (m_sensor->rising(SENSOR_ID_DROP_A4)) {
+        aces_bonus_test();
         target_score(LAMP_ID_ACES_BONUS);
         aces_test();
     }
     if (m_sensor->rising(SENSOR_ID_DROP_JOKER)) {
+        aces_bonus_test();
         target_score(LAMP_ID_ACES_BONUS);
         aces_test();
     }
 }
 
+bool Game::one_ten_dropped() const
+{
+    if (!m_target->dropped(DROP_TARGET_ID_10))
+        return false;
+    return true;
+}
+
+bool Game::two_jacks_dropped() const
+{
+    if (!m_target->dropped(DROP_TARGET_ID_J1))
+        return false;
+    if (!m_target->dropped(DROP_TARGET_ID_J2))
+        return false;
+    return true;
+}
 
 bool Game::jacks_dropped() const
 {

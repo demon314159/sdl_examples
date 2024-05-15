@@ -34,13 +34,18 @@ private:
     Queue* m_queue;
     int m_players;
     int m_player_up;
+    int m_ball_in_play;
     bool m_game_in_progress; // from first score until set_match
+    int m_match_value;
 
+    void set_rollover_lamps();
     void scoring_sequence();
     void multiscore(int n, int solenoid_id, int score);
     void rollover_rules();
     void target_rules();
     void target_score(int lamp_id);
+    bool one_ten_dropped() const;
+    bool two_jacks_dropped() const;
     bool jacks_dropped() const;
     bool queens_dropped() const;
     bool kings_dropped() const;
@@ -49,6 +54,11 @@ private:
     void queens_test();
     void kings_test();
     void aces_test();
+    void tens_bonus_test();
+    void jacks_bonus_test();
+    void queens_bonus_test();
+    void kings_bonus_test();
+    void aces_bonus_test();
 };
 
 #endif // _GAME_H_

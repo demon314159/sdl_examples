@@ -174,6 +174,8 @@ void Score::set_match(int v)
         m_field[PLAYER1_FIELD + i].blank = false;
         apply_field(PLAYER1_FIELD + i);
     }
+    m_flash_template = true;
+    m_flash_timer = 0.0;
     m_flash_high_game = true;
     m_lamp->set(FIXED_LAMP_ID_GAME_OVER, true);
     m_lamp->set(FIXED_LAMP_ID_BALL_IN_PLAY, false);
@@ -275,6 +277,7 @@ void Score::set_player(int player)
     for (int i = 1; i <= m_scoreboard->max_players(); i++) {
         if (i == player) {
             set_player_flash(i, true);
+            set_player_blank(i, false);
         } else {
             set_player_blank(i, true);
         }

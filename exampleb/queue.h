@@ -24,6 +24,7 @@ struct QueueRec {
 #define QCOMMAND_SET_BALL        8
 #define QCOMMAND_SET_PLAYER      9
 #define QCOMMAND_SET_LAMP        10
+#define QCOMMAND_SET_MATCH       11
 
 #define SOLENOID_ID_NONE               0
 #define SOLENOID_ID_OUT_HOLE           1

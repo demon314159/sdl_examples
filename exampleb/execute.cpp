@@ -57,6 +57,9 @@ int Execute::advance(float seconds)
                 case QCOMMAND_SET_LAMP:
                     m_lamp->set(t.which_one, t.value ? true : false);
                     break;
+                case QCOMMAND_SET_MATCH:
+                    m_score->set_match(t.value);
+                    break;
                 default:;
                     break;
             }
