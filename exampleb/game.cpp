@@ -21,6 +21,10 @@ Game::Game(int credit, int max_players, int max_balls,
     , m_ball_in_play(0)
     , m_game_in_progress(false)
     , m_match_value(0)
+    , m_rollover_a(false)
+    , m_rollover_b(false)
+    , m_rollover_c(false)
+    , m_scored(false)
 {
     m_queue->put(QCOMMAND_ADD_CREDIT, 0, credit);
 }
@@ -85,27 +89,35 @@ void Game::add_player()
 
 void Game::set_rollover_lamps()
 {
-    m_queue->put(QCOMMAND_SET_LAMP, LAMP_ID_TOP_ROLLOVER_A, 1);
-    m_queue->put(QCOMMAND_SET_LAMP, LAMP_ID_TOP_ROLLOVER_B, 1);
-    m_queue->put(QCOMMAND_SET_LAMP, LAMP_ID_TOP_ROLLOVER_C, 1);
-    m_queue->put(QCOMMAND_SET_LAMP, LAMP_ID_BOTTOM_ROLLOVER_A, 1);
-    m_queue->put(QCOMMAND_SET_LAMP, LAMP_ID_BOTTOM_LEFT_ROLLOVER_B, 1);
-    m_queue->put(QCOMMAND_SET_LAMP, LAMP_ID_BOTTOM_RIGHT_ROLLOVER_B, 1);
-    m_queue->put(QCOMMAND_SET_LAMP, LAMP_ID_BOTTOM_ROLLOVER_C, 1);
+    m_rollover_a = false;
+    m_rollover_b = false;
+    m_rollover_c = false;
+    m_scored = false;
+    m_lamp->set(LAMP_ID_TOP_ROLLOVER_A, true);
+    m_lamp->set(LAMP_ID_TOP_ROLLOVER_B, true);
+    m_lamp->set(LAMP_ID_TOP_ROLLOVER_C, true);
+    m_lamp->set(LAMP_ID_BOTTOM_ROLLOVER_A, true);
+    m_lamp->set(LAMP_ID_BOTTOM_LEFT_ROLLOVER_B, true);
+    m_lamp->set(LAMP_ID_BOTTOM_RIGHT_ROLLOVER_B, true);
+    m_lamp->set(LAMP_ID_BOTTOM_ROLLOVER_C, true);
+    m_lamp->set(LAMP_ID_EXTRA_BALL, false);
+    m_lamp->set(LAMP_ID_SPECIAL, false);
 }
 
 void Game::next_player()
 {
-    if (m_player_up == m_players) {
-        if (m_ball_in_play == (m_max_balls + 1)) {
-            m_ball_in_play = 0;
-            m_player_up = 0;
+    if (!m_lamp->lit(LAMP_ID_SHOOT_AGAIN)) {
+        if (m_player_up == m_players) {
+            if (m_ball_in_play == (m_max_balls + 1)) {
+                m_ball_in_play = 0;
+                m_player_up = 0;
+            } else {
+                m_player_up = 1;
+                ++m_ball_in_play;
+            }
         } else {
-            m_player_up = 1;
-            ++m_ball_in_play;
+            ++m_player_up;
         }
-    } else {
-        ++m_player_up;
     }
     if (m_ball_in_play > 0 && m_player_up > 0) {
         m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_HUNDREDS_CHIME);
@@ -208,6 +220,11 @@ void Game::scoring_sequence()
 
 void Game::multiscore(int n, int solenoid_id, int score)
 {
+    if (!m_scored) {
+        m_lamp->set(LAMP_ID_SHOOT_AGAIN, false);
+        m_lamp->set(FIXED_LAMP_ID_SHOOT_AGAIN, false);
+        m_scored = true;
+    }
     m_game_in_progress = true;
     for (int i = 0; i < n; i++) {
         m_queue->put(QCOMMAND_SOLENOID, 0, solenoid_id);
@@ -221,38 +238,46 @@ void Game::multiscore(int n, int solenoid_id, int score)
 void Game::rollover_rules()
 {
     if (m_sensor->rising(SENSOR_ID_ROLLOVER_A)) {
+        m_lamp->set(LAMP_ID_TOP_ROLLOVER_A, false);
+        m_lamp->set(LAMP_ID_BOTTOM_ROLLOVER_A, false);
+        m_rollover_a = true;
         if (m_lamp->lit(LAMP_ID_TOP_ROLLOVER_A)) {
             multiscore(5, SOLENOID_ID_THOUSANDS_CHIME, 1000);
         } else {
             multiscore(5, SOLENOID_ID_HUNDREDS_CHIME, 100);
         }
-        m_lamp->set(LAMP_ID_TOP_ROLLOVER_A, false);
-        m_lamp->set(LAMP_ID_BOTTOM_ROLLOVER_A, false);
     }
     if (m_sensor->rising(SENSOR_ID_ROLLOVER_B)) {
+        m_lamp->set(LAMP_ID_TOP_ROLLOVER_B, false);
+        m_lamp->set(LAMP_ID_BOTTOM_LEFT_ROLLOVER_B, false);
+        m_lamp->set(LAMP_ID_BOTTOM_RIGHT_ROLLOVER_B, false);
+        m_rollover_b = true;
         if (m_lamp->lit(LAMP_ID_TOP_ROLLOVER_B)) {
             multiscore(5, SOLENOID_ID_THOUSANDS_CHIME, 1000);
         } else {
             multiscore(5, SOLENOID_ID_HUNDREDS_CHIME, 100);
         }
-        m_lamp->set(LAMP_ID_TOP_ROLLOVER_B, false);
-        m_lamp->set(LAMP_ID_BOTTOM_LEFT_ROLLOVER_B, false);
-        m_lamp->set(LAMP_ID_BOTTOM_RIGHT_ROLLOVER_B, false);
     }
     if (m_sensor->rising(SENSOR_ID_ROLLOVER_C)) {
+        m_lamp->set(LAMP_ID_TOP_ROLLOVER_C, false);
+        m_lamp->set(LAMP_ID_BOTTOM_ROLLOVER_C, false);
+        m_rollover_c = true;
         if (m_lamp->lit(LAMP_ID_TOP_ROLLOVER_C)) {
             multiscore(5, SOLENOID_ID_THOUSANDS_CHIME, 1000);
         } else {
             multiscore(5, SOLENOID_ID_HUNDREDS_CHIME, 100);
         }
-        m_lamp->set(LAMP_ID_TOP_ROLLOVER_C, false);
-        m_lamp->set(LAMP_ID_BOTTOM_ROLLOVER_C, false);
     }
     if (m_sensor->rising(SENSOR_ID_SPECIAL)) {
         multiscore(5, SOLENOID_ID_HUNDREDS_CHIME, 100);
         if (m_lamp->lit(LAMP_ID_SPECIAL)) {
 //            m_scoreboard->add_credit();
             m_lamp->set(LAMP_ID_SPECIAL, false);
+        }
+    }
+    if (m_rollover_a && m_rollover_b && m_rollover_c) {
+        if (!m_lamp->lit(LAMP_ID_EXTRA_BALL)) {
+            m_lamp->set(LAMP_ID_EXTRA_BALL, true);
         }
     }
 }
@@ -270,9 +295,9 @@ void Game::tens_bonus_test()
 {
     if (one_ten_dropped()) {
         if (m_ball_in_play == 1) {
-            m_queue->put(QCOMMAND_SET_LAMP, LAMP_ID_5X_BONUS, 1);
+            m_lamp->set(LAMP_ID_5X_BONUS, true);
         }
-        m_queue->put(QCOMMAND_SET_LAMP, LAMP_ID_TENS_BONUS, 1);
+        m_lamp->set(LAMP_ID_TENS_BONUS, true);
     }
 }
 
@@ -280,9 +305,9 @@ void Game::jacks_bonus_test()
 {
     if (two_jacks_dropped()) {
         if (m_ball_in_play == 2) {
-            m_queue->put(QCOMMAND_SET_LAMP, LAMP_ID_5X_BONUS, 1);
+            m_lamp->set(LAMP_ID_5X_BONUS, true);
         }
-        m_queue->put(QCOMMAND_SET_LAMP, LAMP_ID_JACKS_BONUS, 1);
+        m_lamp->set(LAMP_ID_JACKS_BONUS, true);
     }
 }
 
@@ -290,9 +315,9 @@ void Game::queens_bonus_test()
 {
     if (queens_dropped()) {
         if (m_ball_in_play == 3) {
-            m_queue->put(QCOMMAND_SET_LAMP, LAMP_ID_5X_BONUS, 1);
+            m_lamp->set(LAMP_ID_5X_BONUS, true);
         }
-        m_queue->put(QCOMMAND_SET_LAMP, LAMP_ID_QUEENS_BONUS, 1);
+        m_lamp->set(LAMP_ID_QUEENS_BONUS, true);
     }
 }
 
@@ -300,9 +325,9 @@ void Game::kings_bonus_test()
 {
     if (kings_dropped()) {
         if (m_ball_in_play == 4) {
-            m_queue->put(QCOMMAND_SET_LAMP, LAMP_ID_5X_BONUS, 1);
+            m_lamp->set(LAMP_ID_5X_BONUS, true);
         }
-        m_queue->put(QCOMMAND_SET_LAMP, LAMP_ID_KINGS_BONUS, 1);
+        m_lamp->set(LAMP_ID_KINGS_BONUS, true);
     }
 }
 
@@ -310,14 +335,21 @@ void Game::aces_bonus_test()
 {
     if (aces_dropped()) {
         if (m_ball_in_play == 5) {
-            m_queue->put(QCOMMAND_SET_LAMP, LAMP_ID_5X_BONUS, 1);
+            m_lamp->set(LAMP_ID_5X_BONUS, true);
         }
-        m_queue->put(QCOMMAND_SET_LAMP, LAMP_ID_ACES_BONUS, 1);
+        m_lamp->set(LAMP_ID_ACES_BONUS, true);
     }
 }
 
 void Game::target_rules()
 {
+    if (m_sensor->rising(SENSOR_ID_EXTRA_BALL)) {
+        if (m_lamp->lit(LAMP_ID_EXTRA_BALL)) {
+            m_lamp->set(LAMP_ID_SHOOT_AGAIN, true);
+            m_lamp->set(FIXED_LAMP_ID_SHOOT_AGAIN, true);
+        }
+        multiscore(5, SOLENOID_ID_HUNDREDS_CHIME, 100);
+    }
     if (m_sensor->rising(SENSOR_ID_DROP_10)) {
         target_score(LAMP_ID_TENS_BONUS);
         tens_bonus_test();

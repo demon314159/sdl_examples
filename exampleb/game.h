@@ -37,6 +37,10 @@ private:
     int m_ball_in_play;
     bool m_game_in_progress; // from first score until set_match
     int m_match_value;
+    bool m_rollover_a;
+    bool m_rollover_b;
+    bool m_rollover_c;
+    bool m_scored;
 
     void set_rollover_lamps();
     void scoring_sequence();
