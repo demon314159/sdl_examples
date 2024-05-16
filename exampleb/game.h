@@ -9,12 +9,13 @@
 #include "target.h"
 #include "lamp.h"
 #include "queue.h"
+#include "score.h"
 
 class Game
 {
 public:
     Game(int credit, int max_players, int max_balls,
-         Sensor* sensor, Target* target, Lamp* lamp, Queue* queue);
+         Sensor* sensor, Target* target, Lamp* lamp, Queue* queue, const Score* score);
     ~Game();
 
     void add_credit();
@@ -32,6 +33,7 @@ private:
     Target* m_target;
     Lamp* m_lamp;
     Queue* m_queue;
+    const Score* m_score;
     int m_players;
     int m_player_up;
     int m_ball_in_play;
@@ -41,6 +43,7 @@ private:
     bool m_rollover_b;
     bool m_rollover_c;
     bool m_scored;
+    bool m_kings_flag;
 
     void set_rollover_lamps();
     void scoring_sequence();

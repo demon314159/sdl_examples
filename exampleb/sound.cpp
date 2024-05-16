@@ -34,6 +34,7 @@ void Sound::initialize()
     add("sound1.wav"); // SOUND_ID_THOUSANDS_CHIME
     add("sound2.wav"); // SOUND_ID_HUNDREDS_CHIME
     add("sound3.wav"); // SOUND_ID_TENS_CHIME
+    add("knocker.wav"); // SOUND_ID_KNOCKER
 }
 
 int Sound::sounds() const

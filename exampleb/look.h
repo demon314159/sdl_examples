@@ -94,6 +94,7 @@
 #define SOUND_ID_THOUSANDS_CHIME 0
 #define SOUND_ID_HUNDREDS_CHIME  1
 #define SOUND_ID_TENS_CHIME      2
+#define SOUND_ID_KNOCKER         3
 
 #define LAMP_SIZE {0.020, 0.030}
 

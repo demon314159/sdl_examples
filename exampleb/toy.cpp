@@ -144,7 +144,7 @@ Toy::Toy()
 
     m_score->set_high_game(120000);
     m_score->set_match(70);
-    m_game = new Game(INITIAL_CREDITS, m_scoreboard->max_players(), MAX_BALLS, m_sensor, m_target, m_lamp, m_queue);
+    m_game = new Game(INITIAL_CREDITS, m_scoreboard->max_players(), MAX_BALLS, m_sensor, m_target, m_lamp, m_queue, m_score);
     m_execute = new Execute(m_queue, m_score, m_lamp);
 
     m_ball->set_position(m_table->out_hole_position());
@@ -203,6 +203,7 @@ void Toy::activate_solenoid(int solenoid_id)
             eject_from_out_hole();
             break;
         case SOLENOID_ID_KNOCKER:
+            m_sound->play(SOUND_ID_KNOCKER);
             break;
         case SOLENOID_ID_TENS_CHIME:
             m_sound->play(SOUND_ID_TENS_CHIME);
@@ -364,58 +365,5 @@ void Toy::replay_action_button(bool on)
     m_game->add_player();
 
 }
-
-
-
-#ifdef NEVERMORE
-#define SENSOR_ID_BUMPER       1
-#define SENSOR_ID_ROLLOVER_A   2
-#define SENSOR_ID_ROLLOVER_B   3
-#define SENSOR_ID_ROLLOVER_C   4
-#define SENSOR_ID_EXTRA_BALL   5
-#define SENSOR_ID_DROP_10      6
-#define SENSOR_ID_DROP_J1      7
-#define SENSOR_ID_DROP_J2      8
-#define SENSOR_ID_SPECIAL      9
-#define SENSOR_ID_DROP_Q1      10
-#define SENSOR_ID_DROP_Q2      11
-#define SENSOR_ID_DROP_Q3      12
-#define SENSOR_ID_TEN_POINT    13
-#define SENSOR_ID_DROP_K1      14
-#define SENSOR_ID_DROP_K2      15
-#define SENSOR_ID_DROP_K3      14
-#define SENSOR_ID_DROP_K4      17
-#define SENSOR_ID_DROP_A1      18
-#define SENSOR_ID_DROP_A2      19
-#define SENSOR_ID_DROP_JOKER   20
-#define SENSOR_ID_DROP_A3      21
-#define SENSOR_ID_DROP_A4      22
-
-#define LAMP_ID_5X_BONUS                 0
-#define LAMP_ID_ACES_BONUS               1
-#define LAMP_ID_KINGS_BONUS              2
-#define LAMP_ID_QUEENS_BONUS             3
-#define LAMP_ID_JACKS_BONUS              4
-#define LAMP_ID_TENS_BONUS               5
-#define LAMP_ID_5000_BONUS               6
-#define LAMP_ID_4000_BONUS               7
-#define LAMP_ID_3000_BONUS               8
-#define LAMP_ID_2000_BONUS               9
-#define LAMP_ID_1000_BONUS               10
-#define LAMP_ID_TOP_ROLLOVER_A           11
-#define LAMP_ID_TOP_ROLLOVER_B           12
-#define LAMP_ID_TOP_ROLLOVER_C           13
-#define LAMP_ID_BOTTOM_ROLLOVER_A        14
-#define LAMP_ID_LEFT_BOTTOM_ROLLOVER_B   15
-#define LAMP_ID_RIGHT_BOTTOM_ROLLOVER_B  16
-#define LAMP_ID_BOTTOM_ROLLOVER_C        17
-#define LAMP_ID_SHOOT_AGAIN              18
-#define LAMP_ID_EXTRA_BALL               19
-#define LAMP_ID_SPECIAL                  20
-#endif
-
-
-
-
 
 
