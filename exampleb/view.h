@@ -46,6 +46,11 @@ public:
     void set_mag(float mag);
     int width() const;
     int height() const;
+
+// These should be generated in toy from raw keystrokes
+// require keyboard object, no?
+
+
     void replay_action_button(bool on);
     void left_action_button(bool on);
     void right_action_button(bool on);
@@ -73,6 +78,9 @@ private:
     GLint m_texture_id_attr;
     GLint m_mvp_matrix_uniform;
     GLint m_rot_matrix_uniform;
+
+// these should be in toy \/ \/ \/
+
     GLint m_scoreboard_mvp_matrix_uniform;
     GLint m_scoreboard_rot_matrix_uniform;
     GLint* m_animation_matrix_uniform;
@@ -93,9 +101,17 @@ private:
     GLint m_texture11_uniform;
     GLint m_texture12_uniform;
 
+// these should be in toy /\ /\ /\
+//
     unsigned int m_vao;
     unsigned int m_vbo;
+
+// this should be in toy
+// maybe a texture object
     unsigned int m_texture[TOTAL_TEXTURES];
+
+
+
     int m_frame;
     int m_max_vertex_count;
     int m_vertex_count;
@@ -122,9 +138,12 @@ private:
     bool add_shader_from_source_file(GLuint shader, const char* name);
     void print_program_log(GLuint program);
     void print_shader_log(GLuint shader);
+//
+// this might be in toy or a texture object
 
     void generate_textures();
     void generate_texture(const char* fname);
+//
 };
 
 #endif // _VIEW_H_

@@ -24,6 +24,7 @@ HEADERS = view.h \
           char_file.h \
           view.h \
           quaternion.h \
+          animated_toy.h \
           toy.h \
           \
           perimeter.h \
@@ -95,6 +96,8 @@ HEADERS = view.h \
           digit.h \
           execute.h \
           game.h \
+          texture.h \
+          uniform.h \
           \
           \
           \
@@ -121,6 +124,7 @@ OBJECTS = main.obj \
           bin_file.obj \
           char_file.obj \
           quaternion.obj \
+          animated_toy.obj \
           toy.obj \
           \
           sphere_shape.obj \
@@ -189,6 +193,8 @@ OBJECTS = main.obj \
           score.obj \
           execute.obj \
           game.obj \
+          texture.obj \
+          uniform.obj \
           \
           \
           \

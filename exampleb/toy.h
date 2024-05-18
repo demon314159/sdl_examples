@@ -5,6 +5,7 @@
 #ifndef _TOY_H_
 #define _TOY_H_
 
+#include "animated_toy.h"
 #include "cad_model.h"
 #include "matrix4x4.h"
 #include "lamp.h"
@@ -19,14 +20,17 @@
 #include "queue.h"
 #include "execute.h"
 #include "game.h"
+#include "texture.h"
 
-class Toy
+
+class Toy: public AnimatedToy
 {
 public:
     #define ANIMATION_0_ID 2.0
     #define ANIMATION_1_ID 3.0
     #define ANIMATION_2_ID 4.0
     #define ANIMATION_3_ID 5.0
+
 
     Toy();
     ~Toy();
@@ -43,10 +47,6 @@ public:
 
     void advance(int nanoseconds);
 
-    const Lamp* get_lamp() const;
-    const Target* get_target() const;
-    const Scoreboard* get_scoreboard() const;
-
 private:
     float m_seconds;
     int m_player;
@@ -56,6 +56,7 @@ private:
     Sensor* m_sensor;
     Sound* m_sound;
     Scoreboard* m_scoreboard;
+    Texture* m_texture;
     Score* m_score;
     Queue* m_queue;
     Game* m_game;

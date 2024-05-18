@@ -10,6 +10,8 @@
 #include "bounding_box.h"
 #include "look.h"
 #include "pi.h"
+#include "toy.h"
+
 #include <math.h>
 #include <sys/stat.h>
 #include <algorithm>
@@ -313,6 +315,9 @@ void View::initialize()
         printf("a_texture_id is not a valid glsl variable\n");
         exit(0);
     }
+
+// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
     m_mvp_matrix_uniform = glGetUniformLocation(m_program, "mvp_matrix");
     if (m_mvp_matrix_uniform == -1) {
         printf("mvp_matrix is not a valid glsl variable\n");
@@ -323,6 +328,19 @@ void View::initialize()
         printf("rot_matrix is not a valid glsl variable\n");
         exit(0);
     }
+
+// yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
+
+    Uniform* u = m_toy->uniform();
+    for (int i = 0; i < u->uniforms(); i++) {
+        GLint handle = glGetUniformLocation(m_program, u->name(i));
+        if (handle == -1) {
+            printf("'%s' is not a valid glsl variable\n", u->name(i));
+            exit(0);
+        }
+        u->set_handle(i, handle);
+    }
+#ifdef NEVERMORE
     m_scoreboard_mvp_matrix_uniform = glGetUniformLocation(m_program, "scoreboard_mvp_matrix");
     if (m_scoreboard_mvp_matrix_uniform == -1) {
         printf("scoreboard_mvp_matrix is not a valid glsl variable\n");
@@ -408,6 +426,8 @@ void View::initialize()
         printf("texture12 is not a valid glsl variable\n");
         exit(0);
     }
+#endif
+
     generate_textures();
     int n = m_toy->animation_matrices();
     if (n > 0) {
@@ -422,6 +442,11 @@ void View::initialize()
             }
         }
     }
+
+// zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
+
+
+
     glGenVertexArrays(1, &m_vao);
     glBindVertexArray(m_vao);
     glGenBuffers(1, &m_vbo);
@@ -560,8 +585,35 @@ void View::render()
     offset += sizeof(float);
     glVertexAttribPointer(m_texture_id_attr, 1, GL_FLOAT, GL_FALSE, stride, (void*) offset);
 
+
+    //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+
     glUniformMatrix4fv(m_mvp_matrix_uniform, 1, GL_TRUE, m_mvp_matrix.data());
     glUniformMatrix4fv(m_rot_matrix_uniform, 1, GL_TRUE, m_rot_matrix.data());
+
+    // yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
+
+    Uniform* u = m_toy->uniform();
+    for (int i = 0; i < u->uniforms(); i++) {
+        switch (u->uniform_type(i)) {
+            case UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR:
+                glUniformMatrix4fv(u->handle(i), u->items(i), GL_TRUE, (float*) u->data(i));
+                break;
+            case UNIFORM_TYPE_3_FLOAT_VECTOR:
+                glUniform3fv(u->handle(i), u->items(i), (float*) u->data(i));
+                break;
+            case UNIFORM_TYPE_1_FLOAT_VECTOR:
+                glUniform1fv(u->handle(i), u->items(i), (float*) u->data(i));
+                break;
+            case UNIFORM_TYPE_1_INTEGER_VECTOR:
+                glUniform1iv(u->handle(i), u->items(i), (GLint*) u->data(i));
+                break;
+            default:
+                break;
+        }
+    }
+#ifdef NEVERMORE
     glUniformMatrix4fv(m_scoreboard_mvp_matrix_uniform, 1, GL_TRUE, m_scoreboard_mvp_matrix.data());
     glUniformMatrix4fv(m_scoreboard_rot_matrix_uniform, 1, GL_TRUE, m_scoreboard_rot_matrix.data());
     int n = m_toy->animation_matrices();
@@ -584,6 +636,8 @@ void View::render()
     glUniform1i(m_texture10_uniform, 9);
     glUniform1i(m_texture11_uniform, 10);
     glUniform1i(m_texture12_uniform, 11);
+#endif
+// zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glDrawArrays(GL_TRIANGLES, 0, m_vertex_count);

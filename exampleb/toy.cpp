@@ -28,6 +28,7 @@ Toy::Toy()
     , m_sensor(NULL)
     , m_sound(NULL)
     , m_scoreboard(NULL)
+    , m_texture(NULL)
     , m_score(NULL)
     , m_queue(NULL)
     , m_game(NULL)
@@ -48,6 +49,8 @@ Toy::Toy()
     m_scoreboard = new Scoreboard({SCOREBOARD_POSITION_X, SCOREBOARD_POSITION_Y, SCOREBOARD_POSITION_Z}, {BACKGLASS_SIZE_X, BACKGLASS_SIZE_Z},
                                   {BACKGLASS_IMAGE_SIZE_X, BACKGLASS_IMAGE_SIZE_Z},
                                    m_table->trim(), m_table->trim_color(), TEXTURE_ID_BACKGLASS, TEXTURE_ID_SCORE);
+    m_texture = new Texture();
+
     m_left_flipper = new Flipper(
         LEFT_FLIPPER_ANGLE, LEFT_FLIPPER_POSITION, BOTTOM_FLIPPER_LENGTH,
         BOTTOM_FLIPPER_MAJOR_RADIUS, BOTTOM_FLIPPER_MINOR_RADIUS,
@@ -164,6 +167,7 @@ Toy::~Toy()
     delete m_game;
     delete m_execute;
     delete m_scoreboard;
+    delete m_texture;
     delete m_table;
     delete m_left_flipper;
     delete m_right_flipper;
@@ -288,21 +292,6 @@ void Toy::advance(int nanoseconds)
     }
 }
 
-const Lamp* Toy::get_lamp() const
-{
-    return m_lamp;
-}
-
-const Target* Toy::get_target() const
-{
-    return m_target;
-}
-
-const Scoreboard* Toy::get_scoreboard() const
-{
-    return m_scoreboard;
-}
-
 void Toy::build_model()
 {
     m_model->add(m_ball->model(ANIMATION_ID_BALL));
@@ -365,5 +354,38 @@ void Toy::replay_action_button(bool on)
     m_game->add_player();
 
 }
+#ifdef NEVERMORE
+int Toy::uniforms() const
+{
+    return 0;
+}
 
+const char* Toy::uniform_name(int ix) const
+{
+    return "none";
+}
 
+void Toy::set_uniform_handle(int ix, int handle)
+{
+}
+
+int Toy::uniform_type(int ix) const
+{
+    return 0;
+}
+
+int Toy::uniform_handle(int ix) const
+{
+    return -1;
+}
+
+int Toy::uniform_items(int ix) const
+{
+    return 0;
+}
+
+void* Toy::uniform_data(int ix) const
+{
+    return (void*) 0;
+}
+#endif
