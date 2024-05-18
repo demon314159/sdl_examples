@@ -10,7 +10,6 @@
 #include "backglass_guide.h"
 #include <stdio.h>
 
-
 #define INITIAL_CREDITS 8
 #define MAX_BALLS 4
 
@@ -327,65 +326,32 @@ Matrix4x4 Toy::get_animation_matrix(int i) const
     return mm;
 }
 
-void Toy::left_action_button(bool on)
+void Toy::button(int code, bool shifted, bool on)
 {
-    m_left_flipper->action_button(on);
-}
-
-void Toy::right_action_button(bool on)
-{
-    m_right_flipper->action_button(on);
-    m_top_flipper->action_button(on);
-}
-
-void Toy::launch_action_button(bool on)
-{
-    if (on && !m_last_launch_action_button) {
-        if ((m_ball->position().v2 > (m_table->ball_home_position().v2 - BALL_RADIUS))
-         && (m_ball->position().v1 > (m_table->ball_home_position().v1 - BALL_RADIUS))) {
-            m_ball->set_velocity({0.0, -BALL_LAUNCH_SPEED});
-        }
+    switch (code) {
+        case SDL_SCANCODE_LSHIFT:  // Left flipper
+            m_left_flipper->action_button(on);
+            break;
+        case SDL_SCANCODE_RSHIFT:  // Right flipper
+            m_right_flipper->action_button(on);
+            m_top_flipper->action_button(on);
+            break;
+        case SDL_SCANCODE_L:  // Launch button
+            if (on && !m_last_launch_action_button) {
+                if ((m_ball->position().v2 > (m_table->ball_home_position().v2 - BALL_RADIUS))
+                    && (m_ball->position().v1 > (m_table->ball_home_position().v1 - BALL_RADIUS))) {
+                    m_ball->set_velocity({0.0, -BALL_LAUNCH_SPEED});
+                }
+            }
+            m_last_launch_action_button = on;
+            break;
+        case SDL_SCANCODE_R:  // Add player
+            if (on) {
+                m_game->add_player();
+            }
+            break;
+        default:
+            break;
     }
-    m_last_launch_action_button = on;
 }
 
-void Toy::replay_action_button(bool on)
-{
-    m_game->add_player();
-
-}
-#ifdef NEVERMORE
-int Toy::uniforms() const
-{
-    return 0;
-}
-
-const char* Toy::uniform_name(int ix) const
-{
-    return "none";
-}
-
-void Toy::set_uniform_handle(int ix, int handle)
-{
-}
-
-int Toy::uniform_type(int ix) const
-{
-    return 0;
-}
-
-int Toy::uniform_handle(int ix) const
-{
-    return -1;
-}
-
-int Toy::uniform_items(int ix) const
-{
-    return 0;
-}
-
-void* Toy::uniform_data(int ix) const
-{
-    return (void*) 0;
-}
-#endif

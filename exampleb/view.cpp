@@ -793,23 +793,8 @@ void View::print_shader_log(GLuint shader)
     }
 }
 
-void View::replay_action_button(bool on)
+void View::button(int code, bool shifted, bool on)
 {
-    m_toy->replay_action_button(on);
-}
-
-void View::left_action_button(bool on)
-{
-    m_toy->left_action_button(on);
-}
-
-void View::right_action_button(bool on)
-{
-    m_toy->right_action_button(on);
-}
-
-void View::launch_action_button(bool on)
-{
-    m_toy->launch_action_button(on);
+    m_toy->button(code, shifted, on);
 }
 

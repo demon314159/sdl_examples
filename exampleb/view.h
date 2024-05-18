@@ -47,14 +47,7 @@ public:
     int width() const;
     int height() const;
 
-// These should be generated in toy from raw keystrokes
-// require keyboard object, no?
-
-
-    void replay_action_button(bool on);
-    void left_action_button(bool on);
-    void right_action_button(bool on);
-    void launch_action_button(bool on);
+    void button(int code, bool shifted, bool on);
 
 protected:
     bool init_shaders();

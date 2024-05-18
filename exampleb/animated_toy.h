@@ -6,7 +6,7 @@
 #define _ANIMATED_TOY_H_
 
 #include "uniform.h"
-
+#include <SDL_scancode.h>
 
 class AnimatedToy
 {
@@ -15,6 +15,8 @@ public:
     virtual ~AnimatedToy();
 
     virtual Uniform* uniform() const;
+    virtual void button(int code, bool shifted, bool on);
+    virtual void advance(int nanoseconds);
 
 private:
     Uniform* m_uniform;

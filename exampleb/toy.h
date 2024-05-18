@@ -40,12 +40,9 @@ public:
     int animation_matrices() const;
     Matrix4x4 get_animation_matrix(int i) const;
 
-    void left_action_button(bool on);
-    void right_action_button(bool on);
-    void launch_action_button(bool on);
-    void replay_action_button(bool on);
+    void button(int code, bool shifted, bool on) override;
 
-    void advance(int nanoseconds);
+    void advance(int nanoseconds) override;
 
 private:
     float m_seconds;

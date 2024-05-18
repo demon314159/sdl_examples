@@ -19,4 +19,11 @@ Uniform* AnimatedToy::uniform() const
     return m_uniform;
 }
 
+void AnimatedToy::button(int code, bool shifted, bool on)
+{
+}
+
+void AnimatedToy::advance(int nanoseconds)
+{
+}
 
