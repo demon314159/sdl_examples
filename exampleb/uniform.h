@@ -10,10 +10,19 @@
 #define UNIFORM_TYPE_1_FLOAT_VECTOR       2
 #define UNIFORM_TYPE_1_INTEGER_VECTOR     3
 
+struct UniformRec {
+    const char* name;
+    int uniform_type;
+    int handle;
+    int items;
+    void* data;
+};
+
+
 class Uniform
 {
 public:
-    Uniform();
+    Uniform(int max_uniforms);
     ~Uniform();
 
     int uniforms() const;
@@ -24,7 +33,12 @@ public:
     int items(int ix) const;
     void* data(int ix) const;
 
+    void add(const char* name, int uniform_type, int items, void* data);
+
 private:
+    int m_max_uniforms;
+    int m_uniforms;
+    UniformRec* m_uniform;
 };
 
 #endif // _UNIFORM_H_

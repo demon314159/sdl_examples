@@ -15,6 +15,7 @@
 #include "matrix4x4.h"
 #include "toy.h"
 #include "cad_model.h"
+#include "uniform.h"
 
 #define INITIAL_HEIGHT 512
 #define INITIAL_WIDTH ((INITIAL_HEIGHT * 1920) / 1080)

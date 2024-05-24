@@ -10,6 +10,8 @@
 #include "backglass_guide.h"
 #include <stdio.h>
 
+#define MAX_UNIFORMS 100
+
 #define INITIAL_CREDITS 8
 #define MAX_BALLS 4
 
@@ -37,6 +39,7 @@ Toy::Toy()
     , m_right_flipper(NULL)
     , m_top_flipper(NULL)
     , m_model(NULL)
+    , m_uniform(NULL)
     , m_last_launch_action_button(false)
 {
     m_ball = new Ball(BALL_RADIUS, BALL_TOP_COLOR, BALL_MIDDLE_COLOR, BALL_BOTTOM_COLOR, BALL_SEGMENTS);
@@ -73,6 +76,7 @@ Toy::Toy()
         true
     );
     m_model = new CadModel();
+    m_uniform = new Uniform(MAX_UNIFORMS);
     m_lamp->add(LAMP_5X_BONUS_POSITION, LAMP_SIZE, TYPE1_ON_COLOR, TYPE1_OFF_COLOR);
     m_lamp->add(LAMP_ACES_POSITION,  LAMP_SIZE, TYPE1_ON_COLOR, TYPE1_OFF_COLOR);
     m_lamp->add(LAMP_KINGS_POSITION, LAMP_SIZE, TYPE1_ON_COLOR, TYPE1_OFF_COLOR);
@@ -141,6 +145,7 @@ Toy::Toy()
     m_target->add(new DropTarget(lg.position(1), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS, TEXTURE_ID_DROP_TARGET, 9, SENSOR_ID_DROP_A4));
 
     build_model();
+    build_uniform();
     m_queue = new Queue();
     m_score = new Score(m_scoreboard, m_lamp);
 
@@ -172,6 +177,7 @@ Toy::~Toy()
     delete m_right_flipper;
     delete m_top_flipper;
     delete m_model;
+    delete m_uniform;
 }
 
 void Toy::initialize()
@@ -179,9 +185,17 @@ void Toy::initialize()
     m_sound->initialize();
 }
 
-CadModel* Toy::get_model() const
+CadModel* Toy::model() const
 {
     return m_model;
+}
+
+Uniform* Toy::uniform()
+{
+    // Update all uniform data sources
+    m_lamp->data();
+    // Return pointer to uniform object
+    return m_uniform;
 }
 
 int Toy::animation_matrices() const
@@ -301,6 +315,14 @@ void Toy::build_model()
     m_model->add(m_top_flipper->model(ANIMATION_ID_TOP_FLIPPER));
     m_model->add(m_scoreboard->model(ANIMATION_ID_SCORE11, ANIMATION_ID_SCOREBOARD));
     m_model->add(m_table->model());
+}
+
+//    void add(const char* name, int uniform_type, int items, void* data);
+
+
+void Toy::build_uniform()
+{
+    m_uniform->add("lamp_color", UNIFORM_TYPE_3_FLOAT_VECTOR, m_lamp->lamps(), (void*) m_lamp->data());
 }
 
 Matrix4x4 Toy::get_animation_matrix(int i) const

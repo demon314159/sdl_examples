@@ -35,14 +35,16 @@ public:
     Toy();
     ~Toy();
 
-    void initialize();
-    CadModel* get_model() const;
+    void initialize() override;
+    void button(int code, bool shifted, bool on) override;
+    void advance(int nanoseconds) override;
+    Uniform* uniform() override;
+    CadModel* model() const override;
+
+
     int animation_matrices() const;
     Matrix4x4 get_animation_matrix(int i) const;
 
-    void button(int code, bool shifted, bool on) override;
-
-    void advance(int nanoseconds) override;
 
 private:
     float m_seconds;
@@ -63,8 +65,11 @@ private:
     Flipper* m_right_flipper;
     Flipper* m_top_flipper;
     CadModel* m_model;
+    Uniform* m_uniform;
+
     bool m_last_launch_action_button;
     void build_model();
+    void build_uniform();
 
     void activate_solenoid(int solenoid_id);
     void eject_from_out_hole();

@@ -102,7 +102,7 @@ View::View(SDL_Window* window)
 
 void View::position_camera()
 {
-    BoundingBox bb = m_toy->get_model()->bounding_box();
+    BoundingBox bb = m_toy->model()->bounding_box();
     m_radius = fmax(fabs(bb.vmax.v1 - bb.vmin.v1) / 2.0, fabs(bb.vmax.v3 - bb.vmin.v3) / 2.0);
     m_radius = fmax(m_radius, (bb.vmax.v2 - bb.vmin.v2) / (2.0));
     m_radius = fmax(m_radius, 0.1);
@@ -456,13 +456,13 @@ void View::initialize()
 
 void View::copy_facets()
 {
-    int facet_count = m_toy->get_model()->facets();
+    int facet_count = m_toy->model()->facets();
     printf("Total number of facets = %d\n", facet_count);
     m_vertex_count = 3 * facet_count;
     if (m_vertex_count > 0) {
         VertexData* vertices = new VertexData[m_vertex_count];
         int vix = 0;
-        sub_copy_facets(m_toy->get_model(), vertices, vix);
+        sub_copy_facets(m_toy->model(), vertices, vix);
         // Transfer vertex data to VBO
         glBufferData(GL_ARRAY_BUFFER, m_vertex_count * sizeof(VertexData), vertices, GL_STATIC_DRAW);
         delete [] vertices;
@@ -532,7 +532,7 @@ void View::resize_calc()
 
 void View::check_storage()
 {
-    int fc = 3 * m_toy->get_model()->facets();
+    int fc = 3 * m_toy->model()->facets();
     if (m_max_vertex_count > fc)
         return;
     m_max_vertex_count = std::max(2 * m_max_vertex_count, 2 * fc);

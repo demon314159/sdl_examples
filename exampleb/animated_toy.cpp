@@ -3,20 +3,22 @@
 //
 
 #include "animated_toy.h"
+#include "cube_shape.h"
 
 AnimatedToy::AnimatedToy()
-: m_uniform(new Uniform)
+    : m_uniform(new Uniform(1))
+    , m_model(new CadModel(CubeShape(0.1, 0.1, 0.1), PaintCan(1.0, 0.0, 0.0), 0.0))
 {
 }
 
 AnimatedToy::~AnimatedToy()
 {
     delete m_uniform;
+    delete m_model;
 }
 
-Uniform* AnimatedToy::uniform() const
+void AnimatedToy::initialize()
 {
-    return m_uniform;
 }
 
 void AnimatedToy::button(int code, bool shifted, bool on)
@@ -27,3 +29,12 @@ void AnimatedToy::advance(int nanoseconds)
 {
 }
 
+Uniform* AnimatedToy::uniform()
+{
+    return m_uniform;
+}
+
+CadModel* AnimatedToy::model() const
+{
+    return m_model;
+}
