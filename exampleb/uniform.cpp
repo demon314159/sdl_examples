@@ -57,6 +57,6 @@ void Uniform::add(const char* name, int uniform_type, int items, void* data)
 {
     if (m_uniforms < m_max_uniforms) {
         m_uniform[m_uniforms] = {name, uniform_type, -1, items, data};
-        m_uniforms++;
+        ++m_uniforms;
     }
 }

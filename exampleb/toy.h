@@ -39,6 +39,7 @@ public:
     void button(int code, bool shifted, bool on) override;
     void advance(int nanoseconds) override;
     Uniform* uniform() override;
+    Texture* texture() override;
     CadModel* model() const override;
 
 

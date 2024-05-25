@@ -6,6 +6,7 @@
 #define _ANIMATED_TOY_H_
 
 #include "uniform.h"
+#include "texture.h"
 #include "cad_model.h"
 #include <SDL_scancode.h>
 
@@ -19,6 +20,7 @@ public:
     virtual void button(int code, bool shifted, bool on);
     virtual void advance(int nanoseconds);
     virtual Uniform* uniform();
+    virtual Texture* texture();
     virtual CadModel* model() const;
 
 
@@ -28,6 +30,7 @@ public:
 
 protected:
     Uniform* m_uniform;
+    Texture* m_texture;
     CadModel* m_model;
 };
 

@@ -7,6 +7,7 @@
 
 AnimatedToy::AnimatedToy()
     : m_uniform(new Uniform(1))
+    , m_texture(new Texture(1))
     , m_model(new CadModel(CubeShape(0.1, 0.1, 0.1), PaintCan(1.0, 0.0, 0.0), 0.0))
 {
 }
@@ -32,6 +33,11 @@ void AnimatedToy::advance(int nanoseconds)
 Uniform* AnimatedToy::uniform()
 {
     return m_uniform;
+}
+
+Texture* AnimatedToy::texture()
+{
+    return m_texture;
 }
 
 CadModel* AnimatedToy::model() const

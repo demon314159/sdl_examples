@@ -38,7 +38,6 @@ View::View(SDL_Window* window)
     , m_scoreboard_mvp_matrix_uniform(0)
     , m_scoreboard_rot_matrix_uniform(0)
     , m_animation_matrix_uniform(nullptr)
-    , m_lamp_uniform(0)
     , m_target_height_uniform(0)
     , m_score_uniform(0)
     , m_texture1_uniform(0)
@@ -166,55 +165,16 @@ bool View::add_shader_from_source_file(GLuint shader, const char* name)
 
 void View::generate_textures()
 {
-    glGenTextures(TOTAL_TEXTURES, m_texture);
-
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, m_texture[0]);
-    generate_texture("playfield.png");
-
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, m_texture[1]);
-    generate_texture("plastic1.png");
-
-    glActiveTexture(GL_TEXTURE2);
-    glBindTexture(GL_TEXTURE_2D, m_texture[2]);
-    generate_texture("plastic2.png");
-
-    glActiveTexture(GL_TEXTURE3);
-    glBindTexture(GL_TEXTURE_2D, m_texture[3]);
-    generate_texture("plastic3.png");
-
-    glActiveTexture(GL_TEXTURE4);
-    glBindTexture(GL_TEXTURE_2D, m_texture[4]);
-    generate_texture("plastic4.png");
-
-    glActiveTexture(GL_TEXTURE5);
-    glBindTexture(GL_TEXTURE_2D, m_texture[5]);
-    generate_texture("plastic5.png");
-
-    glActiveTexture(GL_TEXTURE6);
-    glBindTexture(GL_TEXTURE_2D, m_texture[6]);
-    generate_texture("plastic6.png");
-
-    glActiveTexture(GL_TEXTURE7);
-    glBindTexture(GL_TEXTURE_2D, m_texture[7]);
-    generate_texture("plastic7.png");
-
-    glActiveTexture(GL_TEXTURE8);
-    glBindTexture(GL_TEXTURE_2D, m_texture[8]);
-    generate_texture("plastic8.png");
-
-    glActiveTexture(GL_TEXTURE9);
-    glBindTexture(GL_TEXTURE_2D, m_texture[9]);
-    generate_texture("plastic9.png");
-
-    glActiveTexture(GL_TEXTURE10);
-    glBindTexture(GL_TEXTURE_2D, m_texture[10]);
-    generate_texture("score.png");
-
-    glActiveTexture(GL_TEXTURE11);
-    glBindTexture(GL_TEXTURE_2D, m_texture[11]);
-    generate_texture("backglass.png");
+    Texture* texture = m_toy->texture();
+    int total_textures = texture->textures();
+    GLuint* buf = new GLuint[total_textures];
+    glGenTextures(total_textures, buf);
+    for (int i = 0; i < total_textures; i++) {
+        glActiveTexture(GL_TEXTURE0 + i);
+        glBindTexture(GL_TEXTURE_2D, buf[i]);
+        generate_texture(texture->file_name(i));
+    }
+    delete [] buf;
 }
 
 void View::generate_texture(const char* fname)
@@ -333,6 +293,7 @@ void View::initialize()
 
     Uniform* u = m_toy->uniform();
     for (int i = 0; i < u->uniforms(); i++) {
+        printf("Uniform(%d)\n", i);
         GLint handle = glGetUniformLocation(m_program, u->name(i));
         if (handle == -1) {
             printf("'%s' is not a valid glsl variable\n", u->name(i));

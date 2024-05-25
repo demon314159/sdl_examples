@@ -79,7 +79,6 @@ private:
     GLint m_scoreboard_rot_matrix_uniform;
     GLint* m_animation_matrix_uniform;
 
-    GLint m_lamp_uniform;
     GLint m_target_height_uniform;
     GLint m_score_uniform;
     GLint m_texture1_uniform;

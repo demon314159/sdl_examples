@@ -11,6 +11,7 @@
 #include <stdio.h>
 
 #define MAX_UNIFORMS 100
+#define MAX_TEXTURES 20
 
 #define INITIAL_CREDITS 8
 #define MAX_BALLS 4
@@ -51,7 +52,19 @@ Toy::Toy()
     m_scoreboard = new Scoreboard({SCOREBOARD_POSITION_X, SCOREBOARD_POSITION_Y, SCOREBOARD_POSITION_Z}, {BACKGLASS_SIZE_X, BACKGLASS_SIZE_Z},
                                   {BACKGLASS_IMAGE_SIZE_X, BACKGLASS_IMAGE_SIZE_Z},
                                    m_table->trim(), m_table->trim_color(), TEXTURE_ID_BACKGLASS, TEXTURE_ID_SCORE);
-    m_texture = new Texture();
+    m_texture = new Texture(MAX_TEXTURES);
+    m_texture->add("playfield.png", "texture1");
+    m_texture->add("plastic1.png", "texture2");
+    m_texture->add("plastic2.png", "texture3");
+    m_texture->add("plastic3.png", "texture4");
+    m_texture->add("plastic4.png", "texture5");
+    m_texture->add("plastic5.png", "texture6");
+    m_texture->add("plastic6.png", "texture7");
+    m_texture->add("plastic7.png", "texture8");
+    m_texture->add("plastic8.png", "texture9");
+    m_texture->add("plastic9.png", "texture10");
+    m_texture->add("score.png", "texture11");
+    m_texture->add("backglass.png", "texture12");
 
     m_left_flipper = new Flipper(
         LEFT_FLIPPER_ANGLE, LEFT_FLIPPER_POSITION, BOTTOM_FLIPPER_LENGTH,
@@ -198,6 +211,11 @@ Uniform* Toy::uniform()
     return m_uniform;
 }
 
+Texture* Toy::texture()
+{
+    return m_texture;
+}
+
 int Toy::animation_matrices() const
 {
     return ANIMATION_MATRICES;
@@ -323,6 +341,9 @@ void Toy::build_model()
 void Toy::build_uniform()
 {
     m_uniform->add("lamp_color", UNIFORM_TYPE_3_FLOAT_VECTOR, m_lamp->lamps(), (void*) m_lamp->data());
+    for (int i = 0; i < m_texture->textures(); i++) {
+        m_uniform->add(m_texture->uniform_name(i), UNIFORM_TYPE_1_INTEGER_VECTOR, 1, m_texture->data(i));
+    }
 }
 
 Matrix4x4 Toy::get_animation_matrix(int i) const
