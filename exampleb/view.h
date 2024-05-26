@@ -79,8 +79,6 @@ private:
 
     GLint* m_animation_matrix_uniform;
 
-    GLint m_target_height_uniform;
-    GLint m_score_uniform;
 
 // these should be in toy /\ /\ /\
 //

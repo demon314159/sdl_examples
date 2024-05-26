@@ -208,8 +208,19 @@ Uniform* Toy::uniform()
     // Update all uniform data sources
     m_lamp->data();
     m_scoreboard->data();
+    m_target->data();
     // Return pointer to uniform object
     return m_uniform;
+}
+
+void Toy::build_uniform()
+{
+    m_uniform->add("lamp_color", UNIFORM_TYPE_3_FLOAT_VECTOR, m_lamp->lamps(), (void*) m_lamp->data());
+    for (int i = 0; i < m_texture->textures(); i++) {
+        m_uniform->add(m_texture->uniform_name(i), UNIFORM_TYPE_1_INTEGER_VECTOR, 1, m_texture->data(i));
+    }
+    m_uniform->add("score", UNIFORM_TYPE_1_FLOAT_VECTOR, m_scoreboard->digits(), m_scoreboard->data());
+    m_uniform->add("target_height", UNIFORM_TYPE_1_FLOAT_VECTOR, m_target->targets(), m_target->data());
 }
 
 Texture* Toy::texture()
@@ -334,18 +345,6 @@ void Toy::build_model()
     m_model->add(m_top_flipper->model(ANIMATION_ID_TOP_FLIPPER));
     m_model->add(m_scoreboard->model(ANIMATION_ID_SCORE11, ANIMATION_ID_SCOREBOARD));
     m_model->add(m_table->model());
-}
-
-//    void add(const char* name, int uniform_type, int items, void* data);
-
-
-void Toy::build_uniform()
-{
-    m_uniform->add("lamp_color", UNIFORM_TYPE_3_FLOAT_VECTOR, m_lamp->lamps(), (void*) m_lamp->data());
-    for (int i = 0; i < m_texture->textures(); i++) {
-        m_uniform->add(m_texture->uniform_name(i), UNIFORM_TYPE_1_INTEGER_VECTOR, 1, m_texture->data(i));
-    }
-    m_uniform->add("score", UNIFORM_TYPE_1_FLOAT_VECTOR, m_scoreboard->digits(), m_scoreboard->data());
 }
 
 Matrix4x4 Toy::get_animation_matrix(int i) const

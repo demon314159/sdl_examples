@@ -38,8 +38,6 @@ View::View(SDL_Window* window)
     , m_scoreboard_mvp_matrix_uniform(0)
     , m_scoreboard_rot_matrix_uniform(0)
     , m_animation_matrix_uniform(nullptr)
-    , m_target_height_uniform(0)
-    , m_score_uniform(0)
     , m_vao(0)
     , m_vbo(0)
     , m_frame(0)
@@ -296,19 +294,6 @@ void View::initialize()
         }
         u->set_handle(i, handle);
     }
-#ifdef NEVERMORE
-    m_target_height_uniform = glGetUniformLocation(m_program, "target_height");
-    if (m_target_height_uniform == -1) {
-        printf("target_height is not a valid glsl variable\n");
-        exit(0);
-    }
-    m_score_uniform = glGetUniformLocation(m_program, "score");
-    if (m_score_uniform == -1) {
-        printf("score_color is not a valid glsl variable\n");
-        exit(0);
-    }
-#endif
-
     generate_textures();
     int n = m_toy->animation_matrices();
     if (n > 0) {
@@ -501,9 +486,6 @@ void View::render()
     for (int i = 0; i < n; i++) {
         glUniformMatrix4fv(m_animation_matrix_uniform[i], 1, GL_TRUE, m_toy->get_animation_matrix(i).data());
     }
-    glUniform1fv(m_target_height_uniform, m_toy->get_target()->targets(), m_toy->get_target()->data());
-    glUniform1fv(m_score_uniform, m_toy->get_scoreboard()->digits(), m_toy->get_scoreboard()->data());
-
 #endif
 // zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
 
