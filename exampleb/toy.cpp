@@ -207,6 +207,7 @@ Uniform* Toy::uniform()
 {
     // Update all uniform data sources
     m_lamp->data();
+    m_scoreboard->data();
     // Return pointer to uniform object
     return m_uniform;
 }
@@ -344,6 +345,7 @@ void Toy::build_uniform()
     for (int i = 0; i < m_texture->textures(); i++) {
         m_uniform->add(m_texture->uniform_name(i), UNIFORM_TYPE_1_INTEGER_VECTOR, 1, m_texture->data(i));
     }
+    m_uniform->add("score", UNIFORM_TYPE_1_FLOAT_VECTOR, m_scoreboard->digits(), m_scoreboard->data());
 }
 
 Matrix4x4 Toy::get_animation_matrix(int i) const

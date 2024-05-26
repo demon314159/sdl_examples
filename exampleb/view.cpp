@@ -40,18 +40,6 @@ View::View(SDL_Window* window)
     , m_animation_matrix_uniform(nullptr)
     , m_target_height_uniform(0)
     , m_score_uniform(0)
-    , m_texture1_uniform(0)
-    , m_texture2_uniform(0)
-    , m_texture3_uniform(0)
-    , m_texture4_uniform(0)
-    , m_texture5_uniform(0)
-    , m_texture6_uniform(0)
-    , m_texture7_uniform(0)
-    , m_texture8_uniform(0)
-    , m_texture9_uniform(0)
-    , m_texture10_uniform(0)
-    , m_texture11_uniform(0)
-    , m_texture12_uniform(0)
     , m_vao(0)
     , m_vbo(0)
     , m_frame(0)
@@ -74,9 +62,6 @@ View::View(SDL_Window* window)
 #ifdef VERBOSE
     printf("View::View(doc)\n");
 #endif
-    for (int i = 0; i < TOTAL_TEXTURES; i++) {
-        m_texture[i] = 0;
-    }
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         printf("Video Initialization Error: %s\n", SDL_GetError());
         exit(0);
@@ -288,6 +273,16 @@ void View::initialize()
         printf("rot_matrix is not a valid glsl variable\n");
         exit(0);
     }
+    m_scoreboard_mvp_matrix_uniform = glGetUniformLocation(m_program, "scoreboard_mvp_matrix");
+    if (m_scoreboard_mvp_matrix_uniform == -1) {
+        printf("scoreboard_mvp_matrix is not a valid glsl variable\n");
+        exit(0);
+    }
+    m_scoreboard_rot_matrix_uniform = glGetUniformLocation(m_program, "scoreboard_rot_matrix");
+    if (m_scoreboard_rot_matrix_uniform == -1) {
+        printf("scoreboard_rot_matrix is not a valid glsl variable\n");
+        exit(0);
+    }
 
 // yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
 
@@ -302,21 +297,6 @@ void View::initialize()
         u->set_handle(i, handle);
     }
 #ifdef NEVERMORE
-    m_scoreboard_mvp_matrix_uniform = glGetUniformLocation(m_program, "scoreboard_mvp_matrix");
-    if (m_scoreboard_mvp_matrix_uniform == -1) {
-        printf("scoreboard_mvp_matrix is not a valid glsl variable\n");
-        exit(0);
-    }
-    m_scoreboard_rot_matrix_uniform = glGetUniformLocation(m_program, "scoreboard_rot_matrix");
-    if (m_scoreboard_rot_matrix_uniform == -1) {
-        printf("scoreboard_rot_matrix is not a valid glsl variable\n");
-        exit(0);
-    }
-    m_lamp_uniform = glGetUniformLocation(m_program, "lamp_color");
-    if (m_lamp_uniform == -1) {
-        printf("lamp_color is not a valid glsl variable\n");
-        exit(0);
-    }
     m_target_height_uniform = glGetUniformLocation(m_program, "target_height");
     if (m_target_height_uniform == -1) {
         printf("target_height is not a valid glsl variable\n");
@@ -325,66 +305,6 @@ void View::initialize()
     m_score_uniform = glGetUniformLocation(m_program, "score");
     if (m_score_uniform == -1) {
         printf("score_color is not a valid glsl variable\n");
-        exit(0);
-    }
-    m_texture1_uniform = glGetUniformLocation(m_program, "texture1");
-    if (m_texture1_uniform == -1) {
-        printf("texture1 is not a valid glsl variable\n");
-        exit(0);
-    }
-    m_texture2_uniform = glGetUniformLocation(m_program, "texture2");
-    if (m_texture2_uniform == -1) {
-        printf("texture2 is not a valid glsl variable\n");
-        exit(0);
-    }
-    m_texture3_uniform = glGetUniformLocation(m_program, "texture3");
-    if (m_texture3_uniform == -1) {
-        printf("texture3 is not a valid glsl variable\n");
-        exit(0);
-    }
-    m_texture4_uniform = glGetUniformLocation(m_program, "texture4");
-    if (m_texture4_uniform == -1) {
-        printf("texture4 is not a valid glsl variable\n");
-        exit(0);
-    }
-    m_texture5_uniform = glGetUniformLocation(m_program, "texture5");
-    if (m_texture5_uniform == -1) {
-        printf("texture5 is not a valid glsl variable\n");
-        exit(0);
-    }
-    m_texture6_uniform = glGetUniformLocation(m_program, "texture6");
-    if (m_texture6_uniform == -1) {
-        printf("texture6 is not a valid glsl variable\n");
-        exit(0);
-    }
-    m_texture7_uniform = glGetUniformLocation(m_program, "texture7");
-    if (m_texture7_uniform == -1) {
-        printf("texture7 is not a valid glsl variable\n");
-        exit(0);
-    }
-    m_texture8_uniform = glGetUniformLocation(m_program, "texture8");
-    if (m_texture8_uniform == -1) {
-        printf("texture8 is not a valid glsl variable\n");
-        exit(0);
-    }
-    m_texture9_uniform = glGetUniformLocation(m_program, "texture9");
-    if (m_texture9_uniform == -1) {
-        printf("texture9 is not a valid glsl variable\n");
-        exit(0);
-    }
-    m_texture10_uniform = glGetUniformLocation(m_program, "texture10");
-    if (m_texture10_uniform == -1) {
-        printf("texture10 is not a valid glsl variable\n");
-        exit(0);
-    }
-    m_texture11_uniform = glGetUniformLocation(m_program, "texture11");
-    if (m_texture11_uniform == -1) {
-        printf("texture11 is not a valid glsl variable\n");
-        exit(0);
-    }
-    m_texture12_uniform = glGetUniformLocation(m_program, "texture12");
-    if (m_texture12_uniform == -1) {
-        printf("texture12 is not a valid glsl variable\n");
         exit(0);
     }
 #endif
@@ -552,6 +472,8 @@ void View::render()
 
     glUniformMatrix4fv(m_mvp_matrix_uniform, 1, GL_TRUE, m_mvp_matrix.data());
     glUniformMatrix4fv(m_rot_matrix_uniform, 1, GL_TRUE, m_rot_matrix.data());
+    glUniformMatrix4fv(m_scoreboard_mvp_matrix_uniform, 1, GL_TRUE, m_scoreboard_mvp_matrix.data());
+    glUniformMatrix4fv(m_scoreboard_rot_matrix_uniform, 1, GL_TRUE, m_scoreboard_rot_matrix.data());
 
     // yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
 
@@ -575,28 +497,13 @@ void View::render()
         }
     }
 #ifdef NEVERMORE
-    glUniformMatrix4fv(m_scoreboard_mvp_matrix_uniform, 1, GL_TRUE, m_scoreboard_mvp_matrix.data());
-    glUniformMatrix4fv(m_scoreboard_rot_matrix_uniform, 1, GL_TRUE, m_scoreboard_rot_matrix.data());
     int n = m_toy->animation_matrices();
     for (int i = 0; i < n; i++) {
         glUniformMatrix4fv(m_animation_matrix_uniform[i], 1, GL_TRUE, m_toy->get_animation_matrix(i).data());
     }
-    glUniform3fv(m_lamp_uniform, m_toy->get_lamp()->lamps(), m_toy->get_lamp()->data());
     glUniform1fv(m_target_height_uniform, m_toy->get_target()->targets(), m_toy->get_target()->data());
     glUniform1fv(m_score_uniform, m_toy->get_scoreboard()->digits(), m_toy->get_scoreboard()->data());
 
-    glUniform1i(m_texture1_uniform, 0);
-    glUniform1i(m_texture2_uniform, 1);
-    glUniform1i(m_texture3_uniform, 2);
-    glUniform1i(m_texture4_uniform, 3);
-    glUniform1i(m_texture5_uniform, 4);
-    glUniform1i(m_texture6_uniform, 5);
-    glUniform1i(m_texture7_uniform, 6);
-    glUniform1i(m_texture8_uniform, 7);
-    glUniform1i(m_texture9_uniform, 8);
-    glUniform1i(m_texture10_uniform, 9);
-    glUniform1i(m_texture11_uniform, 10);
-    glUniform1i(m_texture12_uniform, 11);
 #endif
 // zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
 

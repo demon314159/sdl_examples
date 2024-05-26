@@ -72,27 +72,15 @@ private:
     GLint m_texture_id_attr;
     GLint m_mvp_matrix_uniform;
     GLint m_rot_matrix_uniform;
+    GLint m_scoreboard_mvp_matrix_uniform;
+    GLint m_scoreboard_rot_matrix_uniform;
 
 // these should be in toy \/ \/ \/
 
-    GLint m_scoreboard_mvp_matrix_uniform;
-    GLint m_scoreboard_rot_matrix_uniform;
     GLint* m_animation_matrix_uniform;
 
     GLint m_target_height_uniform;
     GLint m_score_uniform;
-    GLint m_texture1_uniform;
-    GLint m_texture2_uniform;
-    GLint m_texture3_uniform;
-    GLint m_texture4_uniform;
-    GLint m_texture5_uniform;
-    GLint m_texture6_uniform;
-    GLint m_texture7_uniform;
-    GLint m_texture8_uniform;
-    GLint m_texture9_uniform;
-    GLint m_texture10_uniform;
-    GLint m_texture11_uniform;
-    GLint m_texture12_uniform;
 
 // these should be in toy /\ /\ /\
 //
@@ -101,9 +89,6 @@ private:
 
 // this should be in toy
 // maybe a texture object
-    unsigned int m_texture[TOTAL_TEXTURES];
-
-
 
     int m_frame;
     int m_max_vertex_count;
