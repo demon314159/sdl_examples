@@ -27,6 +27,7 @@ Flipper::Flipper(float angle, Float3 position, float length, float major_radius,
     , m_no_hat(no_hat)
     , m_active_angle(0.0)
     , m_angular_velocity(0.0)
+    , m_animate()
     , m_reflector1(true, major_radius + rubber_thickness, minor_radius + rubber_thickness, length, reflectivity)
     , m_reflector2(false, major_radius + rubber_thickness, minor_radius + rubber_thickness, length, reflectivity)
     , m_reflector3(true, major_radius + rubber_thickness, minor_radius + rubber_thickness, length, reflectivity)
@@ -161,3 +162,11 @@ void Flipper::action_button(bool on)
     }
 }
 
+const float* Flipper::data()
+{
+    m_animate.unity();
+    m_animate.translate(m_position.v1, m_position.v2, m_position.v3);
+    m_animate.rotate_ay(active_angle());
+    m_animate.translate(-m_position.v1, -m_position.v2, -m_position.v3);
+    return m_animate.data();
+}

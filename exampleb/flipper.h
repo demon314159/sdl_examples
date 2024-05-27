@@ -32,6 +32,7 @@ public:
     void set_active_angle(float angle);
     void collide(Ball* ball) const;
     void action_button(bool on);
+    const float* data();
 
 private:
     bool m_action_button;
@@ -51,6 +52,7 @@ private:
     bool m_no_hat;
     float m_active_angle;
     float m_angular_velocity;
+    Matrix4x4 m_animate;
     ConvexReflector m_reflector1;
     ConvexReflector m_reflector2;
     StraightReflector m_reflector3;

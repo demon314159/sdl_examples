@@ -42,11 +42,6 @@ public:
     Texture* texture() override;
     CadModel* model() const override;
 
-
-    int animation_matrices() const;
-    Matrix4x4 get_animation_matrix(int i) const;
-
-
 private:
     float m_seconds;
     int m_player;

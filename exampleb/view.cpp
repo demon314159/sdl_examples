@@ -37,7 +37,6 @@ View::View(SDL_Window* window)
     , m_rot_matrix_uniform(0)
     , m_scoreboard_mvp_matrix_uniform(0)
     , m_scoreboard_rot_matrix_uniform(0)
-    , m_animation_matrix_uniform(nullptr)
     , m_vao(0)
     , m_vbo(0)
     , m_frame(0)
@@ -101,9 +100,6 @@ View::~View()
     printf("View::~View()\n");
 #endif
     delete m_toy;
-    if (m_animation_matrix_uniform != nullptr) {
-        delete m_animation_matrix_uniform;
-    }
     SDL_DestroyRenderer(m_renderer);
     SDL_GL_DeleteContext(m_context);
     SDL_Quit();
@@ -281,12 +277,8 @@ void View::initialize()
         printf("scoreboard_rot_matrix is not a valid glsl variable\n");
         exit(0);
     }
-
-// yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
-
     Uniform* u = m_toy->uniform();
     for (int i = 0; i < u->uniforms(); i++) {
-        printf("Uniform(%d)\n", i);
         GLint handle = glGetUniformLocation(m_program, u->name(i));
         if (handle == -1) {
             printf("'%s' is not a valid glsl variable\n", u->name(i));
@@ -295,27 +287,6 @@ void View::initialize()
         u->set_handle(i, handle);
     }
     generate_textures();
-
-
-#ifdef NEVERMORE
-    int n = m_toy->animation_matrices();
-    if (n > 0) {
-        m_animation_matrix_uniform = new GLint[n];
-        for (int i = 0; i < n; i++) {
-            char id[256];
-            sprintf(id, "animation_%d_matrix", i);
-            m_animation_matrix_uniform[i] = glGetUniformLocation(m_program, id);
-            if (m_animation_matrix_uniform[i] == -1) {
-                printf("'%s' is not a valid glsl variable\n", id);
-                exit(0);
-            }
-        }
-    }
-#endif
-// zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
-
-
-
     glGenVertexArrays(1, &m_vao);
     glBindVertexArray(m_vao);
     glGenBuffers(1, &m_vbo);

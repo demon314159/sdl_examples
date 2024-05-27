@@ -209,6 +209,9 @@ Uniform* Toy::uniform()
     m_lamp->data();
     m_scoreboard->data();
     m_target->data();
+    m_left_flipper->data();
+    m_right_flipper->data();
+    m_top_flipper->data();
     m_ball->data();
     // Return pointer to uniform object
     return m_uniform;
@@ -222,17 +225,15 @@ void Toy::build_uniform()
     }
     m_uniform->add("score", UNIFORM_TYPE_1_FLOAT_VECTOR, m_scoreboard->digits(), m_scoreboard->data());
     m_uniform->add("target_height", UNIFORM_TYPE_1_FLOAT_VECTOR, m_target->targets(), m_target->data());
+    m_uniform->add("animation_0_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_left_flipper->data());
+    m_uniform->add("animation_1_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_right_flipper->data());
+    m_uniform->add("animation_2_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_top_flipper->data());
     m_uniform->add("animation_3_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_ball->data());
 }
 
 Texture* Toy::texture()
 {
     return m_texture;
-}
-
-int Toy::animation_matrices() const
-{
-    return ANIMATION_MATRICES;
 }
 
 void Toy::eject_from_out_hole()
@@ -347,29 +348,6 @@ void Toy::build_model()
     m_model->add(m_top_flipper->model(ANIMATION_ID_TOP_FLIPPER));
     m_model->add(m_scoreboard->model(ANIMATION_ID_SCORE11, ANIMATION_ID_SCOREBOARD));
     m_model->add(m_table->model());
-}
-
-Matrix4x4 Toy::get_animation_matrix(int i) const
-{
-    Matrix4x4 mm;
-
-    mm.unity();
-    if (i == 0) {
-        mm.translate(m_left_flipper->position().v1, m_left_flipper->position().v2, m_left_flipper->position().v3);
-        mm.rotate_ay(m_left_flipper->active_angle());
-        mm.translate(-m_left_flipper->position().v1, -m_left_flipper->position().v2, -m_left_flipper->position().v3);
-    } else if (i == 1) {
-        mm.translate(m_right_flipper->position().v1, m_right_flipper->position().v2, m_right_flipper->position().v3);
-        mm.rotate_ay(m_right_flipper->active_angle());
-        mm.translate(-m_right_flipper->position().v1, -m_right_flipper->position().v2, -m_right_flipper->position().v3);
-    } else if (i == 2) {
-        mm.translate(m_top_flipper->position().v1, m_top_flipper->position().v2, m_top_flipper->position().v3);
-        mm.rotate_ay(m_top_flipper->active_angle());
-        mm.translate(-m_top_flipper->position().v1, -m_top_flipper->position().v2, -m_top_flipper->position().v3);
-    } else if (i == 3) {
-//        mm = m_ball->animation_matrix();
-    }
-    return mm;
 }
 
 void Toy::button(int code, bool shifted, bool on)
