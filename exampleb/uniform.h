@@ -15,7 +15,7 @@ struct UniformRec {
     int uniform_type;
     int handle;
     int items;
-    void* data;
+    const void* data;
 };
 
 
@@ -31,9 +31,9 @@ public:
     int uniform_type(int ix) const;
     int handle(int ix) const;
     int items(int ix) const;
-    void* data(int ix) const;
+    const void* data(int ix) const;
 
-    void add(const char* name, int uniform_type, int items, void* data);
+    void add(const char* name, int uniform_type, int items, const void* data);
 
 private:
     int m_max_uniforms;

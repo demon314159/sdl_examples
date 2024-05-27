@@ -17,6 +17,7 @@ Ball::Ball(float radius, const PaintCan& top_color, const PaintCan& middle_color
     , m_state()
     , m_last_state()
     , m_orientation()
+    , m_animation()
 {
 }
 
@@ -97,15 +98,14 @@ void Ball::translate_frame(Float2 distance)
     m_state.translate_frame(distance);
 }
 
-Matrix4x4 Ball::animation_matrix() const
+const float* Ball::data()
 {
-    Matrix4x4 mm;
-    mm.unity();
-    mm.translate(m_state.position().v1, m_radius, m_state.position().v2);
+    m_animation.unity();
+    m_animation.translate(m_state.position().v1, m_radius, m_state.position().v2);
 
     // Multipy mm times the rotation matrix
-    mm = mm * m_orientation.rotation_matrix();
-    return mm;
+    m_animation = m_animation * m_orientation.rotation_matrix();
+    return m_animation.data();
 }
 
 State Ball::rates(const State& state) const

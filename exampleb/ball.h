@@ -31,8 +31,9 @@ public:
     void rotate_frame(float angle);
     void translate_velocity_frame(Float2 velocity);
     void translate_frame(Float2 distance);
-    Matrix4x4 animation_matrix() const;
     bool quick_test(const Perimeter& perimeter) const;
+
+    const float* data();
 
 private:
     float m_radius;
@@ -44,6 +45,7 @@ private:
     State m_state;
     State m_last_state;
     Quaternion m_orientation;
+    Matrix4x4 m_animation;
 
     State rates(const State& state) const;
     State next_state(double dt) const;

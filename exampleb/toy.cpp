@@ -209,6 +209,7 @@ Uniform* Toy::uniform()
     m_lamp->data();
     m_scoreboard->data();
     m_target->data();
+    m_ball->data();
     // Return pointer to uniform object
     return m_uniform;
 }
@@ -221,6 +222,7 @@ void Toy::build_uniform()
     }
     m_uniform->add("score", UNIFORM_TYPE_1_FLOAT_VECTOR, m_scoreboard->digits(), m_scoreboard->data());
     m_uniform->add("target_height", UNIFORM_TYPE_1_FLOAT_VECTOR, m_target->targets(), m_target->data());
+    m_uniform->add("animation_3_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_ball->data());
 }
 
 Texture* Toy::texture()
@@ -365,7 +367,7 @@ Matrix4x4 Toy::get_animation_matrix(int i) const
         mm.rotate_ay(m_top_flipper->active_angle());
         mm.translate(-m_top_flipper->position().v1, -m_top_flipper->position().v2, -m_top_flipper->position().v3);
     } else if (i == 3) {
-        mm = m_ball->animation_matrix();
+//        mm = m_ball->animation_matrix();
     }
     return mm;
 }

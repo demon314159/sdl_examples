@@ -48,12 +48,12 @@ int Uniform::items(int ix) const
     return m_uniform[ix].items;
 }
 
-void* Uniform::data(int ix) const
+const void* Uniform::data(int ix) const
 {
     return m_uniform[ix].data;
 }
 
-void Uniform::add(const char* name, int uniform_type, int items, void* data)
+void Uniform::add(const char* name, int uniform_type, int items, const void* data)
 {
     if (m_uniforms < m_max_uniforms) {
         m_uniform[m_uniforms] = {name, uniform_type, -1, items, data};

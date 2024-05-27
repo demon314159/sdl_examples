@@ -295,6 +295,9 @@ void View::initialize()
         u->set_handle(i, handle);
     }
     generate_textures();
+
+
+#ifdef NEVERMORE
     int n = m_toy->animation_matrices();
     if (n > 0) {
         m_animation_matrix_uniform = new GLint[n];
@@ -308,7 +311,7 @@ void View::initialize()
             }
         }
     }
-
+#endif
 // zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
 
 
