@@ -98,6 +98,7 @@ HEADERS = view.h \
           game.h \
           texture.h \
           uniform.h \
+          camera.h \
           \
           \
           \
@@ -195,6 +196,7 @@ OBJECTS = main.obj \
           game.obj \
           texture.obj \
           uniform.obj \
+          camera.obj \
           \
           \
           \

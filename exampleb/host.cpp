@@ -3,6 +3,7 @@
 //
 
 #include "host.h"
+#include "camera.h"
 
 Host::Host(SDL_Window* window)
     : m_view(window)
@@ -53,45 +54,45 @@ void Host::key_press_event(SDL_Event* e)
     bool shifted = (e->key.keysym.mod & KMOD_SHIFT) ? true : false;
     if (a == SDL_SCANCODE_UP) {
         if (shifted) {
-            m_view.translate_y(-m_view.height() / 20);
+            m_view.camera()->translate_y(-m_view.camera()->height() / 20);
         } else {
-            m_view.rotate_ax(-10.0);
+            m_view.camera()->rotate_ax(-10.0);
         }
     } else if (a == SDL_SCANCODE_DOWN) {
         if (shifted) {
-            m_view.translate_y(m_view.height() / 20);
+            m_view.camera()->translate_y(m_view.camera()->height() / 20);
         } else {
-            m_view.rotate_ax(10.0);
+            m_view.camera()->rotate_ax(10.0);
         }
     } else if (a == SDL_SCANCODE_LEFT) {
         if (shifted) {
-            m_view.translate_x(-m_view.width() / 20);
+            m_view.camera()->translate_x(-m_view.camera()->width() / 20);
         } else {
-            m_view.rotate_ay(-10.0);
+            m_view.camera()->rotate_ay(-10.0);
         }
     } else if (a == SDL_SCANCODE_RIGHT) {
         if (shifted) {
-            m_view.translate_x(m_view.width() / 20);
+            m_view.camera()->translate_x(m_view.camera()->width() / 20);
         } else {
-            m_view.rotate_ay(10.0);
+            m_view.camera()->rotate_ay(10.0);
         }
     } else if (a == SDL_SCANCODE_I) {
         if (shifted) {
-            m_view.zoom(10.0 / 9.0);
+            m_view.camera()->zoom(10.0 / 9.0);
         } else {
-            m_view.zoom(3.0 / 2.0);
+            m_view.camera()->zoom(3.0 / 2.0);
         }
     } else if (a == SDL_SCANCODE_O) {
         if (shifted) {
-            m_view.zoom(9.0 / 10.0);
+            m_view.camera()->zoom(9.0 / 10.0);
         } else {
-            m_view.zoom(2.0 / 3.0);
+            m_view.camera()->zoom(2.0 / 3.0);
         }
     } else if (a == SDL_SCANCODE_H) {
-        m_view.zoom_home();
+        m_view.camera()->zoom_home();
         if (shifted) {
-            m_view.rotate_home();
-            m_view.translate_home();
+            m_view.camera()->rotate_home();
+            m_view.camera()->translate_home();
         }
         m_navigate.stop();
     } else if (a == SDL_SCANCODE_Q) {
@@ -111,9 +112,9 @@ void Host::key_release_event(SDL_Event* e)
 void Host::mouse_press_event(SDL_Event* e)
 {
     if (e->button.button == SDL_BUTTON_MIDDLE) {
-        m_view.zoom_home();
-        m_view.rotate_home();
-        m_view.translate_home();
+        m_view.camera()->zoom_home();
+        m_view.camera()->rotate_home();
+        m_view.camera()->translate_home();
         m_navigate.stop();
     } else if (e->button.button == SDL_BUTTON_LEFT) {
         m_navigate.start_rotate(e->button.x, e->button.y);
@@ -127,14 +128,14 @@ void Host::mouse_navigate(int mx, int my)
     if (m_navigate.is_rotate()) {
         float degx, degy;
         if (m_navigate.rotate_threshold_exceeded(mx, my, degx, degy)) {
-            m_view.rotate_ay(degx);
-            m_view.rotate_ax(degy);
+            m_view.camera()->rotate_ay(degx);
+            m_view.camera()->rotate_ax(degy);
         }
     } else if (m_navigate.is_translate()) {
         int dx, dy;
         if (m_navigate.translate_threshold_exceeded(mx, my, dx, dy)) {
-            m_view.translate_x(dx);
-            m_view.translate_y(dy);
+            m_view.camera()->translate_x(dx);
+            m_view.camera()->translate_y(dy);
         }
     }
 }
@@ -162,10 +163,10 @@ void Host::mouse_wheel_event(SDL_Event *e)
 {
     int angle = e->wheel.y;
     if (angle > 0) {
-        m_view.zoom(3.0 / 2.0);
+        m_view.camera()->zoom(3.0 / 2.0);
     }
     if (angle < 0) {
-        m_view.zoom(2.0 / 3.0);
+        m_view.camera()->zoom(2.0 / 3.0);
     }
 }
 

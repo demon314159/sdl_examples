@@ -17,42 +17,19 @@
 #include "cad_model.h"
 #include "uniform.h"
 
-#define INITIAL_HEIGHT 512
-#define INITIAL_WIDTH ((INITIAL_HEIGHT * 1920) / 1080)
-
-#define INITIAL_XROT 50.0
-#define INITIAL_YROT 10.0
-#define INITIAL_MAG  2.625
-#define INITIAL_XOFF  0.055
-#define INITIAL_YOFF  0.065
-
-#define TOTAL_TEXTURES  12
-
 class View
 {
 public:
     View(SDL_Window* window);
     virtual ~View();
+    void button(int code, bool shifted, bool on);
     void initialize();
     void resize(int w, int h);
     void render();
-    void rotate_ax(float degrees);
-    void rotate_ay(float degrees);
-    void rotate_home();
-    void zoom(float factor);
-    void zoom_home();
-    void translate_x(int x);
-    void translate_y(int y);
-    void translate_home();
-    void set_mag(float mag);
-    int width() const;
-    int height() const;
-
-    void button(int code, bool shifted, bool on);
+    Camera* camera();
 
 protected:
     bool init_shaders();
-    void resize_calc();
     void position_camera();
     void check_storage();
     void copy_vertices();
@@ -72,31 +49,13 @@ private:
     GLint m_texture_id_attr;
     GLint m_mvp_matrix_uniform;
     GLint m_rot_matrix_uniform;
-    GLint m_scoreboard_mvp_matrix_uniform;
-    GLint m_scoreboard_rot_matrix_uniform;
     unsigned int m_vao;
     unsigned int m_vbo;
     int m_frame;
     int m_max_vertex_count;
     int m_vertex_count;
     Toy* m_toy;
-    float m_radius;
-    Float3 m_center;
-    int m_width;
-    int m_height;
-    float m_aspect;
-    float m_mag;
-    float m_fov;
-    float m_camz;
-    float m_xrot;
-    float m_yrot;
-    float m_xoff;
-    float m_yoff;
-    Matrix4x4 m_mvp_matrix;
-    Matrix4x4 m_rot_matrix;
-    Matrix4x4 m_scoreboard_mvp_matrix;
-    Matrix4x4 m_scoreboard_rot_matrix;
-    Matrix4x4 m_projection;
+
     std::chrono::high_resolution_clock::time_point m_last_time_point;
 
     bool add_shader_from_source_file(GLuint shader, const char* name);

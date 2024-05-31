@@ -30,7 +30,6 @@ Toy::Toy()
     , m_sensor(NULL)
     , m_sound(NULL)
     , m_scoreboard(NULL)
-    , m_texture(NULL)
     , m_score(NULL)
     , m_queue(NULL)
     , m_game(NULL)
@@ -40,7 +39,6 @@ Toy::Toy()
     , m_right_flipper(NULL)
     , m_top_flipper(NULL)
     , m_model(NULL)
-    , m_uniform(NULL)
     , m_last_launch_action_button(false)
 {
     m_ball = new Ball(BALL_RADIUS, BALL_TOP_COLOR, BALL_MIDDLE_COLOR, BALL_BOTTOM_COLOR, BALL_SEGMENTS);
@@ -52,19 +50,19 @@ Toy::Toy()
     m_scoreboard = new Scoreboard({SCOREBOARD_POSITION_X, SCOREBOARD_POSITION_Y, SCOREBOARD_POSITION_Z}, {BACKGLASS_SIZE_X, BACKGLASS_SIZE_Z},
                                   {BACKGLASS_IMAGE_SIZE_X, BACKGLASS_IMAGE_SIZE_Z},
                                    m_table->trim(), m_table->trim_color(), TEXTURE_ID_BACKGLASS, TEXTURE_ID_SCORE);
-    m_texture = new Texture(MAX_TEXTURES);
-    m_texture->add("playfield.png", "texture1");
-    m_texture->add("plastic1.png", "texture2");
-    m_texture->add("plastic2.png", "texture3");
-    m_texture->add("plastic3.png", "texture4");
-    m_texture->add("plastic4.png", "texture5");
-    m_texture->add("plastic5.png", "texture6");
-    m_texture->add("plastic6.png", "texture7");
-    m_texture->add("plastic7.png", "texture8");
-    m_texture->add("plastic8.png", "texture9");
-    m_texture->add("plastic9.png", "texture10");
-    m_texture->add("score.png", "texture11");
-    m_texture->add("backglass.png", "texture12");
+    Texture* t = texture();
+    t->add("playfield.png", "texture1");
+    t->add("plastic1.png", "texture2");
+    t->add("plastic2.png", "texture3");
+    t->add("plastic3.png", "texture4");
+    t->add("plastic4.png", "texture5");
+    t->add("plastic5.png", "texture6");
+    t->add("plastic6.png", "texture7");
+    t->add("plastic7.png", "texture8");
+    t->add("plastic8.png", "texture9");
+    t->add("plastic9.png", "texture10");
+    t->add("score.png", "texture11");
+    t->add("backglass.png", "texture12");
 
     m_left_flipper = new Flipper(
         LEFT_FLIPPER_ANGLE, LEFT_FLIPPER_POSITION, BOTTOM_FLIPPER_LENGTH,
@@ -157,6 +155,7 @@ Toy::Toy()
     m_target->add(new DropTarget(lg.position(2), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS, TEXTURE_ID_DROP_TARGET, 4, SENSOR_ID_DROP_A3));
     m_target->add(new DropTarget(lg.position(1), lg.angle(), DROP_TARGET_WIDTH, DROP_TARGET_HEIGHT, DROP_TARGET_THICKNESS, DROP_TARGET_COLOR, DROP_TARGET_REFLECTIVITY, DROP_TARGET_SEGMENTS, TEXTURE_ID_DROP_TARGET, 9, SENSOR_ID_DROP_A4));
 
+
     build_model();
     build_uniform();
     m_queue = new Queue();
@@ -184,13 +183,11 @@ Toy::~Toy()
     delete m_game;
     delete m_execute;
     delete m_scoreboard;
-    delete m_texture;
     delete m_table;
     delete m_left_flipper;
     delete m_right_flipper;
     delete m_top_flipper;
     delete m_model;
-    delete m_uniform;
 }
 
 void Toy::initialize()
@@ -203,7 +200,7 @@ CadModel* Toy::model() const
     return m_model;
 }
 
-Uniform* Toy::uniform()
+void Toy::update_uniform()
 {
     // Update all uniform data sources
     m_lamp->data();
@@ -213,27 +210,22 @@ Uniform* Toy::uniform()
     m_right_flipper->data();
     m_top_flipper->data();
     m_ball->data();
-    // Return pointer to uniform object
-    return m_uniform;
 }
 
 void Toy::build_uniform()
 {
-    m_uniform->add("lamp_color", UNIFORM_TYPE_3_FLOAT_VECTOR, m_lamp->lamps(), (void*) m_lamp->data());
-    for (int i = 0; i < m_texture->textures(); i++) {
-        m_uniform->add(m_texture->uniform_name(i), UNIFORM_TYPE_1_INTEGER_VECTOR, 1, m_texture->data(i));
-    }
-    m_uniform->add("score", UNIFORM_TYPE_1_FLOAT_VECTOR, m_scoreboard->digits(), m_scoreboard->data());
-    m_uniform->add("target_height", UNIFORM_TYPE_1_FLOAT_VECTOR, m_target->targets(), m_target->data());
-    m_uniform->add("animation_0_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_left_flipper->data());
-    m_uniform->add("animation_1_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_right_flipper->data());
-    m_uniform->add("animation_2_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_top_flipper->data());
-    m_uniform->add("animation_3_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_ball->data());
-}
+    Uniform* u = uniform();
 
-Texture* Toy::texture()
-{
-    return m_texture;
+    u->add("lamp_color", UNIFORM_TYPE_3_FLOAT_VECTOR, m_lamp->lamps(), (void*) m_lamp->data());
+    for (int i = 0; i < m_texture->textures(); i++) {
+        u->add(m_texture->uniform_name(i), UNIFORM_TYPE_1_INTEGER_VECTOR, 1, m_texture->data(i));
+    }
+    u->add("score", UNIFORM_TYPE_1_FLOAT_VECTOR, m_scoreboard->digits(), m_scoreboard->data());
+    u->add("target_height", UNIFORM_TYPE_1_FLOAT_VECTOR, m_target->targets(), m_target->data());
+    u->add("animation_0_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_left_flipper->data());
+    u->add("animation_1_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_right_flipper->data());
+    u->add("animation_2_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_top_flipper->data());
+    u->add("animation_3_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_ball->data());
 }
 
 void Toy::eject_from_out_hole()
@@ -336,6 +328,7 @@ void Toy::advance(int nanoseconds)
         int solenoid_id = m_execute->advance(seconds);
         activate_solenoid(solenoid_id);
     }
+    update_uniform();
 }
 
 void Toy::build_model()
@@ -378,4 +371,5 @@ void Toy::button(int code, bool shifted, bool on)
             break;
     }
 }
+
 

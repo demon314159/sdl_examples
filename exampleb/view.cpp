@@ -33,28 +33,12 @@ View::View(SDL_Window* window)
     , m_texture_position_attr(0)
     , m_animation_id_attr(0)
     , m_texture_id_attr(0)
-    , m_mvp_matrix_uniform(0)
-    , m_rot_matrix_uniform(0)
-    , m_scoreboard_mvp_matrix_uniform(0)
-    , m_scoreboard_rot_matrix_uniform(0)
     , m_vao(0)
     , m_vbo(0)
     , m_frame(0)
     , m_max_vertex_count(1024 * 1024)
     , m_vertex_count(0)
     , m_toy(new Toy())
-    , m_radius(2.0)
-    , m_center({0.0, 0.0, 0.0})
-    , m_width(INITIAL_WIDTH)
-    , m_height(INITIAL_HEIGHT)
-    , m_aspect(1.0)
-    , m_mag(INITIAL_MAG)
-    , m_fov(45.0)
-    , m_camz(8.0)
-    , m_xrot(INITIAL_XROT)
-    , m_yrot(INITIAL_YROT)
-    , m_xoff(INITIAL_XOFF)
-    , m_yoff(INITIAL_YOFF)
 {
 #ifdef VERBOSE
     printf("View::View(doc)\n");
@@ -84,14 +68,12 @@ View::View(SDL_Window* window)
 void View::position_camera()
 {
     BoundingBox bb = m_toy->model()->bounding_box();
-    m_radius = fmax(fabs(bb.vmax.v1 - bb.vmin.v1) / 2.0, fabs(bb.vmax.v3 - bb.vmin.v3) / 2.0);
-    m_radius = fmax(m_radius, (bb.vmax.v2 - bb.vmin.v2) / (2.0));
-    m_radius = fmax(m_radius, 0.1);
-    m_radius *= sqrt(2.0);
-    m_center.v1 = (bb.vmin.v1 + bb.vmax.v1) / 2.0;
-    m_center.v2 = (bb.vmin.v2 + bb.vmax.v2) / 2.0;
-    m_center.v3 = (bb.vmin.v3 + bb.vmax.v3) / 2.0;
-//    printf("m_radius = %5.2f, center = (%5.2f, %5.2f, %5.2f)\n", m_radius, m_center.v1, m_center.v2, m_center.v3);
+    float radius = fmax(fabs(bb.vmax.v1 - bb.vmin.v1) / 2.0, fabs(bb.vmax.v3 - bb.vmin.v3) / 2.0);
+    radius = fmax(radius, (bb.vmax.v2 - bb.vmin.v2) / (2.0));
+    radius = fmax(radius, 0.1);
+    radius *= sqrt(2.0);
+    Float3 center = {(bb.vmin.v1 + bb.vmax.v1) / 2.0f, (bb.vmin.v2 + bb.vmax.v2) / 2.0f, (bb.vmin.v3 + bb.vmax.v3) / 2.0f};
+    m_toy->camera()->set_target_position(radius, center);
 }
 
 View::~View()
@@ -167,17 +149,19 @@ void View::generate_texture(const char* fname)
     width = 0;
     height = 0;
     channels = 0;
-
     unsigned char *data = stbi_load(fname, &width, &height, &channels, 0);
-//    printf("Image loaded width %d, height %d, channels %d\n", width, height, channels);
     if (data) {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
         stbi_image_free(data);
-//        printf("texture width %d, height %d, channels %d\n", width, height, channels);
     } else {
         printf("failed to load texture\n");
     }
+}
+
+Camera* View::camera()
+{
+    return m_toy->camera();
 }
 
 void View::initialize()
@@ -255,8 +239,8 @@ void View::initialize()
         exit(0);
     }
 
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
+#ifdef NEVERMORE
     m_mvp_matrix_uniform = glGetUniformLocation(m_program, "mvp_matrix");
     if (m_mvp_matrix_uniform == -1) {
         printf("mvp_matrix is not a valid glsl variable\n");
@@ -277,6 +261,9 @@ void View::initialize()
         printf("scoreboard_rot_matrix is not a valid glsl variable\n");
         exit(0);
     }
+#endif
+
+
     Uniform* u = m_toy->uniform();
     for (int i = 0; i < u->uniforms(); i++) {
         GLint handle = glGetUniformLocation(m_program, u->name(i));
@@ -348,26 +335,8 @@ void View::sub_copy_facets(CadModel* model, VertexData* vertices, int& vix)
 
 void View::resize(int w, int h)
 {
-#ifdef VERBOSE
-    printf("View::resize(%d, %d)\n", w, h);
-#endif
-    m_width = w;
-    m_height = h;
-    m_aspect = float(m_width) / float(m_height ? m_height : 1.0);
-
-    glViewport(0, 0, m_width, m_height);
-    resize_calc();
-}
-
-void View::resize_calc()
-{
-    float q = tan(m_fov * (PI / 180.0) / 2.0);
-    m_camz = m_radius / q;
-    m_camz -= m_radius;
-    float znear = 0.1;
-    float zfar = m_camz + 2.0 * m_radius;
-    m_projection.perspective(m_fov / m_mag, m_aspect, znear, zfar);
-//    printf("m_fov = %5.3f, m_mag = %5.3f, m_aspect = %5.2f, znear = %5.2f, zfar = %5.2f\n", m_fov, m_mag, m_aspect, znear, zfar);
+    glViewport(0, 0, w, h);
+    m_toy->camera()->resize(w, h);
 }
 
 void View::check_storage()
@@ -380,13 +349,12 @@ void View::check_storage()
 
 void View::render()
 {
-#ifdef VERBOSE
-    printf("View::render()\n");
-#endif
     std::chrono::high_resolution_clock::time_point this_time_point = std::chrono::high_resolution_clock::now();
     unsigned long real_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(this_time_point - m_last_time_point).count();
     m_last_time_point = this_time_point;
     m_toy->advance(real_ns);
+
+#ifdef NEVERMORE
     Matrix4x4 matrix;
     matrix.unity();
     matrix.translate(m_xoff, m_yoff, -m_camz - m_radius);
@@ -401,6 +369,7 @@ void View::render()
     matrix.translate(-m_center.v1, -m_center.v2, -m_center.v3);
     m_scoreboard_mvp_matrix = m_projection * matrix;
     m_scoreboard_rot_matrix = matrix;
+#endif
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glUseProgram(m_program);
@@ -425,17 +394,6 @@ void View::render()
     offset += sizeof(float);
     glVertexAttribPointer(m_texture_id_attr, 1, GL_FLOAT, GL_FALSE, stride, (void*) offset);
 
-
-    //xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
-
-    glUniformMatrix4fv(m_mvp_matrix_uniform, 1, GL_TRUE, m_mvp_matrix.data());
-    glUniformMatrix4fv(m_rot_matrix_uniform, 1, GL_TRUE, m_rot_matrix.data());
-    glUniformMatrix4fv(m_scoreboard_mvp_matrix_uniform, 1, GL_TRUE, m_scoreboard_mvp_matrix.data());
-    glUniformMatrix4fv(m_scoreboard_rot_matrix_uniform, 1, GL_TRUE, m_scoreboard_rot_matrix.data());
-
-    // yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
-
     Uniform* u = m_toy->uniform();
     for (int i = 0; i < u->uniforms(); i++) {
         switch (u->uniform_type(i)) {
@@ -455,14 +413,6 @@ void View::render()
                 break;
         }
     }
-#ifdef NEVERMORE
-    int n = m_toy->animation_matrices();
-    for (int i = 0; i < n; i++) {
-        glUniformMatrix4fv(m_animation_matrix_uniform[i], 1, GL_TRUE, m_toy->get_animation_matrix(i).data());
-    }
-#endif
-// zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz
-
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glDrawArrays(GL_TRIANGLES, 0, m_vertex_count);
     glDisableVertexAttribArray(m_texture_id_attr);
@@ -475,82 +425,6 @@ void View::render()
     SDL_GL_SwapWindow(m_window);
     glFinish();
     ++m_frame;
-}
-
-void View::translate_x(int x)
-{
-    float q = tan(m_fov * (PI / 180.0) / (2.0 * m_mag));
-    float wx = m_aspect * (m_camz + m_radius) * q;
-    float ratio = (float) x / fmax(1.0, (float) m_width);
-    float dx = wx * ratio;
-    m_xoff += (dx);
-}
-
-void View::translate_y(int y)
-{
-    float q = tan(m_fov * (PI / 180.0) / (2.0 * m_mag));
-    float wy = (m_camz + m_radius) * q;
-    float ratio = (float) y / fmax(1.0, (float) m_height);
-    float dy = wy * ratio;
-    m_yoff -= (dy);
-}
-
-void View::translate_home()
-{
-    m_xoff = INITIAL_XOFF;
-    m_yoff = INITIAL_YOFF;
-}
-
-void View::rotate_ax(float degrees)
-{
-#ifdef VERBOSE
-    printf("View::rotate_ax(%f)\n", degrees);
-#endif
-    m_xrot += degrees;
-}
-
-void View::rotate_ay(float degrees)
-{
-#ifdef VERBOSE
-    printf("View::rotate_ay(%f)\n", degrees);
-#endif
-    m_yrot += degrees;
-}
-
-void View::rotate_home()
-{
-#ifdef VERBOSE
-    printf("View::rotate_home()\n");
-#endif
-    m_xrot = INITIAL_XROT;
-    m_yrot = INITIAL_YROT;
-}
-
-void View::zoom(float factor)
-{
-    set_mag(m_mag * factor);
-}
-
-void View::zoom_home()
-{
-    set_mag(INITIAL_MAG);
-}
-
-void View::set_mag(float mag)
-{
-    m_mag = fmax(1.0, mag);
-    m_mag = fmin(10.0, m_mag);
-    resize_calc();
-}
-
-int View::width() const
-{
-    return m_width;
-}
-
-int View::height() const
-{
-    return m_height;
 }
 
 void View::print_program_log(GLuint program)

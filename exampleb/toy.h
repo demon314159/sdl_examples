@@ -22,24 +22,15 @@
 #include "game.h"
 #include "texture.h"
 
-
 class Toy: public AnimatedToy
 {
 public:
-    #define ANIMATION_0_ID 2.0
-    #define ANIMATION_1_ID 3.0
-    #define ANIMATION_2_ID 4.0
-    #define ANIMATION_3_ID 5.0
-
-
     Toy();
     ~Toy();
 
     void initialize() override;
     void button(int code, bool shifted, bool on) override;
     void advance(int nanoseconds) override;
-    Uniform* uniform() override;
-    Texture* texture() override;
     CadModel* model() const override;
 
 private:
@@ -51,7 +42,6 @@ private:
     Sensor* m_sensor;
     Sound* m_sound;
     Scoreboard* m_scoreboard;
-    Texture* m_texture;
     Score* m_score;
     Queue* m_queue;
     Game* m_game;
@@ -61,11 +51,11 @@ private:
     Flipper* m_right_flipper;
     Flipper* m_top_flipper;
     CadModel* m_model;
-    Uniform* m_uniform;
 
     bool m_last_launch_action_button;
     void build_model();
     void build_uniform();
+    void update_uniform();
 
     void activate_solenoid(int solenoid_id);
     void eject_from_out_hole();

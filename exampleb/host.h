@@ -8,6 +8,9 @@
 #include "view.h"
 #include "navigate.h"
 
+#define INITIAL_HEIGHT 512
+#define INITIAL_WIDTH ((INITIAL_HEIGHT * 1920) / 1080)
+
 class Host
 {
 public:
