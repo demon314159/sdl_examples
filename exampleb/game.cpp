@@ -251,35 +251,35 @@ void Game::multiscore(int n, int solenoid_id, int score)
 void Game::rollover_rules()
 {
     if (m_sensor->rising(SENSOR_ID_ROLLOVER_A)) {
-        m_lamp->set(LAMP_ID_TOP_ROLLOVER_A, false);
-        m_lamp->set(LAMP_ID_BOTTOM_ROLLOVER_A, false);
-        m_rollover_a = true;
         if (m_lamp->lit(LAMP_ID_TOP_ROLLOVER_A)) {
             multiscore(5, SOLENOID_ID_THOUSANDS_CHIME, 1000);
         } else {
             multiscore(5, SOLENOID_ID_HUNDREDS_CHIME, 100);
         }
+        m_lamp->set(LAMP_ID_TOP_ROLLOVER_A, false);
+        m_lamp->set(LAMP_ID_BOTTOM_ROLLOVER_A, false);
+        m_rollover_a = true;
     }
     if (m_sensor->rising(SENSOR_ID_ROLLOVER_B)) {
-        m_lamp->set(LAMP_ID_TOP_ROLLOVER_B, false);
-        m_lamp->set(LAMP_ID_BOTTOM_LEFT_ROLLOVER_B, false);
-        m_lamp->set(LAMP_ID_BOTTOM_RIGHT_ROLLOVER_B, false);
-        m_rollover_b = true;
         if (m_lamp->lit(LAMP_ID_TOP_ROLLOVER_B)) {
             multiscore(5, SOLENOID_ID_THOUSANDS_CHIME, 1000);
         } else {
             multiscore(5, SOLENOID_ID_HUNDREDS_CHIME, 100);
         }
+        m_lamp->set(LAMP_ID_TOP_ROLLOVER_B, false);
+        m_lamp->set(LAMP_ID_BOTTOM_LEFT_ROLLOVER_B, false);
+        m_lamp->set(LAMP_ID_BOTTOM_RIGHT_ROLLOVER_B, false);
+        m_rollover_b = true;
     }
     if (m_sensor->rising(SENSOR_ID_ROLLOVER_C)) {
-        m_lamp->set(LAMP_ID_TOP_ROLLOVER_C, false);
-        m_lamp->set(LAMP_ID_BOTTOM_ROLLOVER_C, false);
-        m_rollover_c = true;
         if (m_lamp->lit(LAMP_ID_TOP_ROLLOVER_C)) {
             multiscore(5, SOLENOID_ID_THOUSANDS_CHIME, 1000);
         } else {
             multiscore(5, SOLENOID_ID_HUNDREDS_CHIME, 100);
         }
+        m_lamp->set(LAMP_ID_TOP_ROLLOVER_C, false);
+        m_lamp->set(LAMP_ID_BOTTOM_ROLLOVER_C, false);
+        m_rollover_c = true;
     }
     if (m_sensor->rising(SENSOR_ID_SPECIAL)) {
         if (m_lamp->lit(LAMP_ID_SPECIAL)) {
