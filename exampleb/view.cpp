@@ -3,14 +3,7 @@
 //
 
 #include "view.h"
-#include "lamp.h"
-#include "matrix4x4.h"
-#include "matrix3x3.h"
-#include "paint_can.h"
-#include "bounding_box.h"
 #include "look.h"
-#include "pi.h"
-#include "toy.h"
 
 #include <math.h>
 #include <sys/stat.h>
@@ -19,8 +12,6 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
-
-#define notVERBOSE
 
 View::View(SDL_Window* window)
     : m_window(window)

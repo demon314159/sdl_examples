@@ -8,14 +8,10 @@
 #include <SDL.h>
 #include <GL/glew.h>
 #include <SDL_opengl.h>
-#include <stdio.h>
 #include <chrono>
 
 #include "vertex_data.h"
-#include "matrix4x4.h"
 #include "toy.h"
-#include "cad_model.h"
-#include "uniform.h"
 
 class View
 {
@@ -30,7 +26,6 @@ public:
 
 protected:
     bool init_shaders();
-    void position_camera();
     void check_storage();
     void copy_vertices();
     void copy_facets();
@@ -57,16 +52,11 @@ private:
     Toy* m_toy;
 
     std::chrono::high_resolution_clock::time_point m_last_time_point;
-
     bool add_shader_from_source_file(GLuint shader, const char* name);
     void print_program_log(GLuint program);
     void print_shader_log(GLuint shader);
-//
-// this might be in toy or a texture object
-
     void generate_textures();
     void generate_texture(const char* fname);
-//
 };
 
 #endif // _VIEW_H_
