@@ -40,9 +40,6 @@ View::View(SDL_Window* window)
     , m_vertex_count(0)
     , m_toy(new Toy())
 {
-#ifdef VERBOSE
-    printf("View::View(doc)\n");
-#endif
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
         printf("Video Initialization Error: %s\n", SDL_GetError());
         exit(0);
@@ -61,26 +58,11 @@ View::View(SDL_Window* window)
         printf("Renderer Creation Error: %s\n", SDL_GetError());
         exit(0);
     }
-    position_camera();
     m_last_time_point = std::chrono::high_resolution_clock::now();
-}
-
-void View::position_camera()
-{
-    BoundingBox bb = m_toy->model()->bounding_box();
-    float radius = fmax(fabs(bb.vmax.v1 - bb.vmin.v1) / 2.0, fabs(bb.vmax.v3 - bb.vmin.v3) / 2.0);
-    radius = fmax(radius, (bb.vmax.v2 - bb.vmin.v2) / (2.0));
-    radius = fmax(radius, 0.1);
-    radius *= sqrt(2.0);
-    Float3 center = {(bb.vmin.v1 + bb.vmax.v1) / 2.0f, (bb.vmin.v2 + bb.vmax.v2) / 2.0f, (bb.vmin.v3 + bb.vmax.v3) / 2.0f};
-    m_toy->camera()->set_target_position(radius, center);
 }
 
 View::~View()
 {
-#ifdef VERBOSE
-    printf("View::~View()\n");
-#endif
     delete m_toy;
     SDL_DestroyRenderer(m_renderer);
     SDL_GL_DeleteContext(m_context);
@@ -166,9 +148,6 @@ Camera* View::camera()
 
 void View::initialize()
 {
-#ifdef VERBOSE
-    printf("View::initialize()\n");
-#endif
     m_toy->initialize();
     const char* vshader_name = "vshader.glsl";
     const char* fshader_name = "fshader.glsl";

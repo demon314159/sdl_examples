@@ -8,14 +8,23 @@
 #define MAX_UNIFORMS 50
 #define MAX_TEXTURES 50
 
+#define INITIAL_HEIGHT 512
+#define INITIAL_WIDTH ((INITIAL_HEIGHT * 1920) / 1080)
+#define INITIAL_MAG  1.0
+#define INITIAL_XOFF  0.0
+#define INITIAL_YOFF  0.0
+#define INITIAL_XROT 50.0
+#define INITIAL_YROT 0.0
+
 AnimatedToy::AnimatedToy()
     : m_uniform(new Uniform(MAX_UNIFORMS))
     , m_texture(new Texture(MAX_TEXTURES))
-    , m_camera(new Camera())
+    , m_camera(new Camera(INITIAL_WIDTH, INITIAL_HEIGHT, INITIAL_MAG, {INITIAL_XOFF, INITIAL_YOFF}, {INITIAL_XROT, INITIAL_YROT}))
     , m_model(new CadModel(CubeShape(0.1, 0.1, 0.1), PaintCan(1.0, 0.0, 0.0), 0.0))
 {
     m_uniform->add("mvp_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_camera->mvp_data());
     m_uniform->add("rot_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_camera->rot_data());
+    m_camera->frame(m_model);
 }
 
 AnimatedToy::~AnimatedToy()
@@ -24,6 +33,11 @@ AnimatedToy::~AnimatedToy()
     delete m_texture;
     delete m_camera;
     delete m_model;
+}
+
+Camera* AnimatedToy::camera()
+{
+    return m_camera;
 }
 
 void AnimatedToy::initialize()

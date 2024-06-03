@@ -5,7 +5,9 @@
 #ifndef _TOY_H_
 #define _TOY_H_
 
-#include "animated_toy.h"
+#include "uniform.h"
+#include "texture.h"
+#include "camera.h"
 #include "cad_model.h"
 #include "matrix4x4.h"
 #include "lamp.h"
@@ -20,20 +22,28 @@
 #include "queue.h"
 #include "execute.h"
 #include "game.h"
-#include "texture.h"
+#include <SDL_scancode.h>
 
-class Toy: public AnimatedToy
+class Toy
 {
 public:
     Toy();
     ~Toy();
 
-    void initialize() override;
-    void button(int code, bool shifted, bool on) override;
-    void advance(int nanoseconds) override;
-    CadModel* model() const override;
+    Uniform* uniform();
+    Texture* texture();
+    Camera* camera();
+    void initialize();
+    void button(int code, bool shifted, bool on);
+    void advance(int nanoseconds);
+    CadModel* model() const;
 
 private:
+    Uniform* m_uniform;
+    Texture* m_texture;
+    Camera* m_camera;
+    CadModel* m_model;
+
     float m_seconds;
     int m_player;
     Ball* m_ball;
@@ -50,7 +60,6 @@ private:
     Flipper* m_left_flipper;
     Flipper* m_right_flipper;
     Flipper* m_top_flipper;
-    CadModel* m_model;
 
     bool m_last_launch_action_button;
     void build_model();

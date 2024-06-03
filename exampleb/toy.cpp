@@ -12,6 +12,13 @@
 
 #define MAX_UNIFORMS 100
 #define MAX_TEXTURES 20
+#define INITIAL_HEIGHT 512
+#define INITIAL_WIDTH ((INITIAL_HEIGHT * 1920) / 1080)
+#define INITIAL_MAG  2.55
+#define INITIAL_XOFF  0.055
+#define INITIAL_YOFF  0.065
+#define INITIAL_XROT 50.0
+#define INITIAL_YROT 10.0
 
 #define INITIAL_CREDITS 8
 #define MAX_BALLS 4
@@ -22,7 +29,11 @@
 #define BALL_ACCELERATION 0.25
 
 Toy::Toy()
-    : m_seconds(0.0)
+    : m_uniform(new Uniform(MAX_UNIFORMS))
+    , m_texture(new Texture(MAX_TEXTURES))
+    , m_camera(new Camera(INITIAL_WIDTH, INITIAL_HEIGHT, INITIAL_MAG, {INITIAL_XOFF, INITIAL_YOFF}, {INITIAL_XROT, INITIAL_YROT}))
+    , m_model(NULL)
+    , m_seconds(0.0)
     , m_player(1)
     , m_ball(NULL)
     , m_lamp(NULL)
@@ -38,7 +49,6 @@ Toy::Toy()
     , m_left_flipper(NULL)
     , m_right_flipper(NULL)
     , m_top_flipper(NULL)
-    , m_model(NULL)
     , m_last_launch_action_button(false)
 {
     m_ball = new Ball(BALL_RADIUS, BALL_TOP_COLOR, BALL_MIDDLE_COLOR, BALL_BOTTOM_COLOR, BALL_SEGMENTS);
@@ -157,6 +167,7 @@ Toy::Toy()
 
 
     build_model();
+    m_camera->frame(m_model);
     build_uniform();
     m_queue = new Queue();
     m_score = new Score(m_scoreboard, m_lamp);
@@ -190,9 +201,19 @@ Toy::~Toy()
     delete m_model;
 }
 
-void Toy::initialize()
+Uniform* Toy::uniform()
 {
-    m_sound->initialize();
+    return m_uniform;
+}
+
+Texture* Toy::texture()
+{
+    return m_texture;
+}
+
+Camera* Toy::camera()
+{
+    return m_camera;
 }
 
 CadModel* Toy::model() const
@@ -200,9 +221,18 @@ CadModel* Toy::model() const
     return m_model;
 }
 
+void Toy::initialize()
+{
+    m_sound->initialize();
+}
+
 void Toy::update_uniform()
 {
     // Update all uniform data sources
+    m_camera->mvp_data();
+    m_camera->rot_data();
+    m_camera->scoreboard_mvp_data();
+    m_camera->scoreboard_rot_data();
     m_lamp->data();
     m_scoreboard->data();
     m_target->data();
@@ -216,6 +246,10 @@ void Toy::build_uniform()
 {
     Uniform* u = uniform();
 
+    u->add("mvp_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_camera->mvp_data());
+    u->add("rot_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_camera->rot_data());
+    u->add("scoreboard_mvp_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_camera->scoreboard_mvp_data());
+    u->add("scoreboard_rot_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_camera->scoreboard_rot_data());
     u->add("lamp_color", UNIFORM_TYPE_3_FLOAT_VECTOR, m_lamp->lamps(), (void*) m_lamp->data());
     for (int i = 0; i < m_texture->textures(); i++) {
         u->add(m_texture->uniform_name(i), UNIFORM_TYPE_1_INTEGER_VECTOR, 1, m_texture->data(i));
