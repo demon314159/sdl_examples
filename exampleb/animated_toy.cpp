@@ -39,8 +39,9 @@ void AnimatedToy::initialize()
 {
 }
 
-void AnimatedToy::button(int code, bool shifted, bool on)
+bool AnimatedToy::button(int code, bool shifted, bool on)
 {
+  return true;
 }
 
 void AnimatedToy::advance(int nanoseconds)

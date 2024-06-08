@@ -461,8 +461,8 @@ void View::print_shader_log(GLuint shader)
     }
 }
 
-void View::button(int code, bool shifted, bool on)
+bool View::button(int code, bool shifted, bool on)
 {
-    m_toy->button(code, shifted, on);
+    return m_toy->button(code, shifted, on);
 }
 

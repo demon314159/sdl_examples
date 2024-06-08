@@ -345,8 +345,9 @@ void Toy::build_model()
     m_model->add(m_table->model());
 }
 
-void Toy::button(int code, bool shifted, bool on)
+bool Toy::button(int code, bool shifted, bool on)
 {
+    bool ret_val = true;
     switch (code) {
         case SDL_SCANCODE_LSHIFT:  // Left flipper
             m_left_flipper->action_button(on);
@@ -369,9 +370,16 @@ void Toy::button(int code, bool shifted, bool on)
                 m_game->add_player();
             }
             break;
+        case SDL_SCANCODE_UP:
+        case SDL_SCANCODE_DOWN:
+        case SDL_SCANCODE_LEFT:
+        case SDL_SCANCODE_RIGHT:
+            ret_val = false;
+            break;
         default:
             break;
     }
+    return ret_val;
 }
 
 

@@ -18,7 +18,7 @@ public:
     virtual ~AnimatedToy();
 
     virtual void initialize();
-    virtual void button(int code, bool shifted, bool on);
+    virtual bool button(int code, bool shifted, bool on);
     virtual void advance(int nanoseconds);
 
     Uniform* uniform();

@@ -28,7 +28,7 @@ public:
     ~Toy();
 
     void initialize() override;
-    void button(int code, bool shifted, bool on) override;
+    bool button(int code, bool shifted, bool on) override;
     void advance(int nanoseconds) override;
 
 private:

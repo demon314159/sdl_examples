@@ -52,6 +52,13 @@ void Host::key_press_event(SDL_Event* e)
 {
     unsigned int a = e->key.keysym.scancode;
     bool shifted = (e->key.keysym.mod & KMOD_SHIFT) ? true : false;
+
+    if (a == SDL_SCANCODE_Q) {
+        m_is_running = false;
+    }
+    if (!m_view.button(a, shifted, true)) {
+        return;
+    }
     if (a == SDL_SCANCODE_UP) {
         if (shifted) {
             m_view.camera()->translate_y(-m_view.camera()->height() / 20);
@@ -95,10 +102,6 @@ void Host::key_press_event(SDL_Event* e)
             m_view.camera()->translate_home();
         }
         m_navigate.stop();
-    } else if (a == SDL_SCANCODE_Q) {
-        m_is_running = false;
-    } else {
-        m_view.button(a, shifted, true);
     }
 }
 
