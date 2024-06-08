@@ -6,6 +6,7 @@
 #define _TOY_H_
 
 #include "animated_toy.h"
+#include "scoreboard_camera.h"
 #include "lamp.h"
 #include "target.h"
 #include "sensor.h"
@@ -31,6 +32,7 @@ public:
     void advance(int nanoseconds) override;
 
 private:
+    ScoreboardCamera* m_scoreboard_camera;
     float m_seconds;
     int m_player;
     Ball* m_ball;

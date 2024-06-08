@@ -27,7 +27,8 @@
 #define BALL_ACCELERATION 0.25
 
 Toy::Toy()
-    : m_seconds(0.0)
+    : m_scoreboard_camera(NULL)
+    , m_seconds(0.0)
     , m_player(1)
     , m_ball(NULL)
     , m_lamp(NULL)
@@ -45,6 +46,7 @@ Toy::Toy()
     , m_top_flipper(NULL)
     , m_last_launch_action_button(false)
 {
+    m_scoreboard_camera = new ScoreboardCamera(INITIAL_WIDTH, INITIAL_HEIGHT, INITIAL_MAG, {INITIAL_XOFF, INITIAL_YOFF}, {INITIAL_XROT, INITIAL_YROT});
     m_camera->reconstruct(INITIAL_WIDTH, INITIAL_HEIGHT, INITIAL_MAG, {INITIAL_XOFF, INITIAL_YOFF}, {INITIAL_XROT, INITIAL_YROT});
     m_ball = new Ball(BALL_RADIUS, BALL_TOP_COLOR, BALL_MIDDLE_COLOR, BALL_BOTTOM_COLOR, BALL_SEGMENTS);
     m_lamp = new Lamp(ANIMATION_ID_FIXED_LAMP1);
@@ -160,6 +162,7 @@ Toy::Toy()
 
     build_model();
     m_camera->frame(m_model);
+    m_scoreboard_camera->frame(m_model);
     build_uniform();
     m_queue = new Queue();
     m_score = new Score(m_scoreboard, m_lamp);
@@ -176,6 +179,7 @@ Toy::Toy()
 
 Toy::~Toy()
 {
+    delete m_scoreboard_camera;
     delete m_ball;
     delete m_lamp;
     delete m_target;
@@ -211,8 +215,8 @@ void Toy::update_uniform()
 
 void Toy::build_uniform()
 {
-    m_uniform->add("scoreboard_mvp_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_camera->scoreboard_mvp_data());
-    m_uniform->add("scoreboard_rot_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_camera->scoreboard_rot_data());
+    m_uniform->add("scoreboard_mvp_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_scoreboard_camera->mvp_data());
+    m_uniform->add("scoreboard_rot_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_scoreboard_camera->rot_data());
     m_uniform->add("lamp_color", UNIFORM_TYPE_3_FLOAT_VECTOR, m_lamp->lamps(), (void*) m_lamp->data());
     for (int i = 0; i < m_texture->textures(); i++) {
         m_uniform->add(m_texture->uniform_name(i), UNIFORM_TYPE_1_INTEGER_VECTOR, 1, m_texture->data(i));

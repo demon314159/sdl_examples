@@ -1,20 +1,19 @@
 //
-// camera.h
+// scoreboard_camera.h
 //
 
-#ifndef _CAMERA_H_
-#define _CAMERA_H_
+#ifndef _SCOREBOARD_CAMERA_H_
+#define _SCOREBOARD_CAMERA_H_
 
 #include "matrix4x4.h"
 #include "cad_model.h"
 #include "float3.h"
 
-class Camera
+class ScoreboardCamera
 {
 public:
-    Camera(int width, int height, float initial_mag, const Float2& initial_offset, const Float2& initial_rotation);
-    ~Camera();
-    void reconstruct(int width, int height, float initial_mag, const Float2& initial_offset, const Float2& initial_rotation);
+    ScoreboardCamera(int width, int height, float initial_mag, const Float2& initial_offset, const Float2& initial_rotation);
+    ~ScoreboardCamera();
 
     int height() const;
     int width() const;
@@ -24,15 +23,14 @@ public:
 
     void zoom_home();
     void zoom(float factor);
-    void rotate_home();
-    void rotate_ax(float degrees);
-    void rotate_ay(float degrees);
     void translate_home();
     void translate_x(int pixels);
     void translate_y(int pixels);
 
     const float* mvp_data() const;
     const float* rot_data() const;
+    const float* scoreboard_mvp_data() const;
+    const float* scoreboard_rot_data() const;
 
 private:
     int m_width;
@@ -44,7 +42,6 @@ private:
     float m_fov;
     float m_camz;
     Float2 m_offset;
-    Float2 m_rotation;
     float m_model_radius;
     Float3 m_model_center;
     Matrix4x4 m_projection;

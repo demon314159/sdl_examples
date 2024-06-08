@@ -30,6 +30,7 @@ HEADERS = view.h \
           animated_toy.h \
           toy.h \
           \
+          scoreboard_camera.h \
           perimeter.h \
           sphere_shape.h \
           toroid_shape.h \
@@ -131,6 +132,7 @@ OBJECTS = main.obj \
           animated_toy.obj \
           toy.obj \
           \
+          scoreboard_camera.obj \
           sphere_shape.obj \
           toroid_shape.obj \
           triangular_prism_shape.obj \
