@@ -14,6 +14,7 @@ class Camera
 public:
     Camera(int width, int height, float initial_mag, const Float2& initial_offset, const Float2& initial_rotation);
     ~Camera();
+    void reconstruct(int width, int height, float initial_mag, const Float2& initial_offset, const Float2& initial_rotation);
 
     int height() const;
     int width() const;

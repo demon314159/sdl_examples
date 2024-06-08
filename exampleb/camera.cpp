@@ -31,6 +31,22 @@ Camera::~Camera()
 {
 }
 
+void Camera::reconstruct(int width, int height, float initial_mag, const Float2& initial_offset, const Float2& initial_rotation)
+{
+    m_width = width;
+    m_height = height;
+    m_initial_mag = initial_mag;
+    m_initial_offset = initial_offset;
+    m_initial_rotation = initial_rotation;
+    m_mag = initial_mag;
+    m_fov = 45.0;
+    m_camz = 0.0;
+    m_offset = initial_offset;
+    m_rotation = initial_rotation;
+    m_model_radius = 1.0;
+    m_model_center = {0.0, 0.0, 0.0};
+}
+
 int Camera::width() const
 {
     return m_width;

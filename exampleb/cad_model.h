@@ -23,6 +23,7 @@ public:
     CadModel(const Shape& s, const PaintCan& paint_can, float animation_id = 0.0);
     CadModel(const Shape& s);
     ~CadModel();
+    void clear();
     void add(const StlFile& stl_File, const PaintCan& paint_can, float animation_id = 0.0);
     void add(const Shape& s, const PaintCan& paint_can, float animation_id = 0.0);
     void add(const CadModel& cad_model, float x = 0.0, float y = 0.0, float z = 0.0);

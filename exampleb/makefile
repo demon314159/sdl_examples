@@ -27,6 +27,7 @@ HEADERS = view.h \
           texture.h \
           uniform.h \
           camera.h \
+          animated_toy.h \
           toy.h \
           \
           perimeter.h \
@@ -127,6 +128,7 @@ OBJECTS = main.obj \
           texture.obj \
           uniform.obj \
           camera.obj \
+          animated_toy.obj \
           toy.obj \
           \
           sphere_shape.obj \

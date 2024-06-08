@@ -10,8 +10,6 @@
 #include "backglass_guide.h"
 #include <stdio.h>
 
-#define MAX_UNIFORMS 100
-#define MAX_TEXTURES 20
 #define INITIAL_HEIGHT 512
 #define INITIAL_WIDTH ((INITIAL_HEIGHT * 1920) / 1080)
 #define INITIAL_MAG  2.55
@@ -29,11 +27,7 @@
 #define BALL_ACCELERATION 0.25
 
 Toy::Toy()
-    : m_uniform(new Uniform(MAX_UNIFORMS))
-    , m_texture(new Texture(MAX_TEXTURES))
-    , m_camera(new Camera(INITIAL_WIDTH, INITIAL_HEIGHT, INITIAL_MAG, {INITIAL_XOFF, INITIAL_YOFF}, {INITIAL_XROT, INITIAL_YROT}))
-    , m_model(NULL)
-    , m_seconds(0.0)
+    : m_seconds(0.0)
     , m_player(1)
     , m_ball(NULL)
     , m_lamp(NULL)
@@ -51,6 +45,7 @@ Toy::Toy()
     , m_top_flipper(NULL)
     , m_last_launch_action_button(false)
 {
+    m_camera->reconstruct(INITIAL_WIDTH, INITIAL_HEIGHT, INITIAL_MAG, {INITIAL_XOFF, INITIAL_YOFF}, {INITIAL_XROT, INITIAL_YROT});
     m_ball = new Ball(BALL_RADIUS, BALL_TOP_COLOR, BALL_MIDDLE_COLOR, BALL_BOTTOM_COLOR, BALL_SEGMENTS);
     m_lamp = new Lamp(ANIMATION_ID_FIXED_LAMP1);
     m_target = new Target(DROP_TARGET_HEIGHT);
@@ -60,19 +55,18 @@ Toy::Toy()
     m_scoreboard = new Scoreboard({SCOREBOARD_POSITION_X, SCOREBOARD_POSITION_Y, SCOREBOARD_POSITION_Z}, {BACKGLASS_SIZE_X, BACKGLASS_SIZE_Z},
                                   {BACKGLASS_IMAGE_SIZE_X, BACKGLASS_IMAGE_SIZE_Z},
                                    m_table->trim(), m_table->trim_color(), TEXTURE_ID_BACKGLASS, TEXTURE_ID_SCORE);
-    Texture* t = texture();
-    t->add("playfield.png", "texture1");
-    t->add("plastic1.png", "texture2");
-    t->add("plastic2.png", "texture3");
-    t->add("plastic3.png", "texture4");
-    t->add("plastic4.png", "texture5");
-    t->add("plastic5.png", "texture6");
-    t->add("plastic6.png", "texture7");
-    t->add("plastic7.png", "texture8");
-    t->add("plastic8.png", "texture9");
-    t->add("plastic9.png", "texture10");
-    t->add("score.png", "texture11");
-    t->add("backglass.png", "texture12");
+    m_texture->add("playfield.png", "texture1");
+    m_texture->add("plastic1.png", "texture2");
+    m_texture->add("plastic2.png", "texture3");
+    m_texture->add("plastic3.png", "texture4");
+    m_texture->add("plastic4.png", "texture5");
+    m_texture->add("plastic5.png", "texture6");
+    m_texture->add("plastic6.png", "texture7");
+    m_texture->add("plastic7.png", "texture8");
+    m_texture->add("plastic8.png", "texture9");
+    m_texture->add("plastic9.png", "texture10");
+    m_texture->add("score.png", "texture11");
+    m_texture->add("backglass.png", "texture12");
 
     m_left_flipper = new Flipper(
         LEFT_FLIPPER_ANGLE, LEFT_FLIPPER_POSITION, BOTTOM_FLIPPER_LENGTH,
@@ -96,8 +90,6 @@ Toy::Toy()
         TOP_FLIPPER_SPEED, TOP_FLIPPER_REFLECTIVITY, TOP_FLIPPER_SEGMENTS,
         true
     );
-    m_model = new CadModel();
-    m_uniform = new Uniform(MAX_UNIFORMS);
     m_lamp->add(LAMP_5X_BONUS_POSITION, LAMP_SIZE, TYPE1_ON_COLOR, TYPE1_OFF_COLOR);
     m_lamp->add(LAMP_ACES_POSITION,  LAMP_SIZE, TYPE1_ON_COLOR, TYPE1_OFF_COLOR);
     m_lamp->add(LAMP_KINGS_POSITION, LAMP_SIZE, TYPE1_ON_COLOR, TYPE1_OFF_COLOR);
@@ -198,27 +190,6 @@ Toy::~Toy()
     delete m_left_flipper;
     delete m_right_flipper;
     delete m_top_flipper;
-    delete m_model;
-}
-
-Uniform* Toy::uniform()
-{
-    return m_uniform;
-}
-
-Texture* Toy::texture()
-{
-    return m_texture;
-}
-
-Camera* Toy::camera()
-{
-    return m_camera;
-}
-
-CadModel* Toy::model() const
-{
-    return m_model;
 }
 
 void Toy::initialize()
@@ -229,10 +200,6 @@ void Toy::initialize()
 void Toy::update_uniform()
 {
     // Update all uniform data sources
-    m_camera->mvp_data();
-    m_camera->rot_data();
-    m_camera->scoreboard_mvp_data();
-    m_camera->scoreboard_rot_data();
     m_lamp->data();
     m_scoreboard->data();
     m_target->data();
@@ -244,22 +211,18 @@ void Toy::update_uniform()
 
 void Toy::build_uniform()
 {
-    Uniform* u = uniform();
-
-    u->add("mvp_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_camera->mvp_data());
-    u->add("rot_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_camera->rot_data());
-    u->add("scoreboard_mvp_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_camera->scoreboard_mvp_data());
-    u->add("scoreboard_rot_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_camera->scoreboard_rot_data());
-    u->add("lamp_color", UNIFORM_TYPE_3_FLOAT_VECTOR, m_lamp->lamps(), (void*) m_lamp->data());
+    m_uniform->add("scoreboard_mvp_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_camera->scoreboard_mvp_data());
+    m_uniform->add("scoreboard_rot_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_camera->scoreboard_rot_data());
+    m_uniform->add("lamp_color", UNIFORM_TYPE_3_FLOAT_VECTOR, m_lamp->lamps(), (void*) m_lamp->data());
     for (int i = 0; i < m_texture->textures(); i++) {
-        u->add(m_texture->uniform_name(i), UNIFORM_TYPE_1_INTEGER_VECTOR, 1, m_texture->data(i));
+        m_uniform->add(m_texture->uniform_name(i), UNIFORM_TYPE_1_INTEGER_VECTOR, 1, m_texture->data(i));
     }
-    u->add("score", UNIFORM_TYPE_1_FLOAT_VECTOR, m_scoreboard->digits(), m_scoreboard->data());
-    u->add("target_height", UNIFORM_TYPE_1_FLOAT_VECTOR, m_target->targets(), m_target->data());
-    u->add("animation_0_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_left_flipper->data());
-    u->add("animation_1_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_right_flipper->data());
-    u->add("animation_2_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_top_flipper->data());
-    u->add("animation_3_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_ball->data());
+    m_uniform->add("score", UNIFORM_TYPE_1_FLOAT_VECTOR, m_scoreboard->digits(), m_scoreboard->data());
+    m_uniform->add("target_height", UNIFORM_TYPE_1_FLOAT_VECTOR, m_target->targets(), m_target->data());
+    m_uniform->add("animation_0_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_left_flipper->data());
+    m_uniform->add("animation_1_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_right_flipper->data());
+    m_uniform->add("animation_2_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_top_flipper->data());
+    m_uniform->add("animation_3_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_ball->data());
 }
 
 void Toy::eject_from_out_hole()
@@ -367,6 +330,7 @@ void Toy::advance(int nanoseconds)
 
 void Toy::build_model()
 {
+    m_model->clear();
     m_model->add(m_ball->model(ANIMATION_ID_BALL));
     m_model->add(m_lamp->model(ANIMATION_ID_LAMP1));
     m_model->add(m_target->model(ANIMATION_ID_DROP_TARGET1));

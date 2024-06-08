@@ -134,6 +134,23 @@ CadModel::CadModel(const Shape& s)
     }
 }
 
+CadModel::~CadModel()
+{
+#ifdef VERBOSE
+    printf("~CadModel::CadModel()\n");
+#endif
+    if (m_facet != NULL)
+        delete [] m_facet;
+}
+
+void CadModel::clear()
+{
+    m_facet_count = 0;
+    if (m_facet != NULL)
+        delete [] m_facet;
+    m_facet = NULL;
+}
+
 void CadModel::add(const StlFile& stl_file, const PaintCan& paint_can, float animation_id)
 {
 #ifdef VERBOSE
@@ -423,15 +440,6 @@ void CadModel::magnify(float factor)
         m_facet[i].v3.v2 *= factor;
         m_facet[i].v3.v3 *= factor;
     }
-}
-
-CadModel::~CadModel()
-{
-#ifdef VERBOSE
-    printf("~CadModel::CadModel()\n");
-#endif
-    if (m_facet != NULL)
-        delete [] m_facet;
 }
 
 BoundingBox CadModel::bounding_box() const
