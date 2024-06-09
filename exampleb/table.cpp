@@ -83,10 +83,11 @@ Table::Table()
     m_strip2b = new StraightStrip(-90.0, {X7, Y1 / 2.0f, (ZOH2 + Z7) / 2.0f}, Z7 - ZOH2, Y1, WOOD_COLOR, 0.2);
     m_strip3 = new StraightStrip(90.0, {X6, Y1 / 2.0f, (Z3 + Z5) / 2.0f}, Z5 - Z3, Y1, WOOD_COLOR, 0.2);
     m_strip4 = new ConvexStrip(0.0, 180.0, {X6 + T1 / 2.0f, Y1 / 2.0f, Z3}, T1 / 2.0, Y1, WOOD_COLOR, 0.2, RING_SEGMENTS);
-    m_strip5 = new StraightStrip(ANGLE3, {(float) (X5 + X6) / 2.0f, (float) Y2 / 2.0f, (float) (Z5 + Z6) / 2.0f}, (float) R2, (float) Y2, WOOD_COLOR, (float) 0.2);
-    m_strip6 = new StraightStrip(-ANGLE3, {(X1 + X3) / 2.0f, Y2 / 2.0f, (Z5 + Z6) / 2.0f}, R2, Y2, WOOD_COLOR, 0.2);
+    m_strip5 = new StraightStrip(ANGLE3B, {(float) (X5 + X6) / 2.0f, (float) Y2 / 2.0f, (float) (Z5 + Z6) / 2.0f}, (float) R2B, (float) Y2, WHITE_COLOR, (float) 0.2);
+    m_strip6 = new StraightStrip(-ANGLE3A, {(X1 + X3) / 2.0f, Y2 / 2.0f, (Z5 + Z6) / 2.0f}, R2A, Y2, WHITE_COLOR, 0.2);
     m_strip7 = new StraightStrip(-90.0, {X1, Y1 / 2.0f, (ZA + Z5) / 2.0f}, (Z5 - ZA), Y1, WOOD_COLOR, 0.2);
     m_strip8 = new StraightStrip({X2, Z2}, {X1, ZA}, Y1, WOOD_COLOR, 0.2);
+
     m_strip9 = new ConcaveStrip(ANGLE1, ANGLE2, {X4, Y1 / 2.0f, Z4}, R1, Y1, WOOD_COLOR, 0.2, TOP_PANEL_STEPS);
     m_strip10 = new StraightStrip(0.0, {(X7 + X8) / 2.0f, Y1 / 2.0f, Z7}, X8 - X7, Y1, WOOD_COLOR, 0.0);
     m_strip11 = new StraightDiodeStrip(ANGLE6, {XC, Y1 / 2.0f, ZC}, TDIODE, Y1, METAL_COLOR, RING_MAJOR_REFLECTIVITY);
@@ -436,8 +437,7 @@ CadModel Table::model() const
 
 
     CadModel apron(PlaneShape(0.290, 0.143, TEXTURE_ID_APRON), PaintCan(1.0, 1.0, 1.0), ANIMATION_ID_TRANSPARENT);
-    mm.add(apron, 0.148, Y2, 0.59);
-
+    mm.add(apron, 0.148, Y2, 0.592);
 
     return mm;
 }

@@ -99,7 +99,9 @@ private:
     Rollover* m_rollover8;
 
     float R1 = 0.148;
-    float R2 = 0.145;
+    float R2A = 0.138;
+    float R2B = 0.135;
+
     float T1 = 0.010;
     float Y1 = 0.010;
     float Y2 = 0.017;
@@ -107,7 +109,10 @@ private:
     float Y4 = Y2 - 0.0005;
     float ANGLE1 = 0.0;
     float ANGLE2 = 145.452;
-    float ANGLE3 = 30.12;
+
+    float ANGLE3A = 29.75;
+    float ANGLE3B = 30.5;
+
     float ANGLE4 = 59.7693;
     float ANGLE5 = ANGLE2 - 10.0;
     float ANGLE6 = 53.0;
@@ -126,14 +131,14 @@ private:
     float ZOH2 = 0.566;
     int TOP_PANEL_STEPS = 200;
     float X0 = X1 - T1;
-    float X3 = X1 + R2 * cos(ANGLE3 * PI / 180.0);
-    float X5 = X6 - R2 * cos(ANGLE3 * PI / 180.0);
+    float X3 = X1 + R2A * cos(ANGLE3A * PI / 180.0);
+    float X5 = X6 - R2B * cos(ANGLE3B * PI / 180.0);
     float X7 = X6 + T1;
     float X9 = X8 + T1;
     float X4 = X8 - R1;
     float X2 = X4 + R1 * cos(ANGLE2 * PI / 180.0);
     float Z2 = Z4 - R1 * sin(ANGLE2 * PI / 180.0);
-    float Z6 = Z5 + R2 * sin(ANGLE3 * PI / 180.0);
+    float Z6 = Z5 + R2A * sin(ANGLE3A * PI / 180.0);
     float Z9 = PLAYFIELD_Z - T1;
     float Z10 = PLAYFIELD_Z;
     float R4 = sqrt((X2 - X1) * (X2 - X1) + (ZA - Z2) * (ZA - Z2));
