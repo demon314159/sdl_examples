@@ -87,6 +87,7 @@
 #define TEXTURE_ID_DROP_TARGET 10.0
 #define TEXTURE_ID_SCORE       11.0
 #define TEXTURE_ID_BACKGLASS   12.0
+#define TEXTURE_ID_APRON       13.0
 
 
 

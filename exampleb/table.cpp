@@ -14,7 +14,6 @@
 #include "cylinder_shape.h"
 #include "ring_shape.h"
 #include "top_panel_shape.h"
-#include "bottom_panel_shape.h"
 
 #include "straight_wire_guide.h"
 
@@ -323,9 +322,6 @@ CadModel Table::model() const
     mm.add(under_panel, PLAYFIELD_X / 2.0, -PLAYFIELD_Y + 0.002, PLAYFIELD_Z / 2.0);
     CadModel top_panel(TopPanelShape(PLAYFIELD_X, R1, ANGLE1, ANGLE2, {X4, Z4}, X1, ZA, TOP_PANEL_STEPS), WOOD_COLOR, 0.0);
     mm.add(top_panel, 0.0, Y1, 0.0);
-    CadModel bottom_panel(BottomPanelShape(X1, X3, X5, X6, X7, Z5, Z6, Z9), FACE_PLATE_COLOR, 0.0);
-    mm.add(bottom_panel, 0.0, Y2, 0.0);
-
 
     mm.add(m_rollover1->model(0.0), 0.0, 0.0, 0.0);
     mm.add(m_rollover2->model(0.0), 0.0, 0.0, 0.0);
@@ -437,6 +433,11 @@ CadModel Table::model() const
     CadModel plastic6(PlaneShape(pg.blank_size().v1, pg.blank_size().v2, TEXTURE_ID_PLASTIC6), PaintCan(1.0, 1.0, 1.0), ANIMATION_ID_TRANSPARENT);
     plastic6.rotate_ay(pg.blank_angle());
     mm.add(plastic6, pg.blank_position().v1, 1.6 * BALL_RADIUS + 0.0005, pg.blank_position().v2);
+
+
+    CadModel apron(PlaneShape(0.290, 0.143, TEXTURE_ID_APRON), PaintCan(1.0, 1.0, 1.0), ANIMATION_ID_TRANSPARENT);
+    mm.add(apron, 0.148, Y2, 0.59);
+
 
     return mm;
 }

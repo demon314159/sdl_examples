@@ -20,6 +20,7 @@ uniform sampler2D texture9;
 uniform sampler2D texture10;
 uniform sampler2D texture11;
 uniform sampler2D texture12;
+uniform sampler2D texture13;
 
 void main()
 {
@@ -167,14 +168,20 @@ void main()
             billy.g = c * billy.g;
             billy.b = c * billy.b;
             gl_FragColor = billy;
-        } else  {                        // Backglass
+        } else if (v_texture_id < 12.5)  { // Backglass
             c = 1.0;
             billy = texture(texture12, v_texture_position);
             billy.r = c * billy.r;
             billy.g = c * billy.g;
             billy.b = c * billy.b;
             gl_FragColor = billy;
-
+        } else  {                        // Apron
+            c = 1.0;
+            billy = texture(texture13, v_texture_position);
+            billy.r = c * billy.r;
+            billy.g = c * billy.g;
+            billy.b = c * billy.b;
+            gl_FragColor = billy;
         }
     }
 }

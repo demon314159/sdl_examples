@@ -57,6 +57,7 @@ Toy::Toy()
     m_scoreboard = new Scoreboard({SCOREBOARD_POSITION_X, SCOREBOARD_POSITION_Y, SCOREBOARD_POSITION_Z}, {BACKGLASS_SIZE_X, BACKGLASS_SIZE_Z},
                                   {BACKGLASS_IMAGE_SIZE_X, BACKGLASS_IMAGE_SIZE_Z},
                                    m_table->trim(), m_table->trim_color(), TEXTURE_ID_BACKGLASS, TEXTURE_ID_SCORE);
+
     m_texture->add("playfield.png", "texture1");
     m_texture->add("plastic1.png", "texture2");
     m_texture->add("plastic2.png", "texture3");
@@ -69,6 +70,7 @@ Toy::Toy()
     m_texture->add("plastic9.png", "texture10");
     m_texture->add("score.png", "texture11");
     m_texture->add("backglass.png", "texture12");
+    m_texture->add("apron.png", "texture13");
 
     m_left_flipper = new Flipper(
         LEFT_FLIPPER_ANGLE, LEFT_FLIPPER_POSITION, BOTTOM_FLIPPER_LENGTH,
@@ -374,7 +376,7 @@ bool Toy::button(int code, bool shifted, bool on)
         case SDL_SCANCODE_DOWN:
         case SDL_SCANCODE_LEFT:
         case SDL_SCANCODE_RIGHT:
-            ret_val = false;
+//            ret_val = false;
             break;
         default:
             break;
