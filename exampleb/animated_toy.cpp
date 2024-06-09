@@ -35,6 +35,11 @@ AnimatedToy::~AnimatedToy()
     delete m_model;
 }
 
+void AnimatedToy::resize(int w, int h)
+{
+    m_camera->resize(w, h);
+}
+
 void AnimatedToy::initialize()
 {
 }

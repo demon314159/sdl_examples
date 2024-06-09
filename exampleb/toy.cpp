@@ -8,7 +8,6 @@
 #include "look.h"
 #include "layout_guide.h"
 #include "backglass_guide.h"
-#include <stdio.h>
 
 #define INITIAL_HEIGHT 512
 #define INITIAL_WIDTH ((INITIAL_HEIGHT * 1920) / 1080)
@@ -198,8 +197,15 @@ Toy::~Toy()
     delete m_top_flipper;
 }
 
+void Toy::resize(int w, int h)
+{
+    AnimatedToy::resize(w, h);
+    m_scoreboard_camera->resize(w, h);
+}
+
 void Toy::initialize()
 {
+    AnimatedToy::initialize();
     m_sound->initialize();
 }
 
@@ -306,6 +312,7 @@ void Toy::activate_solenoid(int solenoid_id)
 
 void Toy::advance(int nanoseconds)
 {
+    AnimatedToy::advance(nanoseconds);
     m_seconds += (1.0e-9 * (float) nanoseconds);
     float seconds = 1.0e-3;
     while (m_seconds > seconds) {
@@ -349,7 +356,9 @@ void Toy::build_model()
 
 bool Toy::button(int code, bool shifted, bool on)
 {
-    bool ret_val = true;
+    bool ret_val = AnimatedToy::button(code, shifted, on);
+    if (!ret_val)
+        return false;
     switch (code) {
         case SDL_SCANCODE_LSHIFT:  // Left flipper
             m_left_flipper->action_button(on);
@@ -376,7 +385,7 @@ bool Toy::button(int code, bool shifted, bool on)
         case SDL_SCANCODE_DOWN:
         case SDL_SCANCODE_LEFT:
         case SDL_SCANCODE_RIGHT:
-//            ret_val = false;
+            ret_val = false;
             break;
         default:
             break;

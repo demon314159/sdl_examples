@@ -17,6 +17,7 @@ public:
     AnimatedToy();
     virtual ~AnimatedToy();
 
+    virtual void resize(int w, int h);
     virtual void initialize();
     virtual bool button(int code, bool shifted, bool on);
     virtual void advance(int nanoseconds);

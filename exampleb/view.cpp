@@ -306,7 +306,7 @@ void View::sub_copy_facets(CadModel* model, VertexData* vertices, int& vix)
 void View::resize(int w, int h)
 {
     glViewport(0, 0, w, h);
-    m_toy->camera()->resize(w, h);
+    m_toy->resize(w, h);
 }
 
 void View::check_storage()
