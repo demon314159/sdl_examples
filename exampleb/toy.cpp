@@ -70,6 +70,7 @@ Toy::Toy()
     m_texture->add("score.png", "texture11");
     m_texture->add("backglass.png", "texture12");
     m_texture->add("apron.png", "texture13");
+    m_texture->add("gauge.png", "texture14");
 
     m_left_flipper = new Flipper(
         LEFT_FLIPPER_ANGLE, LEFT_FLIPPER_POSITION, BOTTOM_FLIPPER_LENGTH,
@@ -242,7 +243,9 @@ void Toy::eject_from_out_hole()
     float vx = BALL_OUT_HOLE_SPEED * cos(20.0f * PI / 180.0f);
     float vz = -BALL_OUT_HOLE_SPEED * sin(20.0f * PI / 180.0f);
     m_ball->set_velocity({vx, vz});
-    m_ball->set_position({0.266, 0.564});
+//    m_ball->set_acceleration({0.0, 0.0});
+//    m_ball->set_velocity({0.0, 0.0});
+    m_ball->set_position({0.266, 0.542});
 }
 
 void Toy::activate_solenoid(int solenoid_id)

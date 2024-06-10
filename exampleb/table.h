@@ -125,10 +125,25 @@ private:
     float Z3 = 0.164;
     float Z4 = 0.161;
     float Z5 = 0.520;
+
+
+
     float Z7 = 0.57725;
+//    float Z7 = 0.515;
+
+
+
+
     float Z8 = 0.640;
-    float ZOH1 = 0.548;
-    float ZOH2 = 0.566;
+
+
+//    float ZOH1 = 0.548;
+//    float ZOH2 = 0.566;
+
+    float ZOH1 = 0.524;
+    float ZOH2 = 0.542;
+
+
     int TOP_PANEL_STEPS = 200;
     float X0 = X1 - T1;
     float X3 = X1 + R2A * cos(ANGLE3A * PI / 180.0);

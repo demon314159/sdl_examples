@@ -79,8 +79,14 @@ Table::Table()
     m_ball_home_position = {(X7 + X8) / 2.0f, Z7 - BALL_RADIUS};
     m_ball_z_limit = Z8;
     m_strip1 = new StraightStrip(90.0, {X8, Y1 / 2.0f, (Z7 + Z4) / 2.0f}, Z7 - Z4, Y1, WOOD_COLOR, 0.2);
+
+
+
     m_strip2a = new StraightStrip(-90.0, {X7, Y1 / 2.0f, (Z3 + ZOH1) / 2.0f}, ZOH1 - Z3, Y1, WOOD_COLOR, 0.2);
     m_strip2b = new StraightStrip(-90.0, {X7, Y1 / 2.0f, (ZOH2 + Z7) / 2.0f}, Z7 - ZOH2, Y1, WOOD_COLOR, 0.2);
+
+
+
     m_strip3 = new StraightStrip(90.0, {X6, Y1 / 2.0f, (Z3 + Z5) / 2.0f}, Z5 - Z3, Y1, WOOD_COLOR, 0.2);
     m_strip4 = new ConvexStrip(0.0, 180.0, {X6 + T1 / 2.0f, Y1 / 2.0f, Z3}, T1 / 2.0, Y1, WOOD_COLOR, 0.2, RING_SEGMENTS);
     m_strip5 = new StraightStrip(ANGLE3B, {(float) (X5 + X6) / 2.0f, (float) Y2 / 2.0f, (float) (Z5 + Z6) / 2.0f}, (float) R2B, (float) Y2, WHITE_COLOR, (float) 0.2);
@@ -89,7 +95,16 @@ Table::Table()
     m_strip8 = new StraightStrip({X2, Z2}, {X1, ZA}, Y1, WOOD_COLOR, 0.2);
 
     m_strip9 = new ConcaveStrip(ANGLE1, ANGLE2, {X4, Y1 / 2.0f, Z4}, R1, Y1, WOOD_COLOR, 0.2, TOP_PANEL_STEPS);
-    m_strip10 = new StraightStrip(0.0, {(X7 + X8) / 2.0f, Y1 / 2.0f, Z7}, X8 - X7, Y1, WOOD_COLOR, 0.0);
+
+
+    m_strip10 = new StraightStrip(-3.0, {(X7 + X8) / 2.0f, Y4 / 2.0f, ZOH2 + BALL_RADIUS / 2.0f}, X8 - X7, Y4, WOOD_COLOR, 0.0);
+
+
+
+
+
+
+
     m_strip11 = new StraightDiodeStrip(ANGLE6, {XC, Y1 / 2.0f, ZC}, TDIODE, Y1, METAL_COLOR, RING_MAJOR_REFLECTIVITY);
 
     m_ring1 = new Ring(ANGLE5, {XB, YB / 2.0f, ZB}, YB / 2.0f - TB / 4.0f, YB / 8.0f, TB / 2.0f, RING_COLOR, RING_MAJOR_REFLECTIVITY, RING_MINOR_REFLECTIVITY, RING_SEGMENTS);
@@ -297,7 +312,6 @@ CadModel Table::model() const
     mm.add(m_strip7->model(0.0));
     mm.add(m_strip8->model(0.0));
     mm.add(m_strip9->model(0.0));
-    mm.add(m_strip10->model(0.0));
     mm.add(m_strip11->model(0.0));
     mm.add(m_ring1->model(0.0));
     Gate gate({XC, ZC}, X8 - X7, X8 - X7, (X8 - X7) * 0.65, ANGLE6, METAL_COLOR, 0.6, 25);
@@ -305,8 +319,18 @@ CadModel Table::model() const
 
     CadModel barrier1a(CubeShape(T1, Y4, ZOH1 - Z3), WOOD_COLOR, 0.0);
     CadModel barrier1b(CubeShape(T1, Y4, PLAYFIELD_Z - ZOH2), WOOD_COLOR, 0.0);
+
+
+
+
+
+
     mm.add(barrier1a, X6 + T1 / 2.0f, Y4 / 2.0f, (Z3 + ZOH1) / 2.0f);
     mm.add(barrier1b, X6 + T1 / 2.0f, Y4 / 2.0f, (ZOH2 + PLAYFIELD_Z) / 2.0f);
+
+
+
+
 
     CadModel cap(CylinderShape(T1 / 2.0f, Y4, 50), WOOD_COLOR, 0.0);
     mm.add(cap, X6 + T1 / 2.0f, Y4 / 2.0f, Z3);
@@ -438,6 +462,13 @@ CadModel Table::model() const
 
     CadModel apron(PlaneShape(0.290, 0.143, TEXTURE_ID_APRON), PaintCan(1.0, 1.0, 1.0), ANIMATION_ID_TRANSPARENT);
     mm.add(apron, 0.148, Y2, 0.592);
+
+    CadModel gauge(PlaneShape(0.028, 0.0564, TEXTURE_ID_GAUGE), PaintCan(1.0, 1.0, 1.0), ANIMATION_ID_TRANSPARENT);
+    CadModel plate(PlaneShape(0.028, 0.05), PaintCan(1.0, 1.0, 1.0), ANIMATION_ID_LIGHT);
+    mm.add(gauge, 0.3015, Y4, 0.580);
+    mm.add(plate, 0.3015, Y4, 0.63);
+    mm.add(m_strip10->model(ANIMATION_ID_TRANSPARENT));
+
 
     return mm;
 }

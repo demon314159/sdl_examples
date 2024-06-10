@@ -21,6 +21,7 @@ uniform sampler2D texture10;
 uniform sampler2D texture11;
 uniform sampler2D texture12;
 uniform sampler2D texture13;
+uniform sampler2D texture14;
 
 void main()
 {
@@ -175,9 +176,16 @@ void main()
             billy.g = c * billy.g;
             billy.b = c * billy.b;
             gl_FragColor = billy;
-        } else  {                        // Apron
+        } else if (v_texture_id < 13.5)  { // Apron
             c = 1.0;
             billy = texture(texture13, v_texture_position);
+            billy.r = c * billy.r;
+            billy.g = c * billy.g;
+            billy.b = c * billy.b;
+            gl_FragColor = billy;
+        } else  {                        // Gauge
+            c = 1.0;
+            billy = texture(texture14, v_texture_position);
             billy.r = c * billy.r;
             billy.g = c * billy.g;
             billy.b = c * billy.b;
