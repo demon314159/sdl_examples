@@ -76,7 +76,7 @@ Table::Table()
     , m_rollover7(NULL)
     , m_rollover8(NULL)
 {
-    m_ball_home_position = {(X7 + X8) / 2.0f, Z7 - BALL_RADIUS};
+    m_ball_home_position = {(X7 + X8) / 2.0f, ZOH2 + BALL_RADIUS / 2.0f - BALL_RADIUS};
     m_ball_z_limit = Z8;
     m_strip1 = new StraightStrip(90.0, {X8, Y1 / 2.0f, (Z7 + Z4) / 2.0f}, Z7 - Z4, Y1, WOOD_COLOR, 0.2);
 
@@ -97,13 +97,7 @@ Table::Table()
     m_strip9 = new ConcaveStrip(ANGLE1, ANGLE2, {X4, Y1 / 2.0f, Z4}, R1, Y1, WOOD_COLOR, 0.2, TOP_PANEL_STEPS);
 
 
-    m_strip10 = new StraightStrip(-3.0, {(X7 + X8) / 2.0f, Y4 / 2.0f, ZOH2 + BALL_RADIUS / 2.0f}, X8 - X7, Y4, WOOD_COLOR, 0.0);
-
-
-
-
-
-
+    m_strip10 = new StraightStrip(-3.0, {(X7 + X8) / 2.0f, Y4 / 2.0f, ZOH2 + BALL_RADIUS / 2.0f}, X8 - X7, Y4, WHITE_COLOR, 0.0);
 
     m_strip11 = new StraightDiodeStrip(ANGLE6, {XC, Y1 / 2.0f, ZC}, TDIODE, Y1, METAL_COLOR, RING_MAJOR_REFLECTIVITY);
 
@@ -463,12 +457,25 @@ CadModel Table::model() const
     CadModel apron(PlaneShape(0.290, 0.143, TEXTURE_ID_APRON), PaintCan(1.0, 1.0, 1.0), ANIMATION_ID_TRANSPARENT);
     mm.add(apron, 0.148, Y2, 0.592);
 
-    CadModel gauge(PlaneShape(0.028, 0.0564, TEXTURE_ID_GAUGE), PaintCan(1.0, 1.0, 1.0), ANIMATION_ID_TRANSPARENT);
-    CadModel plate(PlaneShape(0.028, 0.05), PaintCan(1.0, 1.0, 1.0), ANIMATION_ID_LIGHT);
-    mm.add(gauge, 0.3015, Y4, 0.580);
-    mm.add(plate, 0.3015, Y4, 0.63);
-    mm.add(m_strip10->model(ANIMATION_ID_TRANSPARENT));
+    float gauge_w = 0.028;
+    float gauge_l = 0.0564;
+    float gauge_x = 0.3015;
+    float gauge_z = 0.580;
+    float rod_end = ZOH2 + BALL_RADIUS / 2.0;
+    float rod_height = gauge_z - gauge_l / 2.0 - rod_end;
 
+    CadModel gauge(PlaneShape(gauge_w, gauge_l, TEXTURE_ID_GAUGE), PaintCan(1.0, 1.0, 1.0), ANIMATION_ID_TRANSPARENT);
+    CadModel plate(PlaneShape(gauge_w, 0.05), PaintCan(1.0, 1.0, 1.0), ANIMATION_ID_LIGHT);
+    CadModel plate2(PlaneShape(gauge_w, Y4), PaintCan(1.0, 1.0, 1.0), 0.0);
+    CadModel rod(CylinderShape(BALL_RADIUS / 2.0, rod_height, ROD_SEGMENTS), PaintCan(0.9, 0.9, 0.9), 0.0);
+    rod.rotate_ax(-90);
+    plate2.rotate_ax(-90.0);
+    mm.add(gauge, gauge_x, Y4, gauge_z);
+    mm.add(plate, 0.3015, Y4, 0.63);
+    mm.add(plate2, gauge_x, Y4 / 2.0, gauge_z - gauge_l / 2.0f);
+    float rod_off = ((X8 - X7) - 2.0 * BALL_RADIUS) * 0.80;
+    mm.add(rod, gauge_x + rod_off, Y4 / 2.0, rod_end + rod_height / 2.0);
+    mm.add(m_strip10->model(ANIMATION_ID_TRANSPARENT));
 
     return mm;
 }

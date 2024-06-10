@@ -281,6 +281,8 @@
 #define FLAT_RAIL_SEGMENTS  50
 #define FLAT_RAIL_REFLECTIVITY  0.2
 
+#define ROD_SEGMENTS  50
+
 class Look
 {
 public:

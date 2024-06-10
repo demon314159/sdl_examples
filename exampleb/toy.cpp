@@ -243,8 +243,6 @@ void Toy::eject_from_out_hole()
     float vx = BALL_OUT_HOLE_SPEED * cos(20.0f * PI / 180.0f);
     float vz = -BALL_OUT_HOLE_SPEED * sin(20.0f * PI / 180.0f);
     m_ball->set_velocity({vx, vz});
-//    m_ball->set_acceleration({0.0, 0.0});
-//    m_ball->set_velocity({0.0, 0.0});
     m_ball->set_position({0.266, 0.542});
 }
 
