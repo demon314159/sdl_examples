@@ -20,10 +20,18 @@ public:
     CadModel model(float animation_id) const;
     const float* data();
 
+    void increment();
+    void decrement();
+    float strength() const;
+
 private:
     Float2 m_size;
     Float3 m_position;
     float m_texture_id;
+    int m_step;
+    int m_steps;
+    float m_low_limit;
+    float m_high_limit;
     Matrix4x4 m_animate;
 };
 

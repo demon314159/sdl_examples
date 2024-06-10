@@ -380,7 +380,8 @@ bool Toy::button(int code, bool shifted, bool on)
             if (on && !m_last_launch_action_button) {
                 if ((m_ball->position().v2 > (m_table->ball_home_position().v2 - BALL_RADIUS))
                     && (m_ball->position().v1 > (m_table->ball_home_position().v1 - BALL_RADIUS))) {
-                    m_ball->set_velocity({0.0, -BALL_LAUNCH_SPEED});
+                    float speed = BALL_LAUNCH_SPEED * 2.0 * m_gauge->strength();
+                    m_ball->set_velocity({0.0, -speed});
                 }
             }
             m_last_launch_action_button = on;
@@ -391,7 +392,17 @@ bool Toy::button(int code, bool shifted, bool on)
             }
             break;
         case SDL_SCANCODE_UP:
+            if (on) {
+                m_gauge->decrement();
+            }
+            ret_val = false;
+            break;
         case SDL_SCANCODE_DOWN:
+            if (on) {
+                m_gauge->increment();
+            }
+            ret_val = false;
+            break;
         case SDL_SCANCODE_LEFT:
         case SDL_SCANCODE_RIGHT:
 //            ret_val = false;
