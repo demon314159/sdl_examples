@@ -43,6 +43,7 @@ Toy::Toy()
     , m_left_flipper(NULL)
     , m_right_flipper(NULL)
     , m_top_flipper(NULL)
+    , m_gauge(NULL)
     , m_last_launch_action_button(false)
 {
     m_scoreboard_camera = new ScoreboardCamera(INITIAL_WIDTH, INITIAL_HEIGHT, INITIAL_MAG, {INITIAL_XOFF, INITIAL_YOFF}, {INITIAL_XROT, INITIAL_YROT});
@@ -94,6 +95,9 @@ Toy::Toy()
         TOP_FLIPPER_SPEED, TOP_FLIPPER_REFLECTIVITY, TOP_FLIPPER_SEGMENTS,
         true
     );
+
+    m_gauge = new Gauge({0.028, 0.0564}, {0.3015, 0.0165, 0.580}, TEXTURE_ID_GAUGE);
+
     m_lamp->add(LAMP_5X_BONUS_POSITION, LAMP_SIZE, TYPE1_ON_COLOR, TYPE1_OFF_COLOR);
     m_lamp->add(LAMP_ACES_POSITION,  LAMP_SIZE, TYPE1_ON_COLOR, TYPE1_OFF_COLOR);
     m_lamp->add(LAMP_KINGS_POSITION, LAMP_SIZE, TYPE1_ON_COLOR, TYPE1_OFF_COLOR);
@@ -196,6 +200,7 @@ Toy::~Toy()
     delete m_left_flipper;
     delete m_right_flipper;
     delete m_top_flipper;
+    delete m_gauge;
 }
 
 void Toy::resize(int w, int h)
@@ -220,6 +225,7 @@ void Toy::update_uniform()
     m_right_flipper->data();
     m_top_flipper->data();
     m_ball->data();
+    m_gauge->data();
 }
 
 void Toy::build_uniform()
@@ -236,6 +242,7 @@ void Toy::build_uniform()
     m_uniform->add("animation_1_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_right_flipper->data());
     m_uniform->add("animation_2_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_top_flipper->data());
     m_uniform->add("animation_3_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_ball->data());
+    m_uniform->add("animation_4_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_gauge->data());
 }
 
 void Toy::eject_from_out_hole()
@@ -353,6 +360,7 @@ void Toy::build_model()
     m_model->add(m_top_flipper->model(ANIMATION_ID_TOP_FLIPPER));
     m_model->add(m_scoreboard->model(ANIMATION_ID_SCORE11, ANIMATION_ID_SCOREBOARD));
     m_model->add(m_table->model());
+    m_model->add(m_gauge->model(ANIMATION_ID_GAUGE));
 }
 
 bool Toy::button(int code, bool shifted, bool on)

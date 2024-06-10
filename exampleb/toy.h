@@ -15,6 +15,7 @@
 #include "score.h"
 #include "ball.h"
 #include "flipper.h"
+#include "gauge.h"
 #include "table.h"
 #include "queue.h"
 #include "execute.h"
@@ -50,6 +51,7 @@ private:
     Flipper* m_left_flipper;
     Flipper* m_right_flipper;
     Flipper* m_top_flipper;
+    Gauge* m_gauge;
 
     bool m_last_launch_action_button;
     void build_model();
