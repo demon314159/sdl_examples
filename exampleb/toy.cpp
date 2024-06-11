@@ -173,7 +173,6 @@ Toy::Toy()
     m_queue = new Queue();
     m_score = new Score(m_scoreboard, m_lamp);
 
-    m_score->set_high_game(120000);
     m_score->set_match(70);
     m_game = new Game(INITIAL_CREDITS, m_scoreboard->max_players(), MAX_BALLS, m_sensor, m_target, m_lamp, m_queue, m_score);
     m_execute = new Execute(m_queue, m_score, m_lamp);

@@ -6,6 +6,7 @@
 #define _SCORE_H_
 
 #include "scoreboard.h"
+#include "high_score.h"
 #include "lamp.h"
 #include "field.h"
 
@@ -31,7 +32,6 @@ public:
     void add_player_score(int player, int v);
     int get_player_score(int player) const;
 
-    void set_high_game(int high_game);
     int get_high_game() const;
 
     void set_player_flash(int player, bool v);
@@ -44,7 +44,7 @@ private:
     Lamp* m_lamp;
     int m_ball_in_play;
     int m_match;
-    int m_high_game;
+    HighScore m_high_score;
     int m_fields;
     Field* m_field;
     bool m_flash_high_game;

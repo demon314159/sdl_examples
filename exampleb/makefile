@@ -100,6 +100,7 @@ HEADERS = view.h \
           execute.h \
           game.h \
           gauge.h \
+          high_score.h \
           \
           \
           \
@@ -199,6 +200,7 @@ OBJECTS = main.obj \
           execute.obj \
           game.obj \
           gauge.obj \
+          high_score.obj \
           \
           \
           \

@@ -16,7 +16,7 @@ Score::Score(Scoreboard* scoreboard, Lamp* lamp)
     , m_lamp(lamp)
     , m_ball_in_play(0)
     , m_match(0)
-    , m_high_game(0)
+    , m_high_score()
     , m_fields(2 + m_scoreboard->max_players())
     , m_field(new Field[m_fields])
     , m_flash_high_game(false)
@@ -56,7 +56,7 @@ void Score::advance(float seconds)
                 m_flash_template = true;
                 m_flash_timer += FLASH_ON_TIME;
                 for (int i = 0; i < m_scoreboard->max_players(); i++) {
-                    apply_high_game(PLAYER1_FIELD + i, m_high_game);
+                    apply_high_game(PLAYER1_FIELD + i, m_high_score.score());
                 }
                 m_lamp->set(FIXED_LAMP_ID_HIGH_GAME_TO_DATE, true);
             }
@@ -237,21 +237,14 @@ int Score::get_player_score(int player) const
     return m_field[ix].value;
 }
 
-void Score::set_high_game(int high_game)
-{
-    m_high_game = high_game;
-}
-
 int Score::get_high_game() const
 {
-    return m_high_game;
+    return m_high_score.score();
 }
 
 void Score::update_high_game(int score)
 {
-    if (score > m_high_game) {
-        m_high_game = score;
-    }
+    m_high_score.set_high_score(score);
 }
 
 void Score::set_player_flash(int player, bool v)
