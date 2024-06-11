@@ -20,6 +20,7 @@ Game::Game(int credit, int max_players, int max_balls,
     , m_players(0)
     , m_player_up(0)
     , m_ball_in_play(0)
+    , m_initial_high_game(0)
     , m_game_in_progress(false)
     , m_match_value(0)
     , m_rollover_a(false)
@@ -43,6 +44,7 @@ void Game::add_credit()
 void Game::add_player()
 {
     if (m_credit > 0 && !m_game_in_progress) {
+        m_initial_high_game = m_score->get_high_game();
         if (m_players < m_max_players) {
             ++m_players;
             m_player_up = 1;
@@ -127,6 +129,13 @@ void Game::next_player()
             }
         }
         m_players = 0;
+        if (m_score->get_high_game() > m_initial_high_game) {
+            for (int i = 0; i < 3; i++) {
+                m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_KNOCKER);
+                m_queue->put(QCOMMAND_ADD_CREDIT, 0, 1);
+                m_queue->put(QCOMMAND_DELAY, 0, BONUS_DELAY);
+            }
+        }
     }
 }
 

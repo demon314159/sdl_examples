@@ -37,6 +37,7 @@ private:
     int m_players;
     int m_player_up;
     int m_ball_in_play;
+    int m_initial_high_game;
     bool m_game_in_progress; // from first score until set_match
     int m_match_value;
     bool m_rollover_a;
