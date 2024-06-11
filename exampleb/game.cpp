@@ -35,26 +35,6 @@ Game::~Game()
 {
 }
 
-//int Game::ball_in_play() const
-//{
-//    return m_ball_in_play;
-//}
-
-//int Game::player_up() const
-//{
-//    return m_player_up;
-//}
-
-//int Game::players() const
-//{
-//    return m_players;
-//}
-
-//int Game::credit() const
-//{
-//    return m_credit;
-//}
-
 void Game::add_credit()
 {
     ++m_credit;
@@ -152,9 +132,14 @@ void Game::next_player()
 
 void Game::apply_rules()
 {
-    if (m_game_in_progress && m_sensor->rising(SENSOR_ID_OUTHOLE)) {
-        scoring_sequence();
-        next_player();
+    if (m_sensor->rising(SENSOR_ID_OUTHOLE)) {
+        if (m_players > 0) {
+            m_game_in_progress = true;
+        }
+        if (m_game_in_progress) {
+             scoring_sequence();
+            next_player();
+        }
     } else {
         rollover_rules();
         target_rules();
