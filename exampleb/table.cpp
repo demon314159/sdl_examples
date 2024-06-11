@@ -46,6 +46,9 @@ Table::Table()
     , m_wire_guide6(NULL)
     , m_wire_guide7(NULL)
     , m_wire_guide8(NULL)
+    , m_wire_guide9(NULL)
+    , m_wire_guide10(NULL)
+    , m_wire_guide11(NULL)
     , m_lane_guide1(NULL)
     , m_lane_guide2(NULL)
     , m_lane_guide3(NULL)
@@ -79,42 +82,31 @@ Table::Table()
     m_ball_home_position = {(X7 + X8) / 2.0f, ZOH2 + BALL_RADIUS / 2.0f - BALL_RADIUS};
     m_ball_z_limit = Z8;
     m_strip1 = new StraightStrip(90.0, {X8, Y1 / 2.0f, (Z7 + Z4) / 2.0f}, Z7 - Z4, Y1, WOOD_COLOR, 0.2);
-
-
-
     m_strip2a = new StraightStrip(-90.0, {X7, Y1 / 2.0f, (Z3 + ZOH1) / 2.0f}, ZOH1 - Z3, Y1, WOOD_COLOR, 0.2);
     m_strip2b = new StraightStrip(-90.0, {X7, Y1 / 2.0f, (ZOH2 + Z7) / 2.0f}, Z7 - ZOH2, Y1, WOOD_COLOR, 0.2);
-
-
-
     m_strip3 = new StraightStrip(90.0, {X6, Y1 / 2.0f, (Z3 + Z5) / 2.0f}, Z5 - Z3, Y1, WOOD_COLOR, 0.2);
     m_strip4 = new ConvexStrip(0.0, 180.0, {X6 + T1 / 2.0f, Y1 / 2.0f, Z3}, T1 / 2.0, Y1, WOOD_COLOR, 0.2, RING_SEGMENTS);
     m_strip5 = new StraightStrip(ANGLE3B, {(float) (X5 + X6) / 2.0f, (float) Y2 / 2.0f, (float) (Z5 + Z6) / 2.0f}, (float) R2B, (float) Y2, WHITE_COLOR, (float) 0.2);
     m_strip6 = new StraightStrip(-ANGLE3A, {(X1 + X3) / 2.0f, Y2 / 2.0f, (Z5 + Z6) / 2.0f}, R2A, Y2, WHITE_COLOR, 0.2);
     m_strip7 = new StraightStrip(-90.0, {X1, Y1 / 2.0f, (ZA + Z5) / 2.0f}, (Z5 - ZA), Y1, WOOD_COLOR, 0.2);
     m_strip8 = new StraightStrip({X2, Z2}, {X1, ZA}, Y1, WOOD_COLOR, 0.2);
-
     m_strip9 = new ConcaveStrip(ANGLE1, ANGLE2, {X4, Y1 / 2.0f, Z4}, R1, Y1, WOOD_COLOR, 0.2, TOP_PANEL_STEPS);
-
-
     m_strip10 = new StraightStrip(-3.0, {(X7 + X8) / 2.0f, Y4 / 2.0f, ZOH2 + BALL_RADIUS / 2.0f}, X8 - X7, Y4, WHITE_COLOR, 0.0);
-
     m_strip11 = new StraightDiodeStrip(ANGLE6, {XC, Y1 / 2.0f, ZC}, TDIODE, Y1, METAL_COLOR, RING_MAJOR_REFLECTIVITY);
-
     m_ring1 = new Ring(ANGLE5, {XB, YB / 2.0f, ZB}, YB / 2.0f - TB / 4.0f, YB / 8.0f, TB / 2.0f, RING_COLOR, RING_MAJOR_REFLECTIVITY, RING_MINOR_REFLECTIVITY, RING_SEGMENTS);
-
     m_wire_guide1 = new StraightWireGuide({0.028, 0.411}, {0.02775, 0.4765}, WIRE_GUIDE_RADIUS, BALL_RADIUS, WIRE_GUIDE_COLOR, WIRE_GUIDE_REFLECTIVITY, WIRE_GUIDE_SEGMENTS);
     m_wire_guide2 = new StraightWireGuide({0.262, 0.426}, {0.262, 0.4755}, WIRE_GUIDE_RADIUS, BALL_RADIUS, WIRE_GUIDE_COLOR, WIRE_GUIDE_REFLECTIVITY, WIRE_GUIDE_SEGMENTS);
     m_wire_guide3 = new StraightWireGuide({0.02775, 0.479}, {0.029, 0.483}, WIRE_GUIDE_RADIUS, BALL_RADIUS, WIRE_GUIDE_COLOR, WIRE_GUIDE_REFLECTIVITY, WIRE_GUIDE_SEGMENTS);
     m_wire_guide35 = new StraightWireGuide({0.029, 0.483}, {0.0865, 0.5195}, WIRE_GUIDE_RADIUS, BALL_RADIUS, WIRE_GUIDE_COLOR, WIRE_GUIDE_REFLECTIVITY, WIRE_GUIDE_SEGMENTS);
-
     m_wire_guide4 = new StraightWireGuide({0.2035, 0.519}, {0.26075, 0.483}, WIRE_GUIDE_RADIUS, BALL_RADIUS, WIRE_GUIDE_COLOR, WIRE_GUIDE_REFLECTIVITY, WIRE_GUIDE_SEGMENTS);
     m_wire_guide45 = new StraightWireGuide({0.26075, 0.483}, {0.262, 0.478}, WIRE_GUIDE_RADIUS, BALL_RADIUS, WIRE_GUIDE_COLOR, WIRE_GUIDE_REFLECTIVITY, WIRE_GUIDE_SEGMENTS);
-
     m_wire_guide5 = new StraightWireGuide({0.0485, 0.4135}, {0.0485, 0.463}, WIRE_GUIDE_RADIUS, BALL_RADIUS, WIRE_GUIDE_COLOR, WIRE_GUIDE_REFLECTIVITY, WIRE_GUIDE_SEGMENTS);
     m_wire_guide6 = new StraightWireGuide({0.241, 0.4405}, {0.241, 0.4625}, WIRE_GUIDE_RADIUS, BALL_RADIUS, WIRE_GUIDE_COLOR, WIRE_GUIDE_REFLECTIVITY, WIRE_GUIDE_SEGMENTS);
     m_wire_guide7 = new StraightWireGuide({0.0835, 0.542}, {0.1255, 0.566}, WIRE_GUIDE_RADIUS, WIRE_GUIDE_RADIUS, WIRE_GUIDE_COLOR, WIRE_GUIDE_REFLECTIVITY, WIRE_GUIDE_SEGMENTS);
     m_wire_guide8 = new StraightWireGuide({0.16475, 0.566}, {0.20725, 0.54125}, WIRE_GUIDE_RADIUS, WIRE_GUIDE_RADIUS, WIRE_GUIDE_COLOR, WIRE_GUIDE_REFLECTIVITY, WIRE_GUIDE_SEGMENTS);
+    m_wire_guide9 = new StraightWireGuide({0.25223, 0.075}, {0.275, 0.102}, WIRE_GUIDE_RADIUS, WIRE_GUIDE_RADIUS, WIRE_GUIDE_COLOR, WIRE_GUIDE_REFLECTIVITY, WIRE_GUIDE_SEGMENTS);
+    m_wire_guide10 = new StraightWireGuide({0.275, 0.102}, {0.288, 0.1528}, WIRE_GUIDE_RADIUS, WIRE_GUIDE_RADIUS, WIRE_GUIDE_COLOR, WIRE_GUIDE_REFLECTIVITY, WIRE_GUIDE_SEGMENTS);
+    m_wire_guide11 = new StraightWireGuide({0.148, 0.24025}, {0.1585, 0.221}, WIRE_GUIDE_RADIUS, WIRE_GUIDE_RADIUS, WIRE_GUIDE_COLOR, WIRE_GUIDE_REFLECTIVITY, WIRE_GUIDE_SEGMENTS);
     m_lane_guide1 = new PyramidLaneGuide(90.0, {0.185, 0.0, 0.105}, 0.032, BALL_RADIUS, PYRAMID_LANE_GUIDE_WIDTH, PYRAMID_LANE_GUIDE_COLOR, PYRAMID_LANE_GUIDE_MAJOR_REFLECTIVITY, PYRAMID_LANE_GUIDE_MINOR_REFLECTIVITY, PYRAMID_LANE_GUIDE_SEGMENTS);
     m_lane_guide2 = new PyramidLaneGuide(90.0, {0.2115, 0.0, 0.105}, 0.032, BALL_RADIUS, PYRAMID_LANE_GUIDE_WIDTH, PYRAMID_LANE_GUIDE_COLOR, PYRAMID_LANE_GUIDE_MAJOR_REFLECTIVITY, PYRAMID_LANE_GUIDE_MINOR_REFLECTIVITY, PYRAMID_LANE_GUIDE_SEGMENTS);
     m_lane_guide3 = new LaneGuide(90.0, {0.15525, 0.0, 0.10525}, 0.0335, BALL_RADIUS, LANE_GUIDE_WIDTH, LANE_GUIDE_COLOR, LANE_GUIDE_COLOR, LANE_GUIDE_REFLECTIVITY, LANE_GUIDE_SEGMENTS, 0, 0);
@@ -188,6 +180,9 @@ Table::~Table()
     delete m_wire_guide6;
     delete m_wire_guide7;
     delete m_wire_guide8;
+    delete m_wire_guide9;
+    delete m_wire_guide10;
+    delete m_wire_guide11;
     delete m_lane_guide1;
     delete m_lane_guide2;
     delete m_lane_guide3;
@@ -259,6 +254,9 @@ void Table::collide(Ball* ball, Sensor* sensor) const
     m_wire_guide6->collide(ball);
     m_wire_guide7->collide(ball);
     m_wire_guide8->collide(ball);
+    m_wire_guide9->collide(ball);
+    m_wire_guide10->collide(ball);
+    m_wire_guide11->collide(ball);
     m_lane_guide1->collide(ball);
     m_lane_guide2->collide(ball);
     m_lane_guide3->collide(ball, sensor);
@@ -313,18 +311,8 @@ CadModel Table::model() const
 
     CadModel barrier1a(CubeShape(T1, Y4, ZOH1 - Z3), WOOD_COLOR, 0.0);
     CadModel barrier1b(CubeShape(T1, Y4, PLAYFIELD_Z - ZOH2), WOOD_COLOR, 0.0);
-
-
-
-
-
-
     mm.add(barrier1a, X6 + T1 / 2.0f, Y4 / 2.0f, (Z3 + ZOH1) / 2.0f);
     mm.add(barrier1b, X6 + T1 / 2.0f, Y4 / 2.0f, (ZOH2 + PLAYFIELD_Z) / 2.0f);
-
-
-
-
 
     CadModel cap(CylinderShape(T1 / 2.0f, Y4, 50), WOOD_COLOR, 0.0);
     mm.add(cap, X6 + T1 / 2.0f, Y4 / 2.0f, Z3);
@@ -361,6 +349,9 @@ CadModel Table::model() const
     mm.add(m_wire_guide6->model(0.0), 0.0, 0.0, 0.0);
     mm.add(m_wire_guide7->model(0.0), 0.0, 0.0, 0.0);
     mm.add(m_wire_guide8->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_wire_guide9->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_wire_guide10->model(0.0), 0.0, 0.0, 0.0);
+    mm.add(m_wire_guide11->model(0.0), 0.0, 0.0, 0.0);
 
     mm.add(m_lane_guide1->model(0.0), 0.0, 0.0, 0.0);
     mm.add(m_lane_guide2->model(0.0), 0.0, 0.0, 0.0);
@@ -452,7 +443,6 @@ CadModel Table::model() const
     CadModel plastic6(PlaneShape(pg.blank_size().v1, pg.blank_size().v2, TEXTURE_ID_PLASTIC6), PaintCan(1.0, 1.0, 1.0), ANIMATION_ID_TRANSPARENT);
     plastic6.rotate_ay(pg.blank_angle());
     mm.add(plastic6, pg.blank_position().v1, 1.6 * BALL_RADIUS + 0.0005, pg.blank_position().v2);
-
 
     CadModel apron(PlaneShape(0.290, 0.143, TEXTURE_ID_APRON), PaintCan(1.0, 1.0, 1.0), ANIMATION_ID_TRANSPARENT);
     mm.add(apron, 0.148, Y2, 0.592);
