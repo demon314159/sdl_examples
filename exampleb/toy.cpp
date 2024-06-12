@@ -385,7 +385,7 @@ bool Toy::button(int code, bool shifted, bool on)
             }
             m_last_launch_action_button = on;
             break;
-        case SDL_SCANCODE_R:  // Add player
+        case SDL_SCANCODE_C:  // Credit button
             if (on) {
                 m_game->add_player();
             }

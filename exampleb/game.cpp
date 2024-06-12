@@ -4,6 +4,9 @@
 
 #include "game.h"
 
+#include <stdio.h>
+
+
 #define SCORE_DELAY 150 // milliseconds
 #define BONUS_DELAY 250 // milliseconds
 
@@ -43,6 +46,7 @@ void Game::add_credit()
 
 void Game::add_player()
 {
+    printf("Game::add_player() credit = %d, game_in_progress = %d\n", m_credit, m_game_in_progress?1:0);
     if (m_credit > 0 && !m_game_in_progress) {
         m_initial_high_game = m_score->get_high_game();
         if (m_players < m_max_players) {
@@ -125,6 +129,7 @@ void Game::next_player()
             if (score == m_match_value) {
                 m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_KNOCKER);
                 m_queue->put(QCOMMAND_ADD_CREDIT, 0, 1);
+                ++m_credit;
                 m_queue->put(QCOMMAND_DELAY, 0, BONUS_DELAY);
             }
         }
@@ -133,6 +138,7 @@ void Game::next_player()
             for (int i = 0; i < 3; i++) {
                 m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_KNOCKER);
                 m_queue->put(QCOMMAND_ADD_CREDIT, 0, 1);
+                ++m_credit;
                 m_queue->put(QCOMMAND_DELAY, 0, BONUS_DELAY);
             }
         }
@@ -279,6 +285,7 @@ void Game::rollover_rules()
         if (m_lamp->lit(LAMP_ID_SPECIAL)) {
             m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_KNOCKER);
             m_queue->put(QCOMMAND_ADD_CREDIT, 0, 1);
+            ++m_credit;
             m_lamp->set(LAMP_ID_SPECIAL, false);
             m_queue->put(QCOMMAND_DELAY, 0, BONUS_DELAY);
         }

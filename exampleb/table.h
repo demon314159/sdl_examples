@@ -157,8 +157,11 @@ private:
     float X2 = X4 + R1 * cos(ANGLE2 * PI / 180.0);
     float Z2 = Z4 - R1 * sin(ANGLE2 * PI / 180.0);
     float Z6 = Z5 + R2A * sin(ANGLE3A * PI / 180.0);
-    float Z9 = PLAYFIELD_Z - T1;
-    float Z10 = PLAYFIELD_Z;
+
+    float Z9 = PLAYFIELD_Z - T1 + 0.01;
+    float Z10 = PLAYFIELD_Z + 0.01;
+
+
     float R4 = sqrt((X2 - X1) * (X2 - X1) + (ZA - Z2) * (ZA - Z2));
     float TB = (X8 - X7) * 0.7;
     float TDIODE = (X8 - X7) * 1.4;

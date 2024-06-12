@@ -310,23 +310,23 @@ CadModel Table::model() const
     mm.add(gate.model(0.0), 0.0, Y1, 0.0);
 
     CadModel barrier1a(CubeShape(T1, Y4, ZOH1 - Z3), WOOD_COLOR, 0.0);
-    CadModel barrier1b(CubeShape(T1, Y4, PLAYFIELD_Z - ZOH2), WOOD_COLOR, 0.0);
+    CadModel barrier1b(CubeShape(T1, Y4, Z10 - ZOH2), WOOD_COLOR, 0.0);
     mm.add(barrier1a, X6 + T1 / 2.0f, Y4 / 2.0f, (Z3 + ZOH1) / 2.0f);
-    mm.add(barrier1b, X6 + T1 / 2.0f, Y4 / 2.0f, (ZOH2 + PLAYFIELD_Z) / 2.0f);
+    mm.add(barrier1b, X6 + T1 / 2.0f, Y4 / 2.0f, (ZOH2 + Z10) / 2.0f);
 
     CadModel cap(CylinderShape(T1 / 2.0f, Y4, 50), WOOD_COLOR, 0.0);
     mm.add(cap, X6 + T1 / 2.0f, Y4 / 2.0f, Z3);
 
-    CadModel barrier2(CubeShape(T1, Y3 + PLAYFIELD_Y, PLAYFIELD_Z), WOOD_COLOR, 0.0);
-    mm.add(barrier2, X8 + T1 / 2.0, Y3 / 2.0 - PLAYFIELD_Y / 2.0, PLAYFIELD_Z / 2.0);
-    mm.add(barrier2, X1 - T1 / 2.0, Y3 / 2.0 - PLAYFIELD_Y / 2.0, PLAYFIELD_Z / 2.0);
+    CadModel barrier2(CubeShape(T1, Y3 + PLAYFIELD_Y, Z10), WOOD_COLOR, 0.0);
+    mm.add(barrier2, X8 + T1 / 2.0, Y3 / 2.0 - PLAYFIELD_Y / 2.0, Z10 / 2.0);
+    mm.add(barrier2, X1 - T1 / 2.0, Y3 / 2.0 - PLAYFIELD_Y / 2.0, Z10 / 2.0);
     CadModel barrier3(CubeShape(PLAYFIELD_X, Y3 + PLAYFIELD_Y, T1), WOOD_COLOR, 0.0);
     mm.add(barrier3, PLAYFIELD_X / 2.0, Y3 / 2.0 - PLAYFIELD_Y / 2.0, T1 / 2.0);
-    mm.add(barrier3, PLAYFIELD_X / 2.0, Y3 / 2.0 - PLAYFIELD_Y / 2.0, PLAYFIELD_Z - T1 / 2.0);
+    mm.add(barrier3, PLAYFIELD_X / 2.0, Y3 / 2.0 - PLAYFIELD_Y / 2.0, Z10 - T1 / 2.0);
 
-    CadModel under_panel(PlaneShape(PLAYFIELD_X, PLAYFIELD_Z), WOOD_COLOR, 0.0);
+    CadModel under_panel(PlaneShape(PLAYFIELD_X, Z10), WOOD_COLOR, 0.0);
     under_panel.rotate_ax(180.0);
-    mm.add(under_panel, PLAYFIELD_X / 2.0, -PLAYFIELD_Y + 0.002, PLAYFIELD_Z / 2.0);
+    mm.add(under_panel, PLAYFIELD_X / 2.0, -PLAYFIELD_Y + 0.002, Z10 / 2.0);
     CadModel top_panel(TopPanelShape(PLAYFIELD_X, R1, ANGLE1, ANGLE2, {X4, Z4}, X1, ZA, TOP_PANEL_STEPS), WOOD_COLOR, 0.0);
     mm.add(top_panel, 0.0, Y1, 0.0);
 
