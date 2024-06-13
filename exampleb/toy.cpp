@@ -312,6 +312,17 @@ void Toy::activate_solenoid(int solenoid_id)
             m_target->set_dropped(DROP_TARGET_ID_A3, false);
             m_target->set_dropped(DROP_TARGET_ID_A4, false);
             break;
+        case SOLENOID_ID_INITIAL_LAMPS:
+            m_lamp->set(LAMP_ID_TOP_ROLLOVER_A, true);
+            m_lamp->set(LAMP_ID_TOP_ROLLOVER_B, true);
+            m_lamp->set(LAMP_ID_TOP_ROLLOVER_C, true);
+            m_lamp->set(LAMP_ID_BOTTOM_ROLLOVER_A, true);
+            m_lamp->set(LAMP_ID_BOTTOM_LEFT_ROLLOVER_B, true);
+            m_lamp->set(LAMP_ID_BOTTOM_RIGHT_ROLLOVER_B, true);
+            m_lamp->set(LAMP_ID_BOTTOM_ROLLOVER_C, true);
+            m_lamp->set(LAMP_ID_EXTRA_BALL, false);
+            m_lamp->set(LAMP_ID_SPECIAL, false);
+            break;
         default:
             break;
     }

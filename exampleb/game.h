@@ -18,7 +18,6 @@ public:
          Sensor* sensor, Target* target, Lamp* lamp, Queue* queue, const Score* score);
     ~Game();
 
-    void add_credit();
     void add_player();
     void next_player();
 
@@ -26,7 +25,6 @@ public:
 
 
 private:
-    int m_credit;
     int m_max_players;
     int m_max_balls;
     Sensor* m_sensor;
@@ -46,7 +44,7 @@ private:
     bool m_scored;
     bool m_kings_flag;
 
-    void set_rollover_lamps();
+    void reset_flags();
     void scoring_sequence();
     void multiscore(int n, int solenoid_id, int score);
     void rollover_rules();

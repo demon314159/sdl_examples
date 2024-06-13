@@ -4,16 +4,12 @@
 
 #include "game.h"
 
-#include <stdio.h>
-
-
 #define SCORE_DELAY 150 // milliseconds
 #define BONUS_DELAY 250 // milliseconds
 
 Game::Game(int credit, int max_players, int max_balls,
            Sensor* sensor, Target* target, Lamp* lamp, Queue* queue, const Score* score)
-    : m_credit(credit)
-    , m_max_players(max_players)
+    : m_max_players(max_players)
     , m_max_balls(max_balls)
     , m_sensor(sensor)
     , m_target(target)
@@ -39,29 +35,23 @@ Game::~Game()
 {
 }
 
-void Game::add_credit()
-{
-    ++m_credit;
-}
-
 void Game::add_player()
 {
-    printf("Game::add_player() credit = %d, game_in_progress = %d\n", m_credit, m_game_in_progress?1:0);
-    if (m_credit > 0 && !m_game_in_progress) {
+    if (m_score->get_credit() > 0 && !m_game_in_progress) {
         m_initial_high_game = m_score->get_high_game();
         if (m_players < m_max_players) {
             ++m_players;
             m_player_up = 1;
             m_ball_in_play = 1;
-            --m_credit;
             if (m_players == 1) {
+                reset_flags();
                 m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_HUNDREDS_CHIME);
                 m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_DROP_TARGET_ALL);
+                m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_INITIAL_LAMPS);
                 m_queue->put(QCOMMAND_ADD_CREDIT, 0, -1);
                 m_queue->put(QCOMMAND_SET_SCORE, 0, 0);
                 m_queue->put(QCOMMAND_SET_PLAYER, 0, m_player_up);
                 m_queue->put(QCOMMAND_SET_BALL, 0, m_ball_in_play);
-                set_rollover_lamps();
                 m_queue->put(QCOMMAND_DELAY, 0, SCORE_DELAY);
                 m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_OUT_HOLE);
             } else {
@@ -75,21 +65,12 @@ void Game::add_player()
     }
 }
 
-void Game::set_rollover_lamps()
+void Game::reset_flags()
 {
     m_rollover_a = false;
     m_rollover_b = false;
     m_rollover_c = false;
     m_scored = false;
-    m_lamp->set(LAMP_ID_TOP_ROLLOVER_A, true);
-    m_lamp->set(LAMP_ID_TOP_ROLLOVER_B, true);
-    m_lamp->set(LAMP_ID_TOP_ROLLOVER_C, true);
-    m_lamp->set(LAMP_ID_BOTTOM_ROLLOVER_A, true);
-    m_lamp->set(LAMP_ID_BOTTOM_LEFT_ROLLOVER_B, true);
-    m_lamp->set(LAMP_ID_BOTTOM_RIGHT_ROLLOVER_B, true);
-    m_lamp->set(LAMP_ID_BOTTOM_ROLLOVER_C, true);
-    m_lamp->set(LAMP_ID_EXTRA_BALL, false);
-    m_lamp->set(LAMP_ID_SPECIAL, false);
     m_kings_flag = false;
 }
 
@@ -109,14 +90,15 @@ void Game::next_player()
         }
     }
     if (m_ball_in_play > 0 && m_player_up > 0) {
+        reset_flags();
         m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_HUNDREDS_CHIME);
         m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_DROP_TARGET_ALL);
+        m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_INITIAL_LAMPS);
         m_queue->put(QCOMMAND_SET_PLAYER, 0, m_player_up);
         m_queue->put(QCOMMAND_SET_BALL, 0, m_ball_in_play);
         for (int i = 0; i < m_players; i++) {
             m_queue->put(QCOMMAND_SET_BLANK, i + 1, 0);
         }
-        set_rollover_lamps();
         m_queue->put(QCOMMAND_DELAY, 0, SCORE_DELAY);
         m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_OUT_HOLE);
     } else {
@@ -129,7 +111,6 @@ void Game::next_player()
             if (score == m_match_value) {
                 m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_KNOCKER);
                 m_queue->put(QCOMMAND_ADD_CREDIT, 0, 1);
-                ++m_credit;
                 m_queue->put(QCOMMAND_DELAY, 0, BONUS_DELAY);
             }
         }
@@ -138,7 +119,6 @@ void Game::next_player()
             for (int i = 0; i < 3; i++) {
                 m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_KNOCKER);
                 m_queue->put(QCOMMAND_ADD_CREDIT, 0, 1);
-                ++m_credit;
                 m_queue->put(QCOMMAND_DELAY, 0, BONUS_DELAY);
             }
         }
@@ -285,7 +265,6 @@ void Game::rollover_rules()
         if (m_lamp->lit(LAMP_ID_SPECIAL)) {
             m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_KNOCKER);
             m_queue->put(QCOMMAND_ADD_CREDIT, 0, 1);
-            ++m_credit;
             m_lamp->set(LAMP_ID_SPECIAL, false);
             m_queue->put(QCOMMAND_DELAY, 0, BONUS_DELAY);
         }

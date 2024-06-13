@@ -37,6 +37,7 @@ struct QueueRec {
 #define SOLENOID_ID_DROP_TARGET_KINGS  8
 #define SOLENOID_ID_DROP_TARGET_ACES   9
 #define SOLENOID_ID_DROP_TARGET_ALL    10
+#define SOLENOID_ID_INITIAL_LAMPS      11
 
 class Queue
 {
