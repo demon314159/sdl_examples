@@ -254,7 +254,6 @@ void View::initialize()
 void View::copy_facets()
 {
     int facet_count = m_toy->model()->facets();
-    printf("Total number of facets = %d\n", facet_count);
     m_vertex_count = 3 * facet_count;
     if (m_vertex_count > 0) {
         VertexData* vertices = new VertexData[m_vertex_count];

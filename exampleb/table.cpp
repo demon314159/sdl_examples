@@ -454,12 +454,12 @@ CadModel Table::model() const
     float rod_end = ZOH2 + BALL_RADIUS / 2.0;
     float rod_height = gauge_z - gauge_l / 2.0 - rod_end;
 
-    CadModel plate(PlaneShape(gauge_w, 0.05), PaintCan(1.0, 1.0, 1.0), ANIMATION_ID_LIGHT);
+    CadModel plate(PlaneShape(gauge_w, 0.06), PaintCan(1.0, 1.0, 1.0), ANIMATION_ID_LIGHT);
     CadModel plate2(PlaneShape(gauge_w, Y4), PaintCan(1.0, 1.0, 1.0), 0.0);
     CadModel rod(CylinderShape(BALL_RADIUS / 2.0, rod_height, ROD_SEGMENTS), PaintCan(0.9, 0.9, 0.9), 0.0);
     rod.rotate_ax(-90);
     plate2.rotate_ax(-90.0);
-    mm.add(plate, 0.3015, Y4, 0.63);
+    mm.add(plate, 0.3015, Y4, 0.635);
     mm.add(plate2, gauge_x, Y4 / 2.0, gauge_z - gauge_l / 2.0f);
     float rod_off = ((X8 - X7) - 2.0 * BALL_RADIUS) * 0.80;
     mm.add(rod, gauge_x + rod_off, Y4 / 2.0, rod_end + rod_height / 2.0);
