@@ -20,7 +20,8 @@
 Scoreboard::Scoreboard(const Float3& position, const Float2& size,
                        const Float2& backglass_image_size,
                        const Float2& trim, const PaintCan& trim_color,
-                       float texture_id_backglass, float texture_id_score)
+                       float texture_id_backglass, float texture_id_score,
+                       float texture_id_help)
     : m_flash_template(true)
     , m_flash_timer(0.0)
     , m_position(position)
@@ -30,6 +31,7 @@ Scoreboard::Scoreboard(const Float3& position, const Float2& size,
     , m_trim_color(trim_color)
     , m_texture_id_backglass(texture_id_backglass)
     , m_texture_id_score(texture_id_score)
+    , m_texture_id_help(texture_id_help)
     , m_digit(new Digit[TOTAL_DIGITS])
     , m_data(new float[TOTAL_DIGITS])
 {
@@ -138,6 +140,15 @@ CadModel Scoreboard::model(float animation_id_first_digit, float animation_id_sc
     mm.add(barrier2, 0.0, -m_trim.v2 / 2.0, m_size.v2 / 2.0 + m_trim.v1 / 2.0);
     CadModel under_panel(PlaneShape(m_size.v1 + 2.0 * m_trim.v1, m_size.v2 + 2.0 * m_trim.v1), m_trim_color, animation_id_scoreboard);
     under_panel.rotate_ax(180.0);
+
+    float x = m_size.v1 + m_trim.v1 * 2.0;
+    float y = m_size.v1 / 3.25;
+    float posx = 0.0;
+    float posy = m_size.v2 / 2.0 + m_trim.v1 + y / 2.0;
+
+    CadModel rules(PlaneShape(x, y, m_texture_id_help), PaintCan(1.0, 1.0, 1.0), animation_id_scoreboard);
+    mm.add(rules, posx, 0.0, posy);
+
     mm.add(under_panel,0.0, -m_trim.v2 + 0.002, 0.0);
     mm.rotate_ax(90.0);
     mm.translate(m_position.v1 + m_size.v1 / 2.0, m_position.v2, m_position.v3);

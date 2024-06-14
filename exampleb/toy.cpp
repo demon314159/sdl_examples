@@ -13,7 +13,12 @@
 #define INITIAL_WIDTH ((INITIAL_HEIGHT * 1920) / 1080)
 #define INITIAL_MAG  2.55
 #define INITIAL_XOFF  0.050
-#define INITIAL_YOFF  0.065
+
+
+//#define INITIAL_YOFF  0.065
+#define INITIAL_YOFF  0.0
+
+
 #define INITIAL_XROT 50.0
 #define INITIAL_YROT 10.0
 
@@ -56,7 +61,7 @@ Toy::Toy()
     m_table = new Table();
     m_scoreboard = new Scoreboard({SCOREBOARD_POSITION_X, SCOREBOARD_POSITION_Y, SCOREBOARD_POSITION_Z}, {BACKGLASS_SIZE_X, BACKGLASS_SIZE_Z},
                                   {BACKGLASS_IMAGE_SIZE_X, BACKGLASS_IMAGE_SIZE_Z},
-                                   m_table->trim(), m_table->trim_color(), TEXTURE_ID_BACKGLASS, TEXTURE_ID_SCORE);
+                                   m_table->trim(), m_table->trim_color(), TEXTURE_ID_BACKGLASS, TEXTURE_ID_SCORE, TEXTURE_ID_HELP);
 
     m_texture->add("playfield.png", "texture1");
     m_texture->add("plastic1.png", "texture2");
@@ -72,6 +77,7 @@ Toy::Toy()
     m_texture->add("backglass.png", "texture12");
     m_texture->add("apron.png", "texture13");
     m_texture->add("gauge.png", "texture14");
+    m_texture->add("help.png", "texture15");
 
     m_left_flipper = new Flipper(
         LEFT_FLIPPER_ANGLE, LEFT_FLIPPER_POSITION, BOTTOM_FLIPPER_LENGTH,
