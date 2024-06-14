@@ -415,7 +415,7 @@ bool Toy::button(int code, bool shifted, bool on)
             break;
         case SDL_SCANCODE_LEFT:
         case SDL_SCANCODE_RIGHT:
-//            ret_val = false;
+            ret_val = false;
             break;
         default:
             break;

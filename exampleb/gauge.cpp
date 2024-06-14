@@ -8,8 +8,8 @@
 #include "cube_shape.h"
 #include <math.h>
 
-#define STEPS 21
-#define INITIAL_STEP 10
+#define STEPS 31
+#define INITIAL_STEP 16
 
 Gauge::Gauge(const Float2& size, const Float3& position, float texture_id)
     : m_size(size)

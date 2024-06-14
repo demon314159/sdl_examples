@@ -4,6 +4,8 @@
 
 #include "game.h"
 
+#include <stdio.h>
+
 #define SCORE_DELAY 150 // milliseconds
 #define BONUS_DELAY 250 // milliseconds
 
@@ -108,12 +110,15 @@ void Game::next_player()
             int score = m_score->get_player_score(i + 1);
             score = score / 10;
             score = score % 10;
+            printf("Player %d: score = %d, match = %d\n", i + 1, score, m_match_value);
             if (score == m_match_value) {
+                printf("    add credit\n");
                 m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_KNOCKER);
                 m_queue->put(QCOMMAND_ADD_CREDIT, 0, 1);
                 m_queue->put(QCOMMAND_DELAY, 0, BONUS_DELAY);
             }
         }
+        printf("\n");
         m_players = 0;
         if (m_score->get_high_game() > m_initial_high_game) {
             for (int i = 0; i < 3; i++) {
