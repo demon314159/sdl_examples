@@ -9,10 +9,6 @@
 #define SCORE_DELAY 150 // milliseconds
 #define BONUS_DELAY 250 // milliseconds
 
-#define REPLAY_SCORE1 290000
-#define REPLAY_SCORE2 360000
-#define REPLAY_SCORE3 430000
-
 Game::Game(int credit, int max_players, int max_balls,
            Sensor* sensor, Target* target, Lamp* lamp, Queue* queue, const Score* score)
     : m_max_players(max_players)

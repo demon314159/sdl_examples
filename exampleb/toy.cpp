@@ -30,6 +30,10 @@
 #define BALL_LAUNCH_SPEED 0.9
 #define BALL_ACCELERATION 0.25
 
+#define REPLAY_SCORE1 290000
+#define REPLAY_SCORE2 360000
+#define REPLAY_SCORE3 430000
+
 Toy::Toy()
     : m_scoreboard_camera(NULL)
     , m_seconds(0.0)
@@ -103,6 +107,7 @@ Toy::Toy()
     );
 
     m_gauge = new Gauge({0.028, 0.0564}, {0.3015, 0.0165, 0.580}, TEXTURE_ID_GAUGE);
+    m_replay_score = new ReplayScore(m_scoreboard->max_players(),REPLAY_SCORE1, REPLAY_SCORE2, REPLAY_SCORE3);
 
     m_lamp->add(LAMP_5X_BONUS_POSITION, LAMP_SIZE, TYPE1_ON_COLOR, TYPE1_OFF_COLOR);
     m_lamp->add(LAMP_ACES_POSITION,  LAMP_SIZE, TYPE1_ON_COLOR, TYPE1_OFF_COLOR);
@@ -181,7 +186,7 @@ Toy::Toy()
 
     m_score->set_match(70);
     m_game = new Game(INITIAL_CREDITS, m_scoreboard->max_players(), MAX_BALLS, m_sensor, m_target, m_lamp, m_queue, m_score);
-    m_execute = new Execute(m_queue, m_score, m_lamp);
+    m_execute = new Execute(m_queue, m_score, m_lamp, m_replay_score);
 
     m_ball->set_position(m_table->out_hole_position());
     m_ball->set_velocity({0.0, 0.0});
@@ -206,6 +211,7 @@ Toy::~Toy()
     delete m_right_flipper;
     delete m_top_flipper;
     delete m_gauge;
+    delete m_replay_score;
 }
 
 void Toy::resize(int w, int h)

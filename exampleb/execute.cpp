@@ -4,10 +4,11 @@
 
 #include "execute.h"
 
-Execute::Execute(Queue* queue, Score* score, Lamp* lamp)
+Execute::Execute(Queue* queue, Score* score, Lamp* lamp, ReplayScore* replay_score)
     : m_queue(queue)
     , m_score(score)
     , m_lamp(lamp)
+    , m_replay_score(replay_score)
     , m_timer(0.0)
 {
 }
@@ -38,9 +39,15 @@ int Execute::advance(float seconds)
                     break;
                 case QCOMMAND_SET_SCORE:
                     m_score->set_player_score(t.which_one, t.value);
+                    m_replay_score->reset();
                     break;
                 case QCOMMAND_ADD_SCORE:
                     m_score->add_player_score(t.which_one, t.value);
+                    if (m_replay_score->check(m_score)) {
+                        solenoid_id = SOLENOID_ID_KNOCKER;
+                        m_score->add_credit(1);
+                        m_timer = 1.0e-3 * (float) 100;  // BONUS_DELAY - SCORE_DELAY
+                    }
                     break;
                 case QCOMMAND_SET_BLANK:
                     m_score->set_player_blank(t.which_one, t.value ? true : false);

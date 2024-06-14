@@ -10,6 +10,7 @@
 #include "lamp.h"
 #include "queue.h"
 #include "score.h"
+#include "replay_score.h"
 
 class Game
 {

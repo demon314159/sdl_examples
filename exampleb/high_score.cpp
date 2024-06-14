@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <sys/stat.h>
 
-#define DEFAULT_HIGH_SCORE 250000
+#define DEFAULT_HIGH_SCORE 500000
 
 HighScore::HighScore()
 {

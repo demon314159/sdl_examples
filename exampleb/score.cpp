@@ -114,8 +114,8 @@ void Score::set_credit(int v)
 void Score::add_credit(int v)
 {
     v += m_field[CREDIT_FIELD].value;
-    if (v > 15) {
-        v = 15;
+    if (v > 99) {
+        v = 99;
     }
     m_field[CREDIT_FIELD].value = v;
     apply_field(CREDIT_FIELD);

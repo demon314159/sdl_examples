@@ -52,6 +52,7 @@ private:
     Flipper* m_right_flipper;
     Flipper* m_top_flipper;
     Gauge* m_gauge;
+    ReplayScore* m_replay_score;
 
     bool m_last_launch_action_button;
     void build_model();
