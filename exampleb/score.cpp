@@ -191,27 +191,15 @@ int Score::get_match() const
     return m_match;
 }
 
-void Score::set_player_score(int player, int v)
+void Score::reset_score()
 {
+    int v = 0;
     for (int i = 0; i < m_scoreboard->max_players(); i++) {
         int ix = PLAYER1_FIELD + i;
-        if (player == 0) {
-            m_field[ix].value = v;
-            update_high_game(v);
-            m_field[ix].flash = false;
-           apply_field(ix);
-        } else {
-            int ix = PLAYER1_FIELD + (player - 1);
-            if (i == (player - 1)) {
-                m_field[ix].value = v;
-                update_high_game(v);
-                m_field[ix].flash = false;
-                apply_field(ix);
-            } else {
-                m_field[ix].blank = true;
-                apply_field(ix);
-            }
-        }
+        m_field[ix].value = v;
+        update_high_game(v);
+        m_field[ix].flash = false;
+        apply_field(ix);
     }
 }
 

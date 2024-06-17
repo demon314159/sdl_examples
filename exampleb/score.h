@@ -28,7 +28,7 @@ public:
     void set_match(int v);
     int get_match() const;
 
-    void set_player_score(int player, int v);
+    void reset_score();
     void add_player_score(int player, int v);
     int get_player_score(int player) const;
 

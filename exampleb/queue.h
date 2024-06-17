@@ -17,7 +17,7 @@ struct QueueRec {
 #define QCOMMAND_DELAY           1
 #define QCOMMAND_ADD_CREDIT      2
 #define QCOMMAND_SOLENOID        3
-#define QCOMMAND_SET_SCORE       4
+#define QCOMMAND_RESET_SCORE     4
 #define QCOMMAND_ADD_SCORE       5
 #define QCOMMAND_SET_BLANK       6
 #define QCOMMAND_SET_FLASH       7

@@ -14,7 +14,6 @@
 #define INITIAL_MAG  2.55
 #define INITIAL_XOFF  0.050
 
-
 //#define INITIAL_YOFF  0.065
 #define INITIAL_YOFF  0.0
 
@@ -46,6 +45,7 @@ Toy::Toy()
     , m_scoreboard(NULL)
     , m_score(NULL)
     , m_queue(NULL)
+    , m_fast_queue(NULL)
     , m_game(NULL)
     , m_execute(NULL)
     , m_table(NULL)
@@ -182,11 +182,12 @@ Toy::Toy()
     m_scoreboard_camera->frame(m_model);
     build_uniform();
     m_queue = new Queue();
+    m_fast_queue = new Queue();
     m_score = new Score(m_scoreboard, m_lamp);
 
     m_score->set_match(70);
-    m_game = new Game(INITIAL_CREDITS, m_scoreboard->max_players(), MAX_BALLS, m_sensor, m_target, m_lamp, m_queue, m_score);
-    m_execute = new Execute(m_queue, m_score, m_lamp, m_replay_score);
+    m_game = new Game(INITIAL_CREDITS, m_scoreboard->max_players(), MAX_BALLS, m_sensor, m_target, m_lamp, m_queue, m_fast_queue, m_score, m_replay_score);
+    m_execute = new Execute(m_queue, m_fast_queue, m_score, m_lamp, m_replay_score);
 
     m_ball->set_position(m_table->out_hole_position());
     m_ball->set_velocity({0.0, 0.0});
@@ -203,6 +204,7 @@ Toy::~Toy()
     delete m_sound;
     delete m_score;
     delete m_queue;
+    delete m_fast_queue;
     delete m_game;
     delete m_execute;
     delete m_scoreboard;

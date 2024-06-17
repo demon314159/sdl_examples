@@ -48,7 +48,7 @@ bool ReplayScore::check(const Score* score)
 
 bool ReplayScore::check_one(int replay_score, int latest_score, int last_latest_score) const
 {
-    return latest_score >= replay_score && last_latest_score < replay_score;
+    return (latest_score >= replay_score) && (last_latest_score < replay_score);
 }
 
 

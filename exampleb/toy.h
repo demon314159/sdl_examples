@@ -20,6 +20,7 @@
 #include "queue.h"
 #include "execute.h"
 #include "game.h"
+#include "replay_score.h"
 #include <SDL_scancode.h>
 
 class Toy: public AnimatedToy
@@ -45,6 +46,7 @@ private:
     Scoreboard* m_scoreboard;
     Score* m_score;
     Queue* m_queue;
+    Queue* m_fast_queue;
     Game* m_game;
     Execute* m_execute;
     Table* m_table;

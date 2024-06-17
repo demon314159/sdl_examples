@@ -10,18 +10,20 @@
 #define BONUS_DELAY 250 // milliseconds
 
 Game::Game(int credit, int max_players, int max_balls,
-           Sensor* sensor, Target* target, Lamp* lamp, Queue* queue, const Score* score)
+           Sensor* sensor, Target* target, Lamp* lamp, Queue* queue, Queue* fast_queue,
+           const Score* score, ReplayScore* replay_score)
     : m_max_players(max_players)
     , m_max_balls(max_balls)
     , m_sensor(sensor)
     , m_target(target)
     , m_lamp(lamp)
     , m_queue(queue)
+    , m_fast_queue(fast_queue)
     , m_score(score)
+    , m_replay_score(replay_score)
     , m_players(0)
     , m_player_up(0)
     , m_ball_in_play(0)
-    , m_initial_high_game(0)
     , m_game_in_progress(false)
     , m_match_value(0)
     , m_rollover_a(false)
@@ -40,18 +42,18 @@ Game::~Game()
 void Game::add_player()
 {
     if (m_score->get_credit() > 0 && !m_game_in_progress) {
-        m_initial_high_game = m_score->get_high_game();
         if (m_players < m_max_players) {
             ++m_players;
             m_player_up = 1;
             m_ball_in_play = 1;
             if (m_players == 1) {
                 reset_flags();
+                m_replay_score->reset();
                 m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_HUNDREDS_CHIME);
                 m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_DROP_TARGET_ALL);
                 m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_INITIAL_LAMPS);
                 m_queue->put(QCOMMAND_ADD_CREDIT, 0, -1);
-                m_queue->put(QCOMMAND_SET_SCORE, 0, 0);
+                m_queue->put(QCOMMAND_RESET_SCORE, 0, 0);
                 m_queue->put(QCOMMAND_SET_PLAYER, 0, m_player_up);
                 m_queue->put(QCOMMAND_SET_BALL, 0, m_ball_in_play);
                 m_queue->put(QCOMMAND_DELAY, 0, SCORE_DELAY);
@@ -104,29 +106,9 @@ void Game::next_player()
         m_queue->put(QCOMMAND_DELAY, 0, SCORE_DELAY);
         m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_OUT_HOLE);
     } else {
-        m_queue->put(QCOMMAND_SET_MATCH, 0, m_match_value * 10);
+        m_queue->put(QCOMMAND_SET_MATCH, m_players, m_match_value * 10);
         m_game_in_progress = false;
-        for (int i = 0; i < m_players; i++) {
-            int score = m_score->get_player_score(i + 1);
-            score = score / 10;
-            score = score % 10;
-            printf("Player %d: score = %d, match = %d\n", i + 1, score, m_match_value);
-            if (score == m_match_value) {
-                printf("    add credit\n");
-                m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_KNOCKER);
-                m_queue->put(QCOMMAND_ADD_CREDIT, 0, 1);
-                m_queue->put(QCOMMAND_DELAY, 0, BONUS_DELAY);
-            }
-        }
-        printf("\n");
         m_players = 0;
-        if (m_score->get_high_game() > m_initial_high_game) {
-            for (int i = 0; i < 3; i++) {
-                m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_KNOCKER);
-                m_queue->put(QCOMMAND_ADD_CREDIT, 0, 1);
-                m_queue->put(QCOMMAND_DELAY, 0, BONUS_DELAY);
-            }
-        }
     }
 }
 
@@ -268,10 +250,11 @@ void Game::rollover_rules()
     }
     if (m_sensor->rising(SENSOR_ID_SPECIAL)) {
         if (m_lamp->lit(LAMP_ID_SPECIAL)) {
-            m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_KNOCKER);
-            m_queue->put(QCOMMAND_ADD_CREDIT, 0, 1);
+            printf("    add credit for SPECIAL\n");
+            m_fast_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_KNOCKER);
+            m_fast_queue->put(QCOMMAND_ADD_CREDIT, 0, 1);
             m_lamp->set(LAMP_ID_SPECIAL, false);
-            m_queue->put(QCOMMAND_DELAY, 0, BONUS_DELAY);
+            m_fast_queue->put(QCOMMAND_DELAY, 0, BONUS_DELAY);
         }
         multiscore(5, SOLENOID_ID_HUNDREDS_CHIME, 100);
     }

@@ -16,7 +16,7 @@ class Game
 {
 public:
     Game(int credit, int max_players, int max_balls,
-         Sensor* sensor, Target* target, Lamp* lamp, Queue* queue, const Score* score);
+         Sensor* sensor, Target* target, Lamp* lamp, Queue* queue, Queue* fast_queue, const Score* score, ReplayScore* replay_score);
     ~Game();
 
     void add_player();
@@ -32,11 +32,12 @@ private:
     Target* m_target;
     Lamp* m_lamp;
     Queue* m_queue;
+    Queue* m_fast_queue;
     const Score* m_score;
+    ReplayScore* m_replay_score;
     int m_players;
     int m_player_up;
     int m_ball_in_play;
-    int m_initial_high_game;
     bool m_game_in_progress; // from first score until set_match
     int m_match_value;
     bool m_rollover_a;
