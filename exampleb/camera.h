@@ -7,7 +7,9 @@
 
 #include "matrix4x4.h"
 #include "cad_model.h"
+#include "pose.h"
 #include "float3.h"
+#include <stdio.h>
 
 class Camera
 {
@@ -33,13 +35,14 @@ public:
 
     const float* mvp_data() const;
     const float* rot_data() const;
+    void add_pose(const Float2& offset, const Float2& rotation, float mag);
+
+    void show() const;
 
 private:
     int m_width;
     int m_height;
-    float m_initial_mag;
-    Float2 m_initial_offset;
-    Float2 m_initial_rotation;
+    Pose* m_pose;
     float m_mag;
     float m_fov;
     float m_camz;

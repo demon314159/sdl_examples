@@ -7,8 +7,6 @@
 #include "cube_shape.h"
 #include "backglass_guide.h"
 
-#include <stdio.h>
-
 #define MAX_PLAYERS 4
 #define PLAYER_DIGITS 6
 #define CREDITS_DIGITS 2
@@ -145,9 +143,6 @@ CadModel Scoreboard::model(float animation_id_first_digit, float animation_id_sc
 
     float x = m_size.v1 + m_trim.v1 * 2.0;
     float y = m_size.v1 / 3.25;
-
-    printf("card size is %5.3f x %5.3f\n", x, y);
-
 
     float posx = 0.0;
     float posy = m_size.v2 / 2.0 + m_trim.v1 + y / 2.0;

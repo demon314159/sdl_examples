@@ -8,12 +8,12 @@
 
 #include <math.h>
 
+#define MAX_POSES 10
+
 Camera::Camera(int width, int height, float initial_mag, const Float2& initial_offset, const Float2& initial_rotation)
     : m_width(width)
     , m_height(height)
-    , m_initial_mag(initial_mag)
-    , m_initial_offset(initial_offset)
-    , m_initial_rotation(initial_rotation)
+    , m_pose(new Pose(MAX_POSES))
     , m_mag(initial_mag)
     , m_fov(45.0)
     , m_camz(0.0)
@@ -25,19 +25,19 @@ Camera::Camera(int width, int height, float initial_mag, const Float2& initial_o
     , m_mvp_matrix()
     , m_rot_matrix()
 {
+    m_pose->add(initial_offset, initial_rotation, initial_mag);
 }
 
 Camera::~Camera()
 {
+    delete m_pose;
 }
 
 void Camera::reconstruct(int width, int height, float initial_mag, const Float2& initial_offset, const Float2& initial_rotation)
 {
     m_width = width;
     m_height = height;
-    m_initial_mag = initial_mag;
-    m_initial_offset = initial_offset;
-    m_initial_rotation = initial_rotation;
+    m_pose->set_pose(0, initial_offset, initial_rotation, initial_mag);
     m_mag = initial_mag;
     m_fov = 45.0;
     m_camz = 0.0;
@@ -82,7 +82,7 @@ void Camera::frame(const CadModel* model)
 
 void Camera::zoom_home()
 {
-    m_mag = m_initial_mag;
+    m_mag = m_pose->pose(0).mag;
     update_matrices();
 }
 
@@ -94,7 +94,7 @@ void Camera::zoom(float factor)
 
 void Camera::rotate_home()
 {
-    m_rotation = m_initial_rotation;
+    m_rotation = m_pose->pose(0).rotation;
     update_matrices();
 }
 
@@ -112,7 +112,7 @@ void Camera::rotate_ay(float degrees)
 
 void Camera::translate_home()
 {
-    m_offset = m_initial_offset;
+    m_offset = m_pose->pose(0).offset;
     update_matrices();
 }
 
@@ -166,3 +166,13 @@ const float* Camera::rot_data() const
     return m_rot_matrix.data();
 }
 
+void Camera::show() const
+{
+    printf("Camera offset(%5.3f, %5.3f) rotation(%5.3f, %5.3f) mag(%5.3f)\n",
+           m_offset.v1, m_offset.v2, m_rotation.v1, m_rotation.v2, m_mag);
+}
+
+void Camera::add_pose(const Float2& offset, const Float2& rotation, float mag)
+{
+    m_pose->add(offset, rotation, mag);
+}

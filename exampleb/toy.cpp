@@ -11,15 +11,12 @@
 
 #define INITIAL_HEIGHT 512
 #define INITIAL_WIDTH ((INITIAL_HEIGHT * 1920) / 1080)
-#define INITIAL_MAG  2.55
+
 #define INITIAL_XOFF  0.050
-
-//#define INITIAL_YOFF  0.065
 #define INITIAL_YOFF  0.0
-
-
 #define INITIAL_XROT 50.0
 #define INITIAL_YROT 10.0
+#define INITIAL_MAG  2.55
 
 #define INITIAL_CREDITS 8
 #define MAX_BALLS 4
@@ -53,6 +50,7 @@ Toy::Toy()
     , m_right_flipper(NULL)
     , m_top_flipper(NULL)
     , m_gauge(NULL)
+    , m_replay_score(NULL)
     , m_last_launch_action_button(false)
 {
     m_scoreboard_camera = new ScoreboardCamera(INITIAL_WIDTH, INITIAL_HEIGHT, INITIAL_MAG, {INITIAL_XOFF, INITIAL_YOFF}, {INITIAL_XROT, INITIAL_YROT});
@@ -108,6 +106,9 @@ Toy::Toy()
 
     m_gauge = new Gauge({0.028, 0.0564}, {0.3015, 0.0165, 0.580}, TEXTURE_ID_GAUGE);
     m_replay_score = new ReplayScore(m_scoreboard->max_players(),REPLAY_SCORE1, REPLAY_SCORE2, REPLAY_SCORE3);
+    m_camera->add_pose({0.265, 0.258}, {90.0, 0.0}, 6.375);
+    m_camera->add_pose({0.265, 0.077}, {40.0, 0.0}, 6.375);
+    m_camera->add_pose({0.265, -0.095}, {40.0, 0.0}, 6.375);
 
     m_lamp->add(LAMP_5X_BONUS_POSITION, LAMP_SIZE, TYPE1_ON_COLOR, TYPE1_OFF_COLOR);
     m_lamp->add(LAMP_ACES_POSITION,  LAMP_SIZE, TYPE1_ON_COLOR, TYPE1_OFF_COLOR);
@@ -416,21 +417,26 @@ bool Toy::button(int code, bool shifted, bool on)
                 m_game->add_player();
             }
             break;
+        case SDL_SCANCODE_X:  // Show camera data
+            if (on) {
+                m_camera->show();
+            }
+            break;
         case SDL_SCANCODE_UP:
             if (on) {
                 m_gauge->decrement();
             }
-            ret_val = false;
+//            ret_val = false;
             break;
         case SDL_SCANCODE_DOWN:
             if (on) {
                 m_gauge->increment();
             }
-            ret_val = false;
+//            ret_val = false;
             break;
         case SDL_SCANCODE_LEFT:
         case SDL_SCANCODE_RIGHT:
-            ret_val = false;
+//            ret_val = false;
             break;
         default:
             break;
