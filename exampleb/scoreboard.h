@@ -17,7 +17,7 @@ public:
                const Float2& backglass_image_size,
                const Float2& trim, const PaintCan& trim_color,
                float texture_id_backglass, float texture_id_score,
-               float texture_id_help);
+               float texture_id_rules);
     ~Scoreboard();
 
     CadModel model(float animation_id_first_digit, float animation_id_scoreboard) const;
@@ -39,7 +39,7 @@ private:
     PaintCan m_trim_color;
     float m_texture_id_backglass;
     float m_texture_id_score;
-    float m_texture_id_help;
+    float m_texture_id_rules;
     Digit* m_digit;
     float* m_data;
     CadModel player_digits_model(int player, const Float2& position, const Float2& size, float animation_id_first_digit) const;

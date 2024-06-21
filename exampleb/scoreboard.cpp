@@ -7,6 +7,8 @@
 #include "cube_shape.h"
 #include "backglass_guide.h"
 
+#include <stdio.h>
+
 #define MAX_PLAYERS 4
 #define PLAYER_DIGITS 6
 #define CREDITS_DIGITS 2
@@ -21,7 +23,7 @@ Scoreboard::Scoreboard(const Float3& position, const Float2& size,
                        const Float2& backglass_image_size,
                        const Float2& trim, const PaintCan& trim_color,
                        float texture_id_backglass, float texture_id_score,
-                       float texture_id_help)
+                       float texture_id_rules)
     : m_flash_template(true)
     , m_flash_timer(0.0)
     , m_position(position)
@@ -31,7 +33,7 @@ Scoreboard::Scoreboard(const Float3& position, const Float2& size,
     , m_trim_color(trim_color)
     , m_texture_id_backglass(texture_id_backglass)
     , m_texture_id_score(texture_id_score)
-    , m_texture_id_help(texture_id_help)
+    , m_texture_id_rules(texture_id_rules)
     , m_digit(new Digit[TOTAL_DIGITS])
     , m_data(new float[TOTAL_DIGITS])
 {
@@ -143,10 +145,14 @@ CadModel Scoreboard::model(float animation_id_first_digit, float animation_id_sc
 
     float x = m_size.v1 + m_trim.v1 * 2.0;
     float y = m_size.v1 / 3.25;
+
+    printf("card size is %5.3f x %5.3f\n", x, y);
+
+
     float posx = 0.0;
     float posy = m_size.v2 / 2.0 + m_trim.v1 + y / 2.0;
 
-    CadModel rules(PlaneShape(x, y, m_texture_id_help), PaintCan(1.0, 1.0, 1.0), animation_id_scoreboard);
+    CadModel rules(PlaneShape(x, y, m_texture_id_rules), PaintCan(1.0, 1.0, 1.0), animation_id_scoreboard);
     mm.add(rules, posx, 0.0, posy);
 
     mm.add(under_panel,0.0, -m_trim.v2 + 0.002, 0.0);

@@ -191,7 +191,7 @@ void main()
             billy.g = c * billy.g;
             billy.b = c * billy.b;
             gl_FragColor = billy;
-        } else  {                        // Help
+        } else  {                        // Rules
             c = 1.0;
             billy = texture(texture15, v_texture_position);
             billy.r = c * billy.r;

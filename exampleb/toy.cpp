@@ -65,7 +65,7 @@ Toy::Toy()
     m_table = new Table();
     m_scoreboard = new Scoreboard({SCOREBOARD_POSITION_X, SCOREBOARD_POSITION_Y, SCOREBOARD_POSITION_Z}, {BACKGLASS_SIZE_X, BACKGLASS_SIZE_Z},
                                   {BACKGLASS_IMAGE_SIZE_X, BACKGLASS_IMAGE_SIZE_Z},
-                                   m_table->trim(), m_table->trim_color(), TEXTURE_ID_BACKGLASS, TEXTURE_ID_SCORE, TEXTURE_ID_HELP);
+                                   m_table->trim(), m_table->trim_color(), TEXTURE_ID_BACKGLASS, TEXTURE_ID_SCORE, TEXTURE_ID_RULES);
 
     m_texture->add("playfield.png", "texture1");
     m_texture->add("plastic1.png", "texture2");
@@ -81,7 +81,7 @@ Toy::Toy()
     m_texture->add("backglass.png", "texture12");
     m_texture->add("apron.png", "texture13");
     m_texture->add("gauge.png", "texture14");
-    m_texture->add("help.png", "texture15");
+    m_texture->add("rules.png", "texture15");
 
     m_left_flipper = new Flipper(
         LEFT_FLIPPER_ANGLE, LEFT_FLIPPER_POSITION, BOTTOM_FLIPPER_LENGTH,
@@ -401,6 +401,7 @@ bool Toy::button(int code, bool shifted, bool on)
             m_top_flipper->action_button(on);
             break;
         case SDL_SCANCODE_L:  // Launch button
+        case SDL_SCANCODE_SPACE:  // Spacebar button
             if (on && !m_last_launch_action_button) {
                 if ((m_ball->position().v2 > (m_table->ball_home_position().v2 - BALL_RADIUS))
                     && (m_ball->position().v1 > (m_table->ball_home_position().v1 - BALL_RADIUS))) {

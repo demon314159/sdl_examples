@@ -92,7 +92,7 @@
 #define TEXTURE_ID_BACKGLASS   12.0
 #define TEXTURE_ID_APRON       13.0
 #define TEXTURE_ID_GAUGE       14.0
-#define TEXTURE_ID_HELP        15.0
+#define TEXTURE_ID_RULES       15.0
 
 
 #define SOUND_ID_THOUSANDS_CHIME 0
