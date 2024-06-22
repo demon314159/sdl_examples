@@ -1,5 +1,6 @@
 
 HEADERS = view.h \
+          stb_image.h \
           pi.h \
           host.h \
           matrix4x4.h \
@@ -22,7 +23,6 @@ HEADERS = view.h \
           stl_file.h \
           bin_file.h \
           char_file.h \
-          view.h \
           quaternion.h \
           texture.h \
           uniform.h \
