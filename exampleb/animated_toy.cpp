@@ -73,3 +73,7 @@ CadModel* AnimatedToy::model() const
     return m_model;
 }
 
+bool AnimatedToy::mouse(SDL_Event* e, bool on)
+{
+    return true;
+}

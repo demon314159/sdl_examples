@@ -119,6 +119,9 @@ void Host::key_release_event(SDL_Event* e)
 
 void Host::mouse_press_event(SDL_Event* e)
 {
+    if (!m_view.mouse(e, true)) {
+        return;
+    }
     if (e->button.button == SDL_BUTTON_MIDDLE) {
         m_view.camera()->zoom_home();
         m_view.camera()->rotate_home();
@@ -150,6 +153,9 @@ void Host::mouse_navigate(int mx, int my)
 
 void Host::mouse_release_event(SDL_Event* e)
 {
+    if (!m_view.mouse(e, false)) {
+        return;
+    }
     if (e->button.button == SDL_BUTTON_LEFT) {
         if (m_navigate.active())
             mouse_navigate(e->button.x, e->button.y);

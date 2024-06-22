@@ -465,3 +465,8 @@ bool View::button(int code, bool shifted, bool on)
     return m_toy->button(code, shifted, on);
 }
 
+bool View::mouse(SDL_Event* e, bool on)
+{
+    return m_toy->mouse(e, on);
+}
+

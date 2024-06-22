@@ -10,6 +10,7 @@
 #include "camera.h"
 #include "cad_model.h"
 #include <SDL_scancode.h>
+#include <SDL_events.h>
 
 class AnimatedToy
 {
@@ -20,6 +21,7 @@ public:
     virtual void resize(int w, int h);
     virtual void initialize();
     virtual bool button(int code, bool shifted, bool on);
+    virtual bool mouse(SDL_Event* e, bool on);
     virtual void advance(int nanoseconds);
 
     Uniform* uniform();

@@ -445,4 +445,8 @@ bool Toy::button(int code, bool shifted, bool on)
     return ret_val;
 }
 
+bool Toy::mouse(SDL_Event* e, bool on)
+{
+    return false;
+}
 
