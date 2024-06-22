@@ -27,6 +27,7 @@ HEADERS = view.h \
           texture.h \
           uniform.h \
           camera.h \
+          pose.h \
           animated_toy.h \
           toy.h \
           \
@@ -102,7 +103,6 @@ HEADERS = view.h \
           gauge.h \
           high_score.h \
           replay_score.h \
-          pose.h \
           \
           \
           \
@@ -132,6 +132,7 @@ OBJECTS = main.obj \
           texture.obj \
           uniform.obj \
           camera.obj \
+          pose.obj \
           animated_toy.obj \
           toy.obj \
           \
@@ -204,7 +205,6 @@ OBJECTS = main.obj \
           gauge.obj \
           high_score.obj \
           replay_score.obj \
-          pose.obj \
           \
           \
           \
