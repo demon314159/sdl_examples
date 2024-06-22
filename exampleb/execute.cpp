@@ -4,8 +4,6 @@
 
 #include "execute.h"
 
-#include <stdio.h>
-
 #define BONUS_DELAY 250 // milliseconds
 
 Execute::Execute(Queue* queue, Queue* fast_queue, Score* score, Lamp* lamp, ReplayScore* replay_score)
@@ -61,7 +59,6 @@ int Execute::interpret(const QueueRec& qrec)
         case QCOMMAND_ADD_SCORE:
             m_score->add_player_score(qrec.which_one, qrec.value);
             if (m_replay_score->check(m_score)) {
-                printf("    add credit for high_score, score = %d\n", m_score->get_player_score(qrec.which_one));
                 m_fast_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_KNOCKER);
                 m_fast_queue->put(QCOMMAND_ADD_CREDIT, 0, 1);
                 m_fast_queue->put(QCOMMAND_DELAY, 0, BONUS_DELAY);
@@ -89,9 +86,7 @@ int Execute::interpret(const QueueRec& qrec)
                 score = score / 10;
                 score = score % 10;
                 score = score * 10;
-                printf("Player %d: score = %d, match = %d\n", i + 1, score, qrec.value);
                 if (score == qrec.value) {
-                    printf("    add credit for match\n");
                     m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_KNOCKER);
                     m_queue->put(QCOMMAND_ADD_CREDIT, 0, 1);
                     m_queue->put(QCOMMAND_DELAY, 0, BONUS_DELAY);
@@ -99,13 +94,11 @@ int Execute::interpret(const QueueRec& qrec)
             }
             if (m_score->get_high_game() > m_initial_high_game) {
                 for (int i = 0; i < 3; i++) {
-                    printf("    add credit for high_game\n");
                     m_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_KNOCKER);
                     m_queue->put(QCOMMAND_ADD_CREDIT, 0, 1);
                     m_queue->put(QCOMMAND_DELAY, 0, BONUS_DELAY);
                 }
             }
-            printf("\n");
             break;
         default:;
             break;

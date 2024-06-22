@@ -13,9 +13,6 @@
 #include "crown_nut_shape.h"
 #include <math.h>
 
-#include <stdio.h>
-
-
 TwoPost::TwoPost(Float2 p1, Float2 p2, float radius, float height,
                  const PaintCan& color, const PaintCan& face_color,
                  float reflectivity, int steps, int sensor_id, int sensor_side,

@@ -4,8 +4,6 @@
 
 #include "game.h"
 
-#include <stdio.h>
-
 #define SCORE_DELAY 150 // milliseconds
 #define BONUS_DELAY 250 // milliseconds
 
@@ -250,7 +248,6 @@ void Game::rollover_rules()
     }
     if (m_sensor->rising(SENSOR_ID_SPECIAL)) {
         if (m_lamp->lit(LAMP_ID_SPECIAL)) {
-            printf("    add credit for SPECIAL\n");
             m_fast_queue->put(QCOMMAND_SOLENOID, 0, SOLENOID_ID_KNOCKER);
             m_fast_queue->put(QCOMMAND_ADD_CREDIT, 0, 1);
             m_lamp->set(LAMP_ID_SPECIAL, false);

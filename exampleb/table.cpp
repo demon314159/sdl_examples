@@ -14,11 +14,7 @@
 #include "cylinder_shape.h"
 #include "ring_shape.h"
 #include "top_panel_shape.h"
-
 #include "straight_wire_guide.h"
-
-
-#include <stdio.h>
 
 Table::Table()
     : m_ball_z_limit(0.0)

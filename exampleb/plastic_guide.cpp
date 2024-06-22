@@ -6,8 +6,6 @@
 #include "pi.h"
 #include <math.h>
 
-#include <stdio.h>
-
 PlasticGuide::PlasticGuide(const Float2& image_size,
                            const Float2& image_p1, const Float2& image_p2, const Float2& image_p3,
                            const Float2& blank_p1, const Float2& blank_p2, const Float2& blank_p3)

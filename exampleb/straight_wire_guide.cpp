@@ -8,8 +8,6 @@
 #include "pi.h"
 #include <math.h>
 
-#include <stdio.h>
-
 StraightWireGuide::StraightWireGuide(Float2 p1, Float2 p2, float radius, float height,
                                      const PaintCan& color, int reflectivity, int steps)
     : m_p1(p1)

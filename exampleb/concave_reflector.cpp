@@ -6,9 +6,6 @@
 #include "pi.h"
 #include <math.h>
 
-#include <stdio.h>
-#include <stdlib.h>
-
 ConcaveReflector::ConcaveReflector(float radius, float angle_i, float angle_f, float reflectivity)
     : m_perimeter({0.0, 0.0, 0.0, 0.0})
     , m_position({0.0, 0.0})

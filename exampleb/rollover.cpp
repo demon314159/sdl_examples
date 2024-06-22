@@ -76,8 +76,6 @@ CadModel Rollover::model(float animation_id) const
     float a3 = -90.0;
     float l1 = sqrt(zt * zt + xt * xt);
     float l2 = sqrt(zt * zt + (x1 - x0 - xt) * (x1 - x0 - xt));
-//    printf("x0 = %.3f, z0 = %.3f, x1 = %.3f, xt = %.3f, zt = %.3f\n", x0, z0, x1, xt, zt);
-//    printf("a1 = %.3f, a2 = %.3f, l1 = %.3f, l2 = %.3f\n", a1, a2, l1, l2);
 
     Pipe p0(a0, {x0, 0.0, z0}, m_diameter / 2.0, lead, m_color, m_steps);
     PipeElbow p01(p0.end_angle(), p0.end_position(), m_diameter / 2.0, a1 - a0, m_diameter, m_color, m_steps, m_steps);
@@ -87,7 +85,6 @@ CadModel Rollover::model(float animation_id) const
     PipeElbow p23(p2.end_angle(), p2.end_position(), m_diameter / 2.0, a3 - a2, m_diameter, m_color, m_steps, m_steps);
     Pipe p3(p23.end_angle(), p23.end_position(), m_diameter / 2.0, lead, m_color, m_steps);
     float actual_length = p3.end_position().v1;
-//    printf("m_length = %.6f, ideal_length = %.6f, actual length = %.6f\n", m_length, x1, actual_length);
 
     mm.add(p0.model(0.0), 0.0, 0.0, 0.0);
     mm.add(p01.model(0.0), 0.0, 0.0, 0.0);

@@ -12,9 +12,6 @@
 #include "cylinder_shape.h"
 #include <math.h>
 
-#include <stdio.h>
-
-
 OnePost::OnePost(Float2 p, float radius, float height, const PaintCan& color,
                  float reflectivity, int steps)
     : m_p(p)
