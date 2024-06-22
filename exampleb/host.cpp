@@ -7,6 +7,7 @@
 
 Host::Host(SDL_Window* window)
     : m_view(window)
+    , m_pose(0)
     , m_navigate()
     , m_is_running(true)
 {
@@ -95,12 +96,16 @@ void Host::key_press_event(SDL_Event* e)
         } else {
             m_view.camera()->zoom(2.0 / 3.0);
         }
-    } else if (a == SDL_SCANCODE_H) {
-        m_view.camera()->zoom_home();
-        if (shifted) {
-            m_view.camera()->rotate_home();
-            m_view.camera()->translate_home();
+    } else if (a == SDL_SCANCODE_V) {
+        ++m_pose;
+        if (m_pose >= m_view.camera()->poses()) {
+            m_pose = 0;
         }
+        m_view.camera()->set_pose(m_pose);
+        m_navigate.stop();
+    } else if (a == SDL_SCANCODE_H) {
+        m_pose = 0;
+        m_view.camera()->set_pose(m_pose);
         m_navigate.stop();
     }
 }

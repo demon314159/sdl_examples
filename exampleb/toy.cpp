@@ -107,8 +107,9 @@ Toy::Toy()
     m_gauge = new Gauge({0.028, 0.0564}, {0.3015, 0.0165, 0.580}, TEXTURE_ID_GAUGE);
     m_replay_score = new ReplayScore(m_scoreboard->max_players(),REPLAY_SCORE1, REPLAY_SCORE2, REPLAY_SCORE3);
     m_camera->add_pose({0.265, 0.258}, {90.0, 0.0}, 6.375);
-    m_camera->add_pose({0.265, 0.077}, {40.0, 0.0}, 6.375);
-    m_camera->add_pose({0.265, -0.095}, {40.0, 0.0}, 6.375);
+    m_camera->add_pose({0.265, 0.054}, {40.0, 10.0}, 6.375);
+    m_camera->add_pose({0.257, -0.095}, {40.0, -10.0}, 6.375);
+    m_camera->add_pose({0.050, 0.009}, {90.0, 0.0}, 1.7);
 
     m_lamp->add(LAMP_5X_BONUS_POSITION, LAMP_SIZE, TYPE1_ON_COLOR, TYPE1_OFF_COLOR);
     m_lamp->add(LAMP_ACES_POSITION,  LAMP_SIZE, TYPE1_ON_COLOR, TYPE1_OFF_COLOR);

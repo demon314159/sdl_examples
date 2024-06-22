@@ -31,6 +31,7 @@ public:
     void mouse_navigate(int mx, int my);
 private:
     View m_view;
+    int m_pose;
     Navigate m_navigate;
     bool m_is_running;
 };

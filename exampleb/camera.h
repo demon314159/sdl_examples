@@ -36,6 +36,8 @@ public:
     const float* mvp_data() const;
     const float* rot_data() const;
     void add_pose(const Float2& offset, const Float2& rotation, float mag);
+    int poses() const;
+    void set_pose(int ix);
 
     void show() const;
 

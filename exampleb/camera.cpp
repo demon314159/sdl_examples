@@ -176,3 +176,19 @@ void Camera::add_pose(const Float2& offset, const Float2& rotation, float mag)
 {
     m_pose->add(offset, rotation, mag);
 }
+
+int Camera::poses() const
+{
+    return m_pose->poses();
+}
+
+void Camera::set_pose(int ix)
+{
+    if (ix >= m_pose->poses()) {
+        ix = 0;
+    }
+    m_offset = m_pose->pose(ix).offset;
+    m_rotation = m_pose->pose(ix).rotation;
+    m_mag = m_pose->pose(ix).mag;
+    update_matrices();
+}
