@@ -22,9 +22,9 @@ private:
     float m_delay_time;
     float m_time;
     Lamp* m_lamp;
-    bool m_running;
+    int m_sequence_ix;
 
-    void take_action();
+    void advance_sequence_a();
 };
 
 #endif // _LIGHT_SHOW_H_

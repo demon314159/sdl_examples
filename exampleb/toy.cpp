@@ -30,7 +30,7 @@
 #define REPLAY_SCORE2 360000
 #define REPLAY_SCORE3 430000
 
-#define LIGHT_SHOW_TIME_STEP 1.0
+#define LIGHT_SHOW_TIME_STEP 0.2
 #define LIGHT_SHOW_DELAY_AFTER_GAME 20.0 // Scoring sequence at end can take 12 seconds
 
 Toy::Toy()
