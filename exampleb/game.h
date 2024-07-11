@@ -21,7 +21,7 @@ public:
 
     void add_player();
     void next_player();
-
+    int players() const;
     void apply_rules();
 
 

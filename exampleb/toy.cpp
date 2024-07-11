@@ -30,6 +30,9 @@
 #define REPLAY_SCORE2 360000
 #define REPLAY_SCORE3 430000
 
+#define LIGHT_SHOW_TIME_STEP 1.0
+#define LIGHT_SHOW_DELAY_AFTER_GAME 20.0 // Scoring sequence at end can take 12 seconds
+
 Toy::Toy()
     : m_scoreboard_camera(NULL)
     , m_seconds(0.0)
@@ -51,6 +54,7 @@ Toy::Toy()
     , m_top_flipper(NULL)
     , m_gauge(NULL)
     , m_replay_score(NULL)
+    , m_light_show(NULL)
     , m_last_launch_action_button(false)
 {
     m_scoreboard_camera = new ScoreboardCamera(INITIAL_WIDTH, INITIAL_HEIGHT, INITIAL_MAG, {INITIAL_XOFF, INITIAL_YOFF}, {INITIAL_XROT, INITIAL_YROT});
@@ -106,6 +110,7 @@ Toy::Toy()
 
     m_gauge = new Gauge({0.028, 0.0564}, {0.3015, 0.0165, 0.580}, TEXTURE_ID_GAUGE);
     m_replay_score = new ReplayScore(m_scoreboard->max_players(),REPLAY_SCORE1, REPLAY_SCORE2, REPLAY_SCORE3);
+    m_light_show = new LightShow(LIGHT_SHOW_TIME_STEP, LIGHT_SHOW_DELAY_AFTER_GAME, m_lamp);
     m_camera->add_pose({0.265, 0.258}, {90.0, 0.0}, 6.375);
     m_camera->add_pose({0.265, 0.054}, {40.0, 10.0}, 6.375);
     m_camera->add_pose({0.257, -0.095}, {40.0, -10.0}, 6.375);
@@ -216,6 +221,7 @@ Toy::~Toy()
     delete m_top_flipper;
     delete m_gauge;
     delete m_replay_score;
+    delete m_light_show;
 }
 
 void Toy::resize(int w, int h)
@@ -329,6 +335,17 @@ void Toy::activate_solenoid(int solenoid_id)
             m_target->set_dropped(DROP_TARGET_ID_A4, false);
             break;
         case SOLENOID_ID_INITIAL_LAMPS:
+            m_lamp->set(LAMP_ID_5X_BONUS, false);
+            m_lamp->set(LAMP_ID_ACES_BONUS, false);
+            m_lamp->set(LAMP_ID_KINGS_BONUS, false);
+            m_lamp->set(LAMP_ID_QUEENS_BONUS, false);
+            m_lamp->set(LAMP_ID_JACKS_BONUS, false);
+            m_lamp->set(LAMP_ID_TENS_BONUS, false);
+            m_lamp->set(LAMP_ID_5000_BONUS, false);
+            m_lamp->set(LAMP_ID_4000_BONUS, false);
+            m_lamp->set(LAMP_ID_3000_BONUS, false);
+            m_lamp->set(LAMP_ID_2000_BONUS, false);
+            m_lamp->set(LAMP_ID_1000_BONUS, false);
             m_lamp->set(LAMP_ID_TOP_ROLLOVER_A, true);
             m_lamp->set(LAMP_ID_TOP_ROLLOVER_B, true);
             m_lamp->set(LAMP_ID_TOP_ROLLOVER_C, true);
@@ -336,6 +353,7 @@ void Toy::activate_solenoid(int solenoid_id)
             m_lamp->set(LAMP_ID_BOTTOM_LEFT_ROLLOVER_B, true);
             m_lamp->set(LAMP_ID_BOTTOM_RIGHT_ROLLOVER_B, true);
             m_lamp->set(LAMP_ID_BOTTOM_ROLLOVER_C, true);
+            m_lamp->set(LAMP_ID_SHOOT_AGAIN, false);
             m_lamp->set(LAMP_ID_EXTRA_BALL, false);
             m_lamp->set(LAMP_ID_SPECIAL, false);
             break;
@@ -369,6 +387,11 @@ void Toy::advance(int nanoseconds)
         m_scoreboard->advance(seconds);
         m_game->apply_rules();
         m_score->advance(seconds);
+        if (m_game->players() == 0) {
+            m_light_show->advance(seconds);
+        } else {
+            m_light_show->reset();
+        }
         int solenoid_id = m_execute->advance(seconds);
         activate_solenoid(solenoid_id);
     }

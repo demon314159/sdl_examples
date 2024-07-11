@@ -103,6 +103,7 @@ HEADERS = view.h \
           gauge.h \
           high_score.h \
           replay_score.h \
+          light_show.h \
           \
           \
           \
@@ -205,6 +206,7 @@ OBJECTS = main.obj \
           gauge.obj \
           high_score.obj \
           replay_score.obj \
+          light_show.obj \
           \
           \
           \

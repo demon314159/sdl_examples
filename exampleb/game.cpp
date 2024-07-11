@@ -110,6 +110,11 @@ void Game::next_player()
     }
 }
 
+int Game::players() const
+{
+    return m_players;
+}
+
 void Game::apply_rules()
 {
     if (m_sensor->rising(SENSOR_ID_OUTHOLE)) {
