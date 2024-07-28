@@ -7,7 +7,7 @@
 TokenSet::TokenSet(void)
     : m_tokens(0)
 {
-    add_token(Token().add_tile(0, 0));                                                                               // token_id = 0
+    add_token(Token().add_tile(0, 0).add_tile(0, 1).add_tile(0, 2).add_tile(1, 0).add_tile(1, 1).add_tile(2, 0));    // token_id = 0 == 26a
     add_token(Token().add_tile(0, 0).add_tile(0, 1).add_tile(0, 2).add_tile(0, 3).add_tile(0, 4).add_tile(0, 5));    // token_id = 1
     add_token(Token().add_tile(0, 0).add_tile(0, 1).add_tile(0, 2).add_tile(0, 3).add_tile(0, 4).add_tile(1, 4));    // token_id = 2
     add_token(Token().add_tile(0, 0).add_tile(0, 1).add_tile(0, 2).add_tile(0, 3).add_tile(0, 4).add_tile(1, 3));    // token_id = 3
@@ -43,6 +43,9 @@ TokenSet::TokenSet(void)
     add_token(Token().add_tile(0, 0).add_tile(0, 1).add_tile(0, 2).add_tile(0, 3).add_tile(-1, 1).add_tile(1, 3));   // token_id = 33
     add_token(Token().add_tile(0, 0).add_tile(0, 1).add_tile(0, 2).add_tile(0, 3).add_tile(-1, 1).add_tile(1, 2));   // token_id = 34
     add_token(Token().add_tile(0, 0).add_tile(0, 1).add_tile(0, 2).add_tile(-1, 1).add_tile(1, 2).add_tile(1, 3));   // token_id = 35
+    add_token(Token().add_tile(0, 0).add_tile(0, 1).add_tile(0, 2).add_tile(0, 3).add_tile(1, 2).add_tile(1, 3));    // token_id = 36 == 8a
+    add_token(Token().add_tile(0, 0).add_tile(0, 1).add_tile(1, 1).add_tile(1, 2).add_tile(2, 2).add_tile(2, 3));    // token_id = 37 == 14a
+    add_token(Token().add_tile(0, 0).add_tile(0, 1).add_tile(0, 2).add_tile(1, 2).add_tile(2, 2).add_tile(2, 1));    // token_id = 38 == 25a
 }
 
 TokenSet::~TokenSet()
