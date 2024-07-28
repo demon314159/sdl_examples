@@ -1,0 +1,33 @@
+//
+// token_set.h
+//
+#ifndef _TOKEN_SET_H_
+#define _TOKEN_SET_H_
+
+#define MAX_TOKENS 36
+
+#include "token.h"
+
+class TokenSet
+{
+public:
+    TokenSet(void);
+    ~TokenSet();
+    int tokens() const;
+    int tiles(int token_id) const;
+    int posh(int token_id, int tix, int orientation) const;
+    int posv(int token_id, int tix, int orientation) const;
+    bool token_contained(int token_id, int orientation, int ph, int pv, int dimh, int dimv) const;
+    bool token_collision(int token_id1, int orientation1, int ph1, int pv1, int token_id2, int orientation2, int ph2, int pv2) const;
+    bool tile_at(int token_id, int orientation, int ph, int pv) const;
+    int horz_center(int token_id, int orientation, int unit_length) const;
+    int vert_center(int token_id, int orientation, int unit_length) const;
+
+protected:
+    int m_tokens;
+    Token m_token[MAX_TOKENS];
+
+    void add_token(const Token& token);
+};
+
+#endif // _TOKEN_SET_H_

@@ -31,10 +31,14 @@ HEADERS = view.h \
           animated_toy.h \
           toy.h \
           \
+          tile_rec.h \
+          token.h \
+          token_set.h \
+          piece.h \
+          challenge.h \
+          \
 # note: all of the files after toy.h are there for toy.cpp only
 #       they can be removed if toy.cpp doesn't need them anymore
-
-         \
          \
 
 OBJECTS = main.obj \
@@ -62,11 +66,13 @@ OBJECTS = main.obj \
           animated_toy.obj \
           toy.obj \
           \
+          token.obj \
+          token_set.obj \
+          piece.obj \
+          challenge.obj \
           \
 # note: all of the files after toy.obj are there for toy.cpp only
 #       they can be removed if toy.cpp doesn't need them anymore
-          \
-          \
           \
 
 LIBPATH = /libpath:c:/users/demon/sdl2/lib/x64 /libpath:c:/users/demon/glew/lib/Release/x64
