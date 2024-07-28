@@ -139,4 +139,11 @@ int TokenSet::vert_center(int token_id, int orientation, int unit_length) const
     return (unit_length * (maxv + minv)) / 2;
 }
 
+void TokenSet::advance(float seconds)
+{
+}
 
+const float* TokenSet::data(int token_id)
+{
+    return m_token[token_id].data();
+}

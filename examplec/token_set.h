@@ -22,6 +22,9 @@ public:
     bool tile_at(int token_id, int orientation, int ph, int pv) const;
     int horz_center(int token_id, int orientation, int unit_length) const;
     int vert_center(int token_id, int orientation, int unit_length) const;
+    void advance(float seconds);
+
+    const float* data(int token_id);
 
 protected:
     int m_tokens;

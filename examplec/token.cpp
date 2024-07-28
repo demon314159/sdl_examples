@@ -6,6 +6,7 @@
 
 Token::Token()
     : m_tiles(0)
+    , m_animation()
 {
 }
 
@@ -73,4 +74,13 @@ int Token::posv(int tix, int orientation) const
     }
 }
 
+const float* Token::data()
+{
+    m_animation.unity();
+//    m_animation.translate(m_state.position().v1, m_radius, m_state.position().v2);
+
+    // Multipy mm times the rotation matrix
+//    m_animation = m_animation * m_orientation.rotation_matrix();
+    return m_animation.data();
+}
 
