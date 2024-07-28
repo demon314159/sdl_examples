@@ -36,6 +36,7 @@ HEADERS = view.h \
           token_set.h \
           piece.h \
           challenge.h \
+          puzzle_book.h \
           \
 # note: all of the files after toy.h are there for toy.cpp only
 #       they can be removed if toy.cpp doesn't need them anymore
@@ -70,6 +71,7 @@ OBJECTS = main.obj \
           token_set.obj \
           piece.obj \
           challenge.obj \
+          puzzle_book.obj \
           \
 # note: all of the files after toy.obj are there for toy.cpp only
 #       they can be removed if toy.cpp doesn't need them anymore
