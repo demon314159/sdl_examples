@@ -5,6 +5,7 @@
 #include "token.h"
 #include "paint_can.h"
 #include "tile_shape.h"
+#include "tile_border_shape.h"
 
 Token::Token()
     : m_posx(0.0)
@@ -84,7 +85,9 @@ void Token::one_tile(CadModel& cm, int tile, float animation_id) const
     float pitch = 0.010;
     float width = 0.0095;
     float height = 0.001;
+    float thick = 0.0005;
     float border = 0.001;
+    PaintCan dark_yellow(0.8, 0.8, 0.0);
     PaintCan yellow(1.0, 1.0, 0.0);
 
     int base_posh = posh(tile, 0);
@@ -93,8 +96,10 @@ void Token::one_tile(CadModel& cm, int tile, float animation_id) const
     bool lower = occupied(base_posh, base_posv + 1);
     bool left = occupied(base_posh - 1, base_posv);
     bool right = occupied(base_posh + 1, base_posv);
-    CadModel t(TileShape(pitch, width, height, border, upper, lower, left, right), yellow, animation_id);
-    cm.add(t, pitch * (float) posh(tile, 0), 0.0, pitch * (float) posv(tile, 0));
+    CadModel t1(TileShape(pitch, width, thick, border, upper, lower, left, right), dark_yellow, animation_id);
+    CadModel t2(TileBorderShape(pitch, width, height, border, upper, lower, left, right), yellow, animation_id);
+    cm.add(t1, pitch * (float) posh(tile, 0), 0.0, pitch * (float) posv(tile, 0));
+    cm.add(t2, pitch * (float) posh(tile, 0), 0.0, pitch * (float) posv(tile, 0));
 }
 
 CadModel Token::model(float animation_id) const

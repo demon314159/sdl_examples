@@ -53,6 +53,8 @@ void TileShape::define_shape()
     float h = m_height / 2.0;
     add_face({leftx, h, upperz}, {leftx, h, lowerz}, {rightx, h, lowerz}, {rightx, h, upperz}, false);
     add_face({leftx, -h, upperz}, {leftx, -h, lowerz}, {rightx, -h, lowerz}, {rightx, -h, upperz}, true);
+
+#ifdef NEVERMORE
     if (!m_upper) {
         add_face({leftx, -h, upperz}, {leftx, h, upperz}, {rightx, h, upperz}, {rightx, -h, upperz}, false);
     }
@@ -65,6 +67,7 @@ void TileShape::define_shape()
     if (!m_right) {
         add_face({rightx, -h, lowerz}, {rightx, h, lowerz}, {rightx, h, upperz}, {rightx, -h, upperz}, true);
     }
+#endif
 }
 
 void TileShape::add_face(Float3 v1, Float3 v2, Float3 v3, Float3 v4, bool flip)

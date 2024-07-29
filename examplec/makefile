@@ -33,6 +33,7 @@ HEADERS = view.h \
           \
           tile_rec.h \
           tile_shape.h \
+          tile_border_shape.h \
           token.h \
           token_set.h \
           piece.h \
@@ -69,6 +70,7 @@ OBJECTS = main.obj \
           toy.obj \
           \
           tile_shape.obj \
+          tile_border_shape.obj \
           token.obj \
           token_set.obj \
           piece.obj \
