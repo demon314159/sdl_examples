@@ -72,7 +72,7 @@ void main()
             v_normal = vec4(0.0, 0.0, 1.0, 0.0);
             v_color = vec4(a_color, 1.0);
             v_color = vec4(a_color, 1.0);
-        } else if (a_animation_id < 39.5) {  // Animated objects
+        } else if (a_animation_id < 40.5) {  // Animated objects
             if (a_animation_id < 2.5) {          // Token 0
                 gl_Position = mvp_matrix * animation_0_matrix * vec4(a_position, 1.0);
                 v_normal = rot_matrix * animation_0_matrix * vec4(billy, 0.0);

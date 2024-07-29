@@ -30,18 +30,16 @@ Toy::~Toy()
     delete m_token_set;
 }
 
-CadModel Toy::token_model(int token_id)
-{
-    CadModel cm;
-//        cm.add(m_target[i]->model(animation_id + (float) i), 0.0, 0.0, 0.0);
-    return cm;
-}
-
 void Toy::build_model()
 {
-//    m_model->clear();
+    float sep = 0.080;
+    m_model->clear();
     for (int i = 0; i < m_token_set->tokens(); i++) {
-        m_model->add(token_model(i), ANIMATION_ID_FIRST_TOKEN + (float) i);
+        m_model->add(m_token_set->model(i, ANIMATION_ID_FIRST_TOKEN + (float) i));
+        int xpos = i & 7;
+        int zpos = (i >> 3) & 7;
+
+        m_token_set->set_position(i, sep * (float) xpos, 0.0, sep * (float) zpos);
     }
 }
 

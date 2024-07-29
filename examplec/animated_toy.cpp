@@ -13,7 +13,7 @@
 #define INITIAL_MAG  1.0
 #define INITIAL_XOFF  0.0
 #define INITIAL_YOFF  0.0
-#define INITIAL_XROT 50.0
+#define INITIAL_XROT 90.0
 #define INITIAL_YROT 0.0
 
 AnimatedToy::AnimatedToy()

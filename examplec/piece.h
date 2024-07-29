@@ -6,6 +6,7 @@
 // When a piece is locked, it cannot be changed, it will also be on_board.
 // A regular move made by the player will be on_board and not locked.
 //
+
 #ifndef _PIECE_H_
 #define _PIECE_H_
 

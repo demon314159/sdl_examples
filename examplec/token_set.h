@@ -1,6 +1,7 @@
 //
 // token_set.h
 //
+
 #ifndef _TOKEN_SET_H_
 #define _TOKEN_SET_H_
 
@@ -23,8 +24,9 @@ public:
     int horz_center(int token_id, int orientation, int unit_length) const;
     int vert_center(int token_id, int orientation, int unit_length) const;
     void advance(float seconds);
-
+    CadModel model(int token_id, float animation_id) const;
     const float* data(int token_id);
+    void set_position(int token_id, float posx, float posy, float posz);
 
 protected:
     int m_tokens;

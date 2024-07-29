@@ -7,7 +7,6 @@
 
 #include "animated_toy.h"
 #include "token_set.h"
-#include "cad_model.h"
 
 class Toy: public AnimatedToy
 {
@@ -25,7 +24,6 @@ private:
     void build_model();
     void build_uniform();
     void update_uniform();
-    CadModel token_model(int token_id);
 };
 
 #endif // _TOY_H_
