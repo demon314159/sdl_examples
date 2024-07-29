@@ -12,7 +12,9 @@
 class TileShape: public Shape
 {
 public:
-    TileShape(float pitch, float width, float height, float border, bool upper, bool lower, bool left, bool right);
+    TileShape(float pitch, float width, float height, float border,
+              bool upper, bool lower, bool left, bool right,
+              bool upper_left, bool upper_right, bool lower_left, bool lower_right);
     virtual ~TileShape();
     int facets() const override;
     Facet facet(int facet_ix) const override;
@@ -26,6 +28,10 @@ private:
     bool m_lower;
     bool m_left;
     bool m_right;
+    bool m_upper_left;
+    bool m_upper_right;
+    bool m_lower_left;
+    bool m_lower_right;
     bool m_size_known;
     int m_facet_count;
     Facet *m_facet;

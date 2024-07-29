@@ -5,7 +5,9 @@
 #include "tile_shape.h"
 #include "math.h"
 
-TileShape::TileShape(float pitch, float width, float height, float border, bool upper, bool lower, bool left, bool right)
+TileShape::TileShape(float pitch, float width, float height, float border,
+                     bool upper, bool lower, bool left, bool right,
+                     bool upper_left, bool upper_right, bool lower_left, bool lower_right)
     : m_pitch(pitch)
     , m_width(width)
     , m_height(height)
@@ -14,6 +16,10 @@ TileShape::TileShape(float pitch, float width, float height, float border, bool 
     , m_lower(lower)
     , m_left(left)
     , m_right(right)
+    , m_upper_left(upper_left)
+    , m_upper_right(upper_right)
+    , m_lower_left(lower_left)
+    , m_lower_right(lower_right)
     , m_size_known(false)
     , m_facet_count(0)
     , m_facet(NULL)
@@ -50,24 +56,43 @@ void TileShape::define_shape()
     float lowerz = m_lower ? m_pitch / 2.0 : m_width / 2.0;
     float leftx = m_left ? -m_pitch / 2.0 : -m_width / 2.0;
     float rightx = m_right ? m_pitch / 2.0 : m_width / 2.0;
+    float w = m_width / 2.0;
     float h = m_height / 2.0;
-    add_face({leftx, h, upperz}, {leftx, h, lowerz}, {rightx, h, lowerz}, {rightx, h, upperz}, false);
-    add_face({leftx, -h, upperz}, {leftx, -h, lowerz}, {rightx, -h, lowerz}, {rightx, -h, upperz}, true);
+    add_face({-w, h, -w}, {-w, h, w}, {w, h, w}, {w, h, -w}, false);
+    add_face({-w, -h, -w}, {-w, -h, w}, {w, -h, w}, {w, -h, -w}, true);
 
-#ifdef NEVERMORE
-    if (!m_upper) {
-        add_face({leftx, -h, upperz}, {leftx, h, upperz}, {rightx, h, upperz}, {rightx, -h, upperz}, false);
+    if (m_upper) {
+        add_face({-w, h, -w}, {-w, h, upperz}, {w, h, upperz}, {w, h, -w}, true);
+        add_face({-w, -h, -w}, {-w, -h, upperz}, {w, -h, upperz}, {w, -h, -w}, false);
     }
-    if (!m_lower) {
-        add_face({leftx, -h, lowerz}, {leftx, h, lowerz}, {rightx, h, lowerz}, {rightx, -h, lowerz}, true);
+    if (m_lower) {
+        add_face({-w, h, w}, {-w, h, lowerz}, {w, h, lowerz}, {w, h, w}, false);
+        add_face({-w, -h, w}, {-w, -h, lowerz}, {w, -h, lowerz}, {w, -h, w}, true);
     }
-    if (!m_left) {
-        add_face({leftx, -h, lowerz}, {leftx, h, lowerz}, {leftx, h, upperz}, {leftx, -h, upperz}, false);
+    if (m_left) {
+        add_face({leftx, h, w}, {-w, h, w}, {-w, h, -w}, {leftx, h, -w}, false);
+        add_face({leftx, -h, w}, {-w, -h, w}, {-w, -h, -w}, {leftx, -h, -w}, true);
     }
-    if (!m_right) {
-        add_face({rightx, -h, lowerz}, {rightx, h, lowerz}, {rightx, h, upperz}, {rightx, -h, upperz}, true);
+    if (m_right) {
+        add_face({w, h, w}, {rightx, h, w}, {rightx, h, -w}, {w, h, -w}, false);
+        add_face({w, -h, w}, {rightx, -h, w}, {rightx, -h, -w}, {w, -h, -w}, true);
     }
-#endif
+    if (m_upper_left) {
+        add_face({leftx, h, upperz}, {leftx, h, -w}, {-w, h, -w}, {-w, h, upperz}, false);
+        add_face({leftx, -h, upperz}, {leftx, -h, -w}, {-w, -h, -w}, {-w, -h, upperz}, true);
+    }
+    if (m_upper_right) {
+        add_face({w, h, upperz}, {w, h, -w}, {rightx, h, -w}, {rightx, h, upperz}, false);
+        add_face({w, -h, upperz}, {w, -h, -w}, {rightx, -h, -w}, {rightx, -h, upperz}, true);
+    }
+    if (m_lower_left) {
+        add_face({leftx, h, w}, {leftx, h, lowerz}, {-w, h, lowerz}, {-w, h, w}, false);
+        add_face({leftx, -h, w}, {leftx, -h, lowerz}, {-w, -h, lowerz}, {-w, -h, w}, true);
+    }
+    if (m_lower_right) {
+        add_face({w, h, w}, {w, h, lowerz}, {rightx, h, lowerz}, {rightx, h, w}, false);
+        add_face({w, -h, w}, {w, -h, lowerz}, {rightx, -h, lowerz}, {rightx, -h, w}, true);
+    }
 }
 
 void TileShape::add_face(Float3 v1, Float3 v2, Float3 v3, Float3 v4, bool flip)
