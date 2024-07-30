@@ -180,7 +180,7 @@ void Token::set_position(float posx, float posy, float posz, float seconds)
     m_position.v1 = posx;
     m_position.v2 = posy;
     m_position.v3 = posz;
-    m_translation_time_left = seconds;
+    m_translation_time_left += seconds;
 }
 
 void Token::set_angle(float angle, float seconds)
@@ -190,6 +190,6 @@ void Token::set_angle(float angle, float seconds)
         m_angular_velocity = (angle - ca) / seconds;
     }
     m_angle = angle;
-    m_rotation_time_left = seconds;
+    m_rotation_time_left += seconds;
 }
 
