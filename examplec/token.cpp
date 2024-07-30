@@ -125,14 +125,20 @@ CadModel Token::model(float animation_id) const
     return cm;
 }
 
+Float3 Token::current_position() const
+{
+    Float3 cp;
+    cp.v1 = m_position.v1 - m_velocity.v1 * m_time_left;
+    cp.v2 = m_position.v2 - m_velocity.v2 * m_time_left;
+    cp.v3 = m_position.v3 - m_velocity.v3 * m_time_left;
+    return cp;
+}
+
 const float* Token::data()
 {
     m_animation.unity();
-    float px = m_position.v1 - m_velocity.v1 * m_time_left;
-    float py = m_position.v2 - m_velocity.v2 * m_time_left;
-    float pz = m_position.v3 - m_velocity.v3 * m_time_left;
-
-    m_animation.translate(px, py, pz);
+    Float3 cp = current_position();
+    m_animation.translate(cp.v1, cp.v2, cp.v3);
 
     // Multipy mm times the rotation matrix
 //    m_animation = m_animation * m_orientation.rotation_matrix();
@@ -151,10 +157,11 @@ bool Token::occupied(int ph, int pv) const
 
 void Token::set_position(float posx, float posy, float posz, float seconds)
 {
+    Float3 cp = current_position();
     if (seconds > 0.0) {
-        m_velocity.v1 = (posx - m_position.v1) / seconds;
-        m_velocity.v2 = (posy - m_position.v2) / seconds;
-        m_velocity.v3 = (posz - m_position.v3) / seconds;
+        m_velocity.v1 = (posx - cp.v1) / seconds;
+        m_velocity.v2 = (posy - cp.v2) / seconds;
+        m_velocity.v3 = (posz - cp.v3) / seconds;
     }
     m_position.v1 = posx;
     m_position.v2 = posy;

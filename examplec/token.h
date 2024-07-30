@@ -25,6 +25,7 @@ public:
     CadModel model(float animation_id) const;
     const float* data();
     void set_position(float posx, float posy, float posz, float seconds = 0.0);
+    Float3 current_position() const;
 
 protected:
     Float3 m_position;

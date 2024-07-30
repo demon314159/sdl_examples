@@ -39,7 +39,7 @@ void Toy::build_model()
         int xpos = i & 7;
         int zpos = (i >> 3) & 7;
 
-        m_token_set->set_position(i, sep * (float) (xpos - 4), 0.0, sep * (float) (zpos - 2), 5.0);
+        m_token_set->set_position(i, sep * (float) (xpos - 4), 0.0, sep * (float) (zpos - 2), 0.5);
     }
 }
 
