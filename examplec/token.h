@@ -25,12 +25,17 @@ public:
     CadModel model(float animation_id) const;
     const float* data();
     void set_position(float posx, float posy, float posz, float seconds = 0.0);
+    void set_angle(float angle, float seconds = 0.0);
     Float3 current_position() const;
+    float current_angle() const;
 
 protected:
     Float3 m_position;
+    float m_angle;
     Float3 m_velocity;
-    float m_time_left;
+    float m_angular_velocity;
+    float m_translation_time_left;
+    float m_rotation_time_left;
     int m_tiles;
     TileRec m_tile[MAX_TILES];
     Matrix4x4 m_animation;

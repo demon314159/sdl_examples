@@ -160,3 +160,10 @@ void TokenSet::set_position(int token_id, float posx, float posy, float posz, fl
 {
     m_token[token_id].set_position(posx, posy, posz, seconds);
 }
+
+void TokenSet::set_angle(int token_id, float angle, float seconds)
+{
+    m_token[token_id].set_angle(angle, seconds);
+}
+
+

@@ -27,6 +27,7 @@ public:
     CadModel model(int token_id, float animation_id) const;
     const float* data(int token_id);
     void set_position(int token_id, float posx, float posy, float posz, float seconds = 0.0);
+    void set_angle(int token_id, float angle, float seconds = 0.0);
 
 protected:
     int m_tokens;

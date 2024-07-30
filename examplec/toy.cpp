@@ -38,8 +38,8 @@ void Toy::build_model()
         m_model->add(m_token_set->model(i, ANIMATION_ID_FIRST_TOKEN + (float) i));
         int xpos = i & 7;
         int zpos = (i >> 3) & 7;
-
         m_token_set->set_position(i, sep * (float) (xpos - 4), 0.0, sep * (float) (zpos - 2), 0.5);
+        m_token_set->set_angle(i, 360.0, 10.0);
     }
 }
 
