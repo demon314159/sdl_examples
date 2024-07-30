@@ -8,9 +8,9 @@
 #include "tile_border_shape.h"
 
 Token::Token()
-    : m_posx(0.0)
-    , m_posy(0.0)
-    , m_posz(0.0)
+    : m_position({0.0, 0.0, 0.0})
+    , m_velocity({0.0, 0.0, 0.0})
+    , m_time_left(0.0)
     , m_tiles(0)
     , m_animation()
 {
@@ -106,6 +106,15 @@ void Token::one_tile(CadModel& cm, int tile, float animation_id) const
     cm.add(t2, pitch * (float) posh(tile, 0), 0.0, pitch * (float) posv(tile, 0));
 }
 
+void Token::advance(float seconds)
+{
+    if (m_time_left >= seconds) {
+        m_time_left -= seconds;
+    } else {
+        m_time_left = 0.0;
+    }
+}
+
 CadModel Token::model(float animation_id) const
 {
     CadModel cm;
@@ -119,7 +128,11 @@ CadModel Token::model(float animation_id) const
 const float* Token::data()
 {
     m_animation.unity();
-    m_animation.translate(m_posx, 0.0, m_posz);
+    float px = m_position.v1 - m_velocity.v1 * m_time_left;
+    float py = m_position.v2 - m_velocity.v2 * m_time_left;
+    float pz = m_position.v3 - m_velocity.v3 * m_time_left;
+
+    m_animation.translate(px, py, pz);
 
     // Multipy mm times the rotation matrix
 //    m_animation = m_animation * m_orientation.rotation_matrix();
@@ -136,9 +149,15 @@ bool Token::occupied(int ph, int pv) const
     return false;
 }
 
-void Token::set_position(float posx, float posy, float posz)
+void Token::set_position(float posx, float posy, float posz, float seconds)
 {
-    m_posx = posx;
-    m_posy = posy;
-    m_posz = posz;
+    if (seconds > 0.0) {
+        m_velocity.v1 = (posx - m_position.v1) / seconds;
+        m_velocity.v2 = (posy - m_position.v2) / seconds;
+        m_velocity.v3 = (posz - m_position.v3) / seconds;
+    }
+    m_position.v1 = posx;
+    m_position.v2 = posy;
+    m_position.v3 = posz;
+    m_time_left = seconds;
 }

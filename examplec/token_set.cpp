@@ -141,6 +141,9 @@ int TokenSet::vert_center(int token_id, int orientation, int unit_length) const
 
 void TokenSet::advance(float seconds)
 {
+    for (int i = 0; i < m_tokens; i++) {
+        m_token[i].advance(seconds);
+    }
 }
 
 CadModel TokenSet::model(int token_id, float animation_id) const
@@ -153,7 +156,7 @@ const float* TokenSet::data(int token_id)
     return m_token[token_id].data();
 }
 
-void TokenSet::set_position(int token_id, float posx, float posy, float posz)
+void TokenSet::set_position(int token_id, float posx, float posy, float posz, float seconds)
 {
-    m_token[token_id].set_position(posx, posy, posz);
+    m_token[token_id].set_position(posx, posy, posz, seconds);
 }
