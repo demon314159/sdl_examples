@@ -46,6 +46,7 @@ TokenSet::TokenSet(void)
     add_token(Token().add_tile(0, 0).add_tile(0, 1).add_tile(0, 2).add_tile(0, 3).add_tile(1, 2).add_tile(1, 3));    // token_id = 36 == 8a
     add_token(Token().add_tile(0, 0).add_tile(0, 1).add_tile(1, 1).add_tile(1, 2).add_tile(2, 2).add_tile(2, 3));    // token_id = 37 == 14a
     add_token(Token().add_tile(0, 0).add_tile(0, 1).add_tile(0, 2).add_tile(1, 2).add_tile(2, 2).add_tile(2, 1));    // token_id = 38 == 25a
+    add_token(Token().add_tile(0, 0).add_tile(0, 1).add_tile(0, 2).add_tile(0, 3).add_tile(0, 4).add_tile(0, 5));    // token_id = 39 == 1a
 }
 
 TokenSet::~TokenSet()

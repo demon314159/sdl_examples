@@ -5,7 +5,7 @@
 #ifndef _TOKEN_SET_H_
 #define _TOKEN_SET_H_
 
-#define MAX_TOKENS 39
+#define MAX_TOKENS 40
 
 #include "token.h"
 
