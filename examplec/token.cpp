@@ -95,18 +95,18 @@ void Token::one_tile(CadModel& cm, int tile, float animation_id) const
 
     int base_posh = posh(tile, 0);
     int base_posv = posv(tile, 0);
-    bool upper = occupied(base_posh, base_posv - 1);
-    bool lower = occupied(base_posh, base_posv + 1);
+    bool upper = occupied(base_posh, base_posv + 1);
+    bool lower = occupied(base_posh, base_posv - 1);
     bool left = occupied(base_posh - 1, base_posv);
     bool right = occupied(base_posh + 1, base_posv);
-    bool upper_left = upper && left && occupied(base_posh - 1, base_posv - 1);
-    bool upper_right = upper && right && occupied(base_posh + 1, base_posv - 1);
-    bool lower_left = lower && left && occupied(base_posh - 1, base_posv + 1);
-    bool lower_right = lower && right && occupied(base_posh + 1, base_posv + 1);
+    bool upper_left = upper && left && occupied(base_posh - 1, base_posv + 1);
+    bool upper_right = upper && right && occupied(base_posh + 1, base_posv + 1);
+    bool lower_left = lower && left && occupied(base_posh - 1, base_posv - 1);
+    bool lower_right = lower && right && occupied(base_posh + 1, base_posv - 1);
     CadModel t1(TileShape(pitch, width, thick, border, upper, lower, left, right, upper_left, upper_right, lower_left, lower_right), dark_yellow, animation_id);
     CadModel t2(TileBorderShape(pitch, width, height, border, upper, lower, left, right), yellow, animation_id);
-    cm.add(t1, pitch * (float) posh(tile, 0), 0.0, pitch * (float) posv(tile, 0));
-    cm.add(t2, pitch * (float) posh(tile, 0), 0.0, pitch * (float) posv(tile, 0));
+    cm.add(t1, pitch * (float) posh(tile, 0), 0.0, -pitch * (float) posv(tile, 0));
+    cm.add(t2, pitch * (float) posh(tile, 0), 0.0, -pitch * (float) posv(tile, 0));
 }
 
 void Token::advance(float seconds)

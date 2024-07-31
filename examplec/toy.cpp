@@ -37,6 +37,7 @@ Toy::~Toy()
 void Toy::build_model()
 {
     float sep = 0.080;
+    float pitch = 0.010;
     m_model->clear();
     for (int i = 0; i < m_token_set->tokens(); i++) {
         m_model->add(m_token_set->model(i, ANIMATION_ID_FIRST_TOKEN + (float) i));
@@ -44,9 +45,12 @@ void Toy::build_model()
         int zpos = (i >> 3) & 7;
 //        m_token_set->set_position(i, sep * (float) (xpos - 4), 0.0, sep * (float) (zpos - 2), 0.5);
 //        m_token_set->set_angle(i, 360.0, 10.0);
-        m_token_set->set_position(i, -sep, 0.0, 0.0, 0.0);
-        m_token_set->set_angle(i, 0.0, 0.0);
+          m_token_set->set_position(i, pitch * (float) 4.0, -0.002, 0.0);
     }
+    m_token_set->set_position(1, 0.0, 0.0, 0.0);
+    m_token_set->set_position(39, 9.0 * pitch, 0.0, -0.0);
+    m_token_set->set_position(4, 1.0 * pitch, 0.0, -0.0 * pitch);
+    m_token_set->set_position(13, 5.0 * pitch, 0.0, -2.0 * pitch);
     m_model->add(m_tray->model(0.0), 0.0, -0.001, 0.0);
 }
 
