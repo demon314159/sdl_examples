@@ -7,9 +7,12 @@
 
 #define ANIMATION_ID_FIRST_TOKEN 2.0
 #define ANIMATION_NAME_LENGTH 32
+#define TRAY_ROWS 6
+#define TRAY_COLS 10
 
 Toy::Toy()
-    : m_token_set(new TokenSet())
+    : m_tray(new Tray(TRAY_ROWS, TRAY_COLS))
+    , m_token_set(new TokenSet())
     , m_token_names(new char*[m_token_set->tokens()])
     , m_seconds(0.0)
 {
@@ -28,6 +31,7 @@ Toy::~Toy()
     }
     delete [] m_token_names;
     delete m_token_set;
+    delete m_tray;
 }
 
 void Toy::build_model()
@@ -41,6 +45,7 @@ void Toy::build_model()
         m_token_set->set_position(i, sep * (float) (xpos - 4), 0.0, sep * (float) (zpos - 2), 0.5);
         m_token_set->set_angle(i, 360.0, 10.0);
     }
+    m_model->add(m_tray->model(0.0), 0.0, -0.001, 0.0);
 }
 
 void Toy::build_uniform()

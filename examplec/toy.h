@@ -6,6 +6,7 @@
 #define _TOY_H_
 
 #include "animated_toy.h"
+#include "tray.h"
 #include "token_set.h"
 
 class Toy: public AnimatedToy
@@ -17,6 +18,7 @@ public:
     void advance(int nanoseconds) override;
 
 private:
+    Tray* m_tray;
     TokenSet* m_token_set;
     char** m_token_names;
     float m_seconds;

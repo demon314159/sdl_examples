@@ -39,6 +39,8 @@ HEADERS = view.h \
           piece.h \
           challenge.h \
           puzzle_book.h \
+          tray.h \
+          tray_border_shape.h \
           \
 # note: all of the files after toy.h are there for toy.cpp only
 #       they can be removed if toy.cpp doesn't need them anymore
@@ -76,6 +78,8 @@ OBJECTS = main.obj \
           piece.obj \
           challenge.obj \
           puzzle_book.obj \
+          tray.obj \
+          tray_border_shape.obj \
           \
 # note: all of the files after toy.obj are there for toy.cpp only
 #       they can be removed if toy.cpp doesn't need them anymore

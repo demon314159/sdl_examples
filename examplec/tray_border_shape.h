@@ -1,19 +1,19 @@
 //
-// tile_border_shape.h
+// tray_border_shape.h
 //
 
-#ifndef _TILE_BORDER_SHAPE_H_
-#define _TILE_BORDER_SHAPE_H_
+#ifndef _TRAY_BORDER_SHAPE_H_
+#define _TRAY_BORDER_SHAPE_H_
 
 #include "shape.h"
 #include "float3.h"
 #include "facet.h"
 
-class TileBorderShape: public Shape
+class TrayBorderShape: public Shape
 {
 public:
-    TileBorderShape(float pitch, float width, float height, float border, bool upper, bool lower, bool left, bool right);
-    virtual ~TileBorderShape();
+    TrayBorderShape(float pitch, float width, float height, bool upper, bool lower, bool left, bool right);
+    virtual ~TrayBorderShape();
     int facets() const override;
     Facet facet(int facet_ix) const override;
 
@@ -21,7 +21,6 @@ private:
     float m_pitch;
     float m_width;
     float m_height;
-    float m_border;
     bool m_upper;
     bool m_lower;
     bool m_left;
@@ -35,4 +34,4 @@ private:
     void add_face(Float3 v1, Float3 v2, Float3 v3, Float3 v4, bool flip = false);
 };
 
-#endif // _TILE_BORDER_SHAPE_
+#endif // _TRAY_BORDER_SHAPE_
