@@ -9,11 +9,11 @@
 
 Token::Token()
     : m_position({0.0, 0.0, 0.0})
-    , m_angle(0.0)
+    , m_angle({0.0, 0.0, 0.0})
     , m_velocity({0.0, 0.0, 0.0})
-    , m_angular_velocity(0.0)
+    , m_angular_velocity({0.0, 0.0, 0.0})
     , m_translation_time_left(0.0)
-    , m_rotation_time_left(0.0)
+    , m_rotation_time_left({0.0, 0.0, 0.0})
     , m_tiles(0)
     , m_animation()
 {
@@ -116,10 +116,20 @@ void Token::advance(float seconds)
     } else {
         m_translation_time_left = 0.0;
     }
-    if (m_rotation_time_left >= seconds) {
-        m_rotation_time_left -= seconds;
+    if (m_rotation_time_left.v1 >= seconds) {
+        m_rotation_time_left.v1 -= seconds;
     } else {
-        m_rotation_time_left = 0.0;
+        m_rotation_time_left.v1 = 0.0;
+    }
+    if (m_rotation_time_left.v2 >= seconds) {
+        m_rotation_time_left.v2 -= seconds;
+    } else {
+        m_rotation_time_left.v2 = 0.0;
+    }
+    if (m_rotation_time_left.v3 >= seconds) {
+        m_rotation_time_left.v3 -= seconds;
+    } else {
+        m_rotation_time_left.v3 = 0.0;
     }
 }
 
@@ -142,10 +152,12 @@ Float3 Token::current_position() const
     return cp;
 }
 
-float Token::current_angle() const
+Float3 Token::current_angle() const
 {
-    float ca;
-    ca = m_angle - m_angular_velocity * m_rotation_time_left;
+    Float3 ca;
+    ca.v1 = m_angle.v1 - m_angular_velocity.v1 * m_rotation_time_left.v1;
+    ca.v2 = m_angle.v2 - m_angular_velocity.v2 * m_rotation_time_left.v2;
+    ca.v3 = m_angle.v3 - m_angular_velocity.v3 * m_rotation_time_left.v3;
     return ca;
 }
 
@@ -153,9 +165,11 @@ const float* Token::data()
 {
     m_animation.unity();
     Float3 cp = current_position();
-    float ca = current_angle();
+    Float3 ca = current_angle();
     m_animation.translate(cp.v1, cp.v2, cp.v3);
-    m_animation.rotate_ay(ca);
+    m_animation.rotate_ay(ca.v2);
+    m_animation.rotate_ax(ca.v1);
+    m_animation.rotate_az(ca.v3);
     return m_animation.data();
 }
 
@@ -185,15 +199,38 @@ void Token::set_position(float posx, float posy, float posz, float seconds)
     m_position.v3 = posz;
 }
 
-void Token::set_angle(float angle, float seconds)
+void Token::set_angle_ax(float angle, float seconds)
 {
-    float ca = current_angle();
+    float ca = current_angle().v1;
     if (seconds > 0.0) {
-        m_angular_velocity = (angle - ca) / seconds;
-        m_rotation_time_left += seconds;
+        m_angular_velocity.v1 = (angle - ca) / seconds;
+        m_rotation_time_left.v1 += seconds;
     } else {
-        m_rotation_time_left = 0.0;
+        m_rotation_time_left.v1 = 0.0;
     }
-    m_angle = angle;
+    m_angle.v1 = angle;
 }
 
+void Token::set_angle_ay(float angle, float seconds)
+{
+    float ca = current_angle().v2;
+    if (seconds > 0.0) {
+        m_angular_velocity.v2 = (angle - ca) / seconds;
+        m_rotation_time_left.v2 += seconds;
+    } else {
+        m_rotation_time_left.v2 = 0.0;
+    }
+    m_angle.v2 = angle;
+}
+
+void Token::set_angle_az(float angle, float seconds)
+{
+    float ca = current_angle().v3;
+    if (seconds > 0.0) {
+        m_angular_velocity.v3 = (angle - ca) / seconds;
+        m_rotation_time_left.v3 += seconds;
+    } else {
+        m_rotation_time_left.v3 = 0.0;
+    }
+    m_angle.v3 = angle;
+}

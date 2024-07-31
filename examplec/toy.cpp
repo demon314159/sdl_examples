@@ -51,6 +51,8 @@ void Toy::build_model()
     m_token_set->set_position(39, 9.0 * pitch, 0.0, -0.0);
     m_token_set->set_position(4, 1.0 * pitch, 0.0, -0.0 * pitch);
     m_token_set->set_position(13, 5.0 * pitch, 0.0, -2.0 * pitch);
+    m_token_set->set_angle_az(13, 180.0, 0.5);
+    m_token_set->set_angle_ay(13, -90.0, 0.5);
     m_model->add(m_tray->model(0.0), 0.0, -0.001, 0.0);
 }
 
