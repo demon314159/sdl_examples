@@ -4,7 +4,7 @@
 
 #include "tray.h"
 #include "paint_can.h"
-#include "cube_shape.h"
+#include "plane_shape.h"
 #include "tray_border_shape.h"
 
 Tray::Tray(int rows, int cols)
@@ -36,12 +36,12 @@ void Tray::one_square(CadModel& cm, int row, int col, float animation_id) const
     PaintCan red(1.0, 0.0, 0.0);
     PaintCan black(0.0, 0.0, 0.0);
 
-    CadModel s1(CubeShape(width, height, width), red, animation_id);
+    CadModel s1(PlaneShape(width, width), red, animation_id);
     CadModel s2(TrayBorderShape(pitch, width, height, row == 0, row == (m_rows - 1), col == 0, col == (m_cols - 1)), black, animation_id);
-
-
-    cm.add(s1, pitch * (float) col, 0.0, pitch * (float) row);
+    cm.add(s1, pitch * (float) col, height / 2.0, pitch * (float) row);
     cm.add(s2, pitch * (float) col, 0.0, pitch * (float) row);
+    s1.rotate_ax(180.0);
+    cm.add(s1, pitch * (float) col, -height / 2.0, pitch * (float) row);
 }
 
 CadModel Tray::model(float animation_id) const
