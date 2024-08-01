@@ -24,6 +24,7 @@ Toy::Toy()
         m_token_names[i] = new char[ANIMATION_NAME_LENGTH];
         sprintf(m_token_names[i], "animation_%d_matrix", i);
     }
+    put_away_tokens();
     build_model();
     build_uniform();
     set_up_current_challenge();
@@ -46,20 +47,25 @@ Toy::~Toy()
 void Toy::build_model()
 {
     float sep = 0.050;
-    float pitch = 0.010;
     m_model->clear();
     for (int i = 0; i < m_token_set->tokens(); i++) {
         m_model->add(m_token_set->model(i, ANIMATION_ID_FIRST_TOKEN + (float) i));
-        int xpos = i & 7;
-        int zpos = (i >> 3) & 7;
-          m_token_set->set_position(i, pitch * (float) 4.0, -0.002, 0.0);
     }
     m_model->add(m_tray->model(0.0), 0.0, -0.001, 0.0);
+}
+
+void Toy::put_away_tokens()
+{
+    for (int i = 0; i < m_token_set->tokens(); i++) {
+        m_token_set->set_position(i, PITCH * (float) 4.0, -0.002, 0.0);
+        m_token_set->set_orientation(i, 0);
+    }
 }
 
 void Toy::set_up_current_challenge()
 {
     m_dock->clear();
+    put_away_tokens();
     for (int i = 0; i < m_puzzle_book->pieces(); i++) {
         if (!m_puzzle_book->locked(i)) {
             m_dock->assign_slot(i);
@@ -107,4 +113,30 @@ void Toy::advance(int nanoseconds)
 
     }
     update_uniform();
+}
+
+bool Toy::button(int code, bool shifted, bool on)
+{
+    bool ret_val = AnimatedToy::button(code, shifted, on);
+    if (!ret_val)
+        return false;
+    switch (code) {
+        case SDL_SCANCODE_LEFT:
+            if (on) {
+                m_puzzle_book->go_to_previous_challenge();
+                set_up_current_challenge();
+            }
+            ret_val = false;
+            break;
+        case SDL_SCANCODE_RIGHT:
+            if (on) {
+                m_puzzle_book->go_to_next_challenge();
+                set_up_current_challenge();
+            }
+            ret_val = false;
+            break;
+        default:
+            break;
+    }
+    return ret_val;
 }

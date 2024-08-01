@@ -18,6 +18,7 @@ public:
     ~Toy();
 
     void advance(int nanoseconds) override;
+    bool button(int code, bool shifted, bool on);
 
 private:
     Tray* m_tray;
@@ -30,6 +31,7 @@ private:
     void build_model();
     void build_uniform();
     void update_uniform();
+    void put_away_tokens();
     void set_up_current_challenge();
 };
 
