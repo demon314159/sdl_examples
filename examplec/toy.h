@@ -19,6 +19,7 @@ public:
 
     void advance(int nanoseconds) override;
     bool button(int code, bool shifted, bool on);
+    bool mouse(SDL_Event* e, bool on);
 
 private:
     Tray* m_tray;

@@ -470,6 +470,10 @@ bool Toy::button(int code, bool shifted, bool on)
 
 bool Toy::mouse(SDL_Event* e, bool on)
 {
+    bool ret_val = AnimatedToy::mouse(e, on);
+    if (!ret_val)
+        return false;
+
     return false;
 }
 

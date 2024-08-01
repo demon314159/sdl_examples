@@ -140,3 +140,31 @@ bool Toy::button(int code, bool shifted, bool on)
     }
     return ret_val;
 }
+
+bool Toy::mouse(SDL_Event* e, bool on)
+{
+    bool ret_val = AnimatedToy::mouse(e, on);
+    if (!ret_val)
+        return false;
+    if (e->button.button == SDL_BUTTON_MIDDLE) {
+        if (on) {
+            printf("middle button on (%d, %d)\n", e->button.x, e->button.y);
+        } else {
+            printf("middle button off (%d, %d)\n", e->button.x, e->button.y);
+        }
+    } else if (e->button.button == SDL_BUTTON_LEFT) {
+        if (on) {
+            printf("left button on (%d, %d)\n", e->button.x, e->button.y);
+        } else {
+            printf("left button off (%d, %d)\n", e->button.x, e->button.y);
+        }
+    } else if (e->button.button == SDL_BUTTON_RIGHT) {
+        if (on) {
+            printf("right button on (%d, %d)\n", e->button.x, e->button.y);
+        } else {
+            printf("right button off (%d, %d)\n", e->button.x, e->button.y);
+        }
+    }
+
+    return false;
+}
