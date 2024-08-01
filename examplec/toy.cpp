@@ -10,11 +10,15 @@
 #define TRAY_ROWS 6
 #define TRAY_COLS 10
 
+#define PITCH 0.010
+
 Toy::Toy()
     : m_tray(new Tray(TRAY_ROWS, TRAY_COLS))
     , m_token_set(new TokenSet())
     , m_token_names(new char*[m_token_set->tokens()])
     , m_seconds(0.0)
+    , m_puzzle_book(new PuzzleBook(PUZZLE_BOOK_FILE_NAME))
+    , m_dock(new Dock(PITCH))
 {
     for (int i = 0; i < m_token_set->tokens(); i++) {
         m_token_names[i] = new char[ANIMATION_NAME_LENGTH];
@@ -22,10 +26,15 @@ Toy::Toy()
     }
     build_model();
     build_uniform();
+    set_up_current_challenge();
 }
 
 Toy::~Toy()
 {
+    delete m_dock;
+//    m_puzzle_book->save(PUZZLE_BOOK_FILE_NAME);
+
+    delete m_puzzle_book;
     for (int i = 0; i < m_token_set->tokens(); i++) {
         delete [] m_token_names[i];
     }
@@ -45,33 +54,30 @@ void Toy::build_model()
         int zpos = (i >> 3) & 7;
           m_token_set->set_position(i, pitch * (float) 4.0, -0.002, 0.0);
     }
-    m_token_set->set_position(1, 0.0, 0.0, 0.0);
-    m_token_set->set_position(39, 9.0 * pitch, 0.0, -0.0);
-    m_token_set->set_position(4, 1.0 * pitch, 0.0, -0.0 * pitch);
-    m_token_set->set_position(13, 5.0 * pitch, 0.0, -2.0 * pitch);
-    m_token_set->set_angle_az(13, 180.0);
-    m_token_set->set_angle_ay(13, -90.0);
-
-//    m_token_set->set_position(5, pitch * 0.0, 0.0, -pitch * 7.0);
-//    m_token_set->set_position(7, pitch * 9.0, 0.0, -pitch * 7.0);
-//    m_token_set->set_position(11, pitch * 0.0, 0.0, pitch * 5.0);
-//    m_token_set->set_position(14, pitch * 9.0, 0.0, pitch * 5.0);
-//    m_token_set->set_position(37, -pitch * 5.0, 0.0, -pitch * 1.0);
-//    m_token_set->set_position(28, pitch * 13.0, 0.0, -pitch * 1.0);
-
-    m_token_set->set_dock_position(5, 0, pitch);
-    m_token_set->set_dock_position(7, 1, pitch);
-    m_token_set->set_dock_position(11, 2, pitch);
-    m_token_set->set_dock_position(14, 3, pitch);
-    m_token_set->set_dock_position(37, 4, pitch);
-    m_token_set->set_dock_position(28, 5, pitch);
-
-    m_token_set->set_dock_position(29, 6, pitch);
-    m_token_set->set_dock_position(30, 7, pitch);
-    m_token_set->set_dock_position(31, 8, pitch);
-    m_token_set->set_dock_position(32, 9, pitch);
-
     m_model->add(m_tray->model(0.0), 0.0, -0.001, 0.0);
+}
+
+void Toy::set_up_current_challenge()
+{
+    m_dock->clear();
+    for (int i = 0; i < m_puzzle_book->pieces(); i++) {
+        if (!m_puzzle_book->locked(i)) {
+            m_dock->assign_slot(i);
+        }
+    }
+    for (int i = 0; i < m_puzzle_book->pieces(); i++) {
+        if (m_puzzle_book->locked(i)) {
+            m_dock->assign_slot(i);
+        }
+    }
+    for (int i = 0; i < m_puzzle_book->pieces(); i++) {
+        m_token_set->set_orientation(m_puzzle_book->token_id(i), m_puzzle_book->orientation(i), 0.0);
+        if (m_puzzle_book->on_board(i)) {
+            m_token_set->set_board_position(m_puzzle_book->token_id(i), m_puzzle_book->posh(i), m_puzzle_book->posv(i), m_puzzle_book->orientation(i), m_dock);
+        } else {
+            m_token_set->set_dock_position(m_puzzle_book->token_id(i), m_dock->dock_id(i), m_dock);
+        }
+    }
 }
 
 void Toy::build_uniform()

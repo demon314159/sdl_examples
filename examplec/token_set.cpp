@@ -2,7 +2,6 @@
 // token_set.cpp
 //
 #include "token_set.h"
-#include "dock.h"
 #include <algorithm>
 
 TokenSet::TokenSet(void)
@@ -163,11 +162,24 @@ void TokenSet::set_position(int token_id, float posx, float posy, float posz, fl
     m_token[token_id].set_position(posx, posy, posz, seconds);
 }
 
-void TokenSet::set_dock_position(int token_id, int dock_id, float pitch, float seconds)
+void TokenSet::set_orientation(int token_id, int orientation, float seconds)
 {
-    Dock dock(pitch);
-    float posx = dock.posx(dock_id) - horz_center(token_id, 0, pitch);
-    float posz = dock.posz(dock_id) + vert_center(token_id, 0, pitch);
+    set_angle_ax(token_id, 0.0);
+    set_angle_az(token_id, (orientation & 4) ? 180.0 : 0.0);
+    set_angle_ay(token_id, -90.0 * (float) (orientation & 3));
+}
+
+void TokenSet::set_dock_position(int token_id, int dock_id, const Dock* dock, float seconds)
+{
+    float posx = dock->posx(dock_id) - horz_center(token_id, 0, dock->pitch());
+    float posz = dock->posz(dock_id) + vert_center(token_id, 0, dock->pitch());
+    m_token[token_id].set_position(posx, 0.0, posz, seconds);
+}
+
+void TokenSet::set_board_position(int token_id, int posh, int posv, int orientation, const Dock* dock, float seconds)
+{
+    float posx = posh * dock->pitch();
+    float posz = -posv * dock->pitch();
     m_token[token_id].set_position(posx, 0.0, posz, seconds);
 }
 

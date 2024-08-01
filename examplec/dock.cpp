@@ -6,11 +6,34 @@
 
 Dock::Dock(float pitch)
     : m_pitch(pitch)
+    , m_dock_id(0)
 {
+    clear();
 }
 
 Dock::~Dock()
 {
+}
+
+void Dock::clear()
+{
+    m_dock_id = 0;
+    for (int i = 0; i < MAX_SLOTS; i++) {
+        m_slot[i] = 0;
+    }
+}
+
+void Dock::assign_slot(int piece_id)
+{
+    if (piece_id < MAX_SLOTS) {
+        m_slot[piece_id] = m_dock_id;
+        ++m_dock_id;
+    }
+}
+
+int Dock::dock_id(int piece_id) const
+{
+    return m_slot[piece_id];
 }
 
 float Dock::posx(int dock_id) const
@@ -65,4 +88,9 @@ float Dock::posz(int dock_id) const
             return 4.0 * m_pitch;
     };
     return 0.0;
+}
+
+float Dock::pitch() const
+{
+    return m_pitch;
 }
