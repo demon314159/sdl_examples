@@ -36,23 +36,41 @@ Toy::~Toy()
 
 void Toy::build_model()
 {
-    float sep = 0.080;
+    float sep = 0.050;
     float pitch = 0.010;
     m_model->clear();
     for (int i = 0; i < m_token_set->tokens(); i++) {
         m_model->add(m_token_set->model(i, ANIMATION_ID_FIRST_TOKEN + (float) i));
         int xpos = i & 7;
         int zpos = (i >> 3) & 7;
-//        m_token_set->set_position(i, sep * (float) (xpos - 4), 0.0, sep * (float) (zpos - 2), 0.5);
-//        m_token_set->set_angle(i, 360.0, 10.0);
           m_token_set->set_position(i, pitch * (float) 4.0, -0.002, 0.0);
     }
     m_token_set->set_position(1, 0.0, 0.0, 0.0);
     m_token_set->set_position(39, 9.0 * pitch, 0.0, -0.0);
     m_token_set->set_position(4, 1.0 * pitch, 0.0, -0.0 * pitch);
     m_token_set->set_position(13, 5.0 * pitch, 0.0, -2.0 * pitch);
-    m_token_set->set_angle_az(13, 180.0, 0.5);
-    m_token_set->set_angle_ay(13, -90.0, 0.5);
+    m_token_set->set_angle_az(13, 180.0);
+    m_token_set->set_angle_ay(13, -90.0);
+
+//    m_token_set->set_position(5, pitch * 0.0, 0.0, -pitch * 7.0);
+//    m_token_set->set_position(7, pitch * 9.0, 0.0, -pitch * 7.0);
+//    m_token_set->set_position(11, pitch * 0.0, 0.0, pitch * 5.0);
+//    m_token_set->set_position(14, pitch * 9.0, 0.0, pitch * 5.0);
+//    m_token_set->set_position(37, -pitch * 5.0, 0.0, -pitch * 1.0);
+//    m_token_set->set_position(28, pitch * 13.0, 0.0, -pitch * 1.0);
+
+    m_token_set->set_dock_position(5, 0, pitch);
+    m_token_set->set_dock_position(7, 1, pitch);
+    m_token_set->set_dock_position(11, 2, pitch);
+    m_token_set->set_dock_position(14, 3, pitch);
+    m_token_set->set_dock_position(37, 4, pitch);
+    m_token_set->set_dock_position(28, 5, pitch);
+
+    m_token_set->set_dock_position(29, 6, pitch);
+    m_token_set->set_dock_position(30, 7, pitch);
+    m_token_set->set_dock_position(31, 8, pitch);
+    m_token_set->set_dock_position(32, 9, pitch);
+
     m_model->add(m_tray->model(0.0), 0.0, -0.001, 0.0);
 }
 

@@ -2,6 +2,7 @@
 // token_set.cpp
 //
 #include "token_set.h"
+#include "dock.h"
 #include <algorithm>
 
 TokenSet::TokenSet(void)
@@ -118,7 +119,7 @@ bool TokenSet::tile_at(int token_id, int orientation, int ph, int pv) const
     return false;
 }
 
-int TokenSet::horz_center(int token_id, int orientation, int unit_length) const
+float TokenSet::horz_center(int token_id, int orientation, float pitch) const
 {
     int maxh = -1000;
     int minh = 1000;
@@ -126,10 +127,10 @@ int TokenSet::horz_center(int token_id, int orientation, int unit_length) const
         maxh = std::max(maxh, posh(token_id, i, orientation));
         minh = std::min(minh, posh(token_id, i, orientation));
     }
-    return (unit_length * (maxh + minh)) / 2;
+    return (pitch * ((float) (maxh + minh))) / 2.0f;
 }
 
-int TokenSet::vert_center(int token_id, int orientation, int unit_length) const
+float TokenSet::vert_center(int token_id, int orientation, float pitch) const
 {
     int maxv = -1000;
     int minv = 1000;
@@ -137,7 +138,7 @@ int TokenSet::vert_center(int token_id, int orientation, int unit_length) const
         maxv = std::max(maxv, posv(token_id, i, orientation));
         minv = std::min(minv, posv(token_id, i, orientation));
     }
-    return (unit_length * (maxv + minv)) / 2;
+    return (pitch * ((float) (maxv + minv))) / 2.0f;
 }
 
 void TokenSet::advance(float seconds)
@@ -160,6 +161,14 @@ const float* TokenSet::data(int token_id)
 void TokenSet::set_position(int token_id, float posx, float posy, float posz, float seconds)
 {
     m_token[token_id].set_position(posx, posy, posz, seconds);
+}
+
+void TokenSet::set_dock_position(int token_id, int dock_id, float pitch, float seconds)
+{
+    Dock dock(pitch);
+    float posx = dock.posx(dock_id) - horz_center(token_id, 0, pitch);
+    float posz = dock.posz(dock_id) + vert_center(token_id, 0, pitch);
+    m_token[token_id].set_position(posx, 0.0, posz, seconds);
 }
 
 void TokenSet::set_angle_ax(int token_id, float angle, float seconds)
