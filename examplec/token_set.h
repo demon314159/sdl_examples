@@ -34,6 +34,7 @@ public:
     void set_angle_ax(int token_id, float angle, float seconds = 0.0);
     void set_angle_ay(int token_id, float angle, float seconds = 0.0);
     void set_angle_az(int token_id, float angle, float seconds = 0.0);
+    Float3 position(int token_id) const;
 
 protected:
     int m_tokens;

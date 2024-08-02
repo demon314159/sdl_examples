@@ -30,6 +30,7 @@ public:
     void set_angle_az(float angle, float seconds = 0.0);
     Float3 current_position() const;
     Float3 current_angle() const;
+    Float3 position() const;
 
 protected:
     Float3 m_position;

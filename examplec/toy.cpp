@@ -3,6 +3,7 @@
 //
 
 #include "toy.h"
+#include <math.h>
 #include <stdio.h>
 
 #define ANIMATION_ID_FIRST_TOKEN 2.0
@@ -155,6 +156,10 @@ bool Toy::mouse(SDL_Event* e, bool on)
     } else if (e->button.button == SDL_BUTTON_LEFT) {
         if (on) {
             printf("left button on (%d, %d)\n", e->button.x, e->button.y);
+            Float2 sel = mouse_selection(e->button.x, e->button.y);
+            printf("    mouse_selection = (%5.3f, %5.3f)\n", sel.v1, sel.v2);
+            int sp = selected_piece(sel.v1, sel.v2);
+            printf("    selected piece = %d\n", sp);
         } else {
             printf("left button off (%d, %d)\n", e->button.x, e->button.y);
         }
@@ -167,4 +172,30 @@ bool Toy::mouse(SDL_Event* e, bool on)
     }
 
     return false;
+}
+
+int Toy::selected_piece(float x, float y) const
+{
+    for (int i = 0; i < m_puzzle_book->pieces(); i++) {
+       int token_id = m_puzzle_book->token_id(i);
+       int orientation = m_puzzle_book->orientation(i);
+       Float3 position = m_token_set->position(token_id);
+       for (int j = 0; j < m_token_set->tiles(token_id); j++) {
+           int posh = m_token_set->posh(token_id, j, orientation);
+           int posv = m_token_set->posv(token_id, j, orientation);
+           float px = PITCH * (float) posh + position.v1;
+           float pz = PITCH * (float) posv - position.v3;
+           if ( (fabs(x - px) < (PITCH / 2.0f)) && (fabs(y - pz) < (PITCH / 2.0f)) ) {
+               return i;
+           }
+       }
+    }
+    return -1;
+}
+
+Float2 Toy::mouse_selection(int sx, int sy) const
+{
+    MouseVector mv = m_camera->new_mouse_vector(sx, sy);
+    Float3 ip = mv.intersection_point(mv.origin().v2);
+    return {ip.v1, -ip.v3};
 }

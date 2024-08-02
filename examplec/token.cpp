@@ -234,3 +234,8 @@ void Token::set_angle_az(float angle, float seconds)
     }
     m_angle.v3 = angle;
 }
+
+Float3 Token::position() const
+{
+    return m_position;
+}

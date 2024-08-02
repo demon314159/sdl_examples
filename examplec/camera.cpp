@@ -192,3 +192,20 @@ void Camera::set_pose(int ix)
     m_mag = m_pose->pose(ix).mag;
     update_matrices();
 }
+
+MouseVector Camera::new_mouse_vector(int sx, int sy) const
+{
+    double camy = m_camz * tan((PI / 180.0) * m_fov / (2 * m_mag));
+    double k = 2 * camy / (double) m_height;
+    float v1 = k * ((double) sx - ((double) m_width) / 2);
+    float v2 = k * (-(double) sy + ((double) m_height) / 2);
+    Float3 vector = {v1 / m_camz, v2 / m_camz, -1.0};
+    Float3 origin = {0.0, 0.0, 0.0};
+    MouseVector tmv(origin, vector);
+    tmv.translate({-m_offset.v1, -m_offset.v2, m_camz + m_model_radius});
+    tmv.rotate_ax(m_rotation.v1);
+    tmv.rotate_ay(m_rotation.v2);
+    tmv.translate(m_model_center);
+    return tmv;
+}
+

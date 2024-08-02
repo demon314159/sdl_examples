@@ -9,6 +9,8 @@
 #include "cad_model.h"
 #include "pose.h"
 #include "float3.h"
+#include "mouse_vector.h"
+
 #include <stdio.h>
 
 class Camera
@@ -38,6 +40,7 @@ public:
     void add_pose(const Float2& offset, const Float2& rotation, float mag);
     int poses() const;
     void set_pose(int ix);
+    MouseVector new_mouse_vector(int sx, int sy) const;
 
     void show() const;
 

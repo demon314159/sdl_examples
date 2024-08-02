@@ -10,6 +10,7 @@
 #include "token_set.h"
 #include "puzzle_book.h"
 #include "dock.h"
+#include "mouse_vector.h"
 
 class Toy: public AnimatedToy
 {
@@ -34,6 +35,8 @@ private:
     void update_uniform();
     void put_away_tokens();
     void set_up_current_challenge();
+    Float2 mouse_selection(int sx, int sy) const;
+    int selected_piece(float x, float y) const;
 };
 
 #endif // _TOY_H_

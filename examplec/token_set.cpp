@@ -198,4 +198,7 @@ void TokenSet::set_angle_az(int token_id, float angle, float seconds)
     m_token[token_id].set_angle_az(angle, seconds);
 }
 
-
+Float3 TokenSet::position(int token_id) const
+{
+    return m_token[token_id].position();
+}
