@@ -37,6 +37,7 @@ private:
     void set_up_current_challenge();
     Float2 mouse_selection(int sx, int sy) const;
     int selected_piece(float x, float y) const;
+    int loosely_selected_piece(float x, float y) const;
 };
 
 #endif // _TOY_H_

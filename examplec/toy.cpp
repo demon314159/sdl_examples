@@ -159,7 +159,9 @@ bool Toy::mouse(SDL_Event* e, bool on)
             Float2 sel = mouse_selection(e->button.x, e->button.y);
             printf("    mouse_selection = (%5.3f, %5.3f)\n", sel.v1, sel.v2);
             int sp = selected_piece(sel.v1, sel.v2);
+            int lsp = loosely_selected_piece(sel.v1, sel.v2);
             printf("    selected piece = %d\n", sp);
+            printf("    loosely_selected piece = %d\n", lsp);
         } else {
             printf("left button off (%d, %d)\n", e->button.x, e->button.y);
         }
@@ -170,7 +172,6 @@ bool Toy::mouse(SDL_Event* e, bool on)
             printf("right button off (%d, %d)\n", e->button.x, e->button.y);
         }
     }
-
     return false;
 }
 
@@ -188,6 +189,26 @@ int Toy::selected_piece(float x, float y) const
            if ( (fabs(x - px) < (PITCH / 2.0f)) && (fabs(y - pz) < (PITCH / 2.0f)) ) {
                return i;
            }
+       }
+    }
+    return -1;
+}
+
+int Toy::loosely_selected_piece(float x, float y) const
+{
+    for (int i = 0; i < m_puzzle_book->pieces(); i++) {
+       int token_id = m_puzzle_book->token_id(i);
+       int orientation = m_puzzle_book->orientation(i);
+       Float3 position = m_token_set->position(token_id);
+       float horz_center = m_token_set->horz_center(token_id, orientation, PITCH);
+       float vert_center = m_token_set->vert_center(token_id, orientation, PITCH);
+       Float2 center = {position.v1 + horz_center, -position.v3 + vert_center};
+       float dx = x - center.v1;
+       float dz = y - center.v2;
+       float distance = sqrt(dx * dx + dz * dz);
+       float radius = 3.0 * PITCH;
+       if (distance <= radius) {
+           return i;
        }
     }
     return -1;
