@@ -175,6 +175,9 @@ void Host::mouse_move_event(SDL_Event* e)
 
 void Host::mouse_wheel_event(SDL_Event *e)
 {
+    if (!m_view.mouse_wheel(e)) {
+        return;
+    }
     int angle = e->wheel.y;
     if (angle > 0) {
         m_view.camera()->zoom(3.0 / 2.0);

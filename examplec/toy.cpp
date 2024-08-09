@@ -58,8 +58,8 @@ void Toy::build_model()
 void Toy::put_away_tokens()
 {
     for (int i = 0; i < m_token_set->tokens(); i++) {
-        m_token_set->set_position(i, PITCH * (float) 4.0, -0.002, 0.0);
-        m_token_set->set_orientation(i, 0);
+        m_token_set->set_position(i, PITCH * (float) 4.0, -0.002, 0, 0.0);
+//        m_token_set->set_orientation(i, 0);
     }
 }
 
@@ -78,11 +78,11 @@ void Toy::set_up_current_challenge()
         }
     }
     for (int i = 0; i < m_puzzle_book->pieces(); i++) {
-        m_token_set->set_orientation(m_puzzle_book->token_id(i), m_puzzle_book->orientation(i), 0.0);
+//        m_token_set->set_orientation(m_puzzle_book->token_id(i), m_puzzle_book->orientation(i), 0.0);
         if (m_puzzle_book->on_board(i)) {
             m_token_set->set_board_position(m_puzzle_book->token_id(i), m_puzzle_book->posh(i), m_puzzle_book->posv(i), m_puzzle_book->orientation(i), m_dock);
         } else {
-            m_token_set->set_dock_position(m_puzzle_book->token_id(i), m_dock->dock_id(i), m_dock);
+            m_token_set->set_dock_position(m_puzzle_book->token_id(i), m_dock->dock_id(i), m_puzzle_book->orientation(i), m_dock);
         }
     }
 }
@@ -149,28 +149,73 @@ bool Toy::mouse(SDL_Event* e, bool on)
         return false;
     if (e->button.button == SDL_BUTTON_MIDDLE) {
         if (on) {
-            printf("middle button on (%d, %d)\n", e->button.x, e->button.y);
         } else {
-            printf("middle button off (%d, %d)\n", e->button.x, e->button.y);
         }
     } else if (e->button.button == SDL_BUTTON_LEFT) {
         if (on) {
-            printf("left button on (%d, %d)\n", e->button.x, e->button.y);
             Float2 sel = mouse_selection(e->button.x, e->button.y);
-            printf("    mouse_selection = (%5.3f, %5.3f)\n", sel.v1, sel.v2);
             int sp = selected_piece(sel.v1, sel.v2);
             int lsp = loosely_selected_piece(sel.v1, sel.v2);
-            printf("    selected piece = %d\n", sp);
-            printf("    loosely_selected piece = %d\n", lsp);
         } else {
-            printf("left button off (%d, %d)\n", e->button.x, e->button.y);
         }
     } else if (e->button.button == SDL_BUTTON_RIGHT) {
         if (on) {
-            printf("right button on (%d, %d)\n", e->button.x, e->button.y);
+            Float2 sel = mouse_selection(e->button.x, e->button.y);
+            int lsp = loosely_selected_piece(sel.v1, sel.v2);
+            if (!m_puzzle_book->on_board(lsp)) {
+                int orientation = m_puzzle_book->orientation(lsp);
+                bool flipped = (orientation > 3);
+                int rot = orientation & 3;
+                int token_id = m_puzzle_book->token_id(lsp);
+                int new_rot = flipped ? rot : rot | 4;
+                if (m_token_set->set_dock_position(token_id, m_dock->dock_id(lsp), new_rot, m_dock, 0.5)) {
+                    m_puzzle_book->set_orientation(lsp, new_rot);
+                }
+            }
         } else {
-            printf("right button off (%d, %d)\n", e->button.x, e->button.y);
         }
+    }
+    return false;
+}
+
+bool Toy::mouse_wheel(SDL_Event* e)
+{
+    int angle = e->wheel.y;
+    if (angle != 0) {
+        Float2 sel = mouse_selection(e->wheel.mouseX, e->wheel.mouseY);
+        int lsp = loosely_selected_piece(sel.v1, sel.v2);
+        if (lsp >= 0) {
+            if (!m_puzzle_book->on_board(lsp)) {
+                int orientation = m_puzzle_book->orientation(lsp);
+                bool flipped = (orientation > 3);
+                int rot = orientation & 3;
+                int token_id = m_puzzle_book->token_id(lsp);
+                if (angle > 0) {
+                    int new_rot = (rot - 1) & 3;
+                    new_rot = flipped ? new_rot | 4 : new_rot;
+//                    m_token_set->set_orientation(token_id, new_rot, 0.5);
+
+                    if (m_token_set->set_dock_position(token_id, m_dock->dock_id(lsp), new_rot, m_dock, 0.5)) {
+                        m_puzzle_book->set_orientation(lsp, new_rot);
+                    }
+
+
+                } else {
+                    int new_rot = (rot + 1) & 3;
+                    new_rot = flipped ? new_rot | 4 : new_rot;
+//                    m_token_set->set_orientation(token_id, new_rot, 0.5);
+
+
+                    if (m_token_set->set_dock_position(token_id, m_dock->dock_id(lsp), new_rot, m_dock, 0.5)) {
+                        m_puzzle_book->set_orientation(lsp, new_rot);
+                    }
+
+
+                }
+            }
+
+        }
+
     }
     return false;
 }

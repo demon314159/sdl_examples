@@ -9,11 +9,7 @@
 
 Token::Token()
     : m_position({0.0, 0.0, 0.0})
-    , m_angle({0.0, 0.0, 0.0})
-    , m_velocity({0.0, 0.0, 0.0})
-    , m_angular_velocity({0.0, 0.0, 0.0})
-    , m_translation_time_left(0.0)
-    , m_rotation_time_left({0.0, 0.0, 0.0})
+    , m_orientation(0)
     , m_tiles(0)
     , m_animation()
 {
@@ -111,26 +107,6 @@ void Token::one_tile(CadModel& cm, int tile, float animation_id) const
 
 void Token::advance(float seconds)
 {
-    if (m_translation_time_left >= seconds) {
-        m_translation_time_left -= seconds;
-    } else {
-        m_translation_time_left = 0.0;
-    }
-    if (m_rotation_time_left.v1 >= seconds) {
-        m_rotation_time_left.v1 -= seconds;
-    } else {
-        m_rotation_time_left.v1 = 0.0;
-    }
-    if (m_rotation_time_left.v2 >= seconds) {
-        m_rotation_time_left.v2 -= seconds;
-    } else {
-        m_rotation_time_left.v2 = 0.0;
-    }
-    if (m_rotation_time_left.v3 >= seconds) {
-        m_rotation_time_left.v3 -= seconds;
-    } else {
-        m_rotation_time_left.v3 = 0.0;
-    }
 }
 
 CadModel Token::model(float animation_id) const
@@ -143,29 +119,34 @@ CadModel Token::model(float animation_id) const
     return cm;
 }
 
-Float3 Token::current_position() const
+Float3 Token::angles(int orientation) const
 {
-    Float3 cp;
-    cp.v1 = m_position.v1 - m_velocity.v1 * m_translation_time_left;
-    cp.v2 = m_position.v2 - m_velocity.v2 * m_translation_time_left;
-    cp.v3 = m_position.v3 - m_velocity.v3 * m_translation_time_left;
-    return cp;
-}
-
-Float3 Token::current_angle() const
-{
-    Float3 ca;
-    ca.v1 = m_angle.v1 - m_angular_velocity.v1 * m_rotation_time_left.v1;
-    ca.v2 = m_angle.v2 - m_angular_velocity.v2 * m_rotation_time_left.v2;
-    ca.v3 = m_angle.v3 - m_angular_velocity.v3 * m_rotation_time_left.v3;
-    return ca;
+    switch(orientation) {
+        case 0: return  {0.0, 0.0, 0.0};
+                break;
+        case 1: return {0.0, 270.0, 0.0};
+                break;
+        case 2: return {0.0, 180.0, 0.0};
+                break;
+        case 3: return {0.0, 90.0, 0.0};
+                break;
+        case 4: return {0.0, 0.0, 180.0};
+                break;
+        case 5: return {180.0, 90.0, 0.0};
+                break;
+        case 6: return {0.0, 180.0, 180.0};
+                break;
+        case 7: return {180.0, 270.0, 0.0};
+                break;
+        default: return {0.0, 0.0, 0.0};
+    }
 }
 
 const float* Token::data()
 {
     m_animation.unity();
-    Float3 cp = current_position();
-    Float3 ca = current_angle();
+    Float3 cp = m_position;
+    Float3 ca = angles(m_orientation);
     m_animation.translate(cp.v1, cp.v2, cp.v3);
     m_animation.rotate_ay(ca.v2);
     m_animation.rotate_ax(ca.v1);
@@ -183,59 +164,21 @@ bool Token::occupied(int ph, int pv) const
     return false;
 }
 
-void Token::set_position(float posx, float posy, float posz, float seconds)
-{
-    Float3 cp = current_position();
-    if (seconds > 0.0) {
-        m_velocity.v1 = (posx - cp.v1) / seconds;
-        m_velocity.v2 = (posy - cp.v2) / seconds;
-        m_velocity.v3 = (posz - cp.v3) / seconds;
-        m_translation_time_left += seconds;
-    } else {
-        m_translation_time_left = 0.0;
-    }
-    m_position.v1 = posx;
-    m_position.v2 = posy;
-    m_position.v3 = posz;
-}
-
-void Token::set_angle_ax(float angle, float seconds)
-{
-    float ca = current_angle().v1;
-    if (seconds > 0.0) {
-        m_angular_velocity.v1 = (angle - ca) / seconds;
-        m_rotation_time_left.v1 += seconds;
-    } else {
-        m_rotation_time_left.v1 = 0.0;
-    }
-    m_angle.v1 = angle;
-}
-
-void Token::set_angle_ay(float angle, float seconds)
-{
-    float ca = current_angle().v2;
-    if (seconds > 0.0) {
-        m_angular_velocity.v2 = (angle - ca) / seconds;
-        m_rotation_time_left.v2 += seconds;
-    } else {
-        m_rotation_time_left.v2 = 0.0;
-    }
-    m_angle.v2 = angle;
-}
-
-void Token::set_angle_az(float angle, float seconds)
-{
-    float ca = current_angle().v3;
-    if (seconds > 0.0) {
-        m_angular_velocity.v3 = (angle - ca) / seconds;
-        m_rotation_time_left.v3 += seconds;
-    } else {
-        m_rotation_time_left.v3 = 0.0;
-    }
-    m_angle.v3 = angle;
-}
-
 Float3 Token::position() const
 {
     return m_position;
+}
+
+int Token::orientation() const
+{
+    return m_orientation;
+}
+
+bool Token::set_position(float posx, float posy, float posz, int orientation, float seconds)
+{
+    m_position.v1 = posx;
+    m_position.v2 = posy;
+    m_position.v3 = posz;
+    m_orientation = orientation;
+    return true;
 }

@@ -77,3 +77,8 @@ bool AnimatedToy::mouse(SDL_Event* e, bool on)
 {
     return true;
 }
+
+bool AnimatedToy::mouse_wheel(SDL_Event* e)
+{
+    return true;
+}

@@ -470,3 +470,8 @@ bool View::mouse(SDL_Event* e, bool on)
     return m_toy->mouse(e, on);
 }
 
+bool View::mouse_wheel(SDL_Event* e)
+{
+    return m_toy->mouse_wheel(e);
+}
+

@@ -19,8 +19,9 @@ public:
     ~Toy();
 
     void advance(int nanoseconds) override;
-    bool button(int code, bool shifted, bool on);
-    bool mouse(SDL_Event* e, bool on);
+    bool button(int code, bool shifted, bool on) override;
+    bool mouse(SDL_Event* e, bool on) override;
+    bool mouse_wheel(SDL_Event* e) override;
 
 private:
     Tray* m_tray;

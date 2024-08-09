@@ -22,6 +22,7 @@ public:
     virtual void initialize();
     virtual bool button(int code, bool shifted, bool on);
     virtual bool mouse(SDL_Event* e, bool on);
+    virtual bool mouse_wheel(SDL_Event* e);
     virtual void advance(int nanoseconds);
 
     Uniform* uniform();

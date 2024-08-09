@@ -20,6 +20,7 @@ public:
     virtual ~View();
     bool button(int code, bool shifted, bool on);
     bool mouse(SDL_Event* e, bool on);
+    bool mouse_wheel(SDL_Event* e);
     void initialize();
     void resize(int w, int h);
     void render();
