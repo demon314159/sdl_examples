@@ -31,6 +31,7 @@ HEADERS = view.h \
           animated_toy.h \
           toy.h \
           \
+          tile_look.h \
           tile_rec.h \
           tile_shape.h \
           tile_border_shape.h \

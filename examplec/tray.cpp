@@ -3,6 +3,7 @@
 //
 
 #include "tray.h"
+#include "tile_look.h"
 #include "paint_can.h"
 #include "plane_shape.h"
 #include "tray_border_shape.h"
@@ -29,15 +30,13 @@ int Tray::cols() const
 
 void Tray::one_square(CadModel& cm, int row, int col, float animation_id) const
 {
-    float pitch = 0.010;
-    float width = 0.0095;
-    float height = 0.001;
-    float thick = 0.0005;
-    PaintCan red(1.0, 0.0, 0.0);
-    PaintCan black(0.0, 0.0, 0.0);
+    float pitch = TILE_PITCH;
+    float width = TILE_WIDTH;
+    float height = TILE_HEIGHT;
+    float thick = TILE_THICK;
 
-    CadModel s1(PlaneShape(width, width), red, animation_id);
-    CadModel s2(TrayBorderShape(pitch, width, height, row == (m_rows - 1), row == 0.0, col == 0, col == (m_cols - 1)), black, animation_id);
+    CadModel s1(PlaneShape(width, width), TRAY_BODY_COLOR, animation_id);
+    CadModel s2(TrayBorderShape(pitch, width, height, row == (m_rows - 1), row == 0.0, col == 0, col == (m_cols - 1)), TRAY_BORDER_COLOR, animation_id);
     cm.add(s1, pitch * (float) col, height / 2.0, -pitch * (float) row);
     cm.add(s2, pitch * (float) col, 0.0, -pitch * (float) row);
     s1.rotate_ax(180.0);

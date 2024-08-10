@@ -3,6 +3,7 @@
 //
 
 #include "toy.h"
+#include "tile_look.h"
 #include <math.h>
 #include <stdio.h>
 
@@ -11,7 +12,6 @@
 #define TRAY_ROWS 6
 #define TRAY_COLS 10
 
-#define PITCH 0.010
 #define ANIMATION_TIME 0.5
 
 Toy::Toy()
@@ -20,7 +20,7 @@ Toy::Toy()
     , m_token_names(new char*[m_token_set->tokens()])
     , m_seconds(0.0)
     , m_puzzle_book(new PuzzleBook(PUZZLE_BOOK_FILE_NAME))
-    , m_dock(new Dock(PITCH))
+    , m_dock(new Dock(TILE_PITCH))
 {
     for (int i = 0; i < m_token_set->tokens(); i++) {
         m_token_names[i] = new char[ANIMATION_NAME_LENGTH];
@@ -59,7 +59,7 @@ void Toy::build_model()
 void Toy::put_away_tokens()
 {
     for (int i = 0; i < m_token_set->tokens(); i++) {
-        m_token_set->set_position(i, PITCH * (float) 4.0, -0.002, 0, 0.0);
+        m_token_set->set_position(i, TILE_PITCH * (float) 4.0, -0.002, 0, 0.0);
 //        m_token_set->set_orientation(i, 0);
     }
 }
@@ -233,9 +233,9 @@ int Toy::selected_piece(float x, float y) const
        for (int j = 0; j < m_token_set->tiles(token_id); j++) {
            int posh = m_token_set->posh(token_id, j, orientation);
            int posv = m_token_set->posv(token_id, j, orientation);
-           float px = PITCH * (float) posh + position.v1;
-           float pz = PITCH * (float) posv - position.v3;
-           if ( (fabs(x - px) < (PITCH / 2.0f)) && (fabs(y - pz) < (PITCH / 2.0f)) ) {
+           float px = TILE_PITCH * (float) posh + position.v1;
+           float pz = TILE_PITCH * (float) posv - position.v3;
+           if ( (fabs(x - px) < (TILE_PITCH / 2.0f)) && (fabs(y - pz) < (TILE_PITCH / 2.0f)) ) {
                return i;
            }
        }
@@ -249,13 +249,13 @@ int Toy::loosely_selected_piece(float x, float y) const
        int token_id = m_puzzle_book->token_id(i);
        int orientation = m_puzzle_book->orientation(i);
        Float3 position = m_token_set->position(token_id);
-       float horz_center = m_token_set->horz_center(token_id, orientation, PITCH);
-       float vert_center = m_token_set->vert_center(token_id, orientation, PITCH);
+       float horz_center = m_token_set->horz_center(token_id, orientation, TILE_PITCH);
+       float vert_center = m_token_set->vert_center(token_id, orientation, TILE_PITCH);
        Float2 center = {position.v1 + horz_center, -position.v3 + vert_center};
        float dx = x - center.v1;
        float dz = y - center.v2;
        float distance = sqrt(dx * dx + dz * dz);
-       float radius = 3.0 * PITCH;
+       float radius = 3.0 * TILE_PITCH;
        if (distance <= radius) {
            return i;
        }

@@ -4,6 +4,7 @@
 
 #include "token.h"
 #include "paint_can.h"
+#include "tile_look.h"
 #include "tile_shape.h"
 #include "tile_border_shape.h"
 
@@ -84,13 +85,11 @@ int Token::posv(int tix, int orientation) const
 
 void Token::one_tile(CadModel& cm, int tile, float animation_id) const
 {
-    float pitch = 0.010;
-    float width = 0.0095;
-    float height = 0.001;
-    float thick = 0.0005;
-    float border = 0.001;
-    PaintCan dark_yellow(0.8, 0.8, 0.0);
-    PaintCan yellow(1.0, 1.0, 0.0);
+    float pitch = TILE_PITCH;
+    float width = TILE_WIDTH;
+    float height = TILE_HEIGHT;
+    float thick = TILE_THICK;
+    float border = TILE_BORDER;
 
     int base_posh = posh(tile, 0);
     int base_posv = posv(tile, 0);
@@ -102,8 +101,8 @@ void Token::one_tile(CadModel& cm, int tile, float animation_id) const
     bool upper_right = upper && right && occupied(base_posh + 1, base_posv + 1);
     bool lower_left = lower && left && occupied(base_posh - 1, base_posv - 1);
     bool lower_right = lower && right && occupied(base_posh + 1, base_posv - 1);
-    CadModel t1(TileShape(pitch, width, thick, border, upper, lower, left, right, upper_left, upper_right, lower_left, lower_right), dark_yellow, animation_id);
-    CadModel t2(TileBorderShape(pitch, width, height, border, upper, lower, left, right), yellow, animation_id);
+    CadModel t1(TileShape(pitch, width, thick, border, upper, lower, left, right, upper_left, upper_right, lower_left, lower_right), TILE_BODY_COLOR, animation_id);
+    CadModel t2(TileBorderShape(pitch, width, height, border, upper, lower, left, right), TILE_BORDER_COLOR, animation_id);
     cm.add(t1, pitch * (float) posh(tile, 0), 0.0, -pitch * (float) posv(tile, 0));
     cm.add(t2, pitch * (float) posh(tile, 0), 0.0, -pitch * (float) posv(tile, 0));
 }
