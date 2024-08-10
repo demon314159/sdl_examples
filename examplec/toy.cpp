@@ -3,7 +3,6 @@
 //
 
 #include "toy.h"
-#include "tile_look.h"
 #include <math.h>
 #include <stdio.h>
 

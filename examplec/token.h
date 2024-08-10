@@ -11,6 +11,16 @@
 #include "matrix4x4.h"
 #include "float3.h"
 #include "cad_model.h"
+#include "paint_can.h"
+
+#define TILE_PITCH 0.010f
+#define TILE_WIDTH 0.0090f
+#define TILE_HEIGHT 0.001f
+#define TILE_THICK 0.0005f
+#define TILE_BORDER 0.001f
+
+#define TILE_BORDER_COLOR PaintCan(1.0, 1.0, 0.0)
+#define TILE_BODY_COLOR PaintCan(0.8, 0.8, 0.0)
 
 class Token
 {
