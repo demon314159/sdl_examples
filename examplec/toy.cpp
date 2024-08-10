@@ -12,6 +12,7 @@
 #define TRAY_COLS 10
 
 #define PITCH 0.010
+#define ANIMATION_TIME 0.5
 
 Toy::Toy()
     : m_tray(new Tray(TRAY_ROWS, TRAY_COLS))
@@ -167,8 +168,11 @@ bool Toy::mouse(SDL_Event* e, bool on)
                 bool flipped = (orientation > 3);
                 int rot = orientation & 3;
                 int token_id = m_puzzle_book->token_id(lsp);
+                if (rot & 1) {
+                    rot = rot ^ 2;
+                }
                 int new_rot = flipped ? rot : rot | 4;
-                if (m_token_set->set_dock_position(token_id, m_dock->dock_id(lsp), new_rot, m_dock, 0.5)) {
+                if (m_token_set->set_dock_position(token_id, m_dock->dock_id(lsp), new_rot, m_dock, ANIMATION_TIME)) {
                     m_puzzle_book->set_orientation(lsp, new_rot);
                 }
             }
@@ -195,7 +199,7 @@ bool Toy::mouse_wheel(SDL_Event* e)
                     new_rot = flipped ? new_rot | 4 : new_rot;
 //                    m_token_set->set_orientation(token_id, new_rot, 0.5);
 
-                    if (m_token_set->set_dock_position(token_id, m_dock->dock_id(lsp), new_rot, m_dock, 0.5)) {
+                    if (m_token_set->set_dock_position(token_id, m_dock->dock_id(lsp), new_rot, m_dock, ANIMATION_TIME)) {
                         m_puzzle_book->set_orientation(lsp, new_rot);
                     }
 
@@ -206,7 +210,7 @@ bool Toy::mouse_wheel(SDL_Event* e)
 //                    m_token_set->set_orientation(token_id, new_rot, 0.5);
 
 
-                    if (m_token_set->set_dock_position(token_id, m_dock->dock_id(lsp), new_rot, m_dock, 0.5)) {
+                    if (m_token_set->set_dock_position(token_id, m_dock->dock_id(lsp), new_rot, m_dock, ANIMATION_TIME)) {
                         m_puzzle_book->set_orientation(lsp, new_rot);
                     }
 
