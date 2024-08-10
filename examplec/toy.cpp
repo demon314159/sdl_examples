@@ -52,14 +52,13 @@ void Toy::build_model()
     for (int i = 0; i < m_token_set->tokens(); i++) {
         m_model->add(m_token_set->model(i, ANIMATION_ID_FIRST_TOKEN + (float) i));
     }
-    m_model->add(m_tray->model(0.0), 0.0, -0.001, 0.0);
+    m_model->add(m_tray->model(0.0), 0.0, -TILE_HEIGHT, 0.0);
 }
 
 void Toy::put_away_tokens()
 {
     for (int i = 0; i < m_token_set->tokens(); i++) {
-        m_token_set->set_position(i, TILE_PITCH * (float) 4.0, -0.002, 0, 0.0);
-//        m_token_set->set_orientation(i, 0);
+        m_token_set->set_position(i, TILE_PITCH * (float) 4.0, -2.0f * TILE_HEIGHT, 0, 0.0);
     }
 }
 
@@ -78,7 +77,6 @@ void Toy::set_up_current_challenge()
         }
     }
     for (int i = 0; i < m_puzzle_book->pieces(); i++) {
-//        m_token_set->set_orientation(m_puzzle_book->token_id(i), m_puzzle_book->orientation(i), 0.0);
         if (m_puzzle_book->on_board(i)) {
             m_token_set->set_board_position(m_puzzle_book->token_id(i), m_puzzle_book->posh(i), m_puzzle_book->posv(i), m_puzzle_book->orientation(i), m_dock);
         } else {
@@ -196,29 +194,18 @@ bool Toy::mouse_wheel(SDL_Event* e)
                 if (angle > 0) {
                     int new_rot = (rot - 1) & 3;
                     new_rot = flipped ? new_rot | 4 : new_rot;
-//                    m_token_set->set_orientation(token_id, new_rot, 0.5);
-
                     if (m_token_set->set_dock_position(token_id, m_dock->dock_id(lsp), new_rot, m_dock, ANIMATION_TIME)) {
                         m_puzzle_book->set_orientation(lsp, new_rot);
                     }
-
-
                 } else {
                     int new_rot = (rot + 1) & 3;
                     new_rot = flipped ? new_rot | 4 : new_rot;
-//                    m_token_set->set_orientation(token_id, new_rot, 0.5);
-
-
                     if (m_token_set->set_dock_position(token_id, m_dock->dock_id(lsp), new_rot, m_dock, ANIMATION_TIME)) {
                         m_puzzle_book->set_orientation(lsp, new_rot);
                     }
-
-
                 }
             }
-
         }
-
     }
     return false;
 }
