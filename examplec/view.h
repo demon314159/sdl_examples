@@ -21,6 +21,7 @@ public:
     bool button(int code, bool shifted, bool on);
     bool mouse(SDL_Event* e, bool on);
     bool mouse_wheel(SDL_Event* e);
+    bool mouse_move(SDL_Event* e);
     void initialize();
     void resize(int w, int h);
     void render();

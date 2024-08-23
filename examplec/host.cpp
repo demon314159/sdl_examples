@@ -169,6 +169,9 @@ void Host::mouse_release_event(SDL_Event* e)
 
 void Host::mouse_move_event(SDL_Event* e)
 {
+    if (!m_view.mouse_move(e)) {
+        return;
+    }
     if (m_navigate.active())
         mouse_navigate(e->motion.x, e->motion.y);
 }

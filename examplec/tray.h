@@ -6,6 +6,7 @@
 #define _TRAY_H_
 
 #include "cad_model.h"
+#include "paint_can.h"
 
 #define TRAY_BORDER_COLOR PaintCan(0.8, 0.0, 0.0)
 #define TRAY_BODY_COLOR PaintCan(1.0, 0.0, 0.0)

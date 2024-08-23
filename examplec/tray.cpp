@@ -4,7 +4,6 @@
 
 #include "tray.h"
 #include "token.h"
-#include "paint_can.h"
 #include "plane_shape.h"
 #include "tray_border_shape.h"
 

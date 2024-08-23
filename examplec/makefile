@@ -43,6 +43,7 @@ HEADERS = view.h \
           tray_border_shape.h \
           dock.h \
           mouse_vector.h \
+          hover.h \
           \
 # note: all of the files after toy.h are there for toy.cpp only
 #       they can be removed if toy.cpp doesn't need them anymore
@@ -84,6 +85,7 @@ OBJECTS = main.obj \
           tray_border_shape.obj \
           dock.obj \
           mouse_vector.obj \
+          hover.obj \
           \
 # note: all of the files after toy.obj are there for toy.cpp only
 #       they can be removed if toy.cpp doesn't need them anymore

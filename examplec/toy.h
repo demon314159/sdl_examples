@@ -10,6 +10,7 @@
 #include "token_set.h"
 #include "puzzle_book.h"
 #include "dock.h"
+#include "hover.h"
 #include "mouse_vector.h"
 
 class Toy: public AnimatedToy
@@ -22,6 +23,7 @@ public:
     bool button(int code, bool shifted, bool on) override;
     bool mouse(SDL_Event* e, bool on) override;
     bool mouse_wheel(SDL_Event* e) override;
+    bool mouse_move(SDL_Event* e) override;
 
 private:
     Tray* m_tray;
@@ -30,6 +32,7 @@ private:
     float m_seconds;
     PuzzleBook* m_puzzle_book;
     Dock* m_dock;
+    Hover* m_hover;
 
     void build_model();
     void build_uniform();
@@ -39,6 +42,9 @@ private:
     Float2 mouse_selection(int sx, int sy) const;
     int selected_piece(float x, float y) const;
     int loosely_selected_piece(float x, float y) const;
+    void lift_piece(int mx, int my);
+    void drop_piece(int mx, int my);
+    bool too_far_away(int mx, int my) const;
 };
 
 #endif // _TOY_H_

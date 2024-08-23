@@ -11,7 +11,7 @@
 #define TRAY_ROWS 6
 #define TRAY_COLS 10
 
-#define ANIMATION_TIME 0.5
+#define ANIMATION_TIME 0.4
 
 Toy::Toy()
     : m_tray(new Tray(TRAY_ROWS, TRAY_COLS))
@@ -20,6 +20,7 @@ Toy::Toy()
     , m_seconds(0.0)
     , m_puzzle_book(new PuzzleBook(PUZZLE_BOOK_FILE_NAME))
     , m_dock(new Dock(TILE_PITCH))
+    , m_hover(new Hover())
 {
     for (int i = 0; i < m_token_set->tokens(); i++) {
         m_token_names[i] = new char[ANIMATION_NAME_LENGTH];
@@ -33,6 +34,7 @@ Toy::Toy()
 
 Toy::~Toy()
 {
+    delete m_hover;
     delete m_dock;
 //    m_puzzle_book->save(PUZZLE_BOOK_FILE_NAME);
 
@@ -151,26 +153,27 @@ bool Toy::mouse(SDL_Event* e, bool on)
         }
     } else if (e->button.button == SDL_BUTTON_LEFT) {
         if (on) {
-            Float2 sel = mouse_selection(e->button.x, e->button.y);
-            int sp = selected_piece(sel.v1, sel.v2);
-            int lsp = loosely_selected_piece(sel.v1, sel.v2);
+            lift_piece(e->button.x, e->button.y);
         } else {
+            drop_piece(e->button.x, e->button.y);
         }
     } else if (e->button.button == SDL_BUTTON_RIGHT) {
         if (on) {
             Float2 sel = mouse_selection(e->button.x, e->button.y);
             int lsp = loosely_selected_piece(sel.v1, sel.v2);
-            if (!m_puzzle_book->on_board(lsp)) {
-                int orientation = m_puzzle_book->orientation(lsp);
-                bool flipped = (orientation > 3);
-                int rot = orientation & 3;
-                int token_id = m_puzzle_book->token_id(lsp);
-                if (rot & 1) {
-                    rot = rot ^ 2;
-                }
-                int new_rot = flipped ? rot : rot | 4;
-                if (m_token_set->set_dock_position(token_id, m_dock->dock_id(lsp), new_rot, m_dock, ANIMATION_TIME)) {
-                    m_puzzle_book->set_orientation(lsp, new_rot);
+            if (lsp >= 0) {
+                if (!m_puzzle_book->on_board(lsp)) {
+                    int orientation = m_puzzle_book->orientation(lsp);
+                    bool flipped = (orientation > 3);
+                    int rot = orientation & 3;
+                    int token_id = m_puzzle_book->token_id(lsp);
+                    if (rot & 1) {
+                        rot = rot ^ 2;
+                    }
+                    int new_rot = flipped ? rot : rot | 4;
+                    if (m_token_set->set_dock_position(token_id, m_dock->dock_id(lsp), new_rot, m_dock, ANIMATION_TIME)) {
+                        m_puzzle_book->set_orientation(lsp, new_rot);
+                    }
                 }
             }
         } else {
@@ -205,6 +208,49 @@ bool Toy::mouse_wheel(SDL_Event* e)
                     }
                 }
             }
+        }
+    }
+    return false;
+}
+
+bool Toy::too_far_away(int mx, int my) const
+{
+    if (m_hover->on()) {
+        int sp = m_hover->piece_id();
+        if (m_puzzle_book->locked(sp)) {
+            Float2 sel = mouse_selection(mx, my);
+            Float3 offset = m_hover->offset();
+            float ph = sel.v1 + offset.v1;
+            float pv = sel.v2 - offset.v3;
+            float posh = TILE_PITCH * m_puzzle_book->posh(sp);
+            float posv = TILE_PITCH * m_puzzle_book->posv(sp);
+            if (fabs(ph - posh) > TILE_PITCH) {
+                return true;
+            }
+            if (fabs(pv - posv) > TILE_PITCH) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool Toy::mouse_move(SDL_Event* e)
+{
+    if (m_hover->on()) {
+        int sp = m_hover->piece_id();
+        int token_id = m_puzzle_book->token_id(sp);
+        int orientation = m_puzzle_book->orientation(sp);
+        if (too_far_away(e->motion.x, e->motion.y)) {
+            m_hover->stop();
+            int posh = m_puzzle_book->posh(sp);
+            int posv = m_puzzle_book->posv(sp);
+            m_token_set->set_board_position(token_id, posh, posv, orientation, m_dock, ANIMATION_TIME / 2.0);
+
+        } else {
+            Float2 sel = mouse_selection(e->motion.x, e->motion.y);
+            Float3 offset = m_hover->offset();
+            m_token_set->set_position(token_id, sel.v1 + offset.v1, TILE_HEIGHT, -sel.v2 + offset.v3, orientation, 0.0);
         }
     }
     return false;
@@ -255,3 +301,45 @@ Float2 Toy::mouse_selection(int sx, int sy) const
     Float3 ip = mv.intersection_point(mv.origin().v2);
     return {ip.v1, -ip.v3};
 }
+
+void Toy::lift_piece(int mx, int my)
+{
+    Float2 sel = mouse_selection(mx, my);
+    int sp = selected_piece(sel.v1, sel.v2);
+    if (sp >= 0) {
+        int token_id = m_puzzle_book->token_id(sp);
+        Float3 tpos = m_token_set->position(token_id);
+        m_hover->start(sp, tpos.v1 - sel.v1, 0.0, tpos.v3 + sel.v2);
+        if (m_puzzle_book->on_board(sp)) {
+            m_puzzle_book->lift_piece(sp);
+        }
+    }
+}
+
+void Toy::drop_piece(int mx, int my)
+{
+    if (m_hover->on()) {
+        int sp = m_hover->piece_id();
+        int token_id = m_puzzle_book->token_id(sp);
+        int orientation = m_puzzle_book->orientation(sp);
+        Float3 offset = m_hover->offset();
+        m_hover->stop();
+        if (m_puzzle_book->locked(sp)) {
+            int posh = m_puzzle_book->posh(sp);
+            int posv = m_puzzle_book->posv(sp);
+            m_token_set->set_board_position(token_id, posh, posv, orientation, m_dock, ANIMATION_TIME);
+        } else {
+            Float2 sel = mouse_selection(mx, my);
+            float px = sel.v1 + offset.v1;
+            float pz = sel.v2 - offset.v3;
+            int ipx = round(px / TILE_PITCH);
+            int ipz = round(pz / TILE_PITCH);
+            if (m_puzzle_book->drop_piece(m_token_set, sp, orientation, ipx, ipz)) {
+                m_token_set->set_board_position(token_id, ipx, ipz, orientation, m_dock, 0.0);
+            } else {
+                m_token_set->set_dock_position(token_id, m_dock->dock_id(sp), orientation, m_dock, ANIMATION_TIME);
+            }
+        }
+    }
+}
+

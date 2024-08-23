@@ -3,7 +3,6 @@
 //
 
 #include "token.h"
-#include "paint_can.h"
 #include "tile_shape.h"
 #include "tile_border_shape.h"
 
