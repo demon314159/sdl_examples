@@ -7,8 +7,7 @@
 
 #include "paint_can.h"
 
-#define WHITE_COLOR PaintCan(1.0, 1.0, 1.0)
-#define RED_COLOR PaintCan(1.0, 0.0, 0.0)
+#define BACKGROUND_COLOR PaintCan(0.298, 0.6, 0.749);
 
 class Look
 {

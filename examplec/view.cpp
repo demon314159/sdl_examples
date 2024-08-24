@@ -153,7 +153,9 @@ void View::initialize()
     if (SDL_GL_SetSwapInterval(0) < 0) {
         printf("Warning: Unable to set VSync. SDL Error: %s\n", SDL_GetError());
     }
-    glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+    PaintCan bc = BACKGROUND_COLOR;
+    Float3 bcc = bc.ambient_color();
+    glClearColor(bcc.v1, bcc.v2, bcc.v3, 1.0f);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glEnable(GL_BLEND);
