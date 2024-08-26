@@ -353,7 +353,6 @@ void Toy::activate_solenoid(int solenoid_id)
             m_lamp->set(LAMP_ID_BOTTOM_LEFT_ROLLOVER_B, true);
             m_lamp->set(LAMP_ID_BOTTOM_RIGHT_ROLLOVER_B, true);
             m_lamp->set(LAMP_ID_BOTTOM_ROLLOVER_C, true);
-            m_lamp->set(LAMP_ID_SHOOT_AGAIN, false);
             m_lamp->set(LAMP_ID_EXTRA_BALL, false);
             m_lamp->set(LAMP_ID_SPECIAL, false);
             break;

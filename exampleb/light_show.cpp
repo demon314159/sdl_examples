@@ -23,6 +23,7 @@ void LightShow::reset()
     m_time = 0.0;
     m_delay_time = m_delay_after_game;
     m_sequence_ix = 0;
+    m_lamp->set(LAMP_ID_SHOOT_AGAIN, false);
 }
 
 void LightShow::advance(float seconds)
