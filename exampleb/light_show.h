@@ -17,6 +17,7 @@ public:
     void advance(float seconds);
 
 private:
+    bool m_reset_flag;
     float m_time_step;
     float m_delay_after_game;
     float m_delay_time;

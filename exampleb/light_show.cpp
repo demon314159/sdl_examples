@@ -5,7 +5,8 @@
 #include "light_show.h"
 
 LightShow::LightShow(float time_step, float delay_after_game, Lamp* lamp)
-    : m_time_step(time_step)
+    : m_reset_flag(false)
+    , m_time_step(time_step)
     , m_delay_after_game(delay_after_game)
     , m_delay_time(0.0)
     , m_time(0.0)
@@ -23,11 +24,15 @@ void LightShow::reset()
     m_time = 0.0;
     m_delay_time = m_delay_after_game;
     m_sequence_ix = 0;
-    m_lamp->set(LAMP_ID_SHOOT_AGAIN, false);
+    if (!m_reset_flag) {
+        m_lamp->set(LAMP_ID_SHOOT_AGAIN, false);
+        m_reset_flag = true;
+    }
 }
 
 void LightShow::advance(float seconds)
 {
+    m_reset_flag = false;
     if (m_delay_time > 0.0) {
         m_delay_time -= seconds;
     } else {
