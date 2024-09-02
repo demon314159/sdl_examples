@@ -45,6 +45,7 @@ private:
     void lift_piece(int mx, int my);
     void drop_piece(int mx, int my);
     bool too_far_away(int mx, int my) const;
+    void clear_board();
 };
 
 #endif // _TOY_H_

@@ -87,6 +87,24 @@ void Toy::set_up_current_challenge()
     }
 }
 
+void Toy::clear_board()
+{
+    for (int i = 0; i < m_puzzle_book->pieces(); i++) {
+        if (m_puzzle_book->on_board(i) && !m_puzzle_book->locked(i)) {
+            m_puzzle_book->lift_piece(i);
+        }
+        if (!m_puzzle_book->on_board(i)) {
+            m_puzzle_book->set_orientation(i, 0);
+        }
+    }
+    for (int i = 0; i < m_puzzle_book->pieces(); i++) {
+        if (!m_puzzle_book->on_board(i)) {
+            m_token_set->set_dock_position(m_puzzle_book->token_id(i), m_dock->dock_id(i), m_puzzle_book->orientation(i), m_dock, ANIMATION_TIME);
+        }
+    }
+
+}
+
 void Toy::build_uniform()
 {
     for (int i = 0; i < m_token_set->tokens(); i++) {
@@ -134,6 +152,10 @@ bool Toy::button(int code, bool shifted, bool on)
                 m_puzzle_book->go_to_next_challenge();
                 set_up_current_challenge();
             }
+            ret_val = false;
+            break;
+        case SDL_SCANCODE_C:
+            clear_board();
             ret_val = false;
             break;
         default:
