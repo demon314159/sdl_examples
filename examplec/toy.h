@@ -12,6 +12,7 @@
 #include "dock.h"
 #include "hover.h"
 #include "mouse_vector.h"
+#include "push_button.h"
 
 class Toy: public AnimatedToy
 {
@@ -33,6 +34,7 @@ private:
     PuzzleBook* m_puzzle_book;
     Dock* m_dock;
     Hover* m_hover;
+    PushButton* m_pb_clear;
 
     void build_model();
     void build_uniform();

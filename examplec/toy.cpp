@@ -13,6 +13,9 @@
 
 #define ANIMATION_TIME 0.4
 
+#define PUSH_BUTTON_DIMENSION {3.0 * TILE_PITCH, 1.0 * TILE_PITCH}
+#define CLEAR_BUTTON_POSITION {-3.0 * TILE_PITCH, 8.0 * TILE_PITCH}
+
 Toy::Toy()
     : m_tray(new Tray(TRAY_ROWS, TRAY_COLS))
     , m_token_set(new TokenSet())
@@ -21,6 +24,7 @@ Toy::Toy()
     , m_puzzle_book(new PuzzleBook(PUZZLE_BOOK_FILE_NAME))
     , m_dock(new Dock(TILE_PITCH))
     , m_hover(new Hover())
+    , m_pb_clear(new PushButton(PUSH_BUTTON_DIMENSION, CLEAR_BUTTON_POSITION))
 {
     for (int i = 0; i < m_token_set->tokens(); i++) {
         m_token_names[i] = new char[ANIMATION_NAME_LENGTH];
@@ -34,6 +38,7 @@ Toy::Toy()
 
 Toy::~Toy()
 {
+    delete m_pb_clear;
     delete m_hover;
     delete m_dock;
 //    m_puzzle_book->save(PUZZLE_BOOK_FILE_NAME);
@@ -55,6 +60,7 @@ void Toy::build_model()
         m_model->add(m_token_set->model(i, ANIMATION_ID_FIRST_TOKEN + (float) i));
     }
     m_model->add(m_tray->model(0.0), 0.0, -TILE_HEIGHT, 0.0);
+    m_model->add(m_pb_clear->model(0.0), 0.0, 0.0, 0.0);
 }
 
 void Toy::put_away_tokens()
@@ -175,7 +181,12 @@ bool Toy::mouse(SDL_Event* e, bool on)
         }
     } else if (e->button.button == SDL_BUTTON_LEFT) {
         if (on) {
-            lift_piece(e->button.x, e->button.y);
+            Float2 sel = mouse_selection(e->button.x, e->button.y);
+            if (m_pb_clear->mouse_hit(sel)) {
+                clear_board();
+            } else {
+                lift_piece(e->button.x, e->button.y);
+            }
         } else {
             drop_piece(e->button.x, e->button.y);
         }
