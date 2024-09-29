@@ -108,7 +108,7 @@ Toy::Toy()
         true
     );
 
-    m_gauge = new Gauge({0.028, 0.0564}, {0.3015, 0.0165, 0.580}, TEXTURE_ID_GAUGE);
+    m_gauge = new Gauge({0.028, 0.0564}, {0.3015, 0.0165, 0.580}, TEXTURE_ID_GAUGE, m_scoreboard->max_players());
     m_replay_score = new ReplayScore(m_scoreboard->max_players(),REPLAY_SCORE1, REPLAY_SCORE2, REPLAY_SCORE3);
     m_light_show = new LightShow(LIGHT_SHOW_TIME_STEP, LIGHT_SHOW_DELAY_AFTER_GAME, m_lamp);
     m_camera->add_pose({0.265, 0.258}, {90.0, 0.0}, 6.375);
@@ -194,7 +194,7 @@ Toy::Toy()
 
     m_score->set_match(70);
     m_game = new Game(INITIAL_CREDITS, m_scoreboard->max_players(), MAX_BALLS, m_sensor, m_target, m_lamp, m_queue, m_fast_queue, m_score, m_replay_score);
-    m_execute = new Execute(m_queue, m_fast_queue, m_score, m_lamp, m_replay_score);
+    m_execute = new Execute(m_queue, m_fast_queue, m_score, m_lamp, m_replay_score, m_gauge);
 
     m_ball->set_position(m_table->out_hole_position());
     m_ball->set_velocity({0.0, 0.0});

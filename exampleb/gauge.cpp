@@ -11,20 +11,36 @@
 #define STEPS 31
 #define INITIAL_STEP 16
 
-Gauge::Gauge(const Float2& size, const Float3& position, float texture_id)
+Gauge::Gauge(const Float2& size, const Float3& position, float texture_id, int players)
     : m_size(size)
     , m_position(position)
     , m_texture_id(texture_id)
-    , m_step(INITIAL_STEP)
+    , m_players(players)
+    , m_player(0)
+    , m_step(new int[players + 1])
     , m_steps(STEPS)
     , m_low_limit(size.v2 * 0.169f)
     , m_high_limit(size.v2 * 0.59f)
     , m_animate()
 {
+    for (int i = 0; i <= players; i++) {
+        m_step[i] = INITIAL_STEP;
+    }
 }
 
 Gauge::~Gauge()
 {
+    delete [] m_step;
+}
+
+void Gauge::set_player(int player)
+{
+    if (player == 0) {
+        for (int i = 0; i <= m_players; i++) {
+            m_step[i] = INITIAL_STEP;
+        }
+    }
+    m_player = player;
 }
 
 CadModel Gauge::model(float animation_id) const
@@ -52,20 +68,20 @@ const float* Gauge::data()
 
 void Gauge::increment()
 {
-    if (m_step < (m_steps - 1)) {
-        ++m_step;
+    if (m_step[m_player] < (m_steps - 1)) {
+        ++m_step[m_player];
     }
 }
 
 void Gauge::decrement()
 {
-    if (m_step > 0) {
-        --m_step;
+    if (m_step[m_player] > 0) {
+        --m_step[m_player];
     }
 }
 
 float Gauge::strength() const
 {
-    return (float) m_step / (float) (m_steps - 1);
+    return (float) m_step[m_player] / (float) (m_steps - 1);
 }
 

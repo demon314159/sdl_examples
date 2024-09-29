@@ -6,12 +6,13 @@
 
 #define BONUS_DELAY 250 // milliseconds
 
-Execute::Execute(Queue* queue, Queue* fast_queue, Score* score, Lamp* lamp, ReplayScore* replay_score)
+Execute::Execute(Queue* queue, Queue* fast_queue, Score* score, Lamp* lamp, ReplayScore* replay_score, Gauge* gauge)
     : m_queue(queue)
     , m_fast_queue(fast_queue)
     , m_score(score)
     , m_lamp(lamp)
     , m_replay_score(replay_score)
+    , m_gauge(gauge)
     , m_initial_high_game(0)
     , m_timer(0.0)
 {
@@ -74,12 +75,14 @@ int Execute::interpret(const QueueRec& qrec)
             m_score->set_ball_in_play(qrec.value);
             break;
         case QCOMMAND_SET_PLAYER:
+            m_gauge->set_player(qrec.value);
             m_score->set_player(qrec.value);
             break;
         case QCOMMAND_SET_LAMP:
             m_lamp->set(qrec.which_one, qrec.value ? true : false);
             break;
         case QCOMMAND_SET_MATCH:
+            m_gauge->set_player(0);
             m_score->set_match(qrec.value);
             for (int i = 0; i < qrec.which_one; i++) {
                 int score = m_score->get_player_score(i + 1);
