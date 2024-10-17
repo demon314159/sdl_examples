@@ -40,13 +40,11 @@ public:
     void set(int sensor_id);
     void clear();
     bool rising(int sensor_id);
-    bool falling(int sensor_id);
     bool raw(int sensor_id);
 
 private:
     int m_sensors;
-    bool* m_state;
-    bool* m_last_state;
+    int* m_state;
 };
 
 #endif // _SENSOR_H_
