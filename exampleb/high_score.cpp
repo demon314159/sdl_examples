@@ -12,7 +12,7 @@
 HighScore::HighScore()
 {
     m_score = DEFAULT_HIGH_SCORE;
-    FILE* ffi = fopen(HIGH_SCORE_FILE_NAME, "r");
+    FILE* ffi = fopen(HIGH_SCORE_FILE_NAME, "rb");
     if (ffi == NULL) {
         return;
     }
@@ -33,7 +33,7 @@ void HighScore::set_high_score(int score)
 {
     if (score > m_score) {
         m_score = score;
-        FILE* ffo = fopen(HIGH_SCORE_FILE_NAME, "w");
+        FILE* ffo = fopen(HIGH_SCORE_FILE_NAME, "wb");
         if (ffo == NULL)
             return;
         fwrite(this, sizeof(HighScore), 1, ffo);

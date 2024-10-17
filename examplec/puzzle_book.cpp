@@ -10,7 +10,7 @@ PuzzleBook::PuzzleBook(const char* name)
     : m_challenges(0)
     , m_current_challenge(0)
 {
-    FILE* ffi = fopen(name, "r");
+    FILE* ffi = fopen(name, "rb");
     if (ffi == NULL) {
         add_challenges();
         return;
@@ -87,7 +87,7 @@ void PuzzleBook::add_challenge(const Challenge& challenge)
 
 void PuzzleBook::save(const char* name)
 {
-    FILE* ffo = fopen(name, "w");
+    FILE* ffo = fopen(name, "wb");
     if (ffo == NULL)
         return;
     fwrite(this, sizeof(PuzzleBook), 1, ffo);
