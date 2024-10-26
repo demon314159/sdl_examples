@@ -30,7 +30,7 @@ Float2 Table::ball_home_position() const
 
 Float2 Table::out_hole_position() const
 {
-    return {X4, Z8};
+    return {0.144f, 0.11975f};
 }
 
 void Table::collide(Ball* ball) const
@@ -42,7 +42,7 @@ CadModel Table::model() const
     CadModel mm;
     CadModel top_playfield(PlaneShape(PLAYFIELD_X, PLAYFIELD_Z, TEXTURE_ID_PLAYFIELD), PaintCan(1.0, 1.0, 1.0), ANIMATION_ID_TRANSPARENT);
     CadModel backlight(PlaneShape(PLAYFIELD_X, PLAYFIELD_Z, 0.0), PaintCan(0.0, 0.0, 0.0), 1.0);
-    mm.add(backlight, PLAYFIELD_X / 2.0, -PLAYFIELD_Y * 9.0 / 10.0, PLAYFIELD_Z / 2.0);
+    mm.add(backlight, PLAYFIELD_X / 2.0, -0.002f, PLAYFIELD_Z / 2.0);
     mm.add(top_playfield, PLAYFIELD_X / 2.0, 0.0, PLAYFIELD_Z / 2.0);
     return mm;
 }
