@@ -192,3 +192,14 @@ void Camera::set_pose(int ix)
     m_mag = m_pose->pose(ix).mag;
     update_matrices();
 }
+
+
+float Camera::rotation_ax() const
+{
+    return m_rotation.v1;
+}
+
+float Camera::rotation_ay() const
+{
+    return m_rotation.v2;
+}

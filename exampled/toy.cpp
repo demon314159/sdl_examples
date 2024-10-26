@@ -21,7 +21,7 @@
 #define INITIAL_XROT 90.0
 #define INITIAL_YROT 0.0
 #define INITIAL_MAG  1.6
-#define BALL_ACCELERATION 0.00
+#define BALL_MAX_ACCELERATION 2.05
 
 Toy::Toy()
     : m_seconds(0.0)
@@ -38,7 +38,7 @@ Toy::Toy()
     build_uniform();
     m_ball->set_position(m_table->out_hole_position());
     m_ball->set_velocity({0.0, 0.0});
-    m_ball->set_acceleration({0.0, BALL_ACCELERATION});
+    m_ball->set_acceleration({0.0, 0.0});
 }
 
 Toy::~Toy()
@@ -76,6 +76,9 @@ void Toy::advance(int nanoseconds)
     AnimatedToy::advance(nanoseconds);
     m_seconds += (1.0e-9 * (float) nanoseconds);
     float seconds = 1.0e-3;
+    float ax = BALL_MAX_ACCELERATION * sin(m_camera->rotation_ay() * PI / 180.0f);
+    float az = BALL_MAX_ACCELERATION * sin((m_camera->rotation_ax() - 90) * PI / 180.0f);
+    m_ball->set_acceleration({ax, az});
     while (m_seconds > seconds) {
         m_seconds -= seconds;
         m_ball->advance(seconds);

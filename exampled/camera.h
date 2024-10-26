@@ -38,6 +38,8 @@ public:
     void add_pose(const Float2& offset, const Float2& rotation, float mag);
     int poses() const;
     void set_pose(int ix);
+    float rotation_ax() const;
+    float rotation_ay() const;
 
     void show() const;
 

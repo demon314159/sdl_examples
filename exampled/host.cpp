@@ -64,25 +64,25 @@ void Host::key_press_event(SDL_Event* e)
         if (shifted) {
             m_view.camera()->translate_y(-m_view.camera()->height() / 20);
         } else {
-            m_view.camera()->rotate_ax(-10.0);
+            m_view.camera()->rotate_ax(-1.0);
         }
     } else if (a == SDL_SCANCODE_DOWN) {
         if (shifted) {
             m_view.camera()->translate_y(m_view.camera()->height() / 20);
         } else {
-            m_view.camera()->rotate_ax(10.0);
+            m_view.camera()->rotate_ax(1.0);
         }
     } else if (a == SDL_SCANCODE_LEFT) {
         if (shifted) {
             m_view.camera()->translate_x(-m_view.camera()->width() / 20);
         } else {
-            m_view.camera()->rotate_ay(-10.0);
+            m_view.camera()->rotate_ay(-1.0);
         }
     } else if (a == SDL_SCANCODE_RIGHT) {
         if (shifted) {
             m_view.camera()->translate_x(m_view.camera()->width() / 20);
         } else {
-            m_view.camera()->rotate_ay(10.0);
+            m_view.camera()->rotate_ay(1.0);
         }
     } else if (a == SDL_SCANCODE_I) {
         if (shifted) {
