@@ -82,6 +82,7 @@ void Toy::advance(int nanoseconds)
     while (m_seconds > seconds) {
         m_seconds -= seconds;
         m_ball->advance(seconds);
+        m_table->collide(m_ball);
         m_ball->advance_orientation();
     }
     update_uniform();

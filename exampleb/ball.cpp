@@ -147,7 +147,7 @@ Quaternion Ball::next_orientation()
     double deltaz = m_state.position().v2 - m_last_state.position().v2;
     double distance = sqrt(deltax * deltax + deltaz * deltaz);
     Quaternion t = m_orientation;
-    if (distance >= 0.00001) {
+    if (distance >= 0.000001) {
         double last_angle = (distance / m_radius) * (180.0 / PI);
         float vx = m_state.velocity().v1;
         float vz = m_state.velocity().v2;

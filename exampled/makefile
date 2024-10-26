@@ -36,6 +36,9 @@ HEADERS = view.h \
           state.h \
           ball.h \
           table.h \
+          concave_plane_shape.h \
+          concave_reflector.h \
+          concave_strip.h \
           \
           \
           \
@@ -73,6 +76,9 @@ OBJECTS = main.obj \
           state.obj \
           ball.obj \
           table.obj \
+          concave_plane_shape.obj \
+          concave_reflector.obj \
+          concave_strip.obj \
           \
           \
           \

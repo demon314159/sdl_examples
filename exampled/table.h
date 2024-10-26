@@ -11,6 +11,8 @@
 #include "matrix4x4.h"
 #include "pi.h"
 #include "look.h"
+#include "concave_strip.h"
+
 #include <math.h>
 
 class Table
@@ -25,6 +27,8 @@ public:
 
 private:
     Float2 m_ball_home_position;
+    ConcaveStrip* m_strip1;
+    ConcaveStrip* m_strip2;
 };
 
 #endif // _TABLE_H_
