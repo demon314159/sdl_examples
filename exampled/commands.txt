@@ -1,0 +1,78 @@
+starting from game over state
+set match 70 puts us in game over state
+
+label1:
+
+add player and decrement credit
+   (until max players or first score)
+
+adding first paid player:
+    ejects ball from outhole,
+    clears all scores,
+    set match to 0
+    sets player to 1
+    sets ball to 1
+    spot the 10 bonus
+    sets player1 flashing
+    blank other players
+
+adding second, third, fourth paid player before ball hits a scoring object:
+    sets new player to zero, non blank, non flash
+
+
+label2:
+// At this point
+       the current paid player is flashing
+       the other paid players are not flashing and not blank
+       the unpaid players are blank
+
+repeat
+    add score to current player
+    turn off current player flash
+    blank other players
+    reset old_shoot_again
+    new_shoot_again may or may not get set
+    play chime based on score
+    match = (match + 1) % 10;
+until ball lands in out_hole
+
+// ball lands in out_hole
+perform bonus sequence
+reset all drop targets
+reset lights except shoot_again
+    shoot_again light is status of old_shoot_again OR new_shoot_again
+
+old_shoot_again = new_shoot_again
+new_shoot_again = false;
+
+if (old_shoot_again) {
+    set current paid player to flashing
+    set other paid players to non flashing, non blank
+    set unpaid players to blank
+    eject from out_hole
+    go to label2
+} else if player < paid players {
+    advance to next paid player
+    set current paid player to flashing
+    set other paid players to non flashing, non blank
+    set unpaid players to blank
+    eject from out_hole
+    go to label2
+} else {
+    if ball < 5 {
+        player = 1;
+        advance to next ball
+        set current paid player to flashing
+        set other paid players to non flashing, non blank
+        set unpaid players to blank
+        eject from out_hole
+        go to label2
+    } else {
+        set match * 10
+        go to label1
+    }
+}
+
+
+
+
