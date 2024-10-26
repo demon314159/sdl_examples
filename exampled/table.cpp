@@ -7,20 +7,13 @@
 #include "cube_shape.h"
 
 Table::Table()
-    : m_ball_z_limit(0.0)
-    , m_ball_home_position({0.0, 0.0})
+    : m_ball_home_position({0.0, 0.0})
 {
-    m_ball_home_position = {(X7 + X8) / 2.0f, ZOH2 + BALL_RADIUS / 2.0f - BALL_RADIUS};
-    m_ball_z_limit = Z8;
+    m_ball_home_position = {0.0f, 0.0f};
 }
 
 Table::~Table()
 {
-}
-
-float Table::ball_z_limit() const
-{
-return m_ball_z_limit;
 }
 
 Float2 Table::ball_home_position() const
@@ -47,12 +40,3 @@ CadModel Table::model() const
     return mm;
 }
 
-Float2 Table::trim() const
-{
-    return {T1, Y4};
-}
-
-PaintCan Table::trim_color() const
-{
-    return WOOD_COLOR;
-}
