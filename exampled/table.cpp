@@ -15,6 +15,17 @@ Table::Table()
     , m_wall2(NULL)
     , m_wall3(NULL)
     , m_wall4(NULL)
+    , m_wall5(NULL)
+    , m_wall6(NULL)
+    , m_wall7(NULL)
+    , m_wall8(NULL)
+    , m_wall9(NULL)
+    , m_wall10(NULL)
+    , m_wall11(NULL)
+    , m_wall12(NULL)
+    , m_wall13(NULL)
+    , m_wall14(NULL)
+    , m_wall15(NULL)
 {
     m_ball_home_position = {0.0f, 0.0f};
     float ri = 0.1735;
@@ -24,14 +35,37 @@ Table::Table()
     int steps = 50;
     m_strip1 = new ConcaveStrip(180.0, 360.0, {px, h / 2.0f, pz}, ri, h, PaintCan(0.0, 0.0, 1.0), 0.2, steps);
     m_strip2 = new ConcaveStrip(0.0, 180.0, {px, h / 2.0f, pz}, ri, h, PaintCan(0.0, 0.0, 1.0), 0.2, steps);
-    m_wall1 = new Wall({0.24125, 0.039}, {0.24125, 0.065}, 0.001125, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
-    m_wall2 = new Wall({0.24125, 0.065}, {0.164, 0.0675}, 0.001125, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
-    m_wall3 = new Wall({0.164, 0.0675}, {0.164, 0.106}, 0.001125, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
-    m_wall4 = new Wall({0.164, 0.106}, {0.114, 0.1075}, 0.001125, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
+    float wr = 0.0025 / 2.0;
+    m_wall1 = new Wall({0.24125, 0.039}, {0.24125, 0.065}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
+    m_wall2 = new Wall({0.24125, 0.065}, {0.164, 0.0675}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
+    m_wall3 = new Wall({0.164, 0.0675}, {0.164, 0.106}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
+    m_wall4 = new Wall({0.164, 0.106}, {0.114, 0.1075}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
+    m_wall5 = new Wall({0.134, 0.0495}, {0.134, 0.066}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
+    m_wall6 = new Wall({0.1935, 0.0925}, {0.1935, 0.115}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
+    m_wall7 = new Wall({0.2305, 0.092}, {0.2305, 0.114}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
+    m_wall8 = new Wall({0.083, 0.1345}, {0.173, 0.134}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
+    m_wall9 = new Wall({0.13475, 0.1345}, {0.13475, 0.1785}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
+    m_wall10 = new Wall({0.203, 0.140}, {0.258, 0.139}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
+    m_wall11 = new Wall({0.258, 0.139}, {0.258, 0.103}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
+    m_wall12 = new Wall({0.258, 0.103}, {0.291, 0.103}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
+    m_wall13 = new Wall({0.3285, 0.132}, {0.357, 0.132}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
+    m_wall14 = new Wall({0.292, 0.1355}, {0.292, 0.1625}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
+    m_wall15 = new Wall({0.292, 0.1625}, {0.333, 0.1625}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
 }
 
 Table::~Table()
 {
+    delete m_wall15;
+    delete m_wall14;
+    delete m_wall13;
+    delete m_wall12;
+    delete m_wall11;
+    delete m_wall10;
+    delete m_wall9;
+    delete m_wall8;
+    delete m_wall7;
+    delete m_wall6;
+    delete m_wall5;
     delete m_wall4;
     delete m_wall3;
     delete m_wall2;
@@ -58,6 +92,17 @@ void Table::collide(Ball* ball) const
     m_wall2->collide(ball);
     m_wall3->collide(ball);
     m_wall4->collide(ball);
+    m_wall5->collide(ball);
+    m_wall6->collide(ball);
+    m_wall7->collide(ball);
+    m_wall8->collide(ball);
+    m_wall9->collide(ball);
+    m_wall10->collide(ball);
+    m_wall11->collide(ball);
+    m_wall12->collide(ball);
+    m_wall13->collide(ball);
+    m_wall14->collide(ball);
+    m_wall15->collide(ball);
 }
 
 CadModel Table::model() const
@@ -83,6 +128,17 @@ CadModel Table::model() const
     mm.add(m_wall2->model(0.0));
     mm.add(m_wall3->model(0.0));
     mm.add(m_wall4->model(0.0));
+    mm.add(m_wall5->model(0.0));
+    mm.add(m_wall6->model(0.0));
+    mm.add(m_wall7->model(0.0));
+    mm.add(m_wall8->model(0.0));
+    mm.add(m_wall9->model(0.0));
+    mm.add(m_wall10->model(0.0));
+    mm.add(m_wall11->model(0.0));
+    mm.add(m_wall12->model(0.0));
+    mm.add(m_wall13->model(0.0));
+    mm.add(m_wall14->model(0.0));
+    mm.add(m_wall15->model(0.0));
     return mm;
 }
 
