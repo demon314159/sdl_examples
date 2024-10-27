@@ -1,0 +1,45 @@
+//
+// straight_reflector.h
+//
+
+#ifndef _STRAIGHT_REFLECTOR_H_
+#define _STRAIGHT_REFLECTOR_H_
+
+#include "float3.h"
+#include "ball.h"
+#include "perimeter.h"
+
+class StraightReflector
+{
+public:
+    StraightReflector(bool top, float r1, float r2, float length, float reflectivity);
+    StraightReflector(float length, float reflectivity);
+    StraightReflector(Float2 p1, Float2 p2, float radius, float reflectivity);
+    ~StraightReflector();
+    void update_perimeter();
+
+    void set_angular_velocity(float angular_velocity);
+    Float2 velocity_at_impact(float x, Float2 velocity_origin) const;
+
+    bool within_range(const Ball* ball) const;
+    bool collide(Ball* ball) const;
+    void translate(Float2 distance);
+    void rotate(float angle);
+    Float2 position() const;
+    float length() const;
+    float angle() const;
+
+private:
+    Perimeter m_perimeter;
+    Float2 m_position;
+    float m_length;
+    float m_reflectivity;
+    float m_angle;
+    float m_angular_velocity;
+    Float2 m_velocity_origin;
+
+    void translate(Float2& point, Float2 distance) const;
+    void rotate(Float2& point, float angle) const;
+};
+
+#endif // _STRAIGHT_REFLECTOR_H_

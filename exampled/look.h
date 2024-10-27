@@ -33,6 +33,9 @@
 #define BALL_BOTTOM_COLOR PaintCan(0.0, 0.0, 1.0)
 #define BALL_SEGMENTS 80
 
+#define RED_COLOR PaintCan(1.0, 0.0, 0.0)
+#define WHITE_COLOR PaintCan(1.0, 1.0, 1.0)
+
 class Look
 {
 public:

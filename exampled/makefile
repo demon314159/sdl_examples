@@ -39,6 +39,9 @@ HEADERS = view.h \
           concave_plane_shape.h \
           concave_reflector.h \
           concave_strip.h \
+          convex_reflector.h \
+          straight_reflector.h \
+          wall.h \
           \
           \
           \
@@ -79,6 +82,9 @@ OBJECTS = main.obj \
           concave_plane_shape.obj \
           concave_reflector.obj \
           concave_strip.obj \
+          convex_reflector.obj \
+          straight_reflector.obj \
+          wall.obj \
           \
           \
           \

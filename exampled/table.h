@@ -12,6 +12,7 @@
 #include "pi.h"
 #include "look.h"
 #include "concave_strip.h"
+#include "wall.h"
 
 #include <math.h>
 
@@ -29,6 +30,10 @@ private:
     Float2 m_ball_home_position;
     ConcaveStrip* m_strip1;
     ConcaveStrip* m_strip2;
+    Wall* m_wall1;
+    Wall* m_wall2;
+    Wall* m_wall3;
+    Wall* m_wall4;
 };
 
 #endif // _TABLE_H_
