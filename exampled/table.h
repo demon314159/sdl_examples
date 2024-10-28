@@ -45,6 +45,26 @@ private:
     Wall* m_wall13;
     Wall* m_wall14;
     Wall* m_wall15;
+    Wall* m_wall16a;
+    Wall* m_wall16b;
+    Wall* m_wall17;
+    Wall* m_wall18;
+    Wall* m_wall19;
+    Wall* m_wall20;
+    Wall* m_wall21a;
+    Wall* m_wall21b;
+    Wall* m_wall22;
+    Wall* m_wall23;
+    Wall* m_wall24;
+    Wall* m_wall25;
+    Wall* m_wall26;
+    Wall* m_wall27;
+    Wall* m_wall28;
+    Wall* m_wall29;
+    Wall* m_wall30;
+    Wall* m_wall31;
+    Wall* m_wall32;
+    Wall* m_wall33;
 };
 
 #endif // _TABLE_H_

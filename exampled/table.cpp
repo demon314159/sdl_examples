@@ -5,7 +5,6 @@
 #include "table.h"
 #include "plane_shape.h"
 #include "cube_shape.h"
-#include "ring_shape.h"
 
 Table::Table()
     : m_ball_home_position({0.0, 0.0})
@@ -26,15 +25,35 @@ Table::Table()
     , m_wall13(NULL)
     , m_wall14(NULL)
     , m_wall15(NULL)
+    , m_wall16a(NULL)
+    , m_wall16b(NULL)
+    , m_wall17(NULL)
+    , m_wall18(NULL)
+    , m_wall19(NULL)
+    , m_wall20(NULL)
+    , m_wall21a(NULL)
+    , m_wall21b(NULL)
+    , m_wall22(NULL)
+    , m_wall23(NULL)
+    , m_wall24(NULL)
+    , m_wall25(NULL)
+    , m_wall26(NULL)
+    , m_wall27(NULL)
+    , m_wall28(NULL)
+    , m_wall29(NULL)
+    , m_wall30(NULL)
+    , m_wall31(NULL)
+    , m_wall32(NULL)
+    , m_wall33(NULL)
 {
     m_ball_home_position = {0.0f, 0.0f};
-    float ri = 0.1735;
+    float ri = 0.1755;
     float px = PLAYFIELD_X / 2.0;
     float pz = PLAYFIELD_Z / 2.0;
     float h = 0.005;
     int steps = 50;
-    m_strip1 = new ConcaveStrip(180.0, 360.0, {px, h / 2.0f, pz}, ri, h, PaintCan(0.0, 0.0, 1.0), 0.2, steps);
-    m_strip2 = new ConcaveStrip(0.0, 180.0, {px, h / 2.0f, pz}, ri, h, PaintCan(0.0, 0.0, 1.0), 0.2, steps);
+    m_strip1 = new ConcaveStrip(180.0, 360.0, {px, h / 2.0f, pz}, ri, h, WHITE_COLOR, 0.2, steps);
+    m_strip2 = new ConcaveStrip(0.0, 180.0, {px, h / 2.0f, pz}, ri, h, WHITE_COLOR, 0.2, steps);
     float wr = 0.0025 / 2.0;
     m_wall1 = new Wall({0.24125, 0.039}, {0.24125, 0.065}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
     m_wall2 = new Wall({0.24125, 0.065}, {0.164, 0.0675}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
@@ -48,13 +67,53 @@ Table::Table()
     m_wall10 = new Wall({0.203, 0.140}, {0.258, 0.139}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
     m_wall11 = new Wall({0.258, 0.139}, {0.258, 0.103}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
     m_wall12 = new Wall({0.258, 0.103}, {0.291, 0.103}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
-    m_wall13 = new Wall({0.3285, 0.132}, {0.357, 0.132}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
+    m_wall13 = new Wall({0.3285, 0.132}, {0.360, 0.132}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
     m_wall14 = new Wall({0.292, 0.1355}, {0.292, 0.1625}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
     m_wall15 = new Wall({0.292, 0.1625}, {0.333, 0.1625}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
+    m_wall16a = new Wall({0.267, 0.196}, {0.344, 0.196}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
+    m_wall16b = new Wall({0.3725, 0.194}, {0.3775, 0.194}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
+    m_wall17 = new Wall({0.063, 0.169}, {0.081, 0.169}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
+    m_wall18 = new Wall({0.031, 0.196}, {0.055, 0.196}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
+    m_wall19 = new Wall({0.094, 0.200}, {0.094, 0.229}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
+    m_wall20 = new Wall({0.094, 0.229}, {0.127, 0.229}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
+    m_wall21a = new Wall({0.0435, 0.2755}, {0.046, 0.2755}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
+    m_wall21b = new Wall({0.071, 0.2755}, {0.1085, 0.2755}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
+    m_wall22 = new Wall({0.1085, 0.2755}, {0.1085, 0.263}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
+    m_wall23 = new Wall({0.139, 0.280}, {0.2435, 0.280}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
+    m_wall24 = new Wall({0.261, 0.248}, {0.261, 0.227}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
+    m_wall25 = new Wall({0.261, 0.227}, {0.3345, 0.227}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
+    m_wall26 = new Wall({0.301, 0.256}, {0.3715, 0.256}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
+    m_wall27 = new Wall({0.260, 0.3015}, {0.3135, 0.3015}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
+    m_wall28 = new Wall({0.260, 0.3015}, {0.260, 0.334}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
+    m_wall29 = new Wall({0.1915, 0.3025}, {0.1915, 0.327}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
+    m_wall30 = new Wall({0.101, 0.308}, {0.162, 0.308}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
+    m_wall31 = new Wall({0.162, 0.308}, {0.162, 0.358}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
+    m_wall32 = new Wall({0.162, 0.358}, {0.223, 0.358}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
+    m_wall33 = new Wall({0.223, 0.319}, {0.223, 0.381}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
 }
 
 Table::~Table()
 {
+    delete m_wall33;
+    delete m_wall32;
+    delete m_wall31;
+    delete m_wall30;
+    delete m_wall29;
+    delete m_wall28;
+    delete m_wall27;
+    delete m_wall26;
+    delete m_wall25;
+    delete m_wall24;
+    delete m_wall23;
+    delete m_wall22;
+    delete m_wall21b;
+    delete m_wall21a;
+    delete m_wall20;
+    delete m_wall19;
+    delete m_wall18;
+    delete m_wall17;
+    delete m_wall16b;
+    delete m_wall16a;
     delete m_wall15;
     delete m_wall14;
     delete m_wall13;
@@ -103,6 +162,26 @@ void Table::collide(Ball* ball) const
     m_wall13->collide(ball);
     m_wall14->collide(ball);
     m_wall15->collide(ball);
+    m_wall16a->collide(ball);
+    m_wall16b->collide(ball);
+    m_wall17->collide(ball);
+    m_wall18->collide(ball);
+    m_wall19->collide(ball);
+    m_wall20->collide(ball);
+    m_wall21a->collide(ball);
+    m_wall21b->collide(ball);
+    m_wall22->collide(ball);
+    m_wall23->collide(ball);
+    m_wall24->collide(ball);
+    m_wall25->collide(ball);
+    m_wall26->collide(ball);
+    m_wall27->collide(ball);
+    m_wall28->collide(ball);
+    m_wall29->collide(ball);
+    m_wall30->collide(ball);
+    m_wall31->collide(ball);
+    m_wall32->collide(ball);
+    m_wall33->collide(ball);
 }
 
 CadModel Table::model() const
@@ -111,17 +190,13 @@ CadModel Table::model() const
     CadModel top_playfield(PlaneShape(PLAYFIELD_X, PLAYFIELD_Z, TEXTURE_ID_PLAYFIELD), PaintCan(1.0, 1.0, 1.0), ANIMATION_ID_TRANSPARENT);
     CadModel backlight(PlaneShape(PLAYFIELD_X, PLAYFIELD_Z, 0.0), PaintCan(0.0, 0.0, 0.0), 1.0);
 
-    float ri = 0.1735 + 0.002;
+    float ri = 0.1755;
     float ro = ri + 0.010;
     float h = 0.005;
     int steps = 100;
 
-    CadModel ring(RingShape(ro, ri, h, steps), PaintCan(1.0, 0.0, 0.0), 0.0);
-
-
     mm.add(backlight, PLAYFIELD_X / 2.0, -0.002f, PLAYFIELD_Z / 2.0);
     mm.add(top_playfield, PLAYFIELD_X / 2.0, 0.0, PLAYFIELD_Z / 2.0);
-    mm.add(ring, PLAYFIELD_X / 2.0, h / 2.0, PLAYFIELD_Z / 2.0);
     mm.add(m_strip1->model(0.0));
     mm.add(m_strip2->model(0.0));
     mm.add(m_wall1->model(0.0));
@@ -139,6 +214,26 @@ CadModel Table::model() const
     mm.add(m_wall13->model(0.0));
     mm.add(m_wall14->model(0.0));
     mm.add(m_wall15->model(0.0));
+    mm.add(m_wall16a->model(0.0));
+    mm.add(m_wall16b->model(0.0));
+    mm.add(m_wall17->model(0.0));
+    mm.add(m_wall18->model(0.0));
+    mm.add(m_wall19->model(0.0));
+    mm.add(m_wall20->model(0.0));
+    mm.add(m_wall21a->model(0.0));
+    mm.add(m_wall21b->model(0.0));
+    mm.add(m_wall22->model(0.0));
+    mm.add(m_wall23->model(0.0));
+    mm.add(m_wall24->model(0.0));
+    mm.add(m_wall25->model(0.0));
+    mm.add(m_wall26->model(0.0));
+    mm.add(m_wall27->model(0.0));
+    mm.add(m_wall28->model(0.0));
+    mm.add(m_wall29->model(0.0));
+    mm.add(m_wall30->model(0.0));
+    mm.add(m_wall31->model(0.0));
+    mm.add(m_wall32->model(0.0));
+    mm.add(m_wall33->model(0.0));
     return mm;
 }
 
