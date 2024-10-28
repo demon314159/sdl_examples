@@ -13,6 +13,7 @@
 #include "look.h"
 #include "concave_strip.h"
 #include "wall.h"
+#include "well.h"
 
 #include <math.h>
 
@@ -65,6 +66,31 @@ private:
     Wall* m_wall31;
     Wall* m_wall32;
     Wall* m_wall33;
+    Well* m_well1;
+    Well* m_well2;
+    Well* m_well3;
+    Well* m_well4;
+    Well* m_well5;
+    Well* m_well6;
+    Well* m_well7;
+    Well* m_well8;
+    Well* m_well9;
+    Well* m_well10;
+    Well* m_well11;
+    Well* m_well12;
+    Well* m_well13;
+    Well* m_well14;
+    Well* m_well15;
+    Well* m_well16;
+    Well* m_well17;
+    Well* m_well18;
+    Well* m_well19;
+    Well* m_well20;
+    Well* m_well21;
+    Well* m_well22;
+    Well* m_well23;
+    Well* m_well24;
+    Well* m_well25;
 };
 
 #endif // _TABLE_H_

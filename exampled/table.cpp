@@ -45,6 +45,31 @@ Table::Table()
     , m_wall31(NULL)
     , m_wall32(NULL)
     , m_wall33(NULL)
+    , m_well1(NULL)
+    , m_well2(NULL)
+    , m_well3(NULL)
+    , m_well4(NULL)
+    , m_well5(NULL)
+    , m_well6(NULL)
+    , m_well7(NULL)
+    , m_well8(NULL)
+    , m_well9(NULL)
+    , m_well10(NULL)
+    , m_well11(NULL)
+    , m_well12(NULL)
+    , m_well13(NULL)
+    , m_well14(NULL)
+    , m_well15(NULL)
+    , m_well16(NULL)
+    , m_well17(NULL)
+    , m_well18(NULL)
+    , m_well19(NULL)
+    , m_well20(NULL)
+    , m_well21(NULL)
+    , m_well22(NULL)
+    , m_well23(NULL)
+    , m_well24(NULL)
+    , m_well25(NULL)
 {
     m_ball_home_position = {0.0f, 0.0f};
     float ri = 0.1755;
@@ -90,10 +115,61 @@ Table::Table()
     m_wall31 = new Wall({0.162, 0.308}, {0.162, 0.358}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
     m_wall32 = new Wall({0.162, 0.358}, {0.223, 0.358}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
     m_wall33 = new Wall({0.223, 0.319}, {0.223, 0.381}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
+    float rr = 0.011;
+    m_well1 = new Well({0.118, 0.074}, rr, BALL_RADIUS / 2.0);
+    m_well2 = new Well({0.0665, 0.1235}, rr, BALL_RADIUS / 2.0);
+    m_well3 = new Well({0.1885, 0.1315}, rr, BALL_RADIUS / 2.0);
+    m_well4 = new Well({0.22875, 0.079}, rr, BALL_RADIUS / 2.0);
+    m_well5 = new Well({0.2595, 0.0615}, rr, BALL_RADIUS / 2.0);
+    m_well6 = new Well({0.3305, 0.118}, rr, BALL_RADIUS / 2.0);
+    m_well7 = new Well({0.2805, 0.1215}, rr, BALL_RADIUS / 2.0);
+    m_well8 = new Well({0.3585, 0.1945}, rr, BALL_RADIUS / 2.0);
+    m_well9 = new Well({0.246, 0.1825}, rr, BALL_RADIUS / 2.0);
+    m_well10 = new Well({0.1485, 0.1485}, rr, BALL_RADIUS / 2.0);
+    m_well11 = new Well({0.142, 0.227}, rr, BALL_RADIUS / 2.0);
+    m_well12 = new Well({0.0905, 0.182}, rr, BALL_RADIUS / 2.0);
+    m_well13 = new Well({0.120, 0.14925}, rr, BALL_RADIUS / 2.0);
+    m_well14 = new Well({0.0835, 0.2325}, rr, BALL_RADIUS / 2.0);
+    m_well15 = new Well({0.042, 0.209}, rr, BALL_RADIUS / 2.0);
+    m_well16 = new Well({0.058, 0.276}, rr, BALL_RADIUS / 2.0);
+    m_well17 = new Well({0.126, 0.2755}, rr, BALL_RADIUS / 2.0);
+    m_well18 = new Well({0.2585, 0.264}, rr, BALL_RADIUS / 2.0);
+    m_well19 = new Well({0.2585, 0.2885}, rr, BALL_RADIUS / 2.0);
+    m_well20 = new Well({0.3485, 0.2685}, rr, BALL_RADIUS / 2.0);
+    m_well21 = new Well({0.2955, 0.3375}, rr, BALL_RADIUS / 2.0);
+    m_well22 = new Well({0.237, 0.363}, rr, BALL_RADIUS / 2.0);
+    m_well23 = new Well({0.19175, 0.2905}, rr, BALL_RADIUS / 2.0);
+    m_well24 = new Well({0.1195, 0.3445}, rr, BALL_RADIUS / 2.0);
+    m_well25 = new Well({0.151, 0.321}, rr, BALL_RADIUS / 2.0);
 }
 
 Table::~Table()
 {
+    delete m_well25;
+    delete m_well24;
+    delete m_well23;
+    delete m_well22;
+    delete m_well21;
+    delete m_well20;
+    delete m_well19;
+    delete m_well18;
+    delete m_well17;
+    delete m_well16;
+    delete m_well15;
+    delete m_well14;
+    delete m_well13;
+    delete m_well12;
+    delete m_well11;
+    delete m_well10;
+    delete m_well9;
+    delete m_well8;
+    delete m_well7;
+    delete m_well6;
+    delete m_well5;
+    delete m_well4;
+    delete m_well3;
+    delete m_well2;
+    delete m_well1;
     delete m_wall33;
     delete m_wall32;
     delete m_wall31;
@@ -182,6 +258,31 @@ void Table::collide(Ball* ball) const
     m_wall31->collide(ball);
     m_wall32->collide(ball);
     m_wall33->collide(ball);
+    m_well1->collide(ball);
+    m_well2->collide(ball);
+    m_well3->collide(ball);
+    m_well4->collide(ball);
+    m_well5->collide(ball);
+    m_well6->collide(ball);
+    m_well7->collide(ball);
+    m_well8->collide(ball);
+    m_well9->collide(ball);
+    m_well10->collide(ball);
+    m_well11->collide(ball);
+    m_well12->collide(ball);
+    m_well13->collide(ball);
+    m_well14->collide(ball);
+    m_well15->collide(ball);
+    m_well16->collide(ball);
+    m_well17->collide(ball);
+    m_well18->collide(ball);
+    m_well19->collide(ball);
+    m_well20->collide(ball);
+    m_well21->collide(ball);
+    m_well22->collide(ball);
+    m_well23->collide(ball);
+    m_well24->collide(ball);
+    m_well25->collide(ball);
 }
 
 CadModel Table::model() const
@@ -234,6 +335,31 @@ CadModel Table::model() const
     mm.add(m_wall31->model(0.0));
     mm.add(m_wall32->model(0.0));
     mm.add(m_wall33->model(0.0));
+    mm.add(m_well1->model(0.0));
+    mm.add(m_well2->model(0.0));
+    mm.add(m_well3->model(0.0));
+    mm.add(m_well4->model(0.0));
+    mm.add(m_well5->model(0.0));
+    mm.add(m_well6->model(0.0));
+    mm.add(m_well7->model(0.0));
+    mm.add(m_well8->model(0.0));
+    mm.add(m_well9->model(0.0));
+    mm.add(m_well10->model(0.0));
+    mm.add(m_well11->model(0.0));
+    mm.add(m_well12->model(0.0));
+    mm.add(m_well13->model(0.0));
+    mm.add(m_well14->model(0.0));
+    mm.add(m_well15->model(0.0));
+    mm.add(m_well16->model(0.0));
+    mm.add(m_well17->model(0.0));
+    mm.add(m_well18->model(0.0));
+    mm.add(m_well19->model(0.0));
+    mm.add(m_well20->model(0.0));
+    mm.add(m_well21->model(0.0));
+    mm.add(m_well22->model(0.0));
+    mm.add(m_well23->model(0.0));
+    mm.add(m_well24->model(0.0));
+    mm.add(m_well25->model(0.0));
     return mm;
 }
 
