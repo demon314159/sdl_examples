@@ -5,9 +5,17 @@
 #include "table.h"
 #include "plane_shape.h"
 #include "cube_shape.h"
+#include "ring_shape.h"
+
+#define PERIMETER_RADIUS 0.1755f
+#define PERIMETER_STEPS 100
+#define WALL_THICKNESS 0.0025f
+#define WALL_HEIGHT 0.005f
+#define WALL_STEPS 10
+#define TRAP_RADIUS 0.011f
 
 Table::Table()
-    : m_ball_home_position({0.0, 0.0})
+    : m_ball_home_position({0.230, 0.049})
     , m_strip1(NULL)
     , m_strip2(NULL)
     , m_wall1(NULL)
@@ -71,51 +79,48 @@ Table::Table()
     , m_trap24(NULL)
     , m_trap25(NULL)
 {
-    m_ball_home_position = {0.0f, 0.0f};
-    float ri = 0.1755;
     float px = PLAYFIELD_X / 2.0;
     float pz = PLAYFIELD_Z / 2.0;
-    float h = 0.005;
-    int steps = 50;
-    m_strip1 = new ConcaveStrip(180.0, 360.0, {px, h / 2.0f, pz}, ri, h, WHITE_COLOR, 0.2, steps);
-    m_strip2 = new ConcaveStrip(0.0, 180.0, {px, h / 2.0f, pz}, ri, h, WHITE_COLOR, 0.2, steps);
-    float wr = 0.0025 / 2.0;
-    m_wall1 = new Wall({0.24125, 0.039}, {0.24125, 0.065}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
-    m_wall2 = new Wall({0.24125, 0.065}, {0.164, 0.0675}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
-    m_wall3 = new Wall({0.164, 0.0675}, {0.164, 0.106}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
-    m_wall4 = new Wall({0.164, 0.106}, {0.114, 0.1075}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
-    m_wall5 = new Wall({0.134, 0.0495}, {0.134, 0.066}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
-    m_wall6 = new Wall({0.1935, 0.0925}, {0.1935, 0.115}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
-    m_wall7 = new Wall({0.2305, 0.092}, {0.2305, 0.114}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
-    m_wall8 = new Wall({0.083, 0.1345}, {0.173, 0.134}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
-    m_wall9 = new Wall({0.13475, 0.1345}, {0.13475, 0.1785}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
-    m_wall10 = new Wall({0.203, 0.140}, {0.258, 0.139}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
-    m_wall11 = new Wall({0.258, 0.139}, {0.258, 0.103}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
-    m_wall12 = new Wall({0.258, 0.103}, {0.291, 0.103}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
-    m_wall13 = new Wall({0.3285, 0.132}, {0.360, 0.132}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
-    m_wall14 = new Wall({0.292, 0.1355}, {0.292, 0.1625}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
-    m_wall15 = new Wall({0.292, 0.1625}, {0.333, 0.1625}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
-    m_wall16a = new Wall({0.267, 0.196}, {0.344, 0.196}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
-    m_wall16b = new Wall({0.3725, 0.194}, {0.3775, 0.194}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
-    m_wall17 = new Wall({0.063, 0.169}, {0.081, 0.169}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
-    m_wall18 = new Wall({0.031, 0.196}, {0.055, 0.196}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
-    m_wall19 = new Wall({0.094, 0.200}, {0.094, 0.229}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
-    m_wall20 = new Wall({0.094, 0.229}, {0.127, 0.229}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
-    m_wall21a = new Wall({0.0435, 0.2755}, {0.046, 0.2755}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
-    m_wall21b = new Wall({0.071, 0.2755}, {0.1085, 0.2755}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
-    m_wall22 = new Wall({0.1085, 0.2755}, {0.1085, 0.263}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
-    m_wall23 = new Wall({0.139, 0.280}, {0.2435, 0.280}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
-    m_wall24 = new Wall({0.261, 0.248}, {0.261, 0.227}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
-    m_wall25 = new Wall({0.261, 0.227}, {0.3345, 0.227}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
-    m_wall26 = new Wall({0.301, 0.256}, {0.3715, 0.256}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
-    m_wall27 = new Wall({0.260, 0.3015}, {0.3135, 0.3015}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
-    m_wall28 = new Wall({0.260, 0.3015}, {0.260, 0.334}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
-    m_wall29 = new Wall({0.1915, 0.3025}, {0.1915, 0.327}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
-    m_wall30 = new Wall({0.101, 0.308}, {0.162, 0.308}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
-    m_wall31 = new Wall({0.162, 0.308}, {0.162, 0.358}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
-    m_wall32 = new Wall({0.162, 0.358}, {0.223, 0.358}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
-    m_wall33 = new Wall({0.223, 0.319}, {0.223, 0.381}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, 10);
-    float rr = 0.011;
+    m_strip1 = new ConcaveStrip(180.0, 360.0, {px, WALL_HEIGHT / 2.0f, pz}, PERIMETER_RADIUS, WALL_HEIGHT, WHITE_COLOR, 0.2, PERIMETER_STEPS / 2.0f);
+    m_strip2 = new ConcaveStrip(0.0, 180.0, {px, WALL_HEIGHT / 2.0f, pz}, PERIMETER_RADIUS, WALL_HEIGHT, WHITE_COLOR, 0.2, PERIMETER_STEPS / 2.0f);
+    float wr = WALL_THICKNESS / 2.0f;
+    float ws = WALL_STEPS;
+    m_wall1 = new Wall({0.24125, 0.039}, {0.24125, 0.065}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, ws);
+    m_wall2 = new Wall({0.24125, 0.065}, {0.164, 0.0675}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, ws);
+    m_wall3 = new Wall({0.164, 0.0675}, {0.164, 0.106}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, ws);
+    m_wall4 = new Wall({0.164, 0.106}, {0.114, 0.1075}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, ws);
+    m_wall5 = new Wall({0.134, 0.0495}, {0.134, 0.066}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, ws);
+    m_wall6 = new Wall({0.1935, 0.0925}, {0.1935, 0.115}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, ws);
+    m_wall7 = new Wall({0.2305, 0.092}, {0.2305, 0.114}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, ws);
+    m_wall8 = new Wall({0.083, 0.1345}, {0.173, 0.134}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, ws);
+    m_wall9 = new Wall({0.13475, 0.1345}, {0.13475, 0.1785}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, ws);
+    m_wall10 = new Wall({0.203, 0.140}, {0.258, 0.139}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, ws);
+    m_wall11 = new Wall({0.258, 0.139}, {0.258, 0.103}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, ws);
+    m_wall12 = new Wall({0.258, 0.103}, {0.291, 0.103}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, ws);
+    m_wall13 = new Wall({0.3285, 0.132}, {0.360, 0.132}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, ws);
+    m_wall14 = new Wall({0.292, 0.1355}, {0.292, 0.1625}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, ws);
+    m_wall15 = new Wall({0.292, 0.1625}, {0.333, 0.1625}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, ws);
+    m_wall16a = new Wall({0.267, 0.196}, {0.344, 0.196}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, ws);
+    m_wall16b = new Wall({0.3725, 0.194}, {0.3775, 0.194}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, ws);
+    m_wall17 = new Wall({0.063, 0.169}, {0.081, 0.169}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, ws);
+    m_wall18 = new Wall({0.031, 0.196}, {0.055, 0.196}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, ws);
+    m_wall19 = new Wall({0.094, 0.200}, {0.094, 0.229}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, ws);
+    m_wall20 = new Wall({0.094, 0.229}, {0.127, 0.229}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, ws);
+    m_wall21a = new Wall({0.0435, 0.2755}, {0.046, 0.2755}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, ws);
+    m_wall21b = new Wall({0.071, 0.2755}, {0.1085, 0.2755}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, ws);
+    m_wall22 = new Wall({0.1085, 0.2755}, {0.1085, 0.263}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, ws);
+    m_wall23 = new Wall({0.139, 0.280}, {0.2435, 0.280}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, ws);
+    m_wall24 = new Wall({0.261, 0.248}, {0.261, 0.227}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, ws);
+    m_wall25 = new Wall({0.261, 0.227}, {0.3345, 0.227}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, ws);
+    m_wall26 = new Wall({0.301, 0.256}, {0.3715, 0.256}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, ws);
+    m_wall27 = new Wall({0.260, 0.3015}, {0.3135, 0.3015}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, ws);
+    m_wall28 = new Wall({0.260, 0.3015}, {0.260, 0.334}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, ws);
+    m_wall29 = new Wall({0.1915, 0.3025}, {0.1915, 0.327}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, ws);
+    m_wall30 = new Wall({0.101, 0.308}, {0.162, 0.308}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, ws);
+    m_wall31 = new Wall({0.162, 0.308}, {0.162, 0.358}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, ws);
+    m_wall32 = new Wall({0.162, 0.358}, {0.223, 0.358}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, ws);
+    m_wall33 = new Wall({0.223, 0.319}, {0.223, 0.381}, wr, BALL_RADIUS, WHITE_COLOR, 0.2, ws);
+    float rr = TRAP_RADIUS;
     m_trap1 = new Trap({0.118, 0.074}, rr);
     m_trap2 = new Trap({0.0665, 0.1235}, rr);
     m_trap3 = new Trap({0.1885, 0.1315}, rr);
@@ -214,11 +219,6 @@ Float2 Table::ball_home_position() const
     return m_ball_home_position;
 }
 
-Float2 Table::out_hole_position() const
-{
-    return {0.144f, 0.11975f};
-}
-
 void Table::collide(Ball* ball) const
 {
     m_strip1->collide(ball);
@@ -294,12 +294,12 @@ CadModel Table::model() const
     CadModel mm;
     CadModel top_playfield(PlaneShape(PLAYFIELD_X, PLAYFIELD_Z, TEXTURE_ID_PLAYFIELD), PaintCan(1.0, 1.0, 1.0), ANIMATION_ID_TRANSPARENT);
     CadModel backlight(PlaneShape(PLAYFIELD_X, PLAYFIELD_Z, 0.0), PaintCan(0.0, 0.0, 0.0), 1.0);
-
-    float ri = 0.1755;
-    float ro = ri + 0.010;
-    float h = 0.005;
-    int steps = 100;
-
+    float ri = PERIMETER_RADIUS;
+    float ro = ri + WALL_THICKNESS;
+    float px = PLAYFIELD_X / 2.0;
+    float pz = PLAYFIELD_Z / 2.0;
+    CadModel ring(RingShape(ro, ri, WALL_HEIGHT, PERIMETER_STEPS), WHITE_COLOR, 0.0);
+    mm.add(ring,px, WALL_HEIGHT / 2.0f, pz);
     mm.add(backlight, PLAYFIELD_X / 2.0, -0.002f, PLAYFIELD_Z / 2.0);
     mm.add(top_playfield, PLAYFIELD_X / 2.0, 0.0, PLAYFIELD_Z / 2.0);
     mm.add(m_strip1->model(0.0));

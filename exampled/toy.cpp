@@ -36,9 +36,9 @@ Toy::Toy()
     build_model();
     m_camera->frame(m_model);
     build_uniform();
-    m_ball->set_position(m_table->out_hole_position());
-    m_ball->set_velocity({0.0, 0.0});
     m_ball->set_acceleration({0.0, 0.0});
+    m_ball->set_velocity({0.0, 0.0});
+    m_ball->set_position(m_table->ball_home_position());
 }
 
 Toy::~Toy()
@@ -108,6 +108,9 @@ bool Toy::button(int code, bool shifted, bool on)
             break;
         case SDL_SCANCODE_L:  // Launch button
         case SDL_SCANCODE_SPACE:  // Spacebar button
+            m_ball->set_acceleration({0.0, 0.0});
+            m_ball->set_velocity({0.0, 0.0});
+            m_ball->set_position(m_table->ball_home_position());
             break;
         case SDL_SCANCODE_C:  // Credit button
             break;

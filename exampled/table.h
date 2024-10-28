@@ -26,7 +26,6 @@ public:
     void collide(Ball* ball) const;
     void trap(Ball* ball) const;
     Float2 ball_home_position() const;
-    Float2 out_hole_position() const;
 
 private:
     Float2 m_ball_home_position;
