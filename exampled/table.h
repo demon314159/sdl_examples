@@ -13,7 +13,7 @@
 #include "look.h"
 #include "concave_strip.h"
 #include "wall.h"
-#include "well.h"
+#include "trap.h"
 
 #include <math.h>
 
@@ -24,6 +24,7 @@ public:
     ~Table();
     CadModel model() const;
     void collide(Ball* ball) const;
+    void trap(Ball* ball) const;
     Float2 ball_home_position() const;
     Float2 out_hole_position() const;
 
@@ -66,31 +67,31 @@ private:
     Wall* m_wall31;
     Wall* m_wall32;
     Wall* m_wall33;
-    Well* m_well1;
-    Well* m_well2;
-    Well* m_well3;
-    Well* m_well4;
-    Well* m_well5;
-    Well* m_well6;
-    Well* m_well7;
-    Well* m_well8;
-    Well* m_well9;
-    Well* m_well10;
-    Well* m_well11;
-    Well* m_well12;
-    Well* m_well13;
-    Well* m_well14;
-    Well* m_well15;
-    Well* m_well16;
-    Well* m_well17;
-    Well* m_well18;
-    Well* m_well19;
-    Well* m_well20;
-    Well* m_well21;
-    Well* m_well22;
-    Well* m_well23;
-    Well* m_well24;
-    Well* m_well25;
+    Trap* m_trap1;
+    Trap* m_trap2;
+    Trap* m_trap3;
+    Trap* m_trap4;
+    Trap* m_trap5;
+    Trap* m_trap6;
+    Trap* m_trap7;
+    Trap* m_trap8;
+    Trap* m_trap9;
+    Trap* m_trap10;
+    Trap* m_trap11;
+    Trap* m_trap12;
+    Trap* m_trap13;
+    Trap* m_trap14;
+    Trap* m_trap15;
+    Trap* m_trap16;
+    Trap* m_trap17;
+    Trap* m_trap18;
+    Trap* m_trap19;
+    Trap* m_trap20;
+    Trap* m_trap21;
+    Trap* m_trap22;
+    Trap* m_trap23;
+    Trap* m_trap24;
+    Trap* m_trap25;
 };
 
 #endif // _TABLE_H_

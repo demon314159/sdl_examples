@@ -42,7 +42,7 @@ HEADERS = view.h \
           convex_reflector.h \
           straight_reflector.h \
           wall.h \
-          well.h \
+          trap.h \
           \
           \
           \
@@ -86,7 +86,7 @@ OBJECTS = main.obj \
           convex_reflector.obj \
           straight_reflector.obj \
           wall.obj \
-          well.obj \
+          trap.obj \
           \
           \
           \

@@ -81,6 +81,7 @@ void Toy::advance(int nanoseconds)
     m_ball->set_acceleration({ax, az});
     while (m_seconds > seconds) {
         m_seconds -= seconds;
+        m_table->trap(m_ball);
         m_ball->advance(seconds);
         m_table->collide(m_ball);
         m_ball->advance_orientation();
