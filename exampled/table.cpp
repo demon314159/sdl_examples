@@ -14,8 +14,10 @@
 #define WALL_STEPS 10
 #define TRAP_RADIUS 0.011f
 
+#define HOME_POSITION {0.230, 0.049}
+
 Table::Table()
-    : m_ball_home_position({0.230, 0.049})
+    : m_ball_home_position(HOME_POSITION)
     , m_strip1(NULL)
     , m_strip2(NULL)
     , m_wall1(NULL)
@@ -78,6 +80,7 @@ Table::Table()
     , m_trap23(NULL)
     , m_trap24(NULL)
     , m_trap25(NULL)
+    , m_trap26(NULL)
 {
     float px = PLAYFIELD_X / 2.0;
     float pz = PLAYFIELD_Z / 2.0;
@@ -146,10 +149,12 @@ Table::Table()
     m_trap23 = new Trap({0.19175, 0.2905}, rr);
     m_trap24 = new Trap({0.1195, 0.3445}, rr);
     m_trap25 = new Trap({0.151, 0.321}, rr);
+    m_trap26 = new Trap({0.197, 0.213}, 0.043875);
 }
 
 Table::~Table()
 {
+    delete m_trap26;
     delete m_trap25;
     delete m_trap24;
     delete m_trap23;
@@ -287,6 +292,7 @@ void Table::trap(Ball* ball) const
     m_trap23->collide(ball);
     m_trap24->collide(ball);
     m_trap25->collide(ball);
+    m_trap26->collide(ball);
 }
 
 CadModel Table::model() const

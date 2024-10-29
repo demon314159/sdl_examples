@@ -91,6 +91,7 @@ private:
     Trap* m_trap23;
     Trap* m_trap24;
     Trap* m_trap25;
+    Trap* m_trap26;
 };
 
 #endif // _TABLE_H_

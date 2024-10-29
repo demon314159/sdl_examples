@@ -107,6 +107,14 @@ void Host::key_press_event(SDL_Event* e)
         m_pose = 0;
         m_view.camera()->set_pose(m_pose);
         m_navigate.stop();
+    } else if (a == SDL_SCANCODE_L) {
+        m_pose = 0;
+        m_view.camera()->set_pose(m_pose);
+        m_navigate.stop();
+    } else if (a == SDL_SCANCODE_SPACE) {
+        m_pose = 0;
+        m_view.camera()->set_pose(m_pose);
+        m_navigate.stop();
     }
 }
 
