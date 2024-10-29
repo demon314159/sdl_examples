@@ -295,14 +295,12 @@ CadModel Table::model() const
 {
     CadModel mm;
     CadModel top_playfield(PlaneShape(PLAYFIELD_X, PLAYFIELD_Z, TEXTURE_ID_PLAYFIELD), PaintCan(1.0, 1.0, 1.0), ANIMATION_ID_TRANSPARENT);
-    CadModel backlight(PlaneShape(PLAYFIELD_X, PLAYFIELD_Z, 0.0), PaintCan(0.0, 0.0, 0.0), 1.0);
     float ri = PERIMETER_RADIUS;
     float ro = ri + WALL_THICKNESS;
     float px = PLAYFIELD_X / 2.0;
     float pz = PLAYFIELD_Z / 2.0;
     CadModel ring(RingShape(ro, ri, WALL_HEIGHT, PERIMETER_STEPS), WHITE_COLOR, 0.0);
     mm.add(ring,px, WALL_HEIGHT / 2.0f, pz);
-    mm.add(backlight, PLAYFIELD_X / 2.0, -0.002f, PLAYFIELD_Z / 2.0);
     mm.add(top_playfield, PLAYFIELD_X / 2.0, 0.0, PLAYFIELD_Z / 2.0);
     mm.add(m_strip1->model(0.0));
     mm.add(m_strip2->model(0.0));

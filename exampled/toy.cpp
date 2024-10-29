@@ -17,10 +17,10 @@
 //#define INITIAL_MAG  2.55
 
 #define INITIAL_XOFF  0.0
-#define INITIAL_YOFF  0.004f
+#define INITIAL_YOFF  0.020
 #define INITIAL_XROT 90.0
 #define INITIAL_YROT 0.0
-#define INITIAL_MAG  1.6
+#define INITIAL_MAG  1.5
 #define BALL_MAX_ACCELERATION 2.05
 
 Toy::Toy()
