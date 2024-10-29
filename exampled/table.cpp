@@ -7,7 +7,7 @@
 #include "cube_shape.h"
 #include "ring_shape.h"
 
-#define PERIMETER_RADIUS 0.173f
+#define PERIMETER_RADIUS (0.173f + 0.0025f)
 #define PERIMETER_STEPS 100
 #define WALL_THICKNESS 0.0025f
 #define WALL_HEIGHT BALL_RADIUS
