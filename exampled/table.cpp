@@ -7,10 +7,10 @@
 #include "cube_shape.h"
 #include "ring_shape.h"
 
-#define PERIMETER_RADIUS 0.1755f
+#define PERIMETER_RADIUS 0.173f
 #define PERIMETER_STEPS 100
 #define WALL_THICKNESS 0.0025f
-#define WALL_HEIGHT 0.005f
+#define WALL_HEIGHT BALL_RADIUS
 #define WALL_STEPS 10
 #define TRAP_RADIUS 0.011f
 
@@ -263,10 +263,6 @@ void Table::collide(Ball* ball) const
     m_wall31->collide(ball);
     m_wall32->collide(ball);
     m_wall33->collide(ball);
-}
-
-void Table::trap(Ball* ball) const
-{
     m_trap1->collide(ball);
     m_trap2->collide(ball);
     m_trap3->collide(ball);

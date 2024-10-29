@@ -25,19 +25,14 @@ void Trap::collide(Ball* ball) const
     float dist = sqrt(dx * dx + dz * dz);
     float ir = m_radius / 5.0;
     if (dist < ir) {
-        ball->set_position(m_p1);
-        ball->set_velocity({0.0, 0.0});
         ball->set_acceleration({0.0, 0.0});
+        ball->set_velocity({0.0, 0.0});
+        ball->set_position(m_p1);
     } else if (dist < m_radius) {
-        float acc = 1.0;
-        float ax = -(dx / dist) * acc;
-        float az = -(dz / dist) * acc;
-        ball->set_acceleration({ax, az});
-        Float2 v = ball->velocity();
-        float f = 0.99;
-        float vx = v.v1 * f;
-        float vz = v.v2 * f;
-
+        float vel = 0.1;
+        float vx = -(dx / dist) * vel;
+        float vz = -(dz / dist) * vel;
+        ball->set_acceleration({0.0, 0.0});
         ball->set_velocity({vx, vz});
     }
 }

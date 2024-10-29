@@ -24,7 +24,6 @@ public:
     ~Table();
     CadModel model() const;
     void collide(Ball* ball) const;
-    void trap(Ball* ball) const;
     Float2 ball_home_position() const;
 
 private:
