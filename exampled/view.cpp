@@ -208,32 +208,6 @@ void View::initialize()
         printf("a_texture_id is not a valid glsl variable\n");
         exit(0);
     }
-
-
-#ifdef NEVERMORE
-    m_mvp_matrix_uniform = glGetUniformLocation(m_program, "mvp_matrix");
-    if (m_mvp_matrix_uniform == -1) {
-        printf("mvp_matrix is not a valid glsl variable\n");
-        exit(0);
-    }
-    m_rot_matrix_uniform = glGetUniformLocation(m_program, "rot_matrix");
-    if (m_rot_matrix_uniform == -1) {
-        printf("rot_matrix is not a valid glsl variable\n");
-        exit(0);
-    }
-    m_scoreboard_mvp_matrix_uniform = glGetUniformLocation(m_program, "scoreboard_mvp_matrix");
-    if (m_scoreboard_mvp_matrix_uniform == -1) {
-        printf("scoreboard_mvp_matrix is not a valid glsl variable\n");
-        exit(0);
-    }
-    m_scoreboard_rot_matrix_uniform = glGetUniformLocation(m_program, "scoreboard_rot_matrix");
-    if (m_scoreboard_rot_matrix_uniform == -1) {
-        printf("scoreboard_rot_matrix is not a valid glsl variable\n");
-        exit(0);
-    }
-#endif
-
-
     Uniform* u = m_toy->uniform();
     for (int i = 0; i < u->uniforms(); i++) {
         GLint handle = glGetUniformLocation(m_program, u->name(i));

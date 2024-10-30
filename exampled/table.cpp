@@ -7,11 +7,15 @@
 #include "cube_shape.h"
 #include "ring_shape.h"
 
-#define PERIMETER_RADIUS (0.173f + 0.0025f)
-#define PERIMETER_STEPS 100
 #define WALL_THICKNESS 0.0025f
 #define WALL_HEIGHT BALL_RADIUS
 #define WALL_STEPS 10
+
+#define PERIMETER_RADIUS (0.173f + 0.0005)
+#define PERIMETER_STEPS 100
+#define PERIMETER_THICKNESS (2.0 * WALL_THICKNESS)
+#define PERIMETER_OFFSET -0.002
+
 #define TRAP_RADIUS 0.011f
 
 #define HOME_POSITION {0.230, 0.049}
@@ -82,7 +86,7 @@ Table::Table()
     , m_trap25(NULL)
     , m_trap26(NULL)
 {
-    float px = PLAYFIELD_X / 2.0;
+    float px = PLAYFIELD_X / 2.0 + PERIMETER_OFFSET;
     float pz = PLAYFIELD_Z / 2.0;
     m_strip1 = new ConcaveStrip(180.0, 360.0, {px, WALL_HEIGHT / 2.0f, pz}, PERIMETER_RADIUS, WALL_HEIGHT, WHITE_COLOR, 0.2, PERIMETER_STEPS / 2.0f);
     m_strip2 = new ConcaveStrip(0.0, 180.0, {px, WALL_HEIGHT / 2.0f, pz}, PERIMETER_RADIUS, WALL_HEIGHT, WHITE_COLOR, 0.2, PERIMETER_STEPS / 2.0f);
@@ -296,11 +300,12 @@ CadModel Table::model() const
     CadModel mm;
     CadModel top_playfield(PlaneShape(PLAYFIELD_X, PLAYFIELD_Z, TEXTURE_ID_PLAYFIELD), PaintCan(1.0, 1.0, 1.0), ANIMATION_ID_TRANSPARENT);
     float ri = PERIMETER_RADIUS;
-    float ro = ri + WALL_THICKNESS;
+    float ro = ri + PERIMETER_THICKNESS;
     float px = PLAYFIELD_X / 2.0;
     float pz = PLAYFIELD_Z / 2.0;
     CadModel ring(RingShape(ro, ri, WALL_HEIGHT, PERIMETER_STEPS), WHITE_COLOR, 0.0);
-    mm.add(ring,px, WALL_HEIGHT / 2.0f, pz);
+    mm.add(ring,px + PERIMETER_OFFSET, WALL_HEIGHT / 2.0f, pz);
+
     mm.add(top_playfield, PLAYFIELD_X / 2.0, 0.0, PLAYFIELD_Z / 2.0);
     mm.add(m_strip1->model(0.0));
     mm.add(m_strip2->model(0.0));
