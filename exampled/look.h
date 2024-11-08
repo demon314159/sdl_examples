@@ -7,7 +7,7 @@
 
 #include "paint_can.h"
 
-#define WHITE_COLOR PaintCan(1.0, 1.0, 1.0)
+#define WALL_COLOR PaintCan(1.0, 0.0, 0.0)
 
 #define PLAYFIELD_X  0.4085f
 #define PLAYFIELD_Y  0.030f
@@ -16,6 +16,7 @@
 #define ANIMATION_ID_NORMAL 0.0
 #define ANIMATION_ID_LIGHT 1.0
 #define ANIMATION_ID_BALL 5.0
+#define ANIMATION_ID_NO_BOUND           98.0
 #define ANIMATION_ID_TRANSPARENT        99.0
 #define ANIMATION_ID_FIXED              100.0
 
@@ -34,7 +35,6 @@
 #define BALL_SEGMENTS 80
 
 #define RED_COLOR PaintCan(1.0, 0.0, 0.0)
-#define WHITE_COLOR PaintCan(1.0, 0.0, 0.0)
 
 class Look
 {
