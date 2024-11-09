@@ -8,6 +8,7 @@
 #include "animated_toy.h"
 #include "ball.h"
 #include "table.h"
+#include "log.h"
 #include <SDL_scancode.h>
 
 class Toy: public AnimatedToy
@@ -26,6 +27,7 @@ private:
     float m_seconds;
     Ball* m_ball;
     Table* m_table;
+    Log* m_log;
 
     bool m_last_launch_action_button;
     void build_model();

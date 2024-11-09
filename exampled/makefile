@@ -43,6 +43,7 @@ HEADERS = view.h \
           straight_reflector.h \
           wall.h \
           trap.h \
+          log.h \
           \
           \
           \
@@ -87,6 +88,7 @@ OBJECTS = main.obj \
           straight_reflector.obj \
           wall.obj \
           trap.obj \
+          log.obj \
           \
           \
           \

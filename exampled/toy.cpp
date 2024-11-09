@@ -27,6 +27,7 @@ Toy::Toy()
     : m_seconds(0.0)
     , m_ball(NULL)
     , m_table(NULL)
+    , m_log(new Log())
 {
     m_camera->reconstruct(INITIAL_WIDTH, INITIAL_HEIGHT, INITIAL_MAG, {INITIAL_XOFF, INITIAL_YOFF}, {INITIAL_XROT, INITIAL_YROT});
     m_ball = new Ball(BALL_RADIUS, BALL_TOP_COLOR, BALL_MIDDLE_COLOR, BALL_BOTTOM_COLOR, BALL_SEGMENTS);
@@ -45,6 +46,7 @@ Toy::~Toy()
 {
     delete m_ball;
     delete m_table;
+    delete m_log;
 }
 
 void Toy::resize(int w, int h)
@@ -73,6 +75,7 @@ void Toy::build_uniform()
 
 void Toy::advance(int nanoseconds)
 {
+    m_log->render(nanoseconds);
     AnimatedToy::advance(nanoseconds);
     m_seconds += (1.0e-9 * (float) nanoseconds);
     float seconds = 1.0e-3;
