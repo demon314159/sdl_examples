@@ -13,6 +13,8 @@ Toy::Toy()
     , m_animation_1_angle(0.0)
     , m_animation_2_angle(0.0)
     , m_animation_3_angle(0.0)
+    , m_seconds(0.0)
+    , m_log(new Log())
 {
     build_model();
 }
@@ -20,6 +22,7 @@ Toy::Toy()
 Toy::~Toy()
 {
     delete m_model;
+    delete m_log;
 }
 
 CadModel* Toy::get_model() const
@@ -34,7 +37,13 @@ int Toy::animation_matrices() const
 
 void Toy::advance(int nanoseconds)
 {
-    m_track->advance(nanoseconds);
+    m_log->render(nanoseconds);
+    m_seconds += (1.0e-9 * (float) nanoseconds);
+    float seconds = 1.0e-3;
+    while (m_seconds > seconds) {
+        m_seconds -= seconds;
+        m_track->advance(1000000);
+    }
 }
 
 void Toy::build_model()

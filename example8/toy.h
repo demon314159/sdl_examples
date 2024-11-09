@@ -8,6 +8,7 @@
 #include "cad_model.h"
 #include "matrix4x4.h"
 #include "track.h"
+#include "log.h"
 
 
 class Toy
@@ -34,6 +35,8 @@ private:
     float m_animation_1_angle;
     float m_animation_2_angle;
     float m_animation_3_angle;
+    float m_seconds;
+    Log* m_log;
 
     void build_model();
 };

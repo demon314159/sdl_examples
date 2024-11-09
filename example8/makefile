@@ -36,6 +36,7 @@ HEADERS = view.h \
           ring_shape.h \
           straight_track_shape.h \
           track_style.h \
+          log.h \
           \
           \
           \
@@ -69,6 +70,7 @@ OBJECTS = main.obj \
           ring_shape.obj \
           straight_track_shape.obj \
           track_style.obj \
+          log.obj \
           \
           \
           \
