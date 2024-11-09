@@ -57,6 +57,8 @@ Toy::Toy()
     , m_bumper1({-W1 / 8.0, 0.0, L1 / 2.0}, BUMPER_WALL_RADIUS, BUMPER_STEM_RADIUS, BUMPER_WALL_HEIGHT, BUMPER_STEM_HEIGHT, BUMPER_TOP_COLOR, BUMPER_MIDDLE_COLOR, BUMPER_BOTTOM_COLOR, BUMPER_KICKER_VELOCITY, BUMPER_SEGMENTS)
     , m_bumper2({W1 / 8.0, 0.0, L1 / 2.0}, BUMPER_WALL_RADIUS, BUMPER_STEM_RADIUS, BUMPER_WALL_HEIGHT, BUMPER_STEM_HEIGHT, BUMPER_TOP_COLOR, BUMPER_MIDDLE_COLOR, BUMPER_BOTTOM_COLOR, BUMPER_KICKER_VELOCITY, BUMPER_SEGMENTS)
     , m_bumper3({0.0, 0.0, 3.0f * L1 / 4.0}, BUMPER_WALL_RADIUS, BUMPER_STEM_RADIUS, BUMPER_WALL_HEIGHT, BUMPER_STEM_HEIGHT, BUMPER_TOP_COLOR, BUMPER_MIDDLE_COLOR, BUMPER_BOTTOM_COLOR, BUMPER_KICKER_VELOCITY, BUMPER_SEGMENTS)
+    , m_seconds(0.0)
+    , m_log(new Log())
 {
     build_model();
     m_ball.set_position({-2.05, 10.0});
@@ -67,6 +69,7 @@ Toy::Toy()
 Toy::~Toy()
 {
     delete m_model;
+    delete m_log;
 }
 
 CadModel* Toy::get_model() const
@@ -81,21 +84,26 @@ int Toy::animation_matrices() const
 
 void Toy::advance(int nanoseconds)
 {
-    float seconds = 1.0e-9 * (float) nanoseconds;
-    m_flipper1.advance(seconds);
-    m_flipper2.advance(seconds);
-    m_ball.advance(seconds);
-//    m_wall1.collide(m_ball);
-    m_strip1.collide(m_ball);
-    m_wall2.collide(m_ball);
-    m_wall3.collide(m_ball);
-    m_wall4.collide(m_ball);
-    m_wall5.collide(m_ball);
-    m_flipper1.collide(m_ball);
-    m_flipper2.collide(m_ball);
-    m_bumper1.collide(m_ball);
-    m_bumper2.collide(m_ball);
-    m_bumper3.collide(m_ball);
+    m_log->render(nanoseconds);
+    m_seconds += (1.0e-9 * (float) nanoseconds);
+    float seconds = 1.0e-3;
+    while (m_seconds > seconds) {
+        m_seconds -= seconds;
+        m_flipper1.advance(seconds);
+        m_flipper2.advance(seconds);
+        m_ball.advance(seconds);
+    //    m_wall1.collide(m_ball);
+        m_strip1.collide(m_ball);
+        m_wall2.collide(m_ball);
+        m_wall3.collide(m_ball);
+        m_wall4.collide(m_ball);
+        m_wall5.collide(m_ball);
+        m_flipper1.collide(m_ball);
+        m_flipper2.collide(m_ball);
+        m_bumper1.collide(m_ball);
+        m_bumper2.collide(m_ball);
+        m_bumper3.collide(m_ball);
+    }
 }
 
 void Toy::build_model()

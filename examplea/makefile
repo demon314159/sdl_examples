@@ -40,6 +40,7 @@ HEADERS = view.h \
           bumper.h \
           straight_strip.h \
           concave_strip.h \
+          log.h \
           \
           \
           \
@@ -80,6 +81,7 @@ OBJECTS = main.obj \
           bumper.obj \
           straight_strip.obj \
           concave_strip.obj \
+          log.obj \
           \
           \
           \

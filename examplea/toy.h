@@ -12,6 +12,7 @@
 #include "wall.h"
 #include "flipper.h"
 #include "bumper.h"
+#include "log.h"
 
 class Toy
 {
@@ -51,6 +52,8 @@ private:
     Bumper m_bumper2;
     Bumper m_bumper3;
     Ball m_ball;
+    float m_seconds;
+    Log* m_log;
 
     void build_model();
 };
