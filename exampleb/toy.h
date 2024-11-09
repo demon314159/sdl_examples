@@ -22,6 +22,7 @@
 #include "game.h"
 #include "replay_score.h"
 #include "light_show.h"
+#include "log.h"
 #include <SDL_scancode.h>
 
 class Toy: public AnimatedToy
@@ -58,6 +59,7 @@ private:
     Gauge* m_gauge;
     ReplayScore* m_replay_score;
     LightShow* m_light_show;
+    Log* m_log;
 
     bool m_last_launch_action_button;
     void build_model();

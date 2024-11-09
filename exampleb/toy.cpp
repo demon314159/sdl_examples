@@ -55,8 +55,10 @@ Toy::Toy()
     , m_gauge(NULL)
     , m_replay_score(NULL)
     , m_light_show(NULL)
+    , m_log(NULL)
     , m_last_launch_action_button(false)
 {
+    m_log = new Log();
     m_scoreboard_camera = new ScoreboardCamera(INITIAL_WIDTH, INITIAL_HEIGHT, INITIAL_MAG, {INITIAL_XOFF, INITIAL_YOFF}, {INITIAL_XROT, INITIAL_YROT});
     m_camera->reconstruct(INITIAL_WIDTH, INITIAL_HEIGHT, INITIAL_MAG, {INITIAL_XOFF, INITIAL_YOFF}, {INITIAL_XROT, INITIAL_YROT});
     m_ball = new Ball(BALL_RADIUS, BALL_TOP_COLOR, BALL_MIDDLE_COLOR, BALL_BOTTOM_COLOR, BALL_SEGMENTS);
@@ -222,6 +224,7 @@ Toy::~Toy()
     delete m_gauge;
     delete m_replay_score;
     delete m_light_show;
+    delete m_log;
 }
 
 void Toy::resize(int w, int h)
@@ -363,6 +366,7 @@ void Toy::activate_solenoid(int solenoid_id)
 
 void Toy::advance(int nanoseconds)
 {
+    m_log->render(nanoseconds);
     AnimatedToy::advance(nanoseconds);
     m_seconds += (1.0e-9 * (float) nanoseconds);
     float seconds = 1.0e-3;
