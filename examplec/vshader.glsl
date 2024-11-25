@@ -43,6 +43,7 @@ uniform mat4 animation_36_matrix;
 uniform mat4 animation_37_matrix;
 uniform mat4 animation_38_matrix;
 uniform mat4 animation_39_matrix;
+uniform mat4 animation_40_matrix;
 
 in vec3 a_position;
 in vec3 a_normal;
@@ -194,6 +195,12 @@ void main()
             } else if (a_animation_id < 41.5) {   // Token 39
                 gl_Position = mvp_matrix * animation_39_matrix * vec4(a_position, 1.0);
                 v_normal = rot_matrix * animation_39_matrix * vec4(billy, 0.0);
+            }
+            v_color = vec4(a_color, 1.0);
+        } else if (a_animation_id < 52.5) {
+            if (a_animation_id < 42.5) {   // PushButton Clear
+                gl_Position = mvp_matrix * animation_40_matrix * vec4(a_position, 1.0);
+                v_normal = rot_matrix * animation_40_matrix * vec4(billy, 0.0);
             }
             v_color = vec4(a_color, 1.0);
         } else if (a_animation_id < 99.5) { // Transparent

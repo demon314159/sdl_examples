@@ -7,21 +7,27 @@
 
 #include "float3.h"
 #include "cad_model.h"
+#include "matrix4x4.h"
 
-#define PUSH_BUTTON_COLOR PaintCan(0.0, 0.0, 1.0)
 
 class PushButton
 {
 public:
-    PushButton(const Float2& dimension, const Float2& position);
+    PushButton(const float radius, float height, const Float2& position);
     ~PushButton();
 
-    bool mouse_hit(const Float2& mouse_selection) const;
-    CadModel model(float animation_id) const;
+    bool mouse_hit(const Float2& mouse_selection);
+    void release();
+
+    CadModel model(float animation_id, float texture_id) const;
+    const float* data();
 
 protected:
-    Float2 m_dimension;
+    float m_radius;
+    float m_height;
     Float2 m_position;
+    bool m_pressed;
+    Matrix4x4 m_animate;
 };
 
 #endif // _PUSH_BUTTON_H_

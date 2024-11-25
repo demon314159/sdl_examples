@@ -45,6 +45,7 @@ HEADERS = view.h \
           mouse_vector.h \
           hover.h \
           push_button.h \
+          button_shape.h \
           \
 # note: all of the files after toy.h are there for toy.cpp only
 #       they can be removed if toy.cpp doesn't need them anymore
@@ -88,6 +89,7 @@ OBJECTS = main.obj \
           mouse_vector.obj \
           hover.obj \
           push_button.obj \
+          button_shape.obj \
           \
 # note: all of the files after toy.obj are there for toy.cpp only
 #       they can be removed if toy.cpp doesn't need them anymore

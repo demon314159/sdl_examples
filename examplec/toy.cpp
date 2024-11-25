@@ -7,13 +7,18 @@
 #include <stdio.h>
 
 #define ANIMATION_ID_FIRST_TOKEN 2.0
+#define ANIMATION_ID_PB_CLEAR 42.0
+
+#define TEXTURE_ID_PB_CLEAR 1.0
+
 #define ANIMATION_NAME_LENGTH 32
 #define TRAY_ROWS 6
 #define TRAY_COLS 10
 
 #define ANIMATION_TIME 0.4
 
-#define PUSH_BUTTON_DIMENSION {3.0 * TILE_PITCH, 1.0 * TILE_PITCH}
+#define PUSH_BUTTON_RADIUS (TILE_PITCH)
+#define PUSH_BUTTON_HEIGHT (TILE_PITCH / 4.0)
 #define CLEAR_BUTTON_POSITION {-3.0 * TILE_PITCH, 8.0 * TILE_PITCH}
 
 Toy::Toy()
@@ -24,8 +29,9 @@ Toy::Toy()
     , m_puzzle_book(new PuzzleBook(PUZZLE_BOOK_FILE_NAME))
     , m_dock(new Dock(TILE_PITCH))
     , m_hover(new Hover())
-    , m_pb_clear(new PushButton(PUSH_BUTTON_DIMENSION, CLEAR_BUTTON_POSITION))
+    , m_pb_clear(new PushButton(PUSH_BUTTON_RADIUS, PUSH_BUTTON_HEIGHT, CLEAR_BUTTON_POSITION))
 {
+    m_texture->add("pb_clear.png", "texture1");
     for (int i = 0; i < m_token_set->tokens(); i++) {
         m_token_names[i] = new char[ANIMATION_NAME_LENGTH];
         sprintf(m_token_names[i], "animation_%d_matrix", i);
@@ -60,7 +66,7 @@ void Toy::build_model()
         m_model->add(m_token_set->model(i, ANIMATION_ID_FIRST_TOKEN + (float) i));
     }
     m_model->add(m_tray->model(0.0), 0.0, -TILE_HEIGHT, 0.0);
-    m_model->add(m_pb_clear->model(0.0), 0.0, 0.0, 0.0);
+    m_model->add(m_pb_clear->model(ANIMATION_ID_PB_CLEAR, TEXTURE_ID_PB_CLEAR), 0.0, 0.0, 0.0);
 }
 
 void Toy::put_away_tokens()
@@ -116,6 +122,7 @@ void Toy::build_uniform()
     for (int i = 0; i < m_token_set->tokens(); i++) {
         m_uniform->add(m_token_names[i], UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_token_set->data(i));
     }
+    m_uniform->add("animation_40_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_pb_clear->data());
 }
 
 void Toy::update_uniform()
@@ -124,6 +131,7 @@ void Toy::update_uniform()
     for (int i = 0; i < m_token_set->tokens(); i++) {
         m_token_set->data(i);
     }
+    m_pb_clear->data();
 }
 
 void Toy::advance(int nanoseconds)
@@ -188,6 +196,7 @@ bool Toy::mouse(SDL_Event* e, bool on)
                 lift_piece(e->button.x, e->button.y);
             }
         } else {
+            m_pb_clear->release();
             drop_piece(e->button.x, e->button.y);
         }
     } else if (e->button.button == SDL_BUTTON_RIGHT) {
