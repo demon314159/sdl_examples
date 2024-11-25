@@ -7,6 +7,9 @@ in float v_texture_id;
 in float v_animation_id;
 
 uniform sampler2D texture1;
+uniform sampler2D texture2;
+uniform sampler2D texture3;
+uniform sampler2D texture4;
 
 void main()
 {
@@ -21,6 +24,15 @@ void main()
     } else {
         if (v_texture_id < 1.5) { // First texture
             billy = texture(texture1, v_texture_position);
+            gl_FragColor = billy;
+        } else if (v_texture_id < 2.5) { // Second texture
+            billy = texture(texture2, v_texture_position);
+            gl_FragColor = billy;
+        } else if (v_texture_id < 3.5) { // Third texture
+            billy = texture(texture3, v_texture_position);
+            gl_FragColor = billy;
+        } else if (v_texture_id < 4.5) { // Fourth texture
+            billy = texture(texture4, v_texture_position);
             gl_FragColor = billy;
         }
     }

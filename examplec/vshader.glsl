@@ -44,6 +44,9 @@ uniform mat4 animation_37_matrix;
 uniform mat4 animation_38_matrix;
 uniform mat4 animation_39_matrix;
 uniform mat4 animation_40_matrix;
+uniform mat4 animation_41_matrix;
+uniform mat4 animation_42_matrix;
+uniform mat4 animation_43_matrix;
 
 in vec3 a_position;
 in vec3 a_normal;
@@ -197,10 +200,19 @@ void main()
                 v_normal = rot_matrix * animation_39_matrix * vec4(billy, 0.0);
             }
             v_color = vec4(a_color, 1.0);
-        } else if (a_animation_id < 52.5) {
+        } else if (a_animation_id < 45.5) {
             if (a_animation_id < 42.5) {   // PushButton Clear
                 gl_Position = mvp_matrix * animation_40_matrix * vec4(a_position, 1.0);
                 v_normal = rot_matrix * animation_40_matrix * vec4(billy, 0.0);
+            } else if (a_animation_id < 43.5) {   // PushButton Next
+                gl_Position = mvp_matrix * animation_41_matrix * vec4(a_position, 1.0);
+                v_normal = rot_matrix * animation_41_matrix * vec4(billy, 0.0);
+            } else if (a_animation_id < 44.5) {   // PushButton Back
+                gl_Position = mvp_matrix * animation_42_matrix * vec4(a_position, 1.0);
+                v_normal = rot_matrix * animation_42_matrix * vec4(billy, 0.0);
+            } else if (a_animation_id < 45.5) {   // PushButton Quit
+                gl_Position = mvp_matrix * animation_43_matrix * vec4(a_position, 1.0);
+                v_normal = rot_matrix * animation_43_matrix * vec4(billy, 0.0);
             }
             v_color = vec4(a_color, 1.0);
         } else if (a_animation_id < 99.5) { // Transparent
