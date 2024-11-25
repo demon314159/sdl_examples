@@ -53,6 +53,11 @@ void AnimatedToy::advance(int nanoseconds)
 {
 }
 
+bool AnimatedToy::quit_signal() const
+{
+    return false;
+}
+
 Uniform* AnimatedToy::uniform()
 {
     return m_uniform;

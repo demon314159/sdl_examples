@@ -35,6 +35,9 @@ void Host::initialize()
 void Host::render()
 {
     m_view.render();
+    if (m_view.quit_signal()) {
+        quit_event();
+    }
 }
 
 void Host::quit_event()

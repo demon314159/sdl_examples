@@ -324,24 +324,6 @@ void View::render()
     unsigned long real_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(this_time_point - m_last_time_point).count();
     m_last_time_point = this_time_point;
     m_toy->advance(real_ns);
-
-#ifdef NEVERMORE
-    Matrix4x4 matrix;
-    matrix.unity();
-    matrix.translate(m_xoff, m_yoff, -m_camz - m_radius);
-    matrix.rotate_ay(m_yrot);
-    matrix.rotate_ax(m_xrot);
-    matrix.translate(-m_center.v1, -m_center.v2, -m_center.v3);
-    m_mvp_matrix = m_projection * matrix;
-    m_rot_matrix = matrix;
-
-    matrix.unity();
-    matrix.translate(m_xoff, m_yoff, -m_camz - m_radius);
-    matrix.translate(-m_center.v1, -m_center.v2, -m_center.v3);
-    m_scoreboard_mvp_matrix = m_projection * matrix;
-    m_scoreboard_rot_matrix = matrix;
-#endif
-
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glUseProgram(m_program);
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
@@ -396,6 +378,11 @@ void View::render()
     SDL_GL_SwapWindow(m_window);
     glFinish();
     ++m_frame;
+}
+
+bool View::quit_signal() const
+{
+    return m_toy->quit_signal();
 }
 
 void View::print_program_log(GLuint program)

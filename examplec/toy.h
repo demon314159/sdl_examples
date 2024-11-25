@@ -21,12 +21,14 @@ public:
     ~Toy();
 
     void advance(int nanoseconds) override;
+    bool quit_signal() const override;
     bool button(int code, bool shifted, bool on) override;
     bool mouse(SDL_Event* e, bool on) override;
     bool mouse_wheel(SDL_Event* e) override;
     bool mouse_move(SDL_Event* e) override;
 
 private:
+    bool m_quit_flag;
     Tray* m_tray;
     TokenSet* m_token_set;
     char** m_token_names;

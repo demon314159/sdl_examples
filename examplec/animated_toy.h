@@ -25,6 +25,7 @@ public:
     virtual bool mouse_wheel(SDL_Event* e);
     virtual bool mouse_move(SDL_Event* e);
     virtual void advance(int nanoseconds);
+    virtual bool quit_signal() const;
 
     Uniform* uniform();
     Texture* texture();

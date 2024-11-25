@@ -25,6 +25,7 @@ public:
     void initialize();
     void resize(int w, int h);
     void render();
+    bool quit_signal() const;
     Camera* camera();
 
 protected:

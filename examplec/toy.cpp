@@ -31,7 +31,8 @@
 #define QUIT_BUTTON_POSITION {-4.0 * TILE_PITCH, -1.0 * TILE_PITCH}
 
 Toy::Toy()
-    : m_tray(new Tray(TRAY_ROWS, TRAY_COLS))
+    : m_quit_flag(false)
+    , m_tray(new Tray(TRAY_ROWS, TRAY_COLS))
     , m_token_set(new TokenSet())
     , m_token_names(new char*[m_token_set->tokens()])
     , m_seconds(0.0)
@@ -177,6 +178,11 @@ void Toy::advance(int nanoseconds)
     update_uniform();
 }
 
+bool Toy::quit_signal() const
+{
+    return m_quit_flag;
+}
+
 bool Toy::button(int code, bool shifted, bool on)
 {
     bool ret_val = AnimatedToy::button(code, shifted, on);
@@ -228,7 +234,7 @@ bool Toy::mouse(SDL_Event* e, bool on)
                 m_puzzle_book->go_to_previous_challenge();
                 set_up_current_challenge();
             } else if (m_pb_quit->mouse_hit(sel)) {
-
+                m_quit_flag = true;
             } else {
                 lift_piece(e->button.x, e->button.y);
             }
