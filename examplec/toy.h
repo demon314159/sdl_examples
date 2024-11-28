@@ -38,7 +38,6 @@ private:
     Hover* m_hover;
     PushButton* m_pb_clear;
     PushButton* m_pb_next;
-    PushButton* m_pb_back;
     PushButton* m_pb_quit;
     PushButton* m_pb_help;
 

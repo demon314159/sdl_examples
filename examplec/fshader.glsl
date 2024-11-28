@@ -10,7 +10,6 @@ uniform sampler2D texture1;
 uniform sampler2D texture2;
 uniform sampler2D texture3;
 uniform sampler2D texture4;
-uniform sampler2D texture5;
 
 void main()
 {
@@ -34,9 +33,6 @@ void main()
             gl_FragColor = billy;
         } else if (v_texture_id < 4.5) { // Fourth texture
             billy = texture(texture4, v_texture_position);
-            gl_FragColor = billy;
-        } else if (v_texture_id < 5.5) { // Fifth texture
-            billy = texture(texture5, v_texture_position);
             gl_FragColor = billy;
         }
     }
