@@ -16,7 +16,7 @@
 #define MINOR_STEPS 20
 #define RATIO 6.0f
 
-PushButton::PushButton(const float radius, float height, const Float2& position)
+PushButton::PushButton(float radius, float height, const Float2& position)
     : m_radius(radius)
     , m_height(height)
     , m_position(position)

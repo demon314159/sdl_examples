@@ -13,7 +13,7 @@
 class PushButton
 {
 public:
-    PushButton(const float radius, float height, const Float2& position);
+    PushButton(float radius, float height, const Float2& position);
     ~PushButton();
 
     bool mouse_hit(const Float2& mouse_selection);

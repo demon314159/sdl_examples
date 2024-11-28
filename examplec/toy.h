@@ -13,6 +13,7 @@
 #include "hover.h"
 #include "mouse_vector.h"
 #include "push_button.h"
+#include "message_box.h"
 
 class Toy: public AnimatedToy
 {
@@ -40,6 +41,7 @@ private:
     PushButton* m_pb_next;
     PushButton* m_pb_quit;
     PushButton* m_pb_help;
+    MessageBox* m_msg_no_next;
 
     void build_model();
     void build_uniform();
