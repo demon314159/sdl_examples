@@ -10,7 +10,7 @@ MessageBox::MessageBox(float width, float height, const Float2& position)
     : m_width(width)
     , m_height(height)
     , m_position(position)
-    , m_visible(true)
+    , m_visible(false)
     , m_animate(0.0)
 {
 }
