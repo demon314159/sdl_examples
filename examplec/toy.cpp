@@ -11,11 +11,13 @@
 #define ANIMATION_ID_PB_NEXT 43.0
 #define ANIMATION_ID_PB_BACK 44.0
 #define ANIMATION_ID_PB_QUIT 45.0
+#define ANIMATION_ID_PB_HELP 46.0
 
 #define TEXTURE_ID_PB_CLEAR 1.0
 #define TEXTURE_ID_PB_NEXT 2.0
 #define TEXTURE_ID_PB_BACK 3.0
 #define TEXTURE_ID_PB_QUIT 4.0
+#define TEXTURE_ID_PB_HELP 5.0
 
 #define ANIMATION_NAME_LENGTH 32
 #define TRAY_ROWS 6
@@ -25,15 +27,18 @@
 
 #define PUSH_BUTTON_RADIUS (TILE_PITCH)
 #define PUSH_BUTTON_HEIGHT (TILE_PITCH / 4.0)
-//#define CLEAR_BUTTON_POSITION {-4.0 * TILE_PITCH, 8.0 * TILE_PITCH}
-//#define NEXT_BUTTON_POSITION {-4.0 * TILE_PITCH, 5.0 * TILE_PITCH}
-//#define BACK_BUTTON_POSITION {-4.0 * TILE_PITCH, 2.0 * TILE_PITCH}
-//#define QUIT_BUTTON_POSITION {-4.0 * TILE_PITCH, -1.0 * TILE_PITCH}
 
-#define CLEAR_BUTTON_POSITION {-10.0 * TILE_PITCH, -4.0 * TILE_PITCH}
-#define NEXT_BUTTON_POSITION {20.0 * TILE_PITCH, 10.0 * TILE_PITCH}
-#define BACK_BUTTON_POSITION {-10.0 * TILE_PITCH, 10.0 * TILE_PITCH}
-#define QUIT_BUTTON_POSITION {20.0 * TILE_PITCH, -4.0 * TILE_PITCH}
+//#define CLEAR_BUTTON_POSITION {-10.0 * TILE_PITCH, -4.0 * TILE_PITCH}
+//#define NEXT_BUTTON_POSITION {20.0 * TILE_PITCH, 10.0 * TILE_PITCH}
+//#define BACK_BUTTON_POSITION {-10.0 * TILE_PITCH, 10.0 * TILE_PITCH}
+//#define QUIT_BUTTON_POSITION {20.0 * TILE_PITCH, -4.0 * TILE_PITCH}
+//#define HELP_BUTTON_POSITION {20.0 * TILE_PITCH, 5.0 * TILE_PITCH}
+
+#define QUIT_BUTTON_POSITION {20.0 * TILE_PITCH, 10.0 * TILE_PITCH}
+#define NEXT_BUTTON_POSITION {20.0 * TILE_PITCH, 6.5 * TILE_PITCH}
+#define BACK_BUTTON_POSITION {20.0 * TILE_PITCH, 3.0 * TILE_PITCH}
+#define CLEAR_BUTTON_POSITION {20.0 * TILE_PITCH, -0.5 * TILE_PITCH}
+#define HELP_BUTTON_POSITION {20.0 * TILE_PITCH, -4.0 * TILE_PITCH}
 
 Toy::Toy()
     : m_quit_flag(false)
@@ -48,11 +53,13 @@ Toy::Toy()
     , m_pb_next(new PushButton(PUSH_BUTTON_RADIUS, PUSH_BUTTON_HEIGHT, NEXT_BUTTON_POSITION))
     , m_pb_back(new PushButton(PUSH_BUTTON_RADIUS, PUSH_BUTTON_HEIGHT, BACK_BUTTON_POSITION))
     , m_pb_quit(new PushButton(PUSH_BUTTON_RADIUS, PUSH_BUTTON_HEIGHT, QUIT_BUTTON_POSITION))
+    , m_pb_help(new PushButton(PUSH_BUTTON_RADIUS, PUSH_BUTTON_HEIGHT, HELP_BUTTON_POSITION))
 {
     m_texture->add("pb_clear.png", "texture1");
     m_texture->add("pb_next.png", "texture2");
     m_texture->add("pb_back.png", "texture3");
     m_texture->add("pb_quit.png", "texture4");
+    m_texture->add("pb_help.png", "texture5");
     for (int i = 0; i < m_token_set->tokens(); i++) {
         m_token_names[i] = new char[ANIMATION_NAME_LENGTH];
         sprintf(m_token_names[i], "animation_%d_matrix", i);
@@ -65,6 +72,7 @@ Toy::Toy()
 
 Toy::~Toy()
 {
+    delete m_pb_help;
     delete m_pb_quit;
     delete m_pb_back;
     delete m_pb_next;
@@ -94,6 +102,7 @@ void Toy::build_model()
     m_model->add(m_pb_next->model(ANIMATION_ID_PB_NEXT, TEXTURE_ID_PB_NEXT), 0.0, 0.0, 0.0);
     m_model->add(m_pb_back->model(ANIMATION_ID_PB_BACK, TEXTURE_ID_PB_BACK), 0.0, 0.0, 0.0);
     m_model->add(m_pb_quit->model(ANIMATION_ID_PB_QUIT, TEXTURE_ID_PB_QUIT), 0.0, 0.0, 0.0);
+    m_model->add(m_pb_help->model(ANIMATION_ID_PB_HELP, TEXTURE_ID_PB_HELP), 0.0, 0.0, 0.0);
 }
 
 void Toy::put_away_tokens()
@@ -155,6 +164,7 @@ void Toy::build_uniform()
     m_uniform->add("animation_41_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_pb_next->data());
     m_uniform->add("animation_42_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_pb_back->data());
     m_uniform->add("animation_43_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_pb_quit->data());
+    m_uniform->add("animation_44_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_pb_help->data());
 }
 
 void Toy::update_uniform()
@@ -167,6 +177,7 @@ void Toy::update_uniform()
     m_pb_next->data();
     m_pb_back->data();
     m_pb_quit->data();
+    m_pb_help->data();
 }
 
 void Toy::advance(int nanoseconds)
@@ -240,6 +251,7 @@ bool Toy::mouse(SDL_Event* e, bool on)
                 set_up_current_challenge();
             } else if (m_pb_quit->mouse_hit(sel)) {
                 m_quit_flag = true;
+            } else if (m_pb_help->mouse_hit(sel)) {
             } else {
                 lift_piece(e->button.x, e->button.y);
             }
@@ -248,6 +260,7 @@ bool Toy::mouse(SDL_Event* e, bool on)
             m_pb_next->release();
             m_pb_back->release();
             m_pb_quit->release();
+            m_pb_help->release();
             drop_piece(e->button.x, e->button.y);
         }
     } else if (e->button.button == SDL_BUTTON_RIGHT) {

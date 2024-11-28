@@ -40,6 +40,7 @@ private:
     PushButton* m_pb_next;
     PushButton* m_pb_back;
     PushButton* m_pb_quit;
+    PushButton* m_pb_help;
 
     void build_model();
     void build_uniform();
