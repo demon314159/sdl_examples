@@ -10,6 +10,7 @@ uniform float msg_1_box;
 uniform float msg_2_box;
 uniform float msg_3_box;
 uniform float msg_4_box;
+uniform float msg_5_box;
 
 uniform sampler2D texture1;
 uniform sampler2D texture2;
@@ -19,6 +20,7 @@ uniform sampler2D texture5;
 uniform sampler2D texture6;
 uniform sampler2D texture7;
 uniform sampler2D texture8;
+uniform sampler2D texture9;
 
 void main()
 {
@@ -43,22 +45,26 @@ void main()
         } else if (v_texture_id < 4.5) { // Fourth texture
             billy = texture(texture4, v_texture_position);
             gl_FragColor = billy;
-        } else if (v_texture_id < 5.5) { // Fourth texture
+        } else if (v_texture_id < 5.5) { // Fifth texture
             vec2 ttt;
             ttt = vec2(v_texture_position.x, v_texture_position.y + msg_1_box);
             gl_FragColor = texture(texture5, ttt);
-        } else if (v_texture_id < 6.5) { // Fifth texture
+        } else if (v_texture_id < 6.5) { // Sixth texture
             vec2 ttt;
             ttt = vec2(v_texture_position.x, v_texture_position.y + msg_2_box);
             gl_FragColor = texture(texture6, ttt);
-        } else if (v_texture_id < 7.5) { // Sixth texture
+        } else if (v_texture_id < 7.5) { // Seventh texture
             vec2 ttt;
             ttt = vec2(v_texture_position.x, v_texture_position.y + msg_3_box);
             gl_FragColor = texture(texture7, ttt);
-        } else if (v_texture_id < 8.5) { // Seventh texture
+        } else if (v_texture_id < 8.5) { // Eighth texture
             vec2 ttt;
             ttt = vec2(v_texture_position.x, v_texture_position.y + msg_4_box);
             gl_FragColor = texture(texture8, ttt);
+        } else if (v_texture_id < 9.5) { // Ninth texture
+            vec2 ttt;
+            ttt = vec2(v_texture_position.x, v_texture_position.y + msg_5_box);
+            gl_FragColor = texture(texture9, ttt);
         }
     }
 }

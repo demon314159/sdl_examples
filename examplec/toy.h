@@ -45,6 +45,7 @@ private:
     MessageBox* m_msg_help;
     MessageBox* m_msg_solved;
     MessageBox* m_msg_no_more;
+    MessageBox* m_msg_game_over;
 
     void build_model();
     void build_uniform();
