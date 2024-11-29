@@ -17,6 +17,7 @@
 #define TEXTURE_ID_PB_HELP 3.0
 #define TEXTURE_ID_PB_QUIT 4.0
 #define TEXTURE_ID_MSG_NO_NEXT 5.0
+#define TEXTURE_ID_MSG_HELP 6.0
 
 #define ANIMATION_NAME_LENGTH 32
 #define TRAY_ROWS 6
@@ -31,9 +32,14 @@
 #define NEXT_BUTTON_POSITION {20.0 * TILE_PITCH, 6.5 * TILE_PITCH}
 #define CLEAR_BUTTON_POSITION {20.0 * TILE_PITCH, 3.0 * TILE_PITCH}
 #define HELP_BUTTON_POSITION {20.0 * TILE_PITCH, -0.5 * TILE_PITCH}
-#define MSG_NO_NEXT_POSITION {15.75 * TILE_PITCH, 3.0 * TILE_PITCH}
-#define MSG_NO_NEXT_WIDTH (TILE_PITCH * 5.0f)
+
+#define MSG_NO_NEXT_WIDTH (TILE_PITCH * 2.0f)
 #define MSG_NO_NEXT_HEIGHT (MSG_NO_NEXT_WIDTH * 1.5f)
+#define MSG_NO_NEXT_POSITION {20 * TILE_PITCH - 2.0 * PUSH_BUTTON_RADIUS - MSG_NO_NEXT_WIDTH / 2.0f, 6.5 * TILE_PITCH}
+
+#define MSG_HELP_WIDTH (TILE_PITCH * 20.0f)
+#define MSG_HELP_HEIGHT (MSG_HELP_WIDTH / 2.4f)
+#define MSG_HELP_POSITION {5.0 * TILE_PITCH, 3.0 * TILE_PITCH}
 
 Toy::Toy()
     : m_quit_flag(false)
@@ -49,12 +55,14 @@ Toy::Toy()
     , m_pb_quit(new PushButton(PUSH_BUTTON_RADIUS, PUSH_BUTTON_HEIGHT, QUIT_BUTTON_POSITION))
     , m_pb_help(new PushButton(PUSH_BUTTON_RADIUS, PUSH_BUTTON_HEIGHT, HELP_BUTTON_POSITION))
     , m_msg_no_next(new MessageBox(MSG_NO_NEXT_WIDTH, MSG_NO_NEXT_HEIGHT, MSG_NO_NEXT_POSITION))
+    , m_msg_help(new MessageBox(MSG_HELP_WIDTH, MSG_HELP_HEIGHT, MSG_HELP_POSITION))
 {
     m_texture->add("pb_clear.png", "texture1");
     m_texture->add("pb_next.png", "texture2");
     m_texture->add("pb_help.png", "texture3");
     m_texture->add("pb_quit.png", "texture4");
     m_texture->add("msg_no_next.png", "texture5");
+    m_texture->add("msg_help.png", "texture6");
     for (int i = 0; i < m_token_set->tokens(); i++) {
         m_token_names[i] = new char[ANIMATION_NAME_LENGTH];
         sprintf(m_token_names[i], "animation_%d_matrix", i);
@@ -67,6 +75,7 @@ Toy::Toy()
 
 Toy::~Toy()
 {
+    delete m_msg_help;
     delete m_msg_no_next;
     delete m_pb_help;
     delete m_pb_quit;
@@ -98,6 +107,7 @@ void Toy::build_model()
     m_model->add(m_pb_quit->model(ANIMATION_ID_PB_QUIT, TEXTURE_ID_PB_QUIT), 0.0, 0.0, 0.0);
     m_model->add(m_pb_help->model(ANIMATION_ID_PB_HELP, TEXTURE_ID_PB_HELP), 0.0, 0.0, 0.0);
     m_model->add(m_msg_no_next->model(TEXTURE_ID_MSG_NO_NEXT), 0.0, 0.0, 0.0);
+    m_model->add(m_msg_help->model(TEXTURE_ID_MSG_HELP), 0.0, 0.0, 0.0);
 }
 
 void Toy::put_away_tokens()
@@ -160,6 +170,7 @@ void Toy::build_uniform()
     m_uniform->add("animation_42_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_pb_help->data());
     m_uniform->add("animation_43_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_pb_quit->data());
     m_uniform->add("msg_1_box", UNIFORM_TYPE_1_FLOAT_VECTOR, 1, m_msg_no_next->data());
+    m_uniform->add("msg_2_box", UNIFORM_TYPE_1_FLOAT_VECTOR, 1, m_msg_help->data());
 }
 
 void Toy::update_uniform()
@@ -173,6 +184,7 @@ void Toy::update_uniform()
     m_pb_quit->data();
     m_pb_help->data();
     m_msg_no_next->data();
+    m_msg_help->data();
 }
 
 void Toy::advance(int nanoseconds)
@@ -243,13 +255,14 @@ bool Toy::mouse(SDL_Event* e, bool on)
                     m_puzzle_book->go_to_next_challenge();
                     set_up_current_challenge();
                 } else {
-                    // Show message
+                    // Show no_next message
                     m_msg_no_next->set_visible(true);
                 }
             } else if (m_pb_quit->mouse_hit(sel)) {
                 m_quit_flag = true;
             } else if (m_pb_help->mouse_hit(sel)) {
-                // Show message
+                // Show help message
+                m_msg_help->set_visible(true);
             } else {
                 lift_piece(e->button.x, e->button.y);
             }
@@ -259,6 +272,7 @@ bool Toy::mouse(SDL_Event* e, bool on)
             m_pb_quit->release();
             m_pb_help->release();
             m_msg_no_next->set_visible(false);
+            m_msg_help->set_visible(false);
             drop_piece(e->button.x, e->button.y);
         }
     } else if (e->button.button == SDL_BUTTON_RIGHT) {

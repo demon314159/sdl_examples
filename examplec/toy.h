@@ -42,6 +42,7 @@ private:
     PushButton* m_pb_quit;
     PushButton* m_pb_help;
     MessageBox* m_msg_no_next;
+    MessageBox* m_msg_help;
 
     void build_model();
     void build_uniform();

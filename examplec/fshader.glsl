@@ -7,12 +7,14 @@ in float v_texture_id;
 in float v_animation_id;
 
 uniform float msg_1_box;
+uniform float msg_2_box;
 
 uniform sampler2D texture1;
 uniform sampler2D texture2;
 uniform sampler2D texture3;
 uniform sampler2D texture4;
 uniform sampler2D texture5;
+uniform sampler2D texture6;
 
 void main()
 {
@@ -41,6 +43,10 @@ void main()
             vec2 ttt;
             ttt = vec2(v_texture_position.x, v_texture_position.y + msg_1_box);
             gl_FragColor = texture(texture5, ttt);
+        } else if (v_texture_id < 6.5) { // Fifth texture
+            vec2 ttt;
+            ttt = vec2(v_texture_position.x, v_texture_position.y + msg_2_box);
+            gl_FragColor = texture(texture6, ttt);
         }
     }
 }
