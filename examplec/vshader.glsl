@@ -200,7 +200,7 @@ void main()
                 v_normal = rot_matrix * animation_39_matrix * vec4(billy, 0.0);
             }
             v_color = vec4(a_color, 1.0);
-        } else if (a_animation_id < 45.5) {
+        } else if (a_animation_id < 47.5) {
             if (a_animation_id < 42.5) {   // PushButton Clear
                 gl_Position = mvp_matrix * animation_40_matrix * vec4(a_position, 1.0);
                 v_normal = rot_matrix * animation_40_matrix * vec4(billy, 0.0);
@@ -213,6 +213,9 @@ void main()
             } else if (a_animation_id < 45.5) {   // PushButton Quit
                 gl_Position = mvp_matrix * animation_43_matrix * vec4(a_position, 1.0);
                 v_normal = rot_matrix * animation_43_matrix * vec4(billy, 0.0);
+            } else if (a_animation_id < 47.5) {
+                gl_Position = mvp_matrix * vec4(a_position, 1.0);
+                v_normal = rot_matrix * vec4(billy, 0.0);
             }
             v_color = vec4(a_color, 1.0);
         } else if (a_animation_id < 99.5) { // Transparent

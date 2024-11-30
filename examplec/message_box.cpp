@@ -29,7 +29,7 @@ CadModel MessageBox::model(float texture_id) const
     CadModel cm;
     CadModel ps(PlaneShape(m_width, m_height, texture_id, {0.0, 0.0}, {1.0, 0.5}), PaintCan(1.0, 1.0, 1.0), 99.0);
 
-    cm.add(ps, m_position.v1, 0.005, -m_position.v2);
+    cm.add(ps, m_position.v1, 0.0, -m_position.v2);
     return cm;
 }
 

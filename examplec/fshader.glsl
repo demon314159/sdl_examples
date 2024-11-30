@@ -11,6 +11,9 @@ uniform float msg_2_box;
 uniform float msg_3_box;
 uniform float msg_4_box;
 uniform float msg_5_box;
+uniform float msg_6_box;
+
+uniform float count_data[2];
 
 uniform sampler2D texture1;
 uniform sampler2D texture2;
@@ -21,6 +24,8 @@ uniform sampler2D texture6;
 uniform sampler2D texture7;
 uniform sampler2D texture8;
 uniform sampler2D texture9;
+uniform sampler2D texture10;
+uniform sampler2D texture11;
 
 void main()
 {
@@ -65,6 +70,18 @@ void main()
             vec2 ttt;
             ttt = vec2(v_texture_position.x, v_texture_position.y + msg_5_box);
             gl_FragColor = texture(texture9, ttt);
+        } else if (v_texture_id < 10.5) { // Tenth texture
+            vec2 ttt;
+            ttt = vec2(v_texture_position.x, v_texture_position.y + msg_6_box);
+            gl_FragColor = texture(texture10, ttt);
+        } else if (v_texture_id < 11.5) { // Digit texture
+            vec2 ttt;
+            if (v_animation_id < 46.5) {
+                ttt = vec2(v_texture_position.x + count_data[0], v_texture_position.y);
+            } else {
+                ttt = vec2(v_texture_position.x + count_data[1], v_texture_position.y);
+            }
+            gl_FragColor = texture(texture11, ttt);
         }
     }
 }

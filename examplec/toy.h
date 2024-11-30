@@ -14,6 +14,7 @@
 #include "mouse_vector.h"
 #include "push_button.h"
 #include "message_box.h"
+#include "count.h"
 
 class Toy: public AnimatedToy
 {
@@ -46,6 +47,8 @@ private:
     MessageBox* m_msg_solved;
     MessageBox* m_msg_no_more;
     MessageBox* m_msg_game_over;
+    MessageBox* m_msg_status;
+    Count* m_count;
 
     void build_model();
     void build_uniform();

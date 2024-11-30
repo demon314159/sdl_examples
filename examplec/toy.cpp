@@ -11,6 +11,8 @@
 #define ANIMATION_ID_PB_NEXT 43.0
 #define ANIMATION_ID_PB_HELP 44.0
 #define ANIMATION_ID_PB_QUIT 45.0
+#define ANIMATION_ID_DIGIT1  46.0
+#define ANIMATION_ID_DIGIT2  47.0
 
 #define TEXTURE_ID_PB_CLEAR 1.0
 #define TEXTURE_ID_PB_NEXT 2.0
@@ -21,6 +23,8 @@
 #define TEXTURE_ID_MSG_SOLVED 7.0
 #define TEXTURE_ID_MSG_NO_MORE 8.0
 #define TEXTURE_ID_MSG_GAME_OVER 9.0
+#define TEXTURE_ID_MSG_STATUS 10.0
+#define TEXTURE_ID_MSG_DIGIT 11.0
 
 #define ANIMATION_NAME_LENGTH 32
 #define TRAY_ROWS 6
@@ -48,6 +52,14 @@
 #define MSG_SOLVED_HEIGHT (MSG_SOLVED_WIDTH / 11.2f)
 #define MSG_SOLVED_POSITION {20.0f * TILE_PITCH - 2.0f * PUSH_BUTTON_RADIUS - MSG_SOLVED_WIDTH / 2.0f, 6.5f * TILE_PITCH}
 
+#define MSG_STATUS_WIDTH (TILE_PITCH * 5.0f)
+#define MSG_STATUS_HEIGHT (MSG_STATUS_WIDTH / 4.8f)
+#define MSG_STATUS_POSITION {5.0f * TILE_PITCH, -1.0f * TILE_PITCH}
+
+#define COUNT_WIDTH (TILE_PITCH * 0.7333333f)
+#define COUNT_HEIGHT (MSG_STATUS_HEIGHT)
+#define COUNT_POSITION {5.0f * TILE_PITCH, -1.0f * TILE_PITCH}
+
 Toy::Toy()
     : m_quit_flag(false)
     , m_tray(new Tray(TRAY_ROWS, TRAY_COLS))
@@ -66,6 +78,8 @@ Toy::Toy()
     , m_msg_help(new MessageBox(MSG_HELP_WIDTH, MSG_HELP_HEIGHT, MSG_HELP_POSITION))
     , m_msg_solved(new MessageBox(MSG_SOLVED_WIDTH, MSG_SOLVED_HEIGHT, MSG_SOLVED_POSITION))
     , m_msg_game_over(new MessageBox(MSG_SOLVED_WIDTH, MSG_SOLVED_HEIGHT, MSG_SOLVED_POSITION))
+    , m_msg_status(new MessageBox(MSG_STATUS_WIDTH, MSG_STATUS_HEIGHT, MSG_STATUS_POSITION))
+    , m_count(new Count(2, 0, COUNT_WIDTH, COUNT_HEIGHT, COUNT_POSITION))
 {
     m_texture->add("pb_clear.png", "texture1");
     m_texture->add("pb_next.png", "texture2");
@@ -76,6 +90,8 @@ Toy::Toy()
     m_texture->add("msg_solved.png", "texture7");
     m_texture->add("msg_no_more.png", "texture8");
     m_texture->add("msg_game_over.png", "texture9");
+    m_texture->add("msg_status.png", "texture10");
+    m_texture->add("msg_digit.png", "texture11");
     for (int i = 0; i < m_token_set->tokens(); i++) {
         m_token_names[i] = new char[ANIMATION_NAME_LENGTH];
         sprintf(m_token_names[i], "animation_%d_matrix", i);
@@ -84,10 +100,13 @@ Toy::Toy()
     build_model();
     build_uniform();
     set_up_current_challenge();
+    m_msg_status->set_visible(true);
 }
 
 Toy::~Toy()
 {
+    delete m_count;
+    delete m_msg_status;
     delete m_msg_game_over;
     delete m_msg_no_more;
     delete m_msg_solved;
@@ -123,10 +142,12 @@ void Toy::build_model()
     m_model->add(m_pb_quit->model(ANIMATION_ID_PB_QUIT, TEXTURE_ID_PB_QUIT), 0.0, 0.0, 0.0);
     m_model->add(m_pb_help->model(ANIMATION_ID_PB_HELP, TEXTURE_ID_PB_HELP), 0.0, 0.0, 0.0);
     m_model->add(m_msg_no_next->model(TEXTURE_ID_MSG_NO_NEXT), 0.0, 0.0, 0.0);
-    m_model->add(m_msg_no_more->model(TEXTURE_ID_MSG_NO_MORE), 0.0, 0.001, 0.0);
-    m_model->add(m_msg_solved->model(TEXTURE_ID_MSG_SOLVED), 0.0, 0.002, 0.0);
-    m_model->add(m_msg_game_over->model(TEXTURE_ID_MSG_GAME_OVER), 0.0, 0.003, 0.0);
-    m_model->add(m_msg_help->model(TEXTURE_ID_MSG_HELP), 0.0, 0.004, 0.0);
+    m_model->add(m_msg_no_more->model(TEXTURE_ID_MSG_NO_MORE), 0.0, 0.0006, 0.0);
+    m_model->add(m_msg_solved->model(TEXTURE_ID_MSG_SOLVED), 0.0, 0.0007, 0.0);
+    m_model->add(m_msg_game_over->model(TEXTURE_ID_MSG_GAME_OVER), 0.0, 0.0008, 0.0);
+    m_model->add(m_msg_help->model(TEXTURE_ID_MSG_HELP), 0.0, 0.0009, 0.0);
+    m_model->add(m_msg_status->model(TEXTURE_ID_MSG_STATUS), 0.0, 0.0010, 0.0);
+    m_model->add(m_count->model(ANIMATION_ID_DIGIT1, TEXTURE_ID_MSG_DIGIT), 0.0, 0.0011, 0.0);
 }
 
 void Toy::put_away_tokens()
@@ -193,6 +214,8 @@ void Toy::build_uniform()
     m_uniform->add("msg_3_box", UNIFORM_TYPE_1_FLOAT_VECTOR, 1, m_msg_solved->data());
     m_uniform->add("msg_4_box", UNIFORM_TYPE_1_FLOAT_VECTOR, 1, m_msg_no_more->data());
     m_uniform->add("msg_5_box", UNIFORM_TYPE_1_FLOAT_VECTOR, 1, m_msg_game_over->data());
+    m_uniform->add("msg_6_box", UNIFORM_TYPE_1_FLOAT_VECTOR, 1, m_msg_status->data());
+    m_uniform->add("count_data", UNIFORM_TYPE_1_FLOAT_VECTOR, m_count->digits(), m_count->data());
 }
 
 void Toy::update_uniform()
@@ -210,6 +233,8 @@ void Toy::update_uniform()
     m_msg_solved->data();
     m_msg_no_more->data();
     m_msg_game_over->data();
+    m_msg_status->data();
+    m_count->data();
 }
 
 void Toy::advance(int nanoseconds)
@@ -231,8 +256,8 @@ void Toy::advance(int nanoseconds)
             m_msg_solved->set_visible(false);
             m_msg_game_over->set_visible(false);
         }
-
         m_msg_solved->set_visible(m_puzzle_book->current_challenge_solved());
+        m_count->set_value(m_puzzle_book->current_challenge() + 1);
 
     }
     update_uniform();
