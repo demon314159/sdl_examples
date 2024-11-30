@@ -56,7 +56,7 @@ CadModel PushButton::model(float animation_id, float texture_id) const
 
     cm.add(pb, m_position.v1, 0.0, -m_position.v2);
     cm.add(bezel, m_position.v1, bh / 2.0, -m_position.v2);
-    cm.add(ps, m_position.v1, m_height + 0.001, -m_position.v2);
+    cm.add(ps, m_position.v1, m_height + 0.0001, -m_position.v2);
     return cm;
 }
 

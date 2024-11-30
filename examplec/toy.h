@@ -42,8 +42,10 @@ private:
     PushButton* m_pb_next;
     PushButton* m_pb_quit;
     PushButton* m_pb_help;
+    PushButton* m_pb_about;
     MessageBox* m_msg_no_next;
     MessageBox* m_msg_help;
+    MessageBox* m_msg_about;
     MessageBox* m_msg_solved;
     MessageBox* m_msg_no_more;
     MessageBox* m_msg_game_over;

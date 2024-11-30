@@ -13,6 +13,7 @@
 #define ANIMATION_ID_PB_QUIT 45.0
 #define ANIMATION_ID_DIGIT1  46.0
 #define ANIMATION_ID_DIGIT2  47.0
+#define ANIMATION_ID_PB_ABOUT 48.0
 
 #define TEXTURE_ID_PB_CLEAR 1.0
 #define TEXTURE_ID_PB_NEXT 2.0
@@ -25,6 +26,8 @@
 #define TEXTURE_ID_MSG_GAME_OVER 9.0
 #define TEXTURE_ID_MSG_STATUS 10.0
 #define TEXTURE_ID_MSG_DIGIT 11.0
+#define TEXTURE_ID_PB_ABOUT 12.0
+#define TEXTURE_ID_MSG_ABOUT 13.0
 
 #define ANIMATION_NAME_LENGTH 32
 #define TRAY_ROWS 6
@@ -39,6 +42,7 @@
 #define NEXT_BUTTON_POSITION {20.0 * TILE_PITCH, 6.5 * TILE_PITCH}
 #define CLEAR_BUTTON_POSITION {20.0 * TILE_PITCH, 3.0 * TILE_PITCH}
 #define HELP_BUTTON_POSITION {20.0 * TILE_PITCH, -0.5 * TILE_PITCH}
+#define ABOUT_BUTTON_POSITION {20.0 * TILE_PITCH, -4.0 * TILE_PITCH}
 
 #define MSG_NO_NEXT_WIDTH (TILE_PITCH * 2.0f)
 #define MSG_NO_NEXT_HEIGHT (MSG_NO_NEXT_WIDTH * 1.5f)
@@ -73,9 +77,11 @@ Toy::Toy()
     , m_pb_next(new PushButton(PUSH_BUTTON_RADIUS, PUSH_BUTTON_HEIGHT, NEXT_BUTTON_POSITION))
     , m_pb_quit(new PushButton(PUSH_BUTTON_RADIUS, PUSH_BUTTON_HEIGHT, QUIT_BUTTON_POSITION))
     , m_pb_help(new PushButton(PUSH_BUTTON_RADIUS, PUSH_BUTTON_HEIGHT, HELP_BUTTON_POSITION))
+    , m_pb_about(new PushButton(PUSH_BUTTON_RADIUS, PUSH_BUTTON_HEIGHT, ABOUT_BUTTON_POSITION))
     , m_msg_no_next(new MessageBox(MSG_NO_NEXT_WIDTH, MSG_NO_NEXT_HEIGHT, MSG_NO_NEXT_POSITION))
     , m_msg_no_more(new MessageBox(MSG_NO_NEXT_WIDTH, MSG_NO_NEXT_HEIGHT, MSG_NO_NEXT_POSITION))
     , m_msg_help(new MessageBox(MSG_HELP_WIDTH, MSG_HELP_HEIGHT, MSG_HELP_POSITION))
+    , m_msg_about(new MessageBox(MSG_HELP_WIDTH, MSG_HELP_HEIGHT, MSG_HELP_POSITION))
     , m_msg_solved(new MessageBox(MSG_SOLVED_WIDTH, MSG_SOLVED_HEIGHT, MSG_SOLVED_POSITION))
     , m_msg_game_over(new MessageBox(MSG_SOLVED_WIDTH, MSG_SOLVED_HEIGHT, MSG_SOLVED_POSITION))
     , m_msg_status(new MessageBox(MSG_STATUS_WIDTH, MSG_STATUS_HEIGHT, MSG_STATUS_POSITION))
@@ -92,6 +98,8 @@ Toy::Toy()
     m_texture->add("msg_game_over.png", "texture9");
     m_texture->add("msg_status.png", "texture10");
     m_texture->add("msg_digit.png", "texture11");
+    m_texture->add("pb_about.png", "texture12");
+    m_texture->add("msg_about.png", "texture13");
     for (int i = 0; i < m_token_set->tokens(); i++) {
         m_token_names[i] = new char[ANIMATION_NAME_LENGTH];
         sprintf(m_token_names[i], "animation_%d_matrix", i);
@@ -110,15 +118,17 @@ Toy::~Toy()
     delete m_msg_game_over;
     delete m_msg_no_more;
     delete m_msg_solved;
+    delete m_msg_about;
     delete m_msg_help;
     delete m_msg_no_next;
+    delete m_pb_about;
     delete m_pb_help;
     delete m_pb_quit;
     delete m_pb_next;
     delete m_pb_clear;
     delete m_hover;
     delete m_dock;
-//    m_puzzle_book->save(PUZZLE_BOOK_FILE_NAME);
+    m_puzzle_book->save(PUZZLE_BOOK_FILE_NAME);
 
     delete m_puzzle_book;
     for (int i = 0; i < m_token_set->tokens(); i++) {
@@ -141,13 +151,15 @@ void Toy::build_model()
     m_model->add(m_pb_next->model(ANIMATION_ID_PB_NEXT, TEXTURE_ID_PB_NEXT), 0.0, 0.0, 0.0);
     m_model->add(m_pb_quit->model(ANIMATION_ID_PB_QUIT, TEXTURE_ID_PB_QUIT), 0.0, 0.0, 0.0);
     m_model->add(m_pb_help->model(ANIMATION_ID_PB_HELP, TEXTURE_ID_PB_HELP), 0.0, 0.0, 0.0);
+    m_model->add(m_pb_about->model(ANIMATION_ID_PB_ABOUT, TEXTURE_ID_PB_ABOUT), 0.0, 0.0, 0.0);
     m_model->add(m_msg_no_next->model(TEXTURE_ID_MSG_NO_NEXT), 0.0, 0.0, 0.0);
     m_model->add(m_msg_no_more->model(TEXTURE_ID_MSG_NO_MORE), 0.0, 0.0006, 0.0);
     m_model->add(m_msg_solved->model(TEXTURE_ID_MSG_SOLVED), 0.0, 0.0007, 0.0);
     m_model->add(m_msg_game_over->model(TEXTURE_ID_MSG_GAME_OVER), 0.0, 0.0008, 0.0);
     m_model->add(m_msg_help->model(TEXTURE_ID_MSG_HELP), 0.0, 0.0009, 0.0);
-    m_model->add(m_msg_status->model(TEXTURE_ID_MSG_STATUS), 0.0, 0.0010, 0.0);
-    m_model->add(m_count->model(ANIMATION_ID_DIGIT1, TEXTURE_ID_MSG_DIGIT), 0.0, 0.0011, 0.0);
+    m_model->add(m_msg_about->model(TEXTURE_ID_MSG_ABOUT), 0.0, 0.0010, 0.0);
+    m_model->add(m_msg_status->model(TEXTURE_ID_MSG_STATUS), 0.0, 0.0011, 0.0);
+    m_model->add(m_count->model(ANIMATION_ID_DIGIT1, TEXTURE_ID_MSG_DIGIT), 0.0, 0.0012, 0.0);
 }
 
 void Toy::put_away_tokens()
@@ -209,6 +221,7 @@ void Toy::build_uniform()
     m_uniform->add("animation_41_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_pb_next->data());
     m_uniform->add("animation_42_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_pb_help->data());
     m_uniform->add("animation_43_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_pb_quit->data());
+    m_uniform->add("animation_44_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_pb_about->data());
     m_uniform->add("msg_1_box", UNIFORM_TYPE_1_FLOAT_VECTOR, 1, m_msg_no_next->data());
     m_uniform->add("msg_2_box", UNIFORM_TYPE_1_FLOAT_VECTOR, 1, m_msg_help->data());
     m_uniform->add("msg_3_box", UNIFORM_TYPE_1_FLOAT_VECTOR, 1, m_msg_solved->data());
@@ -216,6 +229,7 @@ void Toy::build_uniform()
     m_uniform->add("msg_5_box", UNIFORM_TYPE_1_FLOAT_VECTOR, 1, m_msg_game_over->data());
     m_uniform->add("msg_6_box", UNIFORM_TYPE_1_FLOAT_VECTOR, 1, m_msg_status->data());
     m_uniform->add("count_data", UNIFORM_TYPE_1_FLOAT_VECTOR, m_count->digits(), m_count->data());
+    m_uniform->add("msg_7_box", UNIFORM_TYPE_1_FLOAT_VECTOR, 1, m_msg_about->data());
 }
 
 void Toy::update_uniform()
@@ -228,8 +242,10 @@ void Toy::update_uniform()
     m_pb_next->data();
     m_pb_quit->data();
     m_pb_help->data();
+    m_pb_about->data();
     m_msg_no_next->data();
     m_msg_help->data();
+    m_msg_about->data();
     m_msg_solved->data();
     m_msg_no_more->data();
     m_msg_game_over->data();
@@ -274,18 +290,23 @@ bool Toy::button(int code, bool shifted, bool on)
     if (!ret_val)
         return false;
     switch (code) {
+        case SDL_SCANCODE_UP:
+        case SDL_SCANCODE_DOWN:
+            ret_val = false;
+            break;
+
         case SDL_SCANCODE_LEFT:
-            if (on) {
-                m_puzzle_book->go_to_previous_challenge();
-                set_up_current_challenge();
-            }
+//            if (on) {
+//                m_puzzle_book->go_to_previous_challenge();
+//                set_up_current_challenge();
+//            }
             ret_val = false;
             break;
         case SDL_SCANCODE_RIGHT:
-            if (on) {
-                m_puzzle_book->go_to_next_challenge();
-                set_up_current_challenge();
-            }
+//            if (on) {
+//                m_puzzle_book->go_to_next_challenge();
+//                set_up_current_challenge();
+//            }
             ret_val = false;
             break;
         case SDL_SCANCODE_C:
@@ -329,6 +350,9 @@ bool Toy::mouse(SDL_Event* e, bool on)
             } else if (m_pb_help->mouse_hit(sel)) {
                 // Show help message
                 m_msg_help->set_visible(true);
+            } else if (m_pb_about->mouse_hit(sel)) {
+                // Show about message
+                m_msg_about->set_visible(true);
             } else {
                 lift_piece(e->button.x, e->button.y);
             }
@@ -337,9 +361,11 @@ bool Toy::mouse(SDL_Event* e, bool on)
             m_pb_next->release();
             m_pb_quit->release();
             m_pb_help->release();
+            m_pb_about->release();
             m_msg_no_next->set_visible(false);
             m_msg_no_more->set_visible(false);
             m_msg_help->set_visible(false);
+            m_msg_about->set_visible(false);
             drop_piece(e->button.x, e->button.y);
         }
     } else if (e->button.button == SDL_BUTTON_RIGHT) {
