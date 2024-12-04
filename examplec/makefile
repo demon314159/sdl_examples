@@ -46,12 +46,26 @@ HEADERS = view.h \
           hover.h \
           push_button.h \
           button_shape.h \
-          message_box.h \
+          message_panel.h \
           count.h \
           \
 # note: all of the files after toy.h are there for toy.cpp only
 #       they can be removed if toy.cpp doesn't need them anymore
          \
+
+RESOURCES = \
+          msg_about.png \
+          msg_digit.png \
+          msg_game_over.png \
+          msg_help.png \
+          msg_no_more.png \
+          msg_no_next.png \
+          msg_solved.png \
+          msg_status.png \
+          pb_about.png \
+          pb_clear.png \
+          pb_next.png \
+          pb_quit.png \
 
 OBJECTS = main.obj \
           view.obj \
@@ -92,7 +106,7 @@ OBJECTS = main.obj \
           hover.obj \
           push_button.obj \
           button_shape.obj \
-          message_box.obj \
+          message_panel.obj \
           count.obj \
           \
 # note: all of the files after toy.obj are there for toy.cpp only
@@ -112,13 +126,16 @@ TARGET = play.exe
 %.obj: %.cpp $(DEPS)
 	$(CXX) $(CXXFLAGS) $(INCPATH) /Fo$@ $<
 
-$(TARGET): $(OBJECTS)
-	$(LXX) /out:$@ $(OBJECTS) $(LIBPATH) $(LIBRARIES) $(LINKFLAGS)
+%.res: %.rc $(RESOURCES)
+	rc $<
+
+$(TARGET): $(OBJECTS) hexominos.res
+	$(LXX) /out:$@ $(OBJECTS) $(LIBPATH) $(LIBRARIES) $(LINKFLAGS) hexominos.res
 
 i.PHONY: clean
 
 clean:
-	del *.obj; del play.exe
+	del *.obj; del play.exe; del *.res
 
 
 

@@ -1,12 +1,12 @@
 //
-// message_box.cpp
+// message_panel.cpp
 //
 
-#include "message_box.h"
+#include "message_panel.h"
 #include "plane_shape.h"
 #include <math.h>
 
-MessageBox::MessageBox(float width, float height, const Float2& position)
+MessagePanel::MessagePanel(float width, float height, const Float2& position)
     : m_width(width)
     , m_height(height)
     , m_position(position)
@@ -15,16 +15,16 @@ MessageBox::MessageBox(float width, float height, const Float2& position)
 {
 }
 
-MessageBox::~MessageBox()
+MessagePanel::~MessagePanel()
 {
 }
 
-void MessageBox::set_visible(bool v)
+void MessagePanel::set_visible(bool v)
 {
     m_visible = v;
 }
 
-CadModel MessageBox::model(float texture_id) const
+CadModel MessagePanel::model(float texture_id) const
 {
     CadModel cm;
     CadModel ps(PlaneShape(m_width, m_height, texture_id, {0.0, 0.0}, {1.0, 0.5}), PaintCan(1.0, 1.0, 1.0), 99.0);
@@ -33,7 +33,7 @@ CadModel MessageBox::model(float texture_id) const
     return cm;
 }
 
-const float* MessageBox::data()
+const float* MessagePanel::data()
 {
 
     m_animate = m_visible ? 0.0 : 0.5;

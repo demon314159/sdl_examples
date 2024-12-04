@@ -18,6 +18,7 @@ int main(int argc, char *argv[])
     host.initialize();
     host.render();
     SDL_Event ev;
+
     while (host.is_running()) {
         while (SDL_PollEvent(&ev) != 0) {
             if (ev.type == SDL_QUIT) {

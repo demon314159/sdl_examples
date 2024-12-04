@@ -61,6 +61,7 @@ private:
     void print_shader_log(GLuint shader);
     void generate_textures();
     void generate_texture(const char* fname);
+    unsigned char* load_resource(const char* fname, int* width, int* height, int* channels);
 };
 
 #endif // _VIEW_H_

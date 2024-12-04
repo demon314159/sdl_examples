@@ -1,20 +1,20 @@
 //
-// message_box.h
+// message_panel.h
 //
 
-#ifndef _MESSAGE_BOX_H_
-#define _MESSAGE_BOX_H_
+#ifndef _MESSAGE_PANEL_H_
+#define _MESSAGE_PANEL_H_
 
 #include "float3.h"
 #include "cad_model.h"
 #include "matrix4x4.h"
 
 
-class MessageBox
+class MessagePanel
 {
 public:
-    MessageBox(float width, float height, const Float2& position);
-    ~MessageBox();
+    MessagePanel(float width, float height, const Float2& position);
+    ~MessagePanel();
 
     void set_visible(bool v);
 
@@ -29,4 +29,4 @@ protected:
     float m_animate;
 };
 
-#endif // _MESSAGE_BOX_H_
+#endif // _MESSAGE_PANEL_H_

@@ -7,6 +7,8 @@
 
 #include <math.h>
 #include <sys/stat.h>
+
+#include <windows.h>
 #include <algorithm>
 #include <stdio.h>
 
@@ -111,6 +113,15 @@ void View::generate_textures()
     delete [] buf;
 }
 
+unsigned char* View::load_resource(const char* fname, int* width, int* height, int* channels)
+{
+    HRSRC res = FindResource(NULL, fname, "CUSTOM");
+    unsigned int res_size = ::SizeofResource(NULL, res);
+    HGLOBAL res_data = ::LoadResource(NULL, res);
+    void* pdata = ::LockResource(res_data);
+    return stbi_load_from_memory((stbi_uc*) pdata, res_size, width, height, channels, 0);
+}
+
 void View::generate_texture(const char* fname)
 {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -122,13 +133,13 @@ void View::generate_texture(const char* fname)
     width = 0;
     height = 0;
     channels = 0;
-    unsigned char *data = stbi_load(fname, &width, &height, &channels, 0);
+    unsigned char* data = load_resource(fname, &width, &height, &channels);
     if (data) {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
         stbi_image_free(data);
     } else {
-        printf("failed to load texture\n");
+        printf("Failed to load texture %s\n", fname);
     }
 }
 
@@ -315,7 +326,7 @@ void View::check_storage()
     int fc = 3 * m_toy->model()->facets();
     if (m_max_vertex_count > fc)
         return;
-    m_max_vertex_count = std::max(2 * m_max_vertex_count, 2 * fc);
+    m_max_vertex_count = max(2 * m_max_vertex_count, 2 * fc);
 }
 
 void View::render()

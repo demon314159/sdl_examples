@@ -13,7 +13,7 @@
 #include "hover.h"
 #include "mouse_vector.h"
 #include "push_button.h"
-#include "message_box.h"
+#include "message_panel.h"
 #include "count.h"
 
 class Toy: public AnimatedToy
@@ -43,13 +43,13 @@ private:
     PushButton* m_pb_quit;
     PushButton* m_pb_help;
     PushButton* m_pb_about;
-    MessageBox* m_msg_no_next;
-    MessageBox* m_msg_help;
-    MessageBox* m_msg_about;
-    MessageBox* m_msg_solved;
-    MessageBox* m_msg_no_more;
-    MessageBox* m_msg_game_over;
-    MessageBox* m_msg_status;
+    MessagePanel* m_msg_no_next;
+    MessagePanel* m_msg_help;
+    MessagePanel* m_msg_about;
+    MessagePanel* m_msg_solved;
+    MessagePanel* m_msg_no_more;
+    MessagePanel* m_msg_game_over;
+    MessagePanel* m_msg_status;
     Count* m_count;
 
     void build_model();
