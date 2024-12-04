@@ -1,3 +1,6 @@
+
+vshader.glsl      CUSTOM vshader.glsl
+fshader.glsl      CUSTOM fshader.glsl
 msg_about.png     CUSTOM msg_about.png
 msg_digit.png     CUSTOM msg_digit.png
 msg_game_over.png CUSTOM msg_game_over.png

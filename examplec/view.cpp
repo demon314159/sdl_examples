@@ -62,30 +62,20 @@ View::~View()
     SDL_Quit();
 }
 
-bool View::add_shader_from_source_file(GLuint shader, const char* name)
+bool View::add_shader_from_resource(GLuint shader, const char* name)
 {
-    FILE* fin = fopen(name, "r");
-    if (fin == NULL) {
-        printf("add_shader_from_source_file(%s): File not found\n", name);
-        return false;
-    }
-    struct stat st;
-    stat(name, &st);
-    int file_size = st.st_size;
-    if (file_size <= 0) {
-        printf("add_shader_from_source_file(%s): File empty\n", name);
+    int length = 0;
+    void* pdata = load_from_resource(name, &length);
+
+    if (length <= 0) {
+        printf("add_shader_from_resource(%s): Not found\n", name);
         return false;
     }
     GLchar* src_buffer[1];
-    src_buffer[0] = new GLchar[file_size + 1];
-    int res = fread(src_buffer[0], 1, file_size, fin);
-    if (res != file_size) {
-        printf("add_shader_from_source_file(%s): Error reading file\n", name);
-        return false;
-    }
-    fclose(fin);
+    src_buffer[0] = new GLchar[length + 1];
+    memcpy(src_buffer[0], pdata, length);
     GLchar* ptr = src_buffer[0];
-    ptr[file_size] = 0;
+    ptr[length] = 0;
     glShaderSource(shader, 1, src_buffer, NULL);
     delete [] src_buffer[0];
     glCompileShader(shader);
@@ -113,13 +103,12 @@ void View::generate_textures()
     delete [] buf;
 }
 
-unsigned char* View::load_resource(const char* fname, int* width, int* height, int* channels)
+void* View::load_from_resource(const char* fname, int* length)
 {
     HRSRC res = FindResource(NULL, fname, "CUSTOM");
-    unsigned int res_size = ::SizeofResource(NULL, res);
+    *length = ::SizeofResource(NULL, res);
     HGLOBAL res_data = ::LoadResource(NULL, res);
-    void* pdata = ::LockResource(res_data);
-    return stbi_load_from_memory((stbi_uc*) pdata, res_size, width, height, channels, 0);
+    return ::LockResource(res_data);
 }
 
 void View::generate_texture(const char* fname)
@@ -129,11 +118,13 @@ void View::generate_texture(const char* fname)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    int length = 0;
+    void* pdata = load_from_resource(fname, &length);
     int width, height, channels;
     width = 0;
     height = 0;
     channels = 0;
-    unsigned char* data = load_resource(fname, &width, &height, &channels);
+    unsigned char* data = stbi_load_from_memory((stbi_uc*) pdata, length, &width, &height, &channels, 0);
     if (data) {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
@@ -174,12 +165,12 @@ void View::initialize()
     m_program = glCreateProgram();
     vshader = glCreateShader(GL_VERTEX_SHADER);
     fshader = glCreateShader(GL_FRAGMENT_SHADER);
-    if (!add_shader_from_source_file(vshader, vshader_name)) {
+    if (!add_shader_from_resource(vshader, vshader_name)) {
         printf("Error loading vertex shader source '%s'\n", vshader_name);
         exit(0);
     }
     glAttachShader(m_program, vshader);
-    if (!add_shader_from_source_file(fshader, fshader_name)) {
+    if (!add_shader_from_resource(fshader, fshader_name)) {
         printf("Error loading fragment shader source '%s'\n", fshader_name);
         exit(0);
     }
@@ -221,32 +212,6 @@ void View::initialize()
         printf("a_texture_id is not a valid glsl variable\n");
         exit(0);
     }
-
-
-#ifdef NEVERMORE
-    m_mvp_matrix_uniform = glGetUniformLocation(m_program, "mvp_matrix");
-    if (m_mvp_matrix_uniform == -1) {
-        printf("mvp_matrix is not a valid glsl variable\n");
-        exit(0);
-    }
-    m_rot_matrix_uniform = glGetUniformLocation(m_program, "rot_matrix");
-    if (m_rot_matrix_uniform == -1) {
-        printf("rot_matrix is not a valid glsl variable\n");
-        exit(0);
-    }
-    m_scoreboard_mvp_matrix_uniform = glGetUniformLocation(m_program, "scoreboard_mvp_matrix");
-    if (m_scoreboard_mvp_matrix_uniform == -1) {
-        printf("scoreboard_mvp_matrix is not a valid glsl variable\n");
-        exit(0);
-    }
-    m_scoreboard_rot_matrix_uniform = glGetUniformLocation(m_program, "scoreboard_rot_matrix");
-    if (m_scoreboard_rot_matrix_uniform == -1) {
-        printf("scoreboard_rot_matrix is not a valid glsl variable\n");
-        exit(0);
-    }
-#endif
-
-
     Uniform* u = m_toy->uniform();
     for (int i = 0; i < u->uniforms(); i++) {
         GLint handle = glGetUniformLocation(m_program, u->name(i));

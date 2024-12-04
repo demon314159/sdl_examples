@@ -54,6 +54,8 @@ HEADERS = view.h \
          \
 
 RESOURCES = \
+          vshader.glsl \
+          fshader.glsl \
           msg_about.png \
           msg_digit.png \
           msg_game_over.png \

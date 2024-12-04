@@ -56,12 +56,12 @@ private:
     Toy* m_toy;
 
     std::chrono::high_resolution_clock::time_point m_last_time_point;
-    bool add_shader_from_source_file(GLuint shader, const char* name);
+    bool add_shader_from_resource(GLuint shader, const char* name);
     void print_program_log(GLuint program);
     void print_shader_log(GLuint shader);
     void generate_textures();
     void generate_texture(const char* fname);
-    unsigned char* load_resource(const char* fname, int* width, int* height, int* channels);
+    void* load_from_resource(const char* fname, int* length);
 };
 
 #endif // _VIEW_H_
