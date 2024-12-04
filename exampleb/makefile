@@ -113,6 +113,30 @@ HEADERS = view.h \
 # note: all of the files after toy.h are there for toy.cpp only
 #       they can be removed if toy.cpp doesn't need them anymore
 
+
+RESOURCES = \
+          vshader.glsl \
+          fshader.glsl \
+          apron.png \
+          backglass.png \
+          gauge.png \
+          plastic1.png \
+          plastic2.png \
+          plastic3.png \
+          plastic4.png \
+          plastic5.png \
+          plastic6.png \
+          plastic7.png \
+          plastic8.png \
+          plastic8.png \
+          playfield.png \
+          rules.png \
+          score.png \
+          knocker.wav \
+          sound1.wav \
+          sound2.wav \
+          sound3.wav \
+
 OBJECTS = main.obj \
           view.obj \
           host.obj \
@@ -230,13 +254,16 @@ TARGET = play.exe
 %.obj: %.cpp $(DEPS)
 	$(CXX) $(CXXFLAGS) $(INCPATH) /Fo$@ $<
 
-$(TARGET): $(OBJECTS)
-	$(LXX) /out:$@ $(OBJECTS) $(LIBPATH) $(LIBRARIES) $(LINKFLAGS)
+%.res: %.rc $(RESOURCES)
+	rc $<
+
+$(TARGET): $(OBJECTS) pinball.res
+	$(LXX) /out:$@ $(OBJECTS) $(LIBPATH) $(LIBRARIES) $(LINKFLAGS) pinball.res
 
 i.PHONY: clean
 
 clean:
-	del *.obj; del play.exe
+	del *.obj; del play.exe; del *.res
 
 
 

@@ -3,7 +3,7 @@
 //
 
 #include "sound.h"
-
+#include <windows.h>
 #include <stdio.h>
 
 Sound::Sound()
@@ -45,7 +45,17 @@ int Sound::sounds() const
 void Sound::add(const char* file_name)
 {
     if (m_sounds < MAX_SOUNDS) {
-        Mix_Chunk* p = Mix_LoadWAV(file_name);
+        int length;
+
+        void* pdata = load_from_resource(file_name, &length);
+        SDL_RWops* rw;
+        rw = SDL_RWFromMem(pdata, length);
+
+
+        Mix_Chunk* p = Mix_LoadWAV_RW(rw, 0);
+
+        SDL_FreeRW(rw);
+
         if (!p) {
             printf("Mixer LoadWAV Error: %s\n", Mix_GetError());
             exit(0);
@@ -55,9 +65,40 @@ void Sound::add(const char* file_name)
     }
 }
 
+//void Sound::add(const char* file_name)
+//{
+//    if (m_sounds < MAX_SOUNDS) {
+//        Mix_Chunk* p = Mix_LoadWAV(file_name);
+//        if (!p) {
+//            printf("Mixer LoadWAV Error: %s\n", Mix_GetError());
+//            exit(0);
+//        }
+//        m_sound[m_sounds] = p;
+//        ++m_sounds;
+//    }
+//}
+
 void Sound::play(int sound_id)
 {
     if (sound_id < m_sounds) {
         Mix_PlayChannel(-1, m_sound[sound_id], 0);
     }
+}
+
+void* Sound::load_from_resource(const char* fname, int* length)
+{
+    HRSRC res = FindResource(NULL, fname, "CUSTOM");
+    *length = ::SizeofResource(NULL, res);
+    HGLOBAL res_data = ::LoadResource(NULL, res);
+    return ::LockResource(res_data);
+}
+
+void Sound::testy()
+{
+    char* buf = new char[100];
+
+    SDL_RWops * rw;
+    rw = SDL_RWFromMem(buf, 100);
+
+    delete [] buf;
 }

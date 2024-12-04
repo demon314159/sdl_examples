@@ -23,6 +23,9 @@ private:
     int m_sounds;
     Mix_Chunk* m_sound[MAX_SOUNDS];
     void add(const char* file_name);
+    void* load_from_resource(const char* fname, int* length);
+
+    void testy();
 };
 
 #endif // _SOUND_H_
