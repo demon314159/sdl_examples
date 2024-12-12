@@ -157,23 +157,23 @@ const float* TokenSet::data(int token_id)
     return m_token[token_id].data();
 }
 
-bool TokenSet::set_position(int token_id, float posx, float posy, float posz, int orientation, float seconds)
+bool TokenSet::set_position(int token_id, float posx, float posy, float posz, int orientation, float seconds, float transit_height)
 {
-    return m_token[token_id].set_position(posx, posy, posz, orientation, seconds);
+    return m_token[token_id].set_position(posx, posy, posz, orientation, seconds, transit_height);
 }
 
-bool TokenSet::set_dock_position(int token_id, int dock_id, int orientation, const Dock* dock, float seconds)
+bool TokenSet::set_dock_position(int token_id, int dock_id, int orientation, const Dock* dock, float seconds, float transit_height)
 {
     float posx = dock->posx(dock_id) - horz_center(token_id, orientation, dock->pitch());
     float posz = dock->posz(dock_id) + vert_center(token_id, orientation, dock->pitch());
-    return m_token[token_id].set_position(posx, 0.0, posz, orientation, seconds);
+    return m_token[token_id].set_position(posx, 0.0, posz, orientation, seconds, transit_height);
 }
 
-bool TokenSet::set_board_position(int token_id, int posh, int posv, int orientation, const Dock* dock, float seconds)
+bool TokenSet::set_board_position(int token_id, int posh, int posv, int orientation, const Dock* dock, float seconds, float transit_height)
 {
     float posx = posh * dock->pitch();
     float posz = -posv * dock->pitch();
-    return m_token[token_id].set_position(posx, 0.0, posz, orientation, seconds);
+    return m_token[token_id].set_position(posx, 0.0, posz, orientation, seconds, transit_height);
 }
 
 Float3 TokenSet::position(int token_id) const

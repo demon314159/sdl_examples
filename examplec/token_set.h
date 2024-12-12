@@ -27,9 +27,9 @@ public:
     void advance(float seconds);
     CadModel model(int token_id, float animation_id) const;
     const float* data(int token_id);
-    bool set_position(int token_id, float posx, float posy, float posz, int orientation, float seconds = 0.0);
-    bool set_dock_position(int token_id, int dock_id, int orientation, const Dock* dock, float seconds = 0.0);
-    bool set_board_position(int token_id, int posh, int posv, int orientation, const Dock* dock, float seconds = 0.0);
+    bool set_position(int token_id, float posx, float posy, float posz, int orientation, float seconds = 0.0, float transit_height = 0.0);
+    bool set_dock_position(int token_id, int dock_id, int orientation, const Dock* dock, float seconds = 0.0, float transit_height = 0.0);
+    bool set_board_position(int token_id, int posh, int posv, int orientation, const Dock* dock, float seconds = 0.0, float transit_height = 0.0);
     Float3 position(int token_id) const;
 
 protected:

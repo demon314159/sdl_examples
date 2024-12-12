@@ -204,7 +204,7 @@ void Toy::clear_board()
     }
     for (int i = 0; i < m_puzzle_book->pieces(); i++) {
         if (!m_puzzle_book->on_board(i)) {
-            m_token_set->set_dock_position(m_puzzle_book->token_id(i), m_dock->dock_id(i), m_puzzle_book->orientation(i), m_dock, ANIMATION_TIME);
+            m_token_set->set_dock_position(m_puzzle_book->token_id(i), m_dock->dock_id(i), m_puzzle_book->orientation(i), m_dock, ANIMATION_TIME, TILE_HEIGHT);
         }
     }
 }
@@ -548,7 +548,7 @@ void Toy::drop_piece(int mx, int my)
             if (m_puzzle_book->drop_piece(m_token_set, sp, orientation, ipx, ipz)) {
                 m_token_set->set_board_position(token_id, ipx, ipz, orientation, m_dock, 0.0);
             } else {
-                m_token_set->set_dock_position(token_id, m_dock->dock_id(sp), orientation, m_dock, ANIMATION_TIME);
+                m_token_set->set_dock_position(token_id, m_dock->dock_id(sp), orientation, m_dock, ANIMATION_TIME, TILE_HEIGHT);
             }
         }
     }

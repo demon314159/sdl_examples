@@ -12,6 +12,7 @@ Token::Token()
     , m_velocity({0.0, 0.0, 0.0})
     , m_angular_velocity({0.0, 0.0, 0.0})
     , m_time_left(0.0)
+    , m_transit_height(0.0)
     , m_tiles(0)
     , m_animation()
 {
@@ -150,8 +151,8 @@ Float3 Token::angles(int orientation) const
 const float* Token::data()
 {
     m_animation.unity();
-    Float3 cp = current_value(m_position, m_velocity, m_time_left);
-    Float3 ca = current_value(m_angle, m_angular_velocity, m_time_left);
+    Float3 cp = current_position(m_position, m_velocity, m_time_left);
+    Float3 ca = current_angle(m_angle, m_angular_velocity, m_time_left);
     m_animation.translate(cp.v1, cp.v2, cp.v3);
     m_animation.rotate_ay(ca.v2);
     m_animation.rotate_ax(ca.v1);
@@ -204,13 +205,18 @@ Float3 Token::angular_velocity(const Float3& p1, const Float3& p0, float period)
     return v;
 }
 
-bool Token::set_position(float posx, float posy, float posz, int orientation, float seconds)
+bool Token::set_position(float posx, float posy, float posz, int orientation, float seconds, float transit_height)
 {
     if (m_time_left > 0.0) {
         return false;
     }
     if (seconds > 0.0) {
         m_velocity = velocity({posx, posy, posz}, m_position, seconds);
+        if (m_velocity.v1 == 0.0 && m_velocity.v3 == 0.0) {
+            m_transit_height = 0.0;
+        } else {
+            m_transit_height = transit_height;
+        }
         m_angular_velocity = angular_velocity(angles(orientation), m_angle, seconds);
         if (m_angular_velocity.v2 != 0.0 && (m_angular_velocity.v1 != 0.0 || m_angular_velocity.v3 != 0.0)) {
             Float3 new_angles = m_angle;
@@ -226,7 +232,24 @@ bool Token::set_position(float posx, float posy, float posz, int orientation, fl
     return true;
 }
 
-Float3 Token::current_value(const Float3& p, const Float3& v, float tleft) const
+Float3 Token::current_position(const Float3& p, const Float3& v, float tleft) const
+{
+    Float3 cp;
+    cp.v1 = p.v1 - tleft * v.v1;
+    if (m_transit_height > 0.0) {
+        if (tleft > 0.0) {
+            cp.v2 = m_transit_height;
+        } else {
+            cp.v2 = p.v2;
+        }
+    } else {
+        cp.v2 = p.v2 - tleft * v.v2;
+    }
+    cp.v3 = p.v3 - tleft * v.v3;
+    return cp;
+}
+
+Float3 Token::current_angle(const Float3& p, const Float3& v, float tleft) const
 {
     Float3 cp;
     cp.v1 = p.v1 - tleft * v.v1;
@@ -234,3 +257,6 @@ Float3 Token::current_value(const Float3& p, const Float3& v, float tleft) const
     cp.v3 = p.v3 - tleft * v.v3;
     return cp;
 }
+
+
+

@@ -34,7 +34,7 @@ public:
     void advance(float seconds);
     CadModel model(float animation_id) const;
     const float* data();
-    bool set_position(float posx, float posy, float posz, int orientation, float seconds = 0.0);
+    bool set_position(float posx, float posy, float posz, int orientation, float seconds = 0.0, float transit_height = 0.0);
     Float3 position() const;
 
 protected:
@@ -43,6 +43,7 @@ protected:
     Float3 m_velocity;
     Float3 m_angular_velocity;
     float m_time_left;
+    float m_transit_height;
     int m_tiles;
     TileRec m_tile[MAX_TILES];
     Matrix4x4 m_animation;
@@ -52,7 +53,8 @@ protected:
     Float3 angles(int orientation) const;
     Float3 velocity(const Float3& p1, const Float3& p0, float period) const;
     Float3 angular_velocity(const Float3& p1, const Float3& p0, float period) const;
-    Float3 current_value(const Float3& p, const Float3& v, float tleft) const;
+    Float3 current_position(const Float3& p, const Float3& v, float tleft) const;
+    Float3 current_angle(const Float3& p, const Float3& v, float tleft) const;
     float angle_diff(float a1, float a0) const;
 };
 
