@@ -198,9 +198,6 @@ void Toy::clear_board()
         if (m_puzzle_book->on_board(i) && !m_puzzle_book->locked(i)) {
             m_puzzle_book->lift_piece(i);
         }
-        if (!m_puzzle_book->on_board(i)) {
-            m_puzzle_book->set_orientation(i, 0);
-        }
     }
     for (int i = 0; i < m_puzzle_book->pieces(); i++) {
         if (!m_puzzle_book->on_board(i)) {
