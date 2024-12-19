@@ -39,9 +39,9 @@ public:
 
 protected:
     Float3 m_position;
-    Float3 m_angle;
+    Float2 m_angle;
     Float3 m_velocity;
-    Float3 m_angular_velocity;
+    Float2 m_angular_velocity;
     float m_time_left;
     float m_transit_height;
     int m_tiles;
@@ -50,11 +50,11 @@ protected:
 
     void one_tile(CadModel& cm, int tile, float animation_id) const;
     bool occupied(int ph, int pv) const;
-    Float3 angles(int orientation) const;
+    Float2 angles(int orientation) const;
     Float3 velocity(const Float3& p1, const Float3& p0, float period) const;
-    Float3 angular_velocity(const Float3& p1, const Float3& p0, float period) const;
+    Float2 angular_velocity(const Float2& p1, const Float2& p0, float period) const;
     Float3 current_position(const Float3& p, const Float3& v, float tleft) const;
-    Float3 current_angle(const Float3& p, const Float3& v, float tleft) const;
+    Float2 current_angle(const Float2& p, const Float2& v, float tleft) const;
     float angle_diff(float a1, float a0) const;
 };
 

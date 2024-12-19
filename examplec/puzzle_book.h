@@ -5,7 +5,7 @@
 #define _PUZZLE_BOOK_H_
 
 #define MAX_CHALLENGES 48
-#define PUZZLE_BOOK_FILE_NAME ".hexominoes.dat"
+#define PUZZLE_BOOK_FILE_NAME ".hexominos.dat"
 
 #include "challenge.h"
 #include "token_set.h"

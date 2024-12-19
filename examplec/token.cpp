@@ -8,9 +8,9 @@
 
 Token::Token()
     : m_position({0.0, 0.0, 0.0})
-    , m_angle({0.0, 0.0, 0.0})
+    , m_angle({0.0, 0.0})
     , m_velocity({0.0, 0.0, 0.0})
-    , m_angular_velocity({0.0, 0.0, 0.0})
+    , m_angular_velocity({0.0, 0.0})
     , m_time_left(0.0)
     , m_transit_height(0.0)
     , m_tiles(0)
@@ -82,6 +82,15 @@ int Token::posv(int tix, int orientation) const
     }
 }
 
+void Token::advance(float seconds)
+{
+    if (m_time_left > seconds) {
+        m_time_left -= seconds;
+    } else {
+        m_time_left = 0.0;
+    }
+}
+
 void Token::one_tile(CadModel& cm, int tile, float animation_id) const
 {
     float pitch = TILE_PITCH;
@@ -106,15 +115,6 @@ void Token::one_tile(CadModel& cm, int tile, float animation_id) const
     cm.add(t2, pitch * (float) posh(tile, 0), 0.0, -pitch * (float) posv(tile, 0));
 }
 
-void Token::advance(float seconds)
-{
-    if (m_time_left > seconds) {
-        m_time_left -= seconds;
-    } else {
-        m_time_left = 0.0;
-    }
-}
-
 CadModel Token::model(float animation_id) const
 {
     CadModel cm;
@@ -125,26 +125,26 @@ CadModel Token::model(float animation_id) const
     return cm;
 }
 
-Float3 Token::angles(int orientation) const
+Float2 Token::angles(int orientation) const
 {
     switch(orientation) {
-        case 0: return  {0.0, 0.0, 0.0};
+        case 0: return  {0.0, 0.0};
                 break;
-        case 1: return {0.0, 270.0, 0.0};
+        case 1: return {270.0, 0.0};
                 break;
-        case 2: return {0.0, 180.0, 0.0};
+        case 2: return {180.0, 0.0};
                 break;
-        case 3: return {0.0, 90.0, 0.0};
+        case 3: return {90.0, 0.0};
                 break;
-        case 4: return {0.0, 0.0, 180.0};
+        case 4: return {0.0, 180.0};
                 break;
-        case 5: return {180.0, 90.0, 0.0};
+        case 5: return {90.0, 180.0};
                 break;
-        case 6: return {0.0, 180.0, 180.0};
+        case 6: return {180.0, 180.0};
                 break;
-        case 7: return {180.0, 270.0, 0.0};
+        case 7: return {270.0, 180.0};
                 break;
-        default: return {0.0, 0.0, 0.0};
+        default: return {0.0, 0.0};
     }
 }
 
@@ -152,11 +152,10 @@ const float* Token::data()
 {
     m_animation.unity();
     Float3 cp = current_position(m_position, m_velocity, m_time_left);
-    Float3 ca = current_angle(m_angle, m_angular_velocity, m_time_left);
+    Float2 ca = current_angle(m_angle, m_angular_velocity, m_time_left);
     m_animation.translate(cp.v1, cp.v2, cp.v3);
-    m_animation.rotate_ay(ca.v2);
-    m_animation.rotate_ax(ca.v1);
-    m_animation.rotate_az(ca.v3);
+    m_animation.rotate_az(ca.v2);
+    m_animation.rotate_ay(ca.v1);
     return m_animation.data();
 }
 
@@ -195,13 +194,12 @@ float Token::angle_diff(float a1, float a0) const
     return diff;
 }
 
-Float3 Token::angular_velocity(const Float3& p1, const Float3& p0, float period) const
+Float2 Token::angular_velocity(const Float2& p1, const Float2& p0, float period) const
 {
-    Float3 v;
+    Float2 v;
 
     v.v1 = angle_diff(p1.v1, p0.v1) / period;
     v.v2 = angle_diff(p1.v2, p0.v2) / period;
-    v.v3 = angle_diff(p1.v3, p0.v3) / period;
     return v;
 }
 
@@ -218,11 +216,6 @@ bool Token::set_position(float posx, float posy, float posz, int orientation, fl
             m_transit_height = transit_height;
         }
         m_angular_velocity = angular_velocity(angles(orientation), m_angle, seconds);
-        if (m_angular_velocity.v2 != 0.0 && (m_angular_velocity.v1 != 0.0 || m_angular_velocity.v3 != 0.0)) {
-            Float3 new_angles = m_angle;
-            new_angles.v2 = angles(orientation).v2 - 180.0;
-            m_angular_velocity = angular_velocity(new_angles, m_angle, seconds);
-        }
         m_time_left = seconds;
     }
     m_position.v1 = posx;
@@ -249,12 +242,11 @@ Float3 Token::current_position(const Float3& p, const Float3& v, float tleft) co
     return cp;
 }
 
-Float3 Token::current_angle(const Float3& p, const Float3& v, float tleft) const
+Float2 Token::current_angle(const Float2& p, const Float2& v, float tleft) const
 {
-    Float3 cp;
+    Float2 cp;
     cp.v1 = p.v1 - tleft * v.v1;
     cp.v2 = p.v2 - tleft * v.v2;
-    cp.v3 = p.v3 - tleft * v.v3;
     return cp;
 }
 
