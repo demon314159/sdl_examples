@@ -1,5 +1,5 @@
 //
-// int3
+// int3.h
 //
 
 #ifndef _INT3_H_

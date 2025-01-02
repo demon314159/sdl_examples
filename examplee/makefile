@@ -31,6 +31,8 @@ HEADERS = view.h \
           animated_toy.h \
           toy.h \
           \
+          brick_shape.h \
+          element.h \
           \
 # note: all of the files after toy.h are there for toy.cpp only
 #       they can be removed if toy.cpp doesn't need them anymore
@@ -65,6 +67,8 @@ OBJECTS = main.obj \
           animated_toy.obj \
           toy.obj \
           \
+          brick_shape.obj \
+          element.obj \
           \
 # note: all of the files after toy.obj are there for toy.cpp only
 #       they can be removed if toy.cpp doesn't need them anymore
