@@ -8,7 +8,6 @@
 #include <sys/stat.h>
 
 #define notVERBOSE
-#define MAX_TOKEN_CHARS 255
 
 TokenFile::TokenFile(const char* file_name)
     : m_cf(file_name)

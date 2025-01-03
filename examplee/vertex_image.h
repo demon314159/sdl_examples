@@ -8,7 +8,7 @@
 class VertexImage
 {
 public:
-    VertexImage(int max_vertex_count);
+    VertexImage(int max_vertex_count = 512 * 1024);
     ~VertexImage();
     int vertex_count() const;
     void add_element(Element* e, bool transparent);

@@ -7,6 +7,8 @@
 
 #include "char_file.h"
 
+#define MAX_TOKEN_CHARS 255
+
 class TokenFile
 {
     const int TYPE_EMPTY = 0;
