@@ -1,0 +1,140 @@
+
+#include "vertex_image.h"
+#include "cad_model.h"
+
+VertexImage::VertexImage(int max_vertex_count)
+    : m_max_vertex_count(max_vertex_count)
+    , m_vertex_count(0)
+{
+    m_vertex_data = new VertexData[m_max_vertex_count];
+}
+
+VertexImage::~VertexImage()
+{
+    delete [] m_vertex_data;
+}
+
+int VertexImage::vertex_count() const
+{
+    return m_vertex_count;
+}
+
+void VertexImage::trim_to(int vix)
+{
+    m_vertex_count = vix;
+}
+
+void VertexImage::add_element(Element* e, bool transparent)
+{
+    float an_id;
+    Float3 vp;
+    VertexData vd;
+    if (e == NULL)
+        return;
+    Float3 pos = e->model_pos();
+    const CadModel* model = e->model();
+    for (int i = 0; i < model->facets(); i++) {
+        an_id = model->facet_animation_id(i);
+        if ((transparent && (an_id == 99.0)) || (!transparent && (an_id != 99.0))) {
+            // Common
+            vd.animation_id = an_id;
+            vd.texture_id = model->facet_texture_id(i);
+            vd.normal = model->facet_normal(i);
+            vd.color = model->facet_color(i);
+            // Vertex 1
+            vp = model->facet_v1(i);
+            vd.position = {vp.v1 + pos.v1, vp.v2 + pos.v2, vp.v3 + pos.v3};
+            vd.texture_position = model->facet_texture_v1(i);
+            add_vertex(vd);
+            // Vertex 2
+            vp = model->facet_v2(i);
+            vd.position = {vp.v1 + pos.v1, vp.v2 + pos.v2, vp.v3 + pos.v3};
+            vd.texture_position = model->facet_texture_v2(i);
+            add_vertex(vd);
+            // Vertex 3
+            vp = model->facet_v3(i);
+            vd.position = {vp.v1 + pos.v1, vp.v2 + pos.v2, vp.v3 + pos.v3};
+            vd.texture_position = model->facet_texture_v3(i);
+            add_vertex(vd);
+        }
+    }
+}
+
+void VertexImage::add_vertex(const VertexData& vd)
+{
+    if (m_vertex_count >= m_max_vertex_count)
+        double_the_storage();
+    m_vertex_data[m_vertex_count] = vd;
+    ++m_vertex_count;
+}
+
+void VertexImage::double_the_storage()
+{
+    // this will double the value of m_max_items
+    // and copy existing data to new array
+    // to seamlessly keep the buffer larger than data
+    m_max_vertex_count = 2 * m_max_vertex_count;
+    VertexData* temp = new VertexData[m_max_vertex_count];
+    for (int i = 0; i < m_vertex_count; i++) {
+        temp[i] = m_vertex_data[i];
+    }
+    delete [] m_vertex_data;
+    m_vertex_data = temp;
+}
+
+void VertexImage::update_element(int start_ix, const Element* e, bool transparent)
+{
+    float dd = 0.04;
+    float dx = dd * 10;
+    float an_id;
+    Float3 vp;
+    VertexData vd;
+    if (e == NULL)
+        return;
+    Float3 pos = e->model_pos();
+    bool removed = e->removed();
+    const CadModel* model = e->model();
+    for (int i = 0; i < model->facets(); i++) {
+        an_id = model->facet_animation_id(i);
+        if ((transparent && (an_id == 99.0)) || (!transparent && (an_id != 99.0))) {
+
+            vd.animation_id = removed ? 3.0 : an_id;
+            vd.texture_id = removed ? 0.0 : model->facet_texture_id(i);
+            vd.normal = model->facet_normal(i);
+            vd.color = model->facet_color(i);
+
+            if (removed) {
+                vd.position = {dx, -dd, 0.0};
+            } else {
+                vp = model->facet_v1(i);
+                vd.position = {vp.v1 + pos.v1, vp.v2 + pos.v2, vp.v3 + pos.v3};
+            }
+            vd.texture_position = model->facet_texture_v1(i);
+            m_vertex_data[start_ix++] = vd;
+
+            if (removed) {
+                vd.position = {dx - dd, -2 * dd, 0.0};
+            } else {
+                vp = model->facet_v2(i);
+                vd.position = {vp.v1 + pos.v1, vp.v2 + pos.v2, vp.v3 + pos.v3};
+            }
+            vd.texture_position = model->facet_texture_v2(i);
+            m_vertex_data[start_ix++] = vd;
+
+            if (removed) {
+                vd.position = {dx + dd, -2 * dd, 0.0};
+            } else {
+                vp = model->facet_v3(i);
+                vd.position = {vp.v1 + pos.v1, vp.v2 + pos.v2, vp.v3 + pos.v3};
+            }
+            vd.texture_position = model->facet_texture_v3(i);
+            m_vertex_data[start_ix++] = vd;
+        }
+    }
+}
+
+const VertexData* VertexImage::vertex_data() const
+{
+    return m_vertex_data;
+}
+

@@ -5,13 +5,15 @@
 #include "element.h"
 #include "look.h"
 
-#define DIMX  0.1f
-#define DIMY  (DIMX * 2.0f / 3.0f)
-#define DIMZ  DIMX
-#define DIMB  (DIMX / 40.0f)
+#define UNIT_SQUARE 0.1f
+#define DIMX  UNIT_SQUARE
+#define DIMY  (UNIT_SQUARE * 2.0f / 3.0f)
+#define DIMZ  UNIT_SQUARE
+#define DIMB  (UNIT_SQUARE / 40.0f)
 
 Element::Element(Int3 pos, int width, int height, int orientation)
-    : m_pos(pos)
+    : m_removed(false)
+    , m_pos(pos)
     , m_width(width)
     , m_height(height)
     , m_orientation(orientation)
@@ -30,9 +32,41 @@ Element::~Element()
 {
 }
 
+void Element::remove()
+{
+    m_removed = true;
+}
+
+void Element::unremove()
+{
+    m_removed = false;
+}
+
+bool Element::removed() const
+{
+    return m_removed;
+}
+
 Int3 Element::pos() const
 {
     return m_pos;
+}
+
+Float3 Element::model_pos() const
+{
+    Float3 fpos = {DIMX * (float) m_pos.v1, DIMY * (float) m_pos.v2, DIMZ * (float) m_pos.v3};
+    float fw = DIMX * (float) m_width;
+    float fh = DIMY * (float) m_height;
+
+    if (m_orientation == 3) {
+        return {fpos.v1, fpos.v2 + (fh - 1.0f) / 2.0f, fpos.v3 + (fw - 1.0f) / 2.0f};
+    } else if (m_orientation == 2) {
+        return {fpos.v1 - (fw - 1.0f) / 2.0f, fpos.v2 + (fh - 1.0f) / 2.0f, fpos.v3};
+    } else if (m_orientation == 1) {
+        return {fpos.v1, fpos.v2 + (fh - 1.0f) / 2.0f, fpos.v3 - (fw - 1.0f) / 2.0f};
+    } else {
+        return {fpos.v1 + (fw - 1.0f) / 2.0f, fpos.v2 + (fh - 1.0f) / 2.0f, fpos.v3};
+    }
 }
 
 int Element::width() const

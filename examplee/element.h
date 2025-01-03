@@ -7,6 +7,7 @@
 
 #include "brick_shape.h"
 #include "int3.h"
+#include "float3.h"
 #include "cad_model.h"
 
 #include <stdio.h>
@@ -31,14 +32,20 @@ public:
     Element(Int3 pos, int width, int height, int orientation);
     Element() = delete;
     virtual ~Element();
+    void remove();
+    void unremove();
+    bool removed() const;
     Int3 pos() const;
+    Float3 model_pos() const;
     int width() const;
     int height() const;
     int orientation() const;
+
     virtual void save_to_file(FILE* ffo) const;
     virtual const CadModel* model() const;
 protected:
 private:
+    bool m_removed;
     Int3 m_pos;
     int m_width;
     int m_height;
