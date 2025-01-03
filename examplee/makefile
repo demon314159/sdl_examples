@@ -34,6 +34,7 @@ HEADERS = view.h \
           brick_shape.h \
           element.h \
           vertex_image.h \
+          token_file.h \
           \
 # note: all of the files after toy.h are there for toy.cpp only
 #       they can be removed if toy.cpp doesn't need them anymore
@@ -71,6 +72,7 @@ OBJECTS = main.obj \
           brick_shape.obj \
           element.obj \
           vertex_image.obj \
+          token_file.obj \
           \
 # note: all of the files after toy.obj are there for toy.cpp only
 #       they can be removed if toy.cpp doesn't need them anymore

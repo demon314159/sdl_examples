@@ -2,11 +2,10 @@
 // bin_file.cpp
 //
 
+#include "bin_file.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/stat.h>
-
-#include "bin_file.h"
 
 #define notVERBOSE
 
