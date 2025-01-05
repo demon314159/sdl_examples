@@ -8,7 +8,7 @@
 #include "paint_can.h"
 
 #define BACKGROUND_COLOR PaintCan(0.5, 0.5, 0.5)
-#define BRICK_PAINT PaintCan(1.0, 1.0, 1.0)
+#define BRICK_PAINT PaintCan(1.0, 0.0, 0.0)
 
 class Look
 {

@@ -29,8 +29,9 @@ View::View(SDL_Window* window)
     , m_vao(0)
     , m_vbo(0)
     , m_frame(0)
-    , m_max_vertex_count(1024 * 1024)
-    , m_vertex_count(0)
+    , m_max_vertex_count(3 * 1024 * 1024)
+    , m_model_vertex_count(0)
+    , m_building_vertex_count(0)
     , m_toy(new Toy())
 {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -226,21 +227,36 @@ void View::initialize()
     glBindVertexArray(m_vao);
     glGenBuffers(1, &m_vbo);
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-    copy_facets();
+    glBufferStorage(GL_ARRAY_BUFFER, m_max_vertex_count * sizeof(VertexData), NULL, GL_DYNAMIC_STORAGE_BIT);
+    copy_model_facets();
+    copy_building_vertices();
 }
 
-void View::copy_facets()
+void View::copy_model_facets()
 {
     int facet_count = m_toy->model()->facets();
-    m_vertex_count = 3 * facet_count;
-    if (m_vertex_count > 0) {
-        VertexData* vertices = new VertexData[m_vertex_count];
+    m_model_vertex_count = 3 * facet_count;
+    printf("Model vertex count = %d\n", m_model_vertex_count);
+    if (m_model_vertex_count > 0) {
+        VertexData* vertices = new VertexData[m_model_vertex_count];
         int vix = 0;
         sub_copy_facets(m_toy->model(), vertices, vix);
         // Transfer vertex data to VBO
-        glBufferData(GL_ARRAY_BUFFER, m_vertex_count * sizeof(VertexData), vertices, GL_STATIC_DRAW);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, m_model_vertex_count * sizeof(VertexData), vertices);
         delete [] vertices;
     }
+}
+
+void View::copy_building_vertices()
+{
+    m_building_vertex_count = m_toy->get_doc()->building()->vertex_count();
+    printf("Building vertex count = %d\n", m_building_vertex_count);
+    if (m_building_vertex_count == 0) {
+        return;
+    }
+    const VertexData* vertices = m_toy->get_doc()->building()->vertex_data();
+    // Transfer vertex data to VBO 0
+    glBufferSubData(GL_ARRAY_BUFFER, m_model_vertex_count * sizeof(VertexData), m_building_vertex_count * sizeof(VertexData), vertices);
 }
 
 void View::sub_copy_facets(CadModel* model, VertexData* vertices, int& vix)
@@ -284,14 +300,6 @@ void View::resize(int w, int h)
 {
     glViewport(0, 0, w, h);
     m_toy->resize(w, h);
-}
-
-void View::check_storage()
-{
-    int fc = 3 * m_toy->model()->facets();
-    if (m_max_vertex_count > fc)
-        return;
-    m_max_vertex_count = max(2 * m_max_vertex_count, 2 * fc);
 }
 
 void View::render()
@@ -343,7 +351,7 @@ void View::render()
         }
     }
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    glDrawArrays(GL_TRIANGLES, 0, m_vertex_count);
+    glDrawArrays(GL_TRIANGLES, 0, m_model_vertex_count + m_building_vertex_count);
     glDisableVertexAttribArray(m_texture_id_attr);
     glDisableVertexAttribArray(m_animation_id_attr);
     glDisableVertexAttribArray(m_texture_position_attr);

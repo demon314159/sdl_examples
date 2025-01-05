@@ -15,8 +15,8 @@ Document::Document(int max_elements)
     , m_changed_ix(0)
     , m_max_elements(max_elements)
     , m_elements(0)
-    , m_building(new VertexImage())
-    , m_glass(new VertexImage())
+    , m_building(new VertexImage(1024 * 1024))
+    , m_glass(new VertexImage(128 * 1024))
 {
     m_element_ptr = new Element*[m_max_elements];
     m_building_index = new int[m_max_elements];
@@ -143,11 +143,11 @@ bool Document::load(const char* file_name, char* error_message)
         return false;
     if (!expect(tf, "Document", error_message))
         return false;
-    if (!expect(tf, "v0", error_message))
+    if (!expect(tf, "v1", error_message))
         return false;
     if (!expect(tf, ".", error_message))
         return false;
-    if (!expect(tf, "2", error_message))
+    if (!expect(tf, "0", error_message))
         return false;
     if (!expect(tf, ".", error_message))
         return false;
@@ -195,7 +195,7 @@ bool Document::save(const char* file_name, char* error_message) const
         sprintf(error_message, "Error opening file '%s'", file_name);
         return false;
     }
-    fprintf(ffo, "Bricks Document v0.2.0\n");
+    fprintf(ffo, "Bricks Document v1.0.0\n");
     for (int i = 0; i < m_elements; i++) {
         if (!m_element_ptr[i]->removed()) {
             m_element_ptr[i]->save_to_file(ffo);
@@ -253,11 +253,12 @@ bool Document::parse_integer3(TokenFile& tf, int& x, int& y, int& z, char* error
 
 bool Document::parse_integer(TokenFile& tf, int &v, char* error_message)
 {
+    bool neg_flag = false;
     char s[MAX_TOKEN_CHARS + 1];
     s[0] = 0;
 
-    if (tf.current() == "+" || tf.current() == "-") {
-        strcat(s, tf.current());
+    if (0 == strcmp(tf.current(), "+") || 0 == strcmp(tf.current(), "-")) {
+        neg_flag = 0 == strcmp(tf.current(), "-");
         tf.advance();
     }
     if (!tf.is_unsigned_integer()) {
@@ -266,7 +267,11 @@ bool Document::parse_integer(TokenFile& tf, int &v, char* error_message)
     }
     strcat(s, tf.current());
     tf.advance();
-    v = atoi(s);
+    if (neg_flag) {
+        v = -atoi(s);
+    } else {
+        v = atoi(s);
+    }
     return true;
 }
 

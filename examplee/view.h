@@ -30,9 +30,8 @@ public:
 
 protected:
     bool init_shaders();
-    void check_storage();
-    void copy_vertices();
-    void copy_facets();
+    void copy_model_facets();
+    void copy_building_vertices();
     void sub_copy_facets(CadModel* model, VertexData* vertices, int& vix);
 
 private:
@@ -52,7 +51,8 @@ private:
     unsigned int m_vbo;
     int m_frame;
     int m_max_vertex_count;
-    int m_vertex_count;
+    int m_model_vertex_count;
+    int m_building_vertex_count;
     Toy* m_toy;
 
     std::chrono::high_resolution_clock::time_point m_last_time_point;

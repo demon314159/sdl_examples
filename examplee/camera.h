@@ -7,6 +7,7 @@
 
 #include "matrix4x4.h"
 #include "cad_model.h"
+#include "bounding_box.h"
 #include "pose.h"
 #include "float3.h"
 
@@ -24,6 +25,7 @@ public:
 
     void resize(int width, int height);
     void frame(const CadModel* model);
+    void frame(const BoundingBox& bb);
 
     void zoom_home();
     void zoom(float factor);

@@ -67,6 +67,11 @@ void Camera::resize(int width, int height)
 void Camera::frame(const CadModel* model)
 {
     BoundingBox bb = model->bounding_box();
+    frame(bb);
+}
+
+void Camera::frame(const BoundingBox& bb)
+{
     float dx = (bb.vmax.v1 - bb.vmin.v1) / 2.0;
     float dy = (bb.vmax.v2 - bb.vmin.v2) / 2.0;
     float dz = (bb.vmax.v3 - bb.vmin.v3) / 2.0;

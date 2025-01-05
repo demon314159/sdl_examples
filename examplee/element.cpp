@@ -55,17 +55,17 @@ Int3 Element::pos() const
 Float3 Element::model_pos() const
 {
     Float3 fpos = {DIMX * (float) m_pos.v1, DIMY * (float) m_pos.v2, DIMZ * (float) m_pos.v3};
-    float fw = DIMX * (float) m_width;
-    float fh = DIMY * (float) m_height;
+    float fw = DIMX * (float) (m_width - 1);
+    float fh = DIMY * (float) (m_height - 1);
 
     if (m_orientation == 3) {
-        return {fpos.v1, fpos.v2 + (fh - 1.0f) / 2.0f, fpos.v3 + (fw - 1.0f) / 2.0f};
+        return {fpos.v1, fpos.v2 + fh / 2.0f, fpos.v3 + fw / 2.0f};
     } else if (m_orientation == 2) {
-        return {fpos.v1 - (fw - 1.0f) / 2.0f, fpos.v2 + (fh - 1.0f) / 2.0f, fpos.v3};
+        return {fpos.v1 - fw / 2.0f, fpos.v2 + fh / 2.0f, fpos.v3};
     } else if (m_orientation == 1) {
-        return {fpos.v1, fpos.v2 + (fh - 1.0f) / 2.0f, fpos.v3 - (fw - 1.0f) / 2.0f};
+        return {fpos.v1, fpos.v2 + fh / 2.0f, fpos.v3 - fw / 2.0f};
     } else {
-        return {fpos.v1 + (fw - 1.0f) / 2.0f, fpos.v2 + (fh - 1.0f) / 2.0f, fpos.v3};
+        return {fpos.v1 + fw / 2.0f, fpos.v2 + fh / 2.0f, fpos.v3};
     }
 }
 

@@ -1,6 +1,7 @@
 
 #include "vertex_image.h"
 #include "cad_model.h"
+#include <math.h>
 
 VertexImage::VertexImage(int max_vertex_count)
     : m_max_vertex_count(max_vertex_count)
@@ -136,5 +137,18 @@ void VertexImage::update_element(int start_ix, const Element* e, bool transparen
 const VertexData* VertexImage::vertex_data() const
 {
     return m_vertex_data;
+}
+
+void VertexImage::update_bounding_box(BoundingBox& bb) const
+{
+    for (int i = 0; i < m_vertex_count; i++) {
+        Float3 v = m_vertex_data[i].position;
+        bb.vmin.v1 = fmin(bb.vmin.v1, v.v1);
+        bb.vmin.v2 = fmin(bb.vmin.v2, v.v2);
+        bb.vmin.v3 = fmin(bb.vmin.v3, v.v3);
+        bb.vmax.v1 = fmax(bb.vmax.v1, v.v1);
+        bb.vmax.v2 = fmax(bb.vmax.v2, v.v2);
+        bb.vmax.v3 = fmax(bb.vmax.v3, v.v3);
+    }
 }
 

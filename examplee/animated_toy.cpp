@@ -11,9 +11,9 @@
 #define INITIAL_HEIGHT 512
 #define INITIAL_WIDTH ((INITIAL_HEIGHT * 1920) / 1080)
 #define INITIAL_MAG  0.9
-#define INITIAL_XOFF  -0.050
-#define INITIAL_YOFF  -0.030
-#define INITIAL_XROT 90.0
+#define INITIAL_XOFF  0.0
+#define INITIAL_YOFF  0.0
+#define INITIAL_XROT 30.0
 #define INITIAL_YROT 0.0
 
 AnimatedToy::AnimatedToy()
