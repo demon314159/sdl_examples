@@ -230,13 +230,13 @@ void View::initialize()
     glBufferStorage(GL_ARRAY_BUFFER, m_max_vertex_count * sizeof(VertexData), NULL, GL_DYNAMIC_STORAGE_BIT);
     copy_model_facets();
     copy_building_vertices();
+    m_toy->get_doc()->clear_changes();
 }
 
 void View::copy_model_facets()
 {
     int facet_count = m_toy->model()->facets();
     m_model_vertex_count = 3 * facet_count;
-    printf("Model vertex count = %d\n", m_model_vertex_count);
     if (m_model_vertex_count > 0) {
         VertexData* vertices = new VertexData[m_model_vertex_count];
         int vix = 0;
@@ -250,13 +250,26 @@ void View::copy_model_facets()
 void View::copy_building_vertices()
 {
     m_building_vertex_count = m_toy->get_doc()->building()->vertex_count();
-    printf("Building vertex count = %d\n", m_building_vertex_count);
     if (m_building_vertex_count == 0) {
         return;
     }
     const VertexData* vertices = m_toy->get_doc()->building()->vertex_data();
     // Transfer vertex data to VBO 0
     glBufferSubData(GL_ARRAY_BUFFER, m_model_vertex_count * sizeof(VertexData), m_building_vertex_count * sizeof(VertexData), vertices);
+}
+
+void View::copy_changed_building_vertices()
+{
+    Document* doc = m_toy->get_doc();
+    m_building_vertex_count = doc->building()->vertex_count(); // In case this has grown
+    int ix = doc->changed_ix();
+    if (ix < doc->elements()) {
+        int this_start = doc->building_index(ix);
+        int next_start = doc->building_index(ix + 1); // This works when ix + 1 is beyond last element
+        int n = next_start - this_start;
+        const VertexData* vertices = doc->building()->vertex_data();
+        glBufferSubData(GL_ARRAY_BUFFER, (m_model_vertex_count + this_start) * sizeof(VertexData), n * sizeof(VertexData), vertices + this_start);
+    }
 }
 
 void View::sub_copy_facets(CadModel* model, VertexData* vertices, int& vix)
@@ -308,6 +321,19 @@ void View::render()
     unsigned long real_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(this_time_point - m_last_time_point).count();
     m_last_time_point = this_time_point;
     m_toy->advance(real_ns);
+
+    if (m_toy->get_doc()->just_one_change() || m_toy->get_doc()->many_changes()) {
+        if (m_toy->get_doc()->just_one_change()) {
+            copy_changed_building_vertices();
+        } else {
+            copy_building_vertices();
+        }
+        m_toy->get_doc()->clear_changes();
+        BoundingBox bb = m_toy->model()->bounding_box();
+        m_toy->get_doc()->building()->update_bounding_box(bb);
+        m_toy->get_camera()->frame(bb);
+
+    }
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glUseProgram(m_program);
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);

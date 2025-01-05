@@ -14,7 +14,9 @@ public:
     Toy();
     ~Toy();
 
+    bool button(int code, bool shifted, bool on) override;
     Document* get_doc() const;
+    Camera* get_camera() const;
 
 private:
     Document* m_doc;

@@ -32,6 +32,7 @@ protected:
     bool init_shaders();
     void copy_model_facets();
     void copy_building_vertices();
+    void copy_changed_building_vertices();
     void sub_copy_facets(CadModel* model, VertexData* vertices, int& vix);
 
 private:

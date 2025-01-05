@@ -89,8 +89,9 @@ void Document::add_element(Element* e)
     m_element_ptr[m_elements] = e;
     m_building_index[m_elements] = m_building->vertex_count();
     m_glass_index[m_elements] = m_glass->vertex_count();
-    if (m_elements == 0)
-        m_many_changes = true;
+    if (m_elements == 0) {
+        note_many_changes();
+    }
 
     m_building->add_element(e, false);
     m_glass->add_element(e, true);
