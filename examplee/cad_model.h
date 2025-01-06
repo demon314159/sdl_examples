@@ -46,6 +46,7 @@ public:
     Float2 facet_texture_v2(int facet_ix) const;
     Float2 facet_texture_v3(int facet_ix) const;
     BoundingBox bounding_box() const;
+    void update_bounding_box(BoundingBox& bb) const;
 
 private:
     int m_facet_count;

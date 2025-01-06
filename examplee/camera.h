@@ -53,8 +53,8 @@ private:
     float m_camz;
     Float2 m_offset;
     Float2 m_rotation;
-    float m_model_radius;
-    Float3 m_model_center;
+    float m_object_radius;
+    Float3 m_object_center;
     Matrix4x4 m_projection;
     Matrix4x4 m_mvp_matrix;
     Matrix4x4 m_rot_matrix;

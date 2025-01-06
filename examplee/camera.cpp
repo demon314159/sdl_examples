@@ -19,8 +19,8 @@ Camera::Camera(int width, int height, float initial_mag, const Float2& initial_o
     , m_camz(0.0)
     , m_offset(initial_offset)
     , m_rotation(initial_rotation)
-    , m_model_radius(1.0)
-    , m_model_center({0.0, 0.0, 0.0})
+    , m_object_radius(1.0)
+    , m_object_center({0.0, 0.0, 0.0})
     , m_projection()
     , m_mvp_matrix()
     , m_rot_matrix()
@@ -43,8 +43,8 @@ void Camera::reconstruct(int width, int height, float initial_mag, const Float2&
     m_camz = 0.0;
     m_offset = initial_offset;
     m_rotation = initial_rotation;
-    m_model_radius = 1.0;
-    m_model_center = {0.0, 0.0, 0.0};
+    m_object_radius = 1.0;
+    m_object_center = {0.0, 0.0, 0.0};
 }
 
 int Camera::width() const
@@ -75,13 +75,13 @@ void Camera::frame(const BoundingBox& bb)
     float dx = (bb.vmax.v1 - bb.vmin.v1) / 2.0;
     float dy = (bb.vmax.v2 - bb.vmin.v2) / 2.0;
     float dz = (bb.vmax.v3 - bb.vmin.v3) / 2.0;
-    m_model_radius = sqrt(dx*dx + dy*dy + dz*dz);
-    m_model_center.v1 = (bb.vmin.v1 + bb.vmax.v1) / 2.0;
-    m_model_center.v2 = (bb.vmin.v2 + bb.vmax.v2) / 2.0;
-    m_model_center.v3 = (bb.vmin.v3 + bb.vmax.v3) / 2.0;
+    m_object_radius = sqrt(dx*dx + dy*dy + dz*dz);
+    m_object_center.v1 = (bb.vmin.v1 + bb.vmax.v1) / 2.0;
+    m_object_center.v2 = (bb.vmin.v2 + bb.vmax.v2) / 2.0;
+    m_object_center.v3 = (bb.vmin.v3 + bb.vmax.v3) / 2.0;
     float q = tan(m_fov * (PI / 180.0) / 2.0);
-    m_camz = m_model_radius / q;
-    m_camz -= m_model_radius;
+    m_camz = m_object_radius / q;
+    m_camz -= m_object_radius;
     update_matrices();
 }
 
@@ -126,7 +126,7 @@ void Camera::translate_x(int pixels)
     // convert int pixels to float dx
     float q = tan(m_fov * (PI / 180.0) / (2.0 * m_mag));
     float aspect = float(m_width) / float(m_height ? m_height : 1.0);
-    float wx = aspect * (m_camz + m_model_radius) * q;
+    float wx = aspect * (m_camz + m_object_radius) * q;
     float ratio = (float) pixels / fmax(1.0, (float) m_width);
     float dx = wx * ratio;
     m_offset.v1 += dx;
@@ -137,7 +137,7 @@ void Camera::translate_y(int pixels)
 {
     // convert int pixels to float dy
     float q = tan(m_fov * (PI / 180.0) / (2.0 * m_mag));
-    float wy = (m_camz + m_model_radius) * q;
+    float wy = (m_camz + m_object_radius) * q;
     float ratio = (float) pixels / fmax(1.0, (float) m_height);
     float dy = -wy * ratio;
     m_offset.v2 += dy;
@@ -147,16 +147,16 @@ void Camera::translate_y(int pixels)
 void Camera::update_matrices()
 {
     float znear = 0.1;
-    float zfar = m_camz + 2.0 * m_model_radius;
+    float zfar = m_camz + 2.0 * m_object_radius;
     float aspect = float(m_width) / float(m_height ? m_height : 1.0);
     m_projection.perspective(m_fov / m_mag, aspect, znear, zfar);
 
     Matrix4x4 matrix;
     matrix.unity();
-    matrix.translate(m_offset.v1, m_offset.v2, -m_camz - m_model_radius);
+    matrix.translate(m_offset.v1, m_offset.v2, -m_camz - m_object_radius);
     matrix.rotate_ay(m_rotation.v2);
     matrix.rotate_ax(m_rotation.v1);
-    matrix.translate(-m_model_center.v1, -m_model_center.v2, -m_model_center.v3);
+    matrix.translate(-m_object_center.v1, -m_object_center.v2, -m_object_center.v3);
     m_mvp_matrix = m_projection * matrix;
     m_rot_matrix = matrix;
 }

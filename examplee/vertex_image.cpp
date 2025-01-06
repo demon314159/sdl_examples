@@ -139,6 +139,24 @@ const VertexData* VertexImage::vertex_data() const
     return m_vertex_data;
 }
 
+BoundingBox VertexImage::bounding_box() const
+{
+    BoundingBox bb;
+    if (m_vertex_count == 0) {
+        bb.vmin.v1 = -0.5;
+        bb.vmin.v2 = 0.0;
+        bb.vmin.v3 = -0.5;
+        bb.vmax.v1 = 0.5;
+        bb.vmax.v2 = 1.0;
+        bb.vmax.v3 = 0.5;
+        return bb;
+    }
+    bb.vmin = m_vertex_data[0].position;
+    bb.vmax = m_vertex_data[0].position;
+    update_bounding_box(bb);
+    return bb;
+}
+
 void VertexImage::update_bounding_box(BoundingBox& bb) const
 {
     for (int i = 0; i < m_vertex_count; i++) {
