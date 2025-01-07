@@ -5,12 +5,6 @@
 #include "element.h"
 #include "look.h"
 
-#define UNIT_SQUARE 0.1f
-#define DIMX  UNIT_SQUARE
-#define DIMY  (UNIT_SQUARE * 2.0f / 3.0f)
-#define DIMZ  UNIT_SQUARE
-#define DIMB  (UNIT_SQUARE / 40.0f)
-
 Element::Element(Int3 pos, int width, int height, int orientation)
     : m_removed(false)
     , m_pos(pos)
@@ -102,6 +96,29 @@ const CadModel* Element::model() const
         }
     }
     return &m_model;
+}
+
+bool Element::contains(int x, int y, int z) const
+{
+    if (m_orientation == 3) {
+        return m_pos.v1 == x && in_range(y, m_pos.v2, m_pos.v2 + m_height - 1) && in_range(z, m_pos.v3, m_pos.v3 + m_width - 1);
+    } else if (m_orientation == 2) {
+        return in_range(x, m_pos.v1, m_pos.v1 - m_width + 1) && in_range(y, m_pos.v2, m_pos.v2 + m_height - 1) && m_pos.v3 == z;
+    } else if (m_orientation == 1) {
+        return m_pos.v1 == x && in_range(y, m_pos.v2, m_pos.v2 + m_height - 1) && in_range(z, m_pos.v3, m_pos.v3 - m_width + 1);
+    } else {
+        return in_range(x, m_pos.v1, m_pos.v1 + m_width - 1) && in_range(y, m_pos.v2, m_pos.v2 + m_height - 1) && m_pos.v3 == z;
+    }
+    return false;
+}
+
+bool Element::in_range(int v, int v1, int v2) const
+{
+    if (v1 > v2) {
+        return v >= v2 && v <= v1;
+    } else {
+        return v >= v1 && v <= v2;
+    }
 }
 
 CadModel Element::m_halfbrick_model(BrickShape(DIMX, DIMY, DIMZ, DIMB), BRICK_PAINT, 0.0);

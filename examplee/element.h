@@ -26,6 +26,12 @@
 #define FRONT_FACE  4
 #define BACK_FACE   5
 
+#define UNIT_SQUARE 0.1f
+#define DIMX  UNIT_SQUARE
+#define DIMY  (UNIT_SQUARE * 2.0f / 3.0f)
+#define DIMZ  UNIT_SQUARE
+#define DIMB  (UNIT_SQUARE / 40.0f)
+
 class Element
 {
 public:
@@ -40,6 +46,7 @@ public:
     int width() const;
     int height() const;
     int orientation() const;
+    bool contains(int x, int y, int z) const;
 
     virtual void save_to_file(FILE* ffo) const;
     virtual const CadModel* model() const;
@@ -51,6 +58,7 @@ private:
     int m_height;
     int m_orientation;
     CadModel m_model;
+    bool in_range(int v, int v1, int v2) const;
     static CadModel m_halfbrick_model;
     static CadModel m_brick_model_ns;
     static CadModel m_brick_model_ew;
