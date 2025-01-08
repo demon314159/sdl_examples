@@ -37,6 +37,7 @@ HEADERS = view.h \
           token_file.h \
           document.h \
           mouse_vector.h \
+          choose.h \
           \
 # note: all of the files after toy.h are there for toy.cpp only
 #       they can be removed if toy.cpp doesn't need them anymore
@@ -77,6 +78,7 @@ OBJECTS = main.obj \
           token_file.obj \
           document.obj \
           mouse_vector.obj \
+          choose.obj \
           \
 # note: all of the files after toy.obj are there for toy.cpp only
 #       they can be removed if toy.cpp doesn't need them anymore

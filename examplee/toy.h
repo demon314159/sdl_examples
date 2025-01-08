@@ -7,6 +7,7 @@
 
 #include "animated_toy.h"
 #include "document.h"
+#include "choose.h"
 
 class Toy: public AnimatedToy
 {
@@ -16,12 +17,17 @@ public:
 
     bool button(int code, bool shifted, bool on) override;
     bool mouse(SDL_Event* e, bool on) override;
+    void advance(int nanoseconds) override;
     Document* get_doc() const;
     Camera* get_camera() const;
 
 private:
     Document* m_doc;
+    Choose* m_choose;
+    float m_seconds;
     void build_model();
+    void build_uniform();
+    void update_uniform();
     bool top_face_selection(int sx, int sy, Int3& pos) const;
     Int3 coord_at_level(int iy, const MouseVector& mv) const;
 };

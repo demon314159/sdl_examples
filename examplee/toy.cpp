@@ -7,10 +7,16 @@
 #include <math.h>
 #include <stdio.h>
 
+#define MARKER_COLOR PaintCan(0.0, 1.0, 0.0)
+#define MARKER_ANIMATION_ID 2.0f
+
 Toy::Toy()
     : m_doc(new Document("first.brk"))
+    , m_choose(new Choose(DIMX, DIMY, DIMZ, MARKER_COLOR))
+    , m_seconds(0.0)
 {
     build_model();
+    build_uniform();
     BoundingBox bb = m_model->bounding_box();
     m_doc->building()->update_bounding_box(bb);
     m_camera->frame(bb);
@@ -18,6 +24,7 @@ Toy::Toy()
 
 Toy::~Toy()
 {
+    delete m_choose;
     delete m_doc;
 }
 
@@ -40,6 +47,29 @@ void Toy::build_model()
     m_model->add(csx, 0.0, 0.0, 0.0);
     m_model->add(csy, 0.0, 0.0, 0.0);
     m_model->add(csz, 0.0, 0.0, 0.0);
+    m_model->add(m_choose->model(MARKER_ANIMATION_ID));
+}
+
+void Toy::build_uniform()
+{
+    m_uniform->add("animation_0_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_choose->data());
+}
+
+void Toy::update_uniform()
+{
+    m_choose->data();
+}
+
+void Toy::advance(int nanoseconds)
+{
+    AnimatedToy::advance(nanoseconds);
+    m_seconds += (1.0e-9 * (float) nanoseconds);
+    float seconds = 1.0e-3;
+    while (m_seconds > seconds) {
+        m_seconds -= seconds;
+
+    }
+    update_uniform();
 }
 
 bool Toy::button(int code, bool shifted, bool on)
@@ -106,7 +136,9 @@ bool Toy::mouse(SDL_Event* e, bool on)
         if (on) {
             Int3 pos;
             if (top_face_selection(e->button.x, e->button.y, pos)) {
-                printf("Selected %d, %d, %d\n", pos.v1, pos.v2, pos.v3);
+                pos.v2++;
+                m_choose->select_choice(pos);
+                printf("Selected empty space %d, %d, %d\n", pos.v1, pos.v2, pos.v3);
             }
         } else {
 
