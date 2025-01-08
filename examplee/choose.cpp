@@ -57,16 +57,16 @@ bool Choose::new_element_chosen(Int3& pos, int& width, int& orientation) const
         pos = m_first_choice;
         if (zspan > 0) {
             orientation = 3;
-            width = zspan;
+            width = zspan + 1;
         } else if (xspan < 0) {
             orientation = 2;
-            width = -xspan;
+            width = -xspan + 1;
         } else if (zspan < 0) {
             orientation = 1;
-            width = -zspan;
+            width = -zspan + 1;
         } else if (xspan > 0) {
             orientation = 0;
-            width = xspan;
+            width = xspan + 1;
         } else {
             orientation = 0;
             width = 1;

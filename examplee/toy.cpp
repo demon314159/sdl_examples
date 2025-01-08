@@ -113,14 +113,24 @@ bool Toy::top_face_selection(int sx, int sy, Int3& pos) const
         }
     }
     // Check to see if final candidate has anything above it
-    for (int i = 0; i < m_doc->elements(); i++) {
-        const Element* e = m_doc->element(i);
-        if (e->contains(sel_pos.v1, sel_pos.v2 + 1, sel_pos.v3)) {
-            return false;
-        }
+    if (m_doc->occupied(sel_pos.v1, sel_pos.v2 + 1, sel_pos.v3)) {
+        return false;
     }
     pos = sel_pos;
     return true;
+}
+
+bool Toy::buddy_occupied(Int3 pos, int orientation) const
+{
+    if (orientation == 3) {
+        return m_doc->occupied(pos.v1, pos.v2, pos.v3 + 1);
+    } else if (orientation == 2) {
+        return m_doc->occupied(pos.v1 - 1, pos.v2, pos.v3);
+    } else if (orientation == 1) {
+        return m_doc->occupied(pos.v1, pos.v2, pos.v3 - 1);
+    } else {
+        return m_doc->occupied(pos.v1 + 1, pos.v2, pos.v3);
+    }
 }
 
 bool Toy::mouse(SDL_Event* e, bool on)
@@ -138,10 +148,24 @@ bool Toy::mouse(SDL_Event* e, bool on)
             if (top_face_selection(e->button.x, e->button.y, pos)) {
                 pos.v2++;
                 m_choose->select_choice(pos);
-                printf("Selected empty space %d, %d, %d\n", pos.v1, pos.v2, pos.v3);
+                Int3 p;
+                int w;
+                int o;
+                if (m_choose->new_element_chosen(p, w, o)) {
+                    if (w == 1) {
+                        printf("Add half brick at (%d, %d, %d) width %d, orienation %d\n", p.v1, p.v2, p.v3, w, o);
+                    } else if (w > 1) {
+                        w = 2;
+                        if (!buddy_occupied(p, o)) {
+                            printf("Add whold brick at (%d, %d, %d) width %d, orienation %d\n", p.v1, p.v2, p.v3, w, o);
+                        }
+                    }
+                    m_choose->select_no_choice();
+                }
+            } else {
+                m_choose->select_no_choice();
             }
         } else {
-
         }
     } else if (e->button.button == SDL_BUTTON_RIGHT) {
         if (on) {

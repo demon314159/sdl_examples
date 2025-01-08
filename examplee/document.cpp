@@ -341,3 +341,13 @@ int Document::glass_index(int ix) const
     return m_glass_index[ix];
 }
 
+bool Document::occupied(int x, int y, int z) const
+{
+    for (int i = 0; i < m_elements; i++) {
+        const Element* e = element(i);
+        if (e->contains(x, y, z)) {
+            return true;
+        }
+    }
+    return false;
+}

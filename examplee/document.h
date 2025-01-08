@@ -46,6 +46,7 @@ public:
     const VertexImage* glass() const;
     int building_index(int ix) const;
     int glass_index(int ix) const;
+    bool occupied(int x, int y, int z) const;
 
 private:
     bool m_one_change;

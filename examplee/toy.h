@@ -30,6 +30,7 @@ private:
     void update_uniform();
     bool top_face_selection(int sx, int sy, Int3& pos) const;
     Int3 coord_at_level(int iy, const MouseVector& mv) const;
+    bool buddy_occupied(Int3 pos, int orientation) const;
 };
 
 #endif // _TOY_H_
