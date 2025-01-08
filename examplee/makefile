@@ -38,6 +38,8 @@ HEADERS = view.h \
           document.h \
           mouse_vector.h \
           choose.h \
+          command.h \
+          history.h \
           \
 # note: all of the files after toy.h are there for toy.cpp only
 #       they can be removed if toy.cpp doesn't need them anymore
@@ -79,6 +81,8 @@ OBJECTS = main.obj \
           document.obj \
           mouse_vector.obj \
           choose.obj \
+          command.obj \
+          history.obj \
           \
 # note: all of the files after toy.obj are there for toy.cpp only
 #       they can be removed if toy.cpp doesn't need them anymore

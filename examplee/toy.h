@@ -8,6 +8,7 @@
 #include "animated_toy.h"
 #include "document.h"
 #include "choose.h"
+#include "history.h"
 
 class Toy: public AnimatedToy
 {
@@ -23,6 +24,7 @@ public:
 
 private:
     Document* m_doc;
+    History* m_history;
     Choose* m_choose;
     float m_seconds;
     void build_model();

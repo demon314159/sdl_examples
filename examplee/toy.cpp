@@ -12,6 +12,7 @@
 
 Toy::Toy()
     : m_doc(new Document("first.brk"))
+    , m_history(new History())
     , m_choose(new Choose(DIMX, DIMY, DIMZ, MARKER_COLOR))
     , m_seconds(0.0)
 {
@@ -25,6 +26,7 @@ Toy::Toy()
 Toy::~Toy()
 {
     delete m_choose;
+    delete m_history;
     delete m_doc;
 }
 
@@ -81,6 +83,16 @@ bool Toy::button(int code, bool shifted, bool on)
         case SDL_SCANCODE_C:
             if (on) {
                 m_doc->add_element(new Element({0, 2, 0}, 1, 1, 0));
+            }
+            break;
+        case SDL_SCANCODE_U:
+            if (on) {
+                m_history->undo_command();
+            }
+            break;
+        case SDL_SCANCODE_R:
+            if (on) {
+                m_history->redo_command();
             }
             break;
         default:
@@ -154,10 +166,12 @@ bool Toy::mouse(SDL_Event* e, bool on)
                 if (m_choose->new_element_chosen(p, w, o)) {
                     if (w == 1) {
                         printf("Add half brick at (%d, %d, %d) width %d, orienation %d\n", p.v1, p.v2, p.v3, w, o);
+                        m_history->do_command(new AddElementCommand(new Element(p, w, 1, o), m_doc));
                     } else if (w > 1) {
                         w = 2;
                         if (!buddy_occupied(p, o)) {
                             printf("Add whold brick at (%d, %d, %d) width %d, orienation %d\n", p.v1, p.v2, p.v3, w, o);
+                            m_history->do_command(new AddElementCommand(new Element(p, w, 1, o), m_doc));
                         }
                     }
                     m_choose->select_no_choice();
