@@ -5,10 +5,8 @@
 #include "toy.h"
 #include "cube_shape.h"
 #include <math.h>
+#include "look.h"
 #include <stdio.h>
-
-#define MARKER_COLOR PaintCan(0.0, 1.0, 0.0)
-#define MARKER_ANIMATION_ID 2.0f
 
 Toy::Toy()
     : m_doc(new Document("first.brk"))
@@ -165,13 +163,15 @@ bool Toy::mouse(SDL_Event* e, bool on)
                 int o;
                 if (m_choose->new_element_chosen(p, w, o)) {
                     if (w == 1) {
-                        printf("Add half brick at (%d, %d, %d) width %d, orienation %d\n", p.v1, p.v2, p.v3, w, o);
                         m_history->do_command(new AddElementCommand(new Element(p, w, 1, o), m_doc));
                     } else if (w > 1) {
                         w = 2;
                         if (!buddy_occupied(p, o)) {
-                            printf("Add whold brick at (%d, %d, %d) width %d, orienation %d\n", p.v1, p.v2, p.v3, w, o);
-                            m_history->do_command(new AddElementCommand(new Element(p, w, 1, o), m_doc));
+
+//                            m_history->do_command(new AddElementCommand(new DoorElement(p, o), m_doc));
+                            m_history->do_command(new AddElementCommand(new WindowElement(p, o), m_doc));
+//                            m_history->do_command(new AddElementCommand(new Element(p, w, 1, o), m_doc));
+
                         }
                     }
                     m_choose->select_no_choice();

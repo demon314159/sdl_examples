@@ -4,6 +4,8 @@
 
 #include "element.h"
 #include "look.h"
+#include "door_model.h"
+#include "window_model.h"
 
 Element::Element(Int3 pos, int width, int height, int orientation)
     : m_removed(false)
@@ -15,9 +17,9 @@ Element::Element(Int3 pos, int width, int height, int orientation)
 {
     if (m_width > 2 || m_height > 1) {
         if (orientation == 0 || orientation == 2) {
-            m_model = CadModel(BrickShape(DIMX * (float) m_width, DIMY * (float) m_height, DIMZ, DIMB), BRICK_PAINT, 0.0);
+            m_model.add(BrickShape(DIMX * (float) m_width, DIMY * (float) m_height, DIMZ, DIMB), BRICK_PAINT, 0.0);
         } else {
-            m_model = CadModel(BrickShape(DIMX, DIMY * (float) m_height, DIMZ * (float) m_width, DIMB), BRICK_PAINT, 0.0);
+            m_model.add (BrickShape(DIMX, DIMY * (float) m_height, DIMZ * (float) m_width, DIMB), BRICK_PAINT, 0.0);
         }
     }
 }
@@ -125,3 +127,52 @@ CadModel Element::m_halfbrick_model(BrickShape(DIMX, DIMY, DIMZ, DIMB), BRICK_PA
 CadModel Element::m_brick_model_ns(BrickShape(DIMX * 2.0f, DIMY, DIMZ, DIMB), BRICK_PAINT, 0.0);
 CadModel Element::m_brick_model_ew(BrickShape(DIMX, DIMY, DIMZ * 2.0f, DIMB), BRICK_PAINT, 0.0);
 
+WindowElement::WindowElement(Int3 pos, int orientation)
+    : Element(pos, 2, 4, orientation)
+    , m_model()
+{
+    m_model.add(WindowModel(DIMX * (float) m_width, DIMY * (float) m_height, DIMZ, DIMB, 1, 2, 0.0), 0.0, 0.0, 0.0);
+    if (orientation == 1) {
+        m_model.rotate_ay(90.0);
+    } else if (orientation == 2) {
+        m_model.rotate_ay(180.0);
+    } else if (orientation == 3) {
+        m_model.rotate_ay(270.0);
+    }
+}
+
+void WindowElement::save_to_file(FILE* ffo) const
+{
+    fprintf(ffo, "Window(%0d, %0d, %0d, %0d)\n",
+        m_pos.v1, m_pos.v2, m_pos.v3, m_orientation);
+}
+
+const CadModel* WindowElement::model() const
+{
+    return &m_model;
+}
+
+DoorElement::DoorElement(Int3 pos, int orientation)
+    : Element(pos, 2, 6, orientation)
+    , m_model()
+{
+    m_model.add(DoorModel(DIMX * (float) m_width, DIMY * (float) m_height, DIMZ, DIMB, 2, 1, 0.0), 0.0, 0.0, 0.0);
+    if (orientation == 1) {
+        m_model.rotate_ay(90.0);
+    } else if (orientation == 2) {
+        m_model.rotate_ay(180.0);
+    } else if (orientation == 3) {
+        m_model.rotate_ay(270.0);
+    }
+}
+
+void DoorElement::save_to_file(FILE* ffo) const
+{
+    fprintf(ffo, "Door(%0d, %0d, %0d, %0d)\n",
+        m_pos.v1, m_pos.v2, m_pos.v3, m_orientation);
+}
+
+const CadModel* DoorElement::model() const
+{
+    return &m_model;
+}

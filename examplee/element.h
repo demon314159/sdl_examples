@@ -51,17 +51,41 @@ public:
     virtual void save_to_file(FILE* ffo) const;
     virtual const CadModel* model() const;
 protected:
-private:
     bool m_removed;
     Int3 m_pos;
     int m_width;
     int m_height;
     int m_orientation;
-    CadModel m_model;
     bool in_range(int v, int v1, int v2) const;
+private:
+    CadModel m_model;
     static CadModel m_halfbrick_model;
     static CadModel m_brick_model_ns;
     static CadModel m_brick_model_ew;
+};
+
+class WindowElement: public Element
+{
+public:
+    WindowElement(Int3 pos, int orientation);
+    WindowElement() = delete;
+    void save_to_file(FILE* ffo) const override;
+    const CadModel* model() const override;
+protected:
+private:
+    CadModel m_model;
+};
+
+class DoorElement: public Element
+{
+public:
+    DoorElement(Int3 pos, int orientation);
+    DoorElement() = delete;
+    void save_to_file(FILE* ffo) const override;
+    const CadModel* model() const override;
+protected:
+private:
+    CadModel m_model;
 };
 
 #endif // _ELEMENT_H_

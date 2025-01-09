@@ -40,6 +40,9 @@ HEADERS = view.h \
           choose.h \
           command.h \
           history.h \
+          frame_model.h \
+          door_model.h \
+          window_model.h \
           \
 # note: all of the files after toy.h are there for toy.cpp only
 #       they can be removed if toy.cpp doesn't need them anymore
@@ -83,6 +86,9 @@ OBJECTS = main.obj \
           choose.obj \
           command.obj \
           history.obj \
+          frame_model.obj \
+          door_model.obj \
+          window_model.obj \
           \
 # note: all of the files after toy.obj are there for toy.cpp only
 #       they can be removed if toy.cpp doesn't need them anymore
