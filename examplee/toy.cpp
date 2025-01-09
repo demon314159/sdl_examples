@@ -163,14 +163,15 @@ bool Toy::mouse(SDL_Event* e, bool on)
                 int o;
                 if (m_choose->new_element_chosen(p, w, o)) {
                     if (w == 1) {
-                        m_history->do_command(new AddElementCommand(new Element(p, w, 1, o), m_doc));
+                        m_history->do_command(new AddElementCommand(new HalfBrickElement(p), m_doc));
                     } else if (w > 1) {
                         w = 2;
                         Element* item;
 //                        item = new Element(p, w, 1, o);
+                        item = new BrickElement(p, o);
 //                        item = new DoubleBrickElement(p, o);
 //                        item = new TripleBrickElement(p, o);
-                        item = new GableBrickElement(p, o);
+//                        item = new GableBrickElement(p, o);
 //                        item = new WindowElement(p, o);
 //                        item = new DoorElement(p, o);
                         if (!m_doc->occupied(item)) {

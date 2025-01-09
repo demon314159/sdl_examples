@@ -128,6 +128,28 @@ CadModel Element::m_halfbrick_model(BrickShape(DIMX, DIMY, DIMZ, DIMB), BRICK_PA
 CadModel Element::m_brick_model_ns(BrickShape(DIMX * 2.0f, DIMY, DIMZ, DIMB), BRICK_PAINT, 0.0);
 CadModel Element::m_brick_model_ew(BrickShape(DIMX, DIMY, DIMZ * 2.0f, DIMB), BRICK_PAINT, 0.0);
 
+HalfBrickElement::HalfBrickElement(Int3 pos)
+    : Element(pos, 1, 1, 0)
+{
+}
+
+void HalfBrickElement::save_to_file(FILE* ffo) const
+{
+    fprintf(ffo, "HalfBrick(%0d, %0d, %0d)\n",
+        m_pos.v1, m_pos.v2, m_pos.v3);
+}
+
+BrickElement::BrickElement(Int3 pos, int orientation)
+    : Element(pos, 2, 1, orientation)
+{
+}
+
+void BrickElement::save_to_file(FILE* ffo) const
+{
+    fprintf(ffo, "Brick(%0d, %0d, %0d, %0d)\n",
+        m_pos.v1, m_pos.v2, m_pos.v3, m_orientation);
+}
+
 DoubleBrickElement::DoubleBrickElement(Int3 pos, int orientation)
     : Element(pos, 4, 1, orientation)
 {

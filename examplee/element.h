@@ -64,6 +64,26 @@ private:
     static CadModel m_brick_model_ew;
 };
 
+class HalfBrickElement: public Element
+{
+public:
+    HalfBrickElement(Int3 pos);
+    HalfBrickElement() = delete;
+    void save_to_file(FILE* ffo) const override;
+protected:
+private:
+};
+
+class BrickElement: public Element
+{
+public:
+    BrickElement(Int3 pos, int orientation);
+    BrickElement() = delete;
+    void save_to_file(FILE* ffo) const override;
+protected:
+private:
+};
+
 class DoubleBrickElement: public Element
 {
 public:
