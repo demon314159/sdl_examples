@@ -131,7 +131,8 @@ WindowElement::WindowElement(Int3 pos, int orientation)
     : Element(pos, 2, 4, orientation)
     , m_model()
 {
-    m_model.add(WindowModel(DIMX * (float) m_width, DIMY * (float) m_height, DIMZ, DIMB, 1, 2, 0.0), 0.0, 0.0, 0.0);
+//    m_model.add(WindowModel(DIMX * (float) m_width, DIMY * (float) m_height, DIMZ, DIMB, 1, 2, 0.0), 0.0, 0.0, 0.0);
+    m_model.add(WindowModel(DIMX * (float) m_width, DIMY * (float) m_height, DIMZ, DIMB, 2, 3, 0.0), 0.0, 0.0, 0.0);
     if (orientation == 1) {
         m_model.rotate_ay(90.0);
     } else if (orientation == 2) {

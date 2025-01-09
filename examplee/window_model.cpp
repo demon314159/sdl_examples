@@ -17,8 +17,8 @@ WindowModel::WindowModel(float dimx, float dimy, float dimz, float dimb, int vgr
     float f_sill = m_dimz / 10.0;
     float f_head = m_dimz / 10.0;
     float f_jamb = m_dimz / 10.0;
-    float f_rail = f_sill * 4.0;
-    float f_stile = f_jamb * 4.0;
+    float f_rail = f_sill * 2.0;
+    float f_stile = f_jamb * 2.0;
     float sill_offset = 0.75 * m_dimz / 2.0;
     float f_grille = f_jamb;
 
