@@ -47,6 +47,7 @@ public:
     int building_index(int ix) const;
     int glass_index(int ix) const;
     bool occupied(int x, int y, int z) const;
+    bool occupied(const Element* e) const;
 
 private:
     bool m_one_change;

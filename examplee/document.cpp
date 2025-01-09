@@ -351,3 +351,30 @@ bool Document::occupied(int x, int y, int z) const
     }
     return false;
 }
+
+bool Document::occupied(const Element* e) const
+{
+   Int3 pos = e->pos();
+   int width = e->width();
+   int height = e->height();
+   int orientation = e->orientation();
+   for (int h = 0; h < height; h++) {
+       for (int w = 0; w < width; w++) {
+           bool res;
+           if (orientation == 3) {
+               res = occupied(pos.v1, pos.v2 + h, pos.v3 + w);
+           } else if (orientation == 2) {
+               res = occupied(pos.v1 -w, pos.v2 + h, pos.v3);
+           } else if (orientation == 1) {
+               res = occupied(pos.v1, pos.v2 + h, pos.v3 - w);
+           } else {
+               res = occupied(pos.v1 + w, pos.v2 + h, pos.v3);
+           }
+           if (res) {
+               return true;
+           }
+       }
+   }
+    return false;
+}
+

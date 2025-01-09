@@ -43,6 +43,7 @@ HEADERS = view.h \
           frame_model.h \
           door_model.h \
           window_model.h \
+          gable_brick_shape.h \
           \
 # note: all of the files after toy.h are there for toy.cpp only
 #       they can be removed if toy.cpp doesn't need them anymore
@@ -89,6 +90,7 @@ OBJECTS = main.obj \
           frame_model.obj \
           door_model.obj \
           window_model.obj \
+          gable_brick_shape.obj \
           \
 # note: all of the files after toy.obj are there for toy.cpp only
 #       they can be removed if toy.cpp doesn't need them anymore

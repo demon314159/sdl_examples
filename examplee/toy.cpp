@@ -166,14 +166,17 @@ bool Toy::mouse(SDL_Event* e, bool on)
                         m_history->do_command(new AddElementCommand(new Element(p, w, 1, o), m_doc));
                     } else if (w > 1) {
                         w = 2;
-                        if (!buddy_occupied(p, o)) {
-
-//                            m_history->do_command(new AddElementCommand(new DoorElement(p, o), m_doc));
-//                            m_history->do_command(new AddElementCommand(new WindowElement(p, o), m_doc));
-//                            m_history->do_command(new AddElementCommand(new Element(p, w, 1, o), m_doc));
-//                            m_history->do_command(new AddElementCommand(new DoubleBrickElement(p, o), m_doc));
-                            m_history->do_command(new AddElementCommand(new TripleBrickElement(p, o), m_doc));
-
+                        Element* item;
+//                        item = new Element(p, w, 1, o);
+//                        item = new DoubleBrickElement(p, o);
+//                        item = new TripleBrickElement(p, o);
+                        item = new GableBrickElement(p, o);
+//                        item = new WindowElement(p, o);
+//                        item = new DoorElement(p, o);
+                        if (!m_doc->occupied(item)) {
+                            m_history->do_command(new AddElementCommand(item, m_doc));
+                        } else {
+                            delete item;
                         }
                     }
                     m_choose->select_no_choice();

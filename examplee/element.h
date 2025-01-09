@@ -90,6 +90,18 @@ private:
     static CadModel m_triple_brick_model_ew;
 };
 
+class GableBrickElement: public Element
+{
+public:
+    GableBrickElement(Int3 pos, int orientation);
+    GableBrickElement() = delete;
+    void save_to_file(FILE* ffo) const override;
+    const CadModel* model() const override;
+protected:
+private:
+    CadModel m_model;
+};
+
 class WindowElement: public Element
 {
 public:
