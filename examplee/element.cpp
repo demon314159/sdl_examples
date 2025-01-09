@@ -127,6 +127,52 @@ CadModel Element::m_halfbrick_model(BrickShape(DIMX, DIMY, DIMZ, DIMB), BRICK_PA
 CadModel Element::m_brick_model_ns(BrickShape(DIMX * 2.0f, DIMY, DIMZ, DIMB), BRICK_PAINT, 0.0);
 CadModel Element::m_brick_model_ew(BrickShape(DIMX, DIMY, DIMZ * 2.0f, DIMB), BRICK_PAINT, 0.0);
 
+DoubleBrickElement::DoubleBrickElement(Int3 pos, int orientation)
+    : Element(pos, 4, 1, orientation)
+{
+}
+
+void DoubleBrickElement::save_to_file(FILE* ffo) const
+{
+    fprintf(ffo, "DoubleBrick(%0d, %0d, %0d, %0d)\n",
+        m_pos.v1, m_pos.v2, m_pos.v3, m_orientation);
+}
+
+const CadModel* DoubleBrickElement::model() const
+{
+    if (m_orientation == 0 || m_orientation == 2) {
+        return &m_double_brick_model_ns;
+    } else {
+        return &m_double_brick_model_ew;
+    }
+}
+
+CadModel DoubleBrickElement::m_double_brick_model_ns(BrickShape(DIMX * 4.0f, DIMY, DIMZ, DIMB), BRICK_PAINT, 0.0);
+CadModel DoubleBrickElement::m_double_brick_model_ew(BrickShape(DIMX, DIMY, DIMZ * 4.0f, DIMB), BRICK_PAINT, 0.0);
+
+TripleBrickElement::TripleBrickElement(Int3 pos, int orientation)
+    : Element(pos, 6, 1, orientation)
+{
+}
+
+void TripleBrickElement::save_to_file(FILE* ffo) const
+{
+    fprintf(ffo, "TripleBrick(%0d, %0d, %0d, %0d)\n",
+        m_pos.v1, m_pos.v2, m_pos.v3, m_orientation);
+}
+
+const CadModel* TripleBrickElement::model() const
+{
+    if (m_orientation == 0 || m_orientation == 2) {
+        return &m_triple_brick_model_ns;
+    } else {
+        return &m_triple_brick_model_ew;
+    }
+}
+
+CadModel TripleBrickElement::m_triple_brick_model_ns(BrickShape(DIMX * 6.0f, DIMY, DIMZ, DIMB), BRICK_PAINT, 0.0);
+CadModel TripleBrickElement::m_triple_brick_model_ew(BrickShape(DIMX, DIMY, DIMZ * 6.0f, DIMB), BRICK_PAINT, 0.0);
+
 WindowElement::WindowElement(Int3 pos, int orientation)
     : Element(pos, 2, 4, orientation)
     , m_model()

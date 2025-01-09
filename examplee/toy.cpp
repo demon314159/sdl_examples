@@ -169,8 +169,10 @@ bool Toy::mouse(SDL_Event* e, bool on)
                         if (!buddy_occupied(p, o)) {
 
 //                            m_history->do_command(new AddElementCommand(new DoorElement(p, o), m_doc));
-                            m_history->do_command(new AddElementCommand(new WindowElement(p, o), m_doc));
+//                            m_history->do_command(new AddElementCommand(new WindowElement(p, o), m_doc));
 //                            m_history->do_command(new AddElementCommand(new Element(p, w, 1, o), m_doc));
+//                            m_history->do_command(new AddElementCommand(new DoubleBrickElement(p, o), m_doc));
+                            m_history->do_command(new AddElementCommand(new TripleBrickElement(p, o), m_doc));
 
                         }
                     }

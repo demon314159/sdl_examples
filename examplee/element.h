@@ -64,6 +64,32 @@ private:
     static CadModel m_brick_model_ew;
 };
 
+class DoubleBrickElement: public Element
+{
+public:
+    DoubleBrickElement(Int3 pos, int orientation);
+    DoubleBrickElement() = delete;
+    void save_to_file(FILE* ffo) const override;
+    const CadModel* model() const override;
+protected:
+private:
+    static CadModel m_double_brick_model_ns;
+    static CadModel m_double_brick_model_ew;
+};
+
+class TripleBrickElement: public Element
+{
+public:
+    TripleBrickElement(Int3 pos, int orientation);
+    TripleBrickElement() = delete;
+    void save_to_file(FILE* ffo) const override;
+    const CadModel* model() const override;
+protected:
+private:
+    static CadModel m_triple_brick_model_ns;
+    static CadModel m_triple_brick_model_ew;
+};
+
 class WindowElement: public Element
 {
 public:
