@@ -134,6 +134,32 @@ void Document::unremove_element(int ix)
     note_one_change(ix);
 }
 
+bool Document::parse_3_parms(TokenFile& tf, int& x, int& y, int& z, char* error_message)
+{
+    if (!expect(tf, "(", error_message))
+        return false;
+    if (!parse_integer3(tf, x, y, z, error_message))
+        return false;
+    if (!expect(tf, ")", error_message))
+        return false;
+    return true;
+}
+
+bool Document::parse_4_parms(TokenFile& tf, int& x, int& y, int& z, int& o, char* error_message)
+{
+    if (!expect(tf, "(", error_message))
+        return false;
+    if (!parse_integer3(tf, x, y, z, error_message))
+        return false;
+    if (!expect(tf, ",", error_message))
+        return false;
+    if (!parse_integer(tf, o, error_message))
+        return false;
+    if (!expect(tf, ")", error_message))
+       return false;
+    return true;
+}
+
 // This adds to document, only used with new document so far
 bool Document::load(const char* file_name, char* error_message)
 {
@@ -147,7 +173,7 @@ bool Document::load(const char* file_name, char* error_message)
         return false;
     if (!expect(tf, "Document", error_message))
         return false;
-    if (!expect(tf, "v2", error_message))
+    if (!expect(tf, "v1", error_message))
         return false;
     if (!expect(tf, ".", error_message))
         return false;
@@ -163,29 +189,48 @@ bool Document::load(const char* file_name, char* error_message)
         tf.advance();
         if (0 == strcmp(ename, "HalfBrick")) {
             int x, y, z;
-            if (!expect(tf, "(", error_message))
+            if (!parse_3_parms(tf, x, y, z, error_message)) {
                 return false;
-            if (!parse_integer3(tf, x, y, z, error_message))
-                return false;
-            if (!expect(tf, ")", error_message))
-                return false;
+            }
             add_element(new HalfBrickElement({x, y, z}));
         } else if (0 == strcmp(ename, "Brick")) {
-            int x, y, z;
-            int o;
-            if (!expect(tf, "(", error_message))
+            int x, y, z, o;
+            if (!parse_4_parms(tf, x, y, z, o, error_message)) {
                 return false;
-            if (!parse_integer3(tf, x, y, z, error_message))
-                return false;
-            if (!expect(tf, ",", error_message))
-                return false;
-            if (!parse_integer(tf, o, error_message))
-                return false;
-            if (!expect(tf, ")", error_message))
-                return false;
+            }
             add_element(new BrickElement({x, y, z}, o));
+        } else if (0 == strcmp(ename, "DoubleBrick")) {
+            int x, y, z, o;
+            if (!parse_4_parms(tf, x, y, z, o, error_message)) {
+                return false;
+            }
+            add_element(new DoubleBrickElement({x, y, z}, o));
+        } else if (0 == strcmp(ename, "TripleBrick")) {
+            int x, y, z, o;
+            if (!parse_4_parms(tf, x, y, z, o, error_message)) {
+                return false;
+            }
+            add_element(new TripleBrickElement({x, y, z}, o));
+        } else if (0 == strcmp(ename, "GableBrick")) {
+            int x, y, z, o;
+            if (!parse_4_parms(tf, x, y, z, o, error_message)) {
+                return false;
+            }
+            add_element(new GableBrickElement({x, y, z}, o));
+        } else if (0 == strcmp(ename, "Window")) {
+            int x, y, z, o;
+            if (!parse_4_parms(tf, x, y, z, o, error_message)) {
+                return false;
+            }
+            add_element(new WindowElement({x, y, z}, o));
+        } else if (0 == strcmp(ename, "Door")) {
+            int x, y, z, o;
+            if (!parse_4_parms(tf, x, y, z, o, error_message)) {
+                return false;
+            }
+            add_element(new DoorElement({x, y, z}, o));
         } else {
-            sprintf(error_message, "Line %d: Expecting 'HalfBrick' or 'Brick' but found '%s'", tf.line_count(), ename);
+            sprintf(error_message, "Line %d: Expecting 'HalfBrick'i, 'Brick', 'DoubleBrick', 'TripleBricki', 'GableBrick', 'Window' or 'Door' but found '%s'", tf.line_count(), ename);
             return false;
         }
     }

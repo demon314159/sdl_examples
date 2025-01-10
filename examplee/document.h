@@ -66,6 +66,8 @@ private:
     bool expect(TokenFile& tf, const char* pattern, char* error_message);
     bool parse_integer3(TokenFile& tf, int& x, int& y, int& z, char* error_message);
     bool parse_integer(TokenFile& tf, int &v, char* error_message);
+    bool parse_3_parms(TokenFile& tf, int& x, int& y, int& z, char* error_message);
+    bool parse_4_parms(TokenFile& tf, int& x, int& y, int& z, int& o, char* error_message);
 };
 
 #endif // _DOCUMENT_H_
