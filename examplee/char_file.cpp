@@ -6,51 +6,60 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <ctype.h>
+#include <algorithm>
 
 #include "char_file.h"
 
-#define notVERBOSE
-
 CharFile::CharFile(const char* file_name)
-    : m_pos(0)
+    : m_error_flag(false)
+    , m_error_message(new char[256])
+    , m_line_count1(1)
+    , m_line_count2(1)
+    , m_pos(0)
     , m_size(0)
     , m_buf(NULL)
 {
-#ifdef VERBOSE
-    printf("CharFile(%s)\n", file_name);
-#endif
+    m_error_message[0] = 0;
     FILE* ffi = fopen(file_name, "r");
     if (ffi == NULL) {
-#ifdef VERBOSE
-        printf("<<< Error opening file '%s' >>>\n", file_name);
-#endif
+        sprintf(m_error_message, "Error opening file '%s'", file_name);
+        m_error_flag = true;
     } else {
         struct stat st;
         stat(file_name, &st);
         m_size = st.st_size;
         m_buf = new char[m_size];
-#ifdef VERBOSE
-        printf("Size of file = %d\n", m_size);
-#endif
         int n = fread(m_buf, 1, m_size, ffi);
         fclose(ffi);
-#ifdef VERBOSE
-        printf("Chars read = %d\n", n);
-#endif
         if (n != m_size) {
             m_size = 0;
+            sprintf(m_error_message, "Error reading file '%s'", file_name);
+            m_error_flag = true;
         }
     }
 }
 
 CharFile::~CharFile()
 {
-#ifdef VERBOSE
-    printf("~CharFile()\n");
-#endif
+    delete [] m_error_message;
     if (m_buf != NULL) {
         delete [] m_buf;
     }
+}
+
+int CharFile::line_count() const
+{
+    return std::max(m_line_count1, m_line_count2);
+}
+
+bool CharFile::error_flag() const
+{
+    return m_error_flag;
+}
+
+const char* CharFile::error_message() const
+{
+    return m_error_message;
 }
 
 void CharFile::rewind()
@@ -60,6 +69,12 @@ void CharFile::rewind()
 
 void CharFile::advance()
 {
+    if (is_eol1()) {
+        ++m_line_count1;
+    }
+    if (is_eol2()) {
+        ++m_line_count2;
+    }
     if (m_pos < m_size) {
         ++m_pos;
     }

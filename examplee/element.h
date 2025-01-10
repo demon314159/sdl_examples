@@ -48,7 +48,7 @@ public:
     int orientation() const;
     bool contains(int x, int y, int z) const;
 
-    virtual void save_to_file(FILE* ffo) const;
+    virtual void save_to_file(FILE* ffo) const = 0;
     virtual const CadModel* model() const;
 protected:
     bool m_removed;

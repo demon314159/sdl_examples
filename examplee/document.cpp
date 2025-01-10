@@ -37,8 +37,7 @@ Document::Document(const char* file_name, int max_elements)
     m_building_index = new int[m_max_elements];
     m_glass_index = new int[m_max_elements];
     if (!load(file_name, error_message)) {
-        printf("Document::Document(%s, %d) Error:\n", file_name, max_elements);
-        printf("    '%s'\n", error_message);
+        printf("Document::Document(%s, %d): %s\n", file_name, max_elements, error_message);
     }
 }
 
@@ -139,12 +138,16 @@ void Document::unremove_element(int ix)
 bool Document::load(const char* file_name, char* error_message)
 {
     TokenFile tf(file_name);
+    if (tf.error_flag()) {
+        strcpy(error_message, tf.error_message());
+        return false;
+    }
     tf.advance();
     if (!expect(tf, "Bricks", error_message))
         return false;
     if (!expect(tf, "Document", error_message))
         return false;
-    if (!expect(tf, "v1", error_message))
+    if (!expect(tf, "v2", error_message))
         return false;
     if (!expect(tf, ".", error_message))
         return false;
@@ -166,7 +169,7 @@ bool Document::load(const char* file_name, char* error_message)
                 return false;
             if (!expect(tf, ")", error_message))
                 return false;
-            add_element(new Element({x, y, z}, 1, 1, 0));
+            add_element(new HalfBrickElement({x, y, z}));
         } else if (0 == strcmp(ename, "Brick")) {
             int x, y, z;
             int o;
@@ -180,9 +183,9 @@ bool Document::load(const char* file_name, char* error_message)
                 return false;
             if (!expect(tf, ")", error_message))
                 return false;
-            add_element(new Element({x, y, z}, 2, 1, o));
+            add_element(new BrickElement({x, y, z}, o));
         } else {
-            sprintf(error_message, "Expecting 'HalfBrick' or 'Brick' but found '%s'", ename);
+            sprintf(error_message, "Line %d: Expecting 'HalfBrick' or 'Brick' but found '%s'", tf.line_count(), ename);
             return false;
         }
     }
@@ -235,7 +238,7 @@ bool Document::expect(TokenFile& tf, const char* pattern, char* error_message)
         tf.advance();
         return true;
     }
-    sprintf(error_message, "Expecting '%s' but found '%s'", pattern, tf.current());
+    sprintf(error_message, "Line %d: Expecting '%s' but found '%s'", tf.line_count(), pattern, tf.current());
     return false;
 }
 
@@ -263,7 +266,7 @@ bool Document::parse_integer(TokenFile& tf, int &v, char* error_message)
         tf.advance();
     }
     if (!tf.is_unsigned_integer()) {
-        sprintf(error_message, "expecting integer but found '%s'", tf.current());
+        sprintf(error_message, "Line %d: expecting integer but found '%s'", tf.line_count(), tf.current());
         return false;
     }
     strcat(s, tf.current());

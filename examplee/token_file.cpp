@@ -3,11 +3,6 @@
 //
 
 #include "token_file.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/stat.h>
-
-#define notVERBOSE
 
 TokenFile::TokenFile(const char* file_name)
     : m_cf(file_name)
@@ -15,18 +10,22 @@ TokenFile::TokenFile(const char* file_name)
     , m_token_ix(0)
     , m_token(new char[MAX_TOKEN_CHARS + 1])
 {
-#ifdef VERBOSE
-    printf("TokenFile(%s)\n", file_name);
-#endif
     clear_token();
 }
 
 TokenFile::~TokenFile()
 {
-#ifdef VERBOSE
-    printf("~TokenFile()\n");
-#endif
     delete [] m_token;
+}
+
+bool TokenFile::error_flag() const
+{
+    return m_cf.error_flag();
+}
+
+const char* TokenFile::error_message() const
+{
+    return m_cf.error_message();
 }
 
 void TokenFile::rewind()
@@ -136,3 +135,7 @@ bool TokenFile::is_operator() const
     return m_type == TYPE_OPERATOR;
 }
 
+int TokenFile::line_count() const
+{
+    return m_cf.line_count();
+}

@@ -19,6 +19,9 @@ class TokenFile
 public:
     TokenFile(const char* file_name);
     ~TokenFile();
+
+    bool error_flag() const;
+    const char* error_message() const;
     void rewind();
     void advance();
     bool is_eof() const;
@@ -26,12 +29,14 @@ public:
     bool is_unsigned_integer() const;
     bool is_operator() const;
     char* current() const;
+    int line_count() const;
 
 private:
     CharFile m_cf;
     int m_type;
     int m_token_ix;
     char* m_token;
+    int m_line_count;
     void skip_whitespace();
     void scan_identifier();
     void scan_unsigned_integer();

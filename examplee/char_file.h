@@ -10,6 +10,10 @@ class CharFile
 public:
     CharFile(const char* file_name);
     ~CharFile();
+
+    bool error_flag() const;
+    const char* error_message() const;
+    int line_count() const;
     void rewind();
     void advance();
     char current() const;
@@ -23,6 +27,10 @@ public:
     bool is_symbol() const; // !"#$%&'()*+,-./:;<=>?@[\]^`{|}~
 
 private:
+    bool m_error_flag;
+    char* m_error_message;
+    int m_line_count1;
+    int m_line_count2;
     int m_pos;
     int m_size;
     char* m_buf;

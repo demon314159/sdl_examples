@@ -80,7 +80,6 @@ bool Toy::button(int code, bool shifted, bool on)
     switch (code) {
         case SDL_SCANCODE_C:
             if (on) {
-                m_doc->add_element(new Element({0, 2, 0}, 1, 1, 0));
             }
             break;
         case SDL_SCANCODE_U:
@@ -167,7 +166,6 @@ bool Toy::mouse(SDL_Event* e, bool on)
                     } else if (w > 1) {
                         w = 2;
                         Element* item;
-//                        item = new Element(p, w, 1, o);
                         item = new BrickElement(p, o);
 //                        item = new DoubleBrickElement(p, o);
 //                        item = new TripleBrickElement(p, o);

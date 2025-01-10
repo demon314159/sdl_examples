@@ -81,11 +81,11 @@ int Element::orientation() const
     return m_orientation;
 }
 
-void Element::save_to_file(FILE* ffo) const
-{
-    fprintf(ffo, "Brick(%0d, %0d, %0d, %0d, %0d, %0d)\n",
-        m_pos.v1, m_pos.v2, m_pos.v3, m_width, m_height, m_orientation);
-}
+//void Element::save_to_file(FILE* ffo) const
+//{
+//    fprintf(ffo, "Brick(%0d, %0d, %0d, %0d, %0d, %0d)\n",
+//        m_pos.v1, m_pos.v2, m_pos.v3, m_width, m_height, m_orientation);
+//}
 
 const CadModel* Element::model() const
 {
