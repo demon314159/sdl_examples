@@ -23,6 +23,7 @@ AnimatedToy::AnimatedToy()
     , m_model(new CadModel(CubeShape(0.1, 0.1, 0.1), PaintCan(1.0, 0.0, 0.0), 0.0))
 {
     m_uniform->add("fixed_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_camera->fixed_data());
+    m_uniform->add("hide_fixed_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_camera->hide_fixed_data());
     m_uniform->add("mvp_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_camera->mvp_data());
     m_uniform->add("rot_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_camera->rot_data());
     m_camera->frame(m_model);

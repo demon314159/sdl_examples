@@ -1,6 +1,7 @@
 #version 330 core
 
 uniform mat4 fixed_matrix;
+uniform mat4 hide_fixed_matrix;
 uniform mat4 mvp_matrix;
 uniform mat4 rot_matrix;
 
@@ -83,33 +84,37 @@ void main()
             gl_Position = fixed_matrix * vec4(a_position, 1.0);
             v_normal = vec4(billy, 0.0);
             v_color = vec4(a_color, 1.0);
-        } else if (a_animation_id < 11.5) {  // Animated objects
-            if (a_animation_id < 3.5) {          // Marker
+        } else if (a_animation_id < 3.5) {  // Hide Fixed objects
+            gl_Position = hide_fixed_matrix * vec4(a_position, 1.0);
+            v_normal = vec4(billy, 0.0);
+            v_color = vec4(a_color, 1.0);
+        } else if (a_animation_id < 12.5) {  // Animated objects
+            if (a_animation_id < 4.5) {          // Marker
                 gl_Position = mvp_matrix * animation_0_matrix * vec4(a_position, 1.0);
                 v_normal = rot_matrix * animation_0_matrix * vec4(billy, 0.0);
-            } else if (a_animation_id < 4.5) {   // Button 1
+            } else if (a_animation_id < 5.5) {   // Button 1 doesn't hide
                 gl_Position = fixed_matrix * animation_1_matrix * vec4(a_position, 1.0);
                 v_normal = animation_1_matrix * vec4(billy, 0.0);
-            } else if (a_animation_id < 5.5) {   // Button 2
-                gl_Position = fixed_matrix * animation_2_matrix * vec4(a_position, 1.0);
+            } else if (a_animation_id < 6.5) {   // Button 2
+                gl_Position = hide_fixed_matrix * animation_2_matrix * vec4(a_position, 1.0);
                 v_normal = animation_2_matrix * vec4(billy, 0.0);
-            } else if (a_animation_id < 6.5) {   // Button 3
-                gl_Position = fixed_matrix * animation_3_matrix * vec4(a_position, 1.0);
+            } else if (a_animation_id < 7.5) {   // Button 3
+                gl_Position = hide_fixed_matrix * animation_3_matrix * vec4(a_position, 1.0);
                 v_normal = animation_3_matrix * vec4(billy, 0.0);
-            } else if (a_animation_id < 7.5) {   // Button 4
-                gl_Position = fixed_matrix * animation_4_matrix * vec4(a_position, 1.0);
+            } else if (a_animation_id < 8.5) {   // Button 4
+                gl_Position = hide_fixed_matrix * animation_4_matrix * vec4(a_position, 1.0);
                 v_normal = animation_4_matrix * vec4(billy, 0.0);
-            } else if (a_animation_id < 8.5) {   // Button 5
-                gl_Position = fixed_matrix * animation_5_matrix * vec4(a_position, 1.0);
+            } else if (a_animation_id < 9.5) {   // Button 5
+                gl_Position = hide_fixed_matrix * animation_5_matrix * vec4(a_position, 1.0);
                 v_normal = animation_5_matrix * vec4(billy, 0.0);
-            } else if (a_animation_id < 9.5) {   // Button 6
-                gl_Position = fixed_matrix * animation_6_matrix * vec4(a_position, 1.0);
+            } else if (a_animation_id < 10.5) {   // Button 6
+                gl_Position = hide_fixed_matrix * animation_6_matrix * vec4(a_position, 1.0);
                 v_normal = animation_6_matrix * vec4(billy, 0.0);
-            } else if (a_animation_id < 10.5) {   // Button 7
-                gl_Position = fixed_matrix * animation_7_matrix * vec4(a_position, 1.0);
+            } else if (a_animation_id < 11.5) {   // Button 7
+                gl_Position = hide_fixed_matrix * animation_7_matrix * vec4(a_position, 1.0);
                 v_normal = animation_7_matrix * vec4(billy, 0.0);
-            } else if (a_animation_id < 11.5) {   // Button 8
-                gl_Position = fixed_matrix * animation_8_matrix * vec4(a_position, 1.0);
+            } else if (a_animation_id < 12.5) {   // Button 8
+                gl_Position = hide_fixed_matrix * animation_8_matrix * vec4(a_position, 1.0);
                 v_normal = animation_8_matrix * vec4(billy, 0.0);
             }
             v_color = vec4(a_color, 1.0);

@@ -38,6 +38,7 @@ public:
     void translate_y(int pixels);
 
     const float* fixed_data() const;
+    const float* hide_fixed_data() const;
     const float* mvp_data() const;
     const float* rot_data() const;
     void add_pose(const Float2& offset, const Float2& rotation, float mag);
@@ -61,6 +62,7 @@ private:
     Matrix4x4 m_fixed_projection;
     Matrix4x4 m_projection;
     Matrix4x4 m_fixed_matrix;
+    Matrix4x4 m_hide_fixed_matrix;
     Matrix4x4 m_mvp_matrix;
     Matrix4x4 m_rot_matrix;
 

@@ -17,7 +17,7 @@ public:
     void press();
     void release();
 
-    CadModel model(float animation_id) const;
+    CadModel model(float body_animation_id, float button_animation_id) const;
     const float* data();
 
 protected:

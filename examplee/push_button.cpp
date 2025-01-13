@@ -39,14 +39,14 @@ void PushButton::release()
     m_pressed = false;
 }
 
-CadModel PushButton::model(float animation_id) const
+CadModel PushButton::model(float body_animation_id, float button_animation_id) const
 {
     float bh = m_height * 0.7f;
     float ri = m_radius * 1.15;
     float ro = m_radius * 1.3;
     CadModel cm;
-    CadModel pb(ButtonShape(m_radius, m_height, m_radius / RATIO, MAJOR_STEPS, MINOR_STEPS), PUSH_BUTTON_COLOR, animation_id);
-    CadModel bezel(RingShape(ro, ri, bh, MAJOR_STEPS), BEVEL_COLOR, FIXED_ANIMATION_ID);
+    CadModel pb(ButtonShape(m_radius, m_height, m_radius / RATIO, MAJOR_STEPS, MINOR_STEPS), PUSH_BUTTON_COLOR, button_animation_id);
+    CadModel bezel(RingShape(ro, ri, bh, MAJOR_STEPS), BEVEL_COLOR, body_animation_id);
     pb.rotate_ax(90.0);
     bezel.rotate_ax(90.0);
     cm.add(pb, m_position.v1, m_position.v2, m_position.v3);

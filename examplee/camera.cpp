@@ -24,6 +24,7 @@ Camera::Camera(int width, int height, float initial_mag, const Float2& initial_o
     , m_fixed_projection()
     , m_projection()
     , m_fixed_matrix()
+    , m_hide_fixed_matrix()
     , m_mvp_matrix()
     , m_rot_matrix()
 {
@@ -158,6 +159,8 @@ void Camera::update_matrices()
     matrix.unity();
     matrix.translate(0.0, 0.0, -1.0);
     m_fixed_matrix = m_fixed_projection * matrix;
+    matrix.translate(0.0, 0.0, 0.0);
+    m_hide_fixed_matrix = m_fixed_projection * matrix;
 
     matrix.unity();
     matrix.translate(m_offset.v1, m_offset.v2, -m_camz - m_object_radius);
@@ -171,6 +174,11 @@ void Camera::update_matrices()
 const float* Camera::fixed_data() const
 {
     return m_fixed_matrix.data();
+}
+
+const float* Camera::hide_fixed_data() const
+{
+    return m_hide_fixed_matrix.data();
 }
 
 const float* Camera::mvp_data() const

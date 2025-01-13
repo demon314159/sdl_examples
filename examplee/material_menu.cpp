@@ -109,19 +109,19 @@ CadModel MaterialMenu::model() const
     CadModel cm;
 //    CadModel body(CubeShape(m_width, m_height, m_depth), PaintCan(1.0, 1.0, 1.0), FIXED_ANIMATION_ID);
 //    cm.add(body, m_position.v1, m_position.v2, m_position.v3);
-    cm.add(m_button1->model(BUTTON1_ANIMATION_ID));
-    cm.add(m_button2->model(BUTTON2_ANIMATION_ID));
-    cm.add(m_button3->model(BUTTON3_ANIMATION_ID));
-    cm.add(m_button4->model(BUTTON4_ANIMATION_ID));
-    cm.add(m_button5->model(BUTTON5_ANIMATION_ID));
-    cm.add(m_button6->model(BUTTON6_ANIMATION_ID));
-    cm.add(m_button7->model(BUTTON7_ANIMATION_ID));
-    cm.add(m_button8->model(BUTTON8_ANIMATION_ID));
-    cm.add(m_panel1->model(FIXED_ANIMATION_ID, IMAGE1_TEXTURE_ID));
-    cm.add(m_panel2->model(FIXED_ANIMATION_ID, IMAGE2_TEXTURE_ID));
-    cm.add(m_panel5->model(FIXED_ANIMATION_ID, IMAGE5_TEXTURE_ID));
-    cm.add(m_panel6->model(FIXED_ANIMATION_ID, IMAGE6_TEXTURE_ID));
-    cm.add(m_panel7->model(FIXED_ANIMATION_ID, IMAGE7_TEXTURE_ID));
+    cm.add(m_button1->model(FIXED_ANIMATION_ID, BUTTON1_ANIMATION_ID));
+    cm.add(m_button2->model(HIDE_FIXED_ANIMATION_ID, BUTTON2_ANIMATION_ID));
+    cm.add(m_button3->model(HIDE_FIXED_ANIMATION_ID, BUTTON3_ANIMATION_ID));
+    cm.add(m_button4->model(HIDE_FIXED_ANIMATION_ID, BUTTON4_ANIMATION_ID));
+    cm.add(m_button5->model(HIDE_FIXED_ANIMATION_ID, BUTTON5_ANIMATION_ID));
+    cm.add(m_button6->model(HIDE_FIXED_ANIMATION_ID, BUTTON6_ANIMATION_ID));
+    cm.add(m_button7->model(HIDE_FIXED_ANIMATION_ID, BUTTON7_ANIMATION_ID));
+    cm.add(m_button8->model(HIDE_FIXED_ANIMATION_ID, BUTTON8_ANIMATION_ID));
+    cm.add(m_panel1->model(HIDE_FIXED_ANIMATION_ID, IMAGE1_TEXTURE_ID));
+    cm.add(m_panel2->model(HIDE_FIXED_ANIMATION_ID, IMAGE2_TEXTURE_ID));
+    cm.add(m_panel5->model(HIDE_FIXED_ANIMATION_ID, IMAGE5_TEXTURE_ID));
+    cm.add(m_panel6->model(HIDE_FIXED_ANIMATION_ID, IMAGE6_TEXTURE_ID));
+    cm.add(m_panel7->model(HIDE_FIXED_ANIMATION_ID, IMAGE7_TEXTURE_ID));
     return cm;
 }
 
