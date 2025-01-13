@@ -9,6 +9,7 @@
 #include "document.h"
 #include "choose.h"
 #include "history.h"
+#include "material_menu.h"
 
 class Toy: public AnimatedToy
 {
@@ -26,13 +27,15 @@ private:
     Document* m_doc;
     History* m_history;
     Choose* m_choose;
+    MaterialMenu* m_menu;
+
     float m_seconds;
+    void build_texture();
     void build_model();
     void build_uniform();
     void update_uniform();
     bool top_face_selection(int sx, int sy, Int3& pos) const;
     Int3 coord_at_level(int iy, const MouseVector& mv) const;
-    bool buddy_occupied(Int3 pos, int orientation) const;
 };
 
 #endif // _TOY_H_

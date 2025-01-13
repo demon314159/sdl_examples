@@ -8,12 +8,19 @@
 #include "look.h"
 #include <stdio.h>
 
+#define MENU_DIMX  0.25f
+#define MENU_DIMY  0.50f
+#define MENU_DIMZ  0.005f
+
 Toy::Toy()
     : m_doc(new Document("first.brk"))
     , m_history(new History())
     , m_choose(new Choose(DIMX, DIMY, DIMZ, MARKER_COLOR))
     , m_seconds(0.0)
+    , m_menu(NULL)
 {
+    m_menu = new MaterialMenu(MENU_DIMX, MENU_DIMY, MENU_DIMZ, {0.0, 0.0, 0.0});
+    build_texture();
     build_model();
     build_uniform();
     BoundingBox bb = m_model->bounding_box();
@@ -23,6 +30,7 @@ Toy::Toy()
 
 Toy::~Toy()
 {
+    delete m_menu;
     delete m_choose;
     delete m_history;
     delete m_doc;
@@ -38,26 +46,37 @@ Camera* Toy::get_camera() const
     return m_camera;
 }
 
+void Toy::build_texture()
+{
+    m_menu->build_texture(m_texture);
+}
+
 void Toy::build_model()
 {
     m_model->clear();
-    CadModel csx(CubeShape(0.2, 0.002, 0.002), PaintCan(0.0, 1.0, 1.0), 0.0);
-    CadModel csy(CubeShape(0.002, 0.2, 0.002), PaintCan(0.0, 0.0, 1.0), 0.0);
-    CadModel csz(CubeShape(0.002, 0.002, 0.2), PaintCan(0.0, 1.0, 0.0), 0.0);
-    m_model->add(csx, 0.0, 0.0, 0.0);
-    m_model->add(csy, 0.0, 0.0, 0.0);
-    m_model->add(csz, 0.0, 0.0, 0.0);
+//    CadModel csx(CubeShape(0.2, 0.002, 0.002), PaintCan(0.0, 1.0, 1.0), 0.0);
+//    CadModel csy(CubeShape(0.002, 0.2, 0.002), PaintCan(0.0, 0.0, 1.0), 0.0);
+///    CadModel csz(CubeShape(0.002, 0.002, 0.2), PaintCan(0.0, 1.0, 0.0), 0.0);
+//    m_model->add(csx, 0.0, 0.0, 0.0);
+//    m_model->add(csy, 0.0, 0.0, 0.0);
+//    m_model->add(csz, 0.0, 0.0, 0.0);
     m_model->add(m_choose->model(MARKER_ANIMATION_ID));
+    m_model->add(m_menu->model());
 }
 
 void Toy::build_uniform()
 {
+    for (int i = 0; i < m_texture->textures(); i++) {
+        m_uniform->add(m_texture->uniform_name(i), UNIFORM_TYPE_1_INTEGER_VECTOR, 1, m_texture->data(i));
+    }
     m_uniform->add("animation_0_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_choose->data());
+    m_menu->build_uniform(m_uniform);
 }
 
 void Toy::update_uniform()
 {
     m_choose->data();
+    m_menu->update_uniform();
 }
 
 void Toy::advance(int nanoseconds)
@@ -129,19 +148,6 @@ bool Toy::top_face_selection(int sx, int sy, Int3& pos) const
     return true;
 }
 
-bool Toy::buddy_occupied(Int3 pos, int orientation) const
-{
-    if (orientation == 3) {
-        return m_doc->occupied(pos.v1, pos.v2, pos.v3 + 1);
-    } else if (orientation == 2) {
-        return m_doc->occupied(pos.v1 - 1, pos.v2, pos.v3);
-    } else if (orientation == 1) {
-        return m_doc->occupied(pos.v1, pos.v2, pos.v3 - 1);
-    } else {
-        return m_doc->occupied(pos.v1 + 1, pos.v2, pos.v3);
-    }
-}
-
 bool Toy::mouse(SDL_Event* e, bool on)
 {
     bool ret_val = AnimatedToy::mouse(e, on);
@@ -187,7 +193,9 @@ bool Toy::mouse(SDL_Event* e, bool on)
         }
     } else if (e->button.button == SDL_BUTTON_RIGHT) {
         if (on) {
+            m_menu->press();
         } else {
+            m_menu->release();
         }
     }
     return false;

@@ -230,7 +230,7 @@ bool Document::load(const char* file_name, char* error_message)
             }
             add_element(new DoorElement({x, y, z}, o));
         } else {
-            sprintf(error_message, "Line %d: Expecting 'HalfBrick'i, 'Brick', 'DoubleBrick', 'TripleBricki', 'GableBrick', 'Window' or 'Door' but found '%s'", tf.line_count(), ename);
+            sprintf(error_message, "Line %d: Expecting 'HalfBrick', 'Brick', 'DoubleBrick', 'TripleBricki', 'GableBrick', 'Window' or 'Door' but found '%s'", tf.line_count(), ename);
             return false;
         }
     }

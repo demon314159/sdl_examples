@@ -44,6 +44,10 @@ HEADERS = view.h \
           door_model.h \
           window_model.h \
           gable_brick_shape.h \
+          button_shape.h \
+          push_button.h \
+          image_panel.h \
+          material_menu.h \
           \
 # note: all of the files after toy.h are there for toy.cpp only
 #       they can be removed if toy.cpp doesn't need them anymore
@@ -52,6 +56,7 @@ HEADERS = view.h \
 RESOURCES = \
           vshader.glsl \
           fshader.glsl \
+          p_bricks.png \
 
 OBJECTS = main.obj \
           view.obj \
@@ -91,6 +96,10 @@ OBJECTS = main.obj \
           door_model.obj \
           window_model.obj \
           gable_brick_shape.obj \
+          button_shape.obj \
+          push_button.obj \
+          image_panel.obj \
+          material_menu.obj \
           \
 # note: all of the files after toy.obj are there for toy.cpp only
 #       they can be removed if toy.cpp doesn't need them anymore

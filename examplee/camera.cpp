@@ -21,7 +21,9 @@ Camera::Camera(int width, int height, float initial_mag, const Float2& initial_o
     , m_rotation(initial_rotation)
     , m_object_radius(1.0)
     , m_object_center({0.0, 0.0, 0.0})
+    , m_fixed_projection()
     , m_projection()
+    , m_fixed_matrix()
     , m_mvp_matrix()
     , m_rot_matrix()
 {
@@ -149,9 +151,14 @@ void Camera::update_matrices()
     float znear = 0.1;
     float zfar = m_camz + 2.0 * m_object_radius;
     float aspect = float(m_width) / float(m_height ? m_height : 1.0);
+    m_fixed_projection.perspective(m_fov, aspect, znear, 3.0);
     m_projection.perspective(m_fov / m_mag, aspect, znear, zfar);
 
     Matrix4x4 matrix;
+    matrix.unity();
+    matrix.translate(0.0, 0.0, -1.0);
+    m_fixed_matrix = m_fixed_projection * matrix;
+
     matrix.unity();
     matrix.translate(m_offset.v1, m_offset.v2, -m_camz - m_object_radius);
     matrix.rotate_ax(m_rotation.v1);
@@ -159,6 +166,11 @@ void Camera::update_matrices()
     matrix.translate(-m_object_center.v1, -m_object_center.v2, -m_object_center.v3);
     m_mvp_matrix = m_projection * matrix;
     m_rot_matrix = matrix;
+}
+
+const float* Camera::fixed_data() const
+{
+    return m_fixed_matrix.data();
 }
 
 const float* Camera::mvp_data() const

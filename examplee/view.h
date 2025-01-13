@@ -46,8 +46,6 @@ private:
     GLint m_texture_position_attr;
     GLint m_animation_id_attr;
     GLint m_texture_id_attr;
-    GLint m_mvp_matrix_uniform;
-    GLint m_rot_matrix_uniform;
     unsigned int m_vao;
     unsigned int m_vbo;
     int m_frame;

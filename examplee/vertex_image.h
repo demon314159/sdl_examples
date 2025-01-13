@@ -26,6 +26,7 @@ private:
 
     void double_the_storage();
     void add_vertex(const VertexData& vd);
+    bool vertex_regular(int ix) const;
 };
 
 #endif // _VERTEX_IMAGE_H_
