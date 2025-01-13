@@ -16,22 +16,20 @@
 class MaterialMenu
 {
 public:
-    MaterialMenu(float width, float height, float depth, const Float3& position);
+    MaterialMenu();
     ~MaterialMenu();
 
     void build_texture(Texture* texture) const;
     void build_uniform(Uniform* uniform) const;
     void update_uniform();
     CadModel model() const;
+    float width() const;
 
     void press(void);
     void release(void);
 
 protected:
     float m_width;
-    float m_height;
-    float m_depth;
-    Float3 m_position;
     PushButton* m_button1;
     PushButton* m_button2;
     PushButton* m_button3;

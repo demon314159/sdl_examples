@@ -11,7 +11,9 @@
 #define MAX_POSES 10
 
 Camera::Camera(int width, int height, float initial_mag, const Float2& initial_offset, const Float2& initial_rotation)
-    : m_width(width)
+    : m_hidden(false)
+    , m_hidden_shift({0.0, 0.0, 0.0})
+    , m_width(width)
     , m_height(height)
     , m_pose(new Pose(MAX_POSES))
     , m_mag(initial_mag)
@@ -157,9 +159,11 @@ void Camera::update_matrices()
 
     Matrix4x4 matrix;
     matrix.unity();
-    matrix.translate(0.0, 0.0, -1.0);
+    float dy = tan((m_fov / 2.0) * PI / 180.0);
+    float dx = dy * aspect;
+    matrix.translate(-dx, dy, -1.0);
     m_fixed_matrix = m_fixed_projection * matrix;
-    matrix.translate(0.0, 0.0, 0.0);
+    matrix.translate(m_hidden_shift.v1, m_hidden_shift.v2, m_hidden_shift.v3);
     m_hide_fixed_matrix = m_fixed_projection * matrix;
 
     matrix.unity();
@@ -232,5 +236,24 @@ MouseVector Camera::new_mouse_vector(int sx, int sy) const
     tmv.rotate_ay(m_rotation.v2);
     tmv.translate(m_object_center);
     return tmv;
+}
+
+void Camera::hide(float dx, float dy, float dz)
+{
+    m_hidden_shift = {dx, dy, dz};
+    m_hidden = true;
+    update_matrices();
+}
+
+void Camera::unhide()
+{
+    m_hidden_shift = {0.0, 0.0, 0.0};
+    m_hidden = false;
+    update_matrices();
+}
+
+bool Camera::hidden() const
+{
+    return m_hidden;
 }
 

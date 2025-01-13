@@ -11,20 +11,16 @@
 #define BUTTON_RADIUS 0.015
 #define YPITCH (4.0 * BUTTON_RADIUS)
 
-#define XPOS (-0.414 * (1920.0 / 1057.0) + 2.0 * BUTTON_RADIUS)
+#define XPOS (2.0 * BUTTON_RADIUS)
 #define XPOS2 (XPOS + 3.0 * BUTTON_RADIUS)
-#define YPOS (0.414 - 2.0 * BUTTON_RADIUS - YPITCH)
+#define YPOS (- 2.0 * BUTTON_RADIUS - YPITCH)
 
 #define IMAGEY (YPITCH * 0.9)
 #define BIG_IMAGEY (0.9 * (4.0 * YPITCH))
 
 
-MaterialMenu::MaterialMenu(float width, float height, float depth, const Float3& position)
-    : m_width(width)
-    , m_height(height)
-    , m_depth(depth)
-    , m_position(position)
-    , m_button1(NULL)
+MaterialMenu::MaterialMenu()
+    : m_button1(NULL)
     , m_button2(NULL)
     , m_button3(NULL)
     , m_button4(NULL)
@@ -51,6 +47,7 @@ MaterialMenu::MaterialMenu(float width, float height, float depth, const Float3&
     m_panel5 = new ImagePanel(IMAGEY * 640.0 / 842.0, IMAGEY, {XPOS2, YPOS - 4.0 * YPITCH, 0.0} );
     m_panel6 = new ImagePanel(IMAGEY * 479.0 / 933.0, IMAGEY, {XPOS2, YPOS - 5.0 * YPITCH, 0.0} );
     m_panel7 = new ImagePanel(IMAGEY * 199.0 / 116.0, IMAGEY, {XPOS2, YPOS - 6.0 * YPITCH, 0.0} );
+    m_width = XPOS2 + BIG_IMAGEY * 193.0 / 91.0;
 }
 
 
@@ -123,6 +120,11 @@ CadModel MaterialMenu::model() const
     cm.add(m_panel6->model(HIDE_FIXED_ANIMATION_ID, IMAGE6_TEXTURE_ID));
     cm.add(m_panel7->model(HIDE_FIXED_ANIMATION_ID, IMAGE7_TEXTURE_ID));
     return cm;
+}
+
+float MaterialMenu::width() const
+{
+    return m_width;
 }
 
 void MaterialMenu::press(void)

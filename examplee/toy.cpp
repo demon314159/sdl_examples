@@ -8,10 +8,6 @@
 #include "look.h"
 #include <stdio.h>
 
-#define MENU_DIMX  0.25f
-#define MENU_DIMY  0.50f
-#define MENU_DIMZ  0.005f
-
 Toy::Toy()
     : m_doc(new Document("first.brk"))
     , m_history(new History())
@@ -19,7 +15,7 @@ Toy::Toy()
     , m_seconds(0.0)
     , m_menu(NULL)
 {
-    m_menu = new MaterialMenu(MENU_DIMX, MENU_DIMY, MENU_DIMZ, {0.0, 0.0, 0.0});
+    m_menu = new MaterialMenu();
     build_texture();
     build_model();
     build_uniform();
@@ -194,6 +190,11 @@ bool Toy::mouse(SDL_Event* e, bool on)
     } else if (e->button.button == SDL_BUTTON_RIGHT) {
         if (on) {
             m_menu->press();
+            if (m_camera->hidden()) {
+                m_camera->unhide();
+            } else {
+                m_camera->hide(-m_menu->width(), 0.0, 0.0);
+            }
         } else {
             m_menu->release();
         }

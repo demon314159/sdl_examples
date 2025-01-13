@@ -44,11 +44,17 @@ public:
     void add_pose(const Float2& offset, const Float2& rotation, float mag);
     int poses() const;
     void set_pose(int ix);
+    void hide(float dx, float dy, float dz);
+    void unhide();
+    bool hidden() const;
+
     MouseVector new_mouse_vector(int sx, int sy) const;
 
     void show() const;
 
 private:
+    bool m_hidden;
+    Float3 m_hidden_shift;
     int m_width;
     int m_height;
     Pose* m_pose;
