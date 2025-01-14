@@ -47,7 +47,7 @@ MaterialMenu::MaterialMenu()
     m_panel5 = new ImagePanel(IMAGEY * 640.0 / 842.0, IMAGEY, {XPOS2, YPOS - 4.0 * YPITCH, 0.0} );
     m_panel6 = new ImagePanel(IMAGEY * 479.0 / 933.0, IMAGEY, {XPOS2, YPOS - 5.0 * YPITCH, 0.0} );
     m_panel7 = new ImagePanel(IMAGEY * 199.0 / 116.0, IMAGEY, {XPOS2, YPOS - 6.0 * YPITCH, 0.0} );
-    m_width = XPOS2 + BIG_IMAGEY * 193.0 / 91.0;
+    m_width = XPOS2 + BIG_IMAGEY * 804.0 / 628.0;
 }
 
 

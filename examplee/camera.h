@@ -44,17 +44,21 @@ public:
     void add_pose(const Float2& offset, const Float2& rotation, float mag);
     int poses() const;
     void set_pose(int ix);
-    void hide(float dx, float dy, float dz);
-    void unhide();
+    void hide(float posx, float posy, float posz, float period = 0.0);
+    void unhide(float period = 0.0);
     bool hidden() const;
 
     MouseVector new_mouse_vector(int sx, int sy) const;
+    void advance_hide_fixed(float seconds);
+    void update_hide_fixed_matrix();
 
     void show() const;
 
 private:
+    float m_time_left;
+    Float3 m_hide_position;
+    Float3 m_hide_velocity;
     bool m_hidden;
-    Float3 m_hidden_shift;
     int m_width;
     int m_height;
     Pose* m_pose;
@@ -73,6 +77,9 @@ private:
     Matrix4x4 m_rot_matrix;
 
     void update_matrices();
+    bool set_hide_position(float posx, float posy, float posz, float period);
+    Float3 velocity(const Float3& p1, const Float3& p0, float period) const;
+    Float3 current_hide_position(const Float3& p, const Float3& v, float tleft) const;
 };
 
 #endif // _CAMERA_H_

@@ -8,6 +8,8 @@
 #include "look.h"
 #include <stdio.h>
 
+#define HIDE_TIME 0.25
+
 Toy::Toy()
     : m_doc(new Document("first.brk"))
     , m_history(new History())
@@ -82,9 +84,10 @@ void Toy::advance(int nanoseconds)
     float seconds = 1.0e-3;
     while (m_seconds > seconds) {
         m_seconds -= seconds;
-
+        m_camera->advance_hide_fixed(seconds);
     }
     update_uniform();
+    m_camera->update_hide_fixed_matrix();
 }
 
 bool Toy::button(int code, bool shifted, bool on)
@@ -191,9 +194,9 @@ bool Toy::mouse(SDL_Event* e, bool on)
         if (on) {
             m_menu->press();
             if (m_camera->hidden()) {
-                m_camera->unhide();
+                m_camera->unhide(HIDE_TIME);
             } else {
-                m_camera->hide(-m_menu->width(), 0.0, 0.0);
+                m_camera->hide(-m_menu->width(), 0.0, 0.0, HIDE_TIME);
             }
         } else {
             m_menu->release();
