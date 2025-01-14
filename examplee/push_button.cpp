@@ -60,3 +60,15 @@ const float* PushButton::data()
     m_animate.translate(0.0, 0.0, m_pressed ? (-m_radius / 10.0f) : 0.0);
     return m_animate.data();
 }
+
+bool PushButton::collide(const Float3& sel_pos, const Float3& top_left) const
+{
+    float bpx = m_position.v1 + top_left.v1;
+    float bpy = m_position.v2 + top_left.v2;
+    float dx = sel_pos.v1 - bpx;
+    float dy = sel_pos.v2 - bpy;
+    float r = sqrt(dx * dx + dy * dy);
+    return r <= m_radius;
+
+
+}

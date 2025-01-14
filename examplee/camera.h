@@ -48,9 +48,11 @@ public:
     void unhide(float period = 0.0);
     bool hidden() const;
 
+    MouseVector new_fixed_mouse_vector(int sx, int sy) const;
     MouseVector new_mouse_vector(int sx, int sy) const;
     void advance_hide_fixed(float seconds);
     void update_hide_fixed_matrix();
+    Float3 top_left() const;
 
     void show() const;
 

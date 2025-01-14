@@ -151,6 +151,14 @@ void Camera::translate_y(int pixels)
     update_matrices();
 }
 
+Float3 Camera::top_left() const
+{
+    float aspect = float(m_width) / float(m_height ? m_height : 1.0);
+    float dy = tan((m_fov / 2.0) * PI / 180.0);
+    float dx = dy * aspect;
+    return {-dx, dy, -1.0};
+}
+
 void Camera::update_matrices()
 {
     float znear = 0.1;
@@ -267,6 +275,18 @@ MouseVector Camera::new_mouse_vector(int sx, int sy) const
     tmv.rotate_ax(m_rotation.v1);
     tmv.rotate_ay(m_rotation.v2);
     tmv.translate(m_object_center);
+    return tmv;
+}
+
+MouseVector Camera::new_fixed_mouse_vector(int sx, int sy) const
+{
+    double camy = tan((PI / 180.0) * m_fov / 2.0);
+    double k = 2 * camy / (double) m_height;
+    float v1 = k * ((double) sx - ((double) m_width) / 2);
+    float v2 = k * (-(double) sy + ((double) m_height) / 2);
+    Float3 vector = {v1, v2, -1.0};
+    Float3 origin = {0.0, 0.0, 0.0};
+    MouseVector tmv(origin, vector);
     return tmv;
 }
 

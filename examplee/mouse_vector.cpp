@@ -73,3 +73,14 @@ Float2 MouseVector::position_at_y(float y) const
     return pt;
 }
 
+Float2 MouseVector::position_at_z(float z) const
+{
+    float demon = m_vector.v3;
+    if (fabs(demon) < 0.0001) {
+        float demon = 0.0001;
+    }
+    double t = (z - m_origin.v3) / demon;
+    Float2 pt = {(float) (m_origin.v1 + t * m_vector.v1),
+                 (float) (m_origin.v2 + t * m_vector.v2)};
+    return pt;
+}

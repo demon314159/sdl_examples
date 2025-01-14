@@ -7,6 +7,7 @@
 #include "plane_shape.h"
 #include "look.h"
 #include <math.h>
+#include <stdio.h>
 
 #define BUTTON_RADIUS 0.015
 #define YPITCH (4.0 * BUTTON_RADIUS)
@@ -125,6 +126,53 @@ CadModel MaterialMenu::model() const
 float MaterialMenu::width() const
 {
     return m_width;
+}
+
+bool MaterialMenu::button_selected(const MouseVector& mv, const Float3& top_left, bool hidden, int& button) const
+{
+    Float3 sel_pos = pos_at_zlevel(-1.0, mv);
+    if (m_button1->collide(sel_pos, top_left)) {
+        button = 1;
+        return true;
+    }
+    if (hidden) {
+        return false;
+    }
+    if (m_button2->collide(sel_pos, top_left)) {
+        button = 2;
+        return true;
+    }
+    if (m_button3->collide(sel_pos, top_left)) {
+        button = 3;
+        return true;
+    }
+    if (m_button4->collide(sel_pos, top_left)) {
+        button = 4;
+        return true;
+    }
+    if (m_button5->collide(sel_pos, top_left)) {
+        button = 5;
+        return true;
+    }
+    if (m_button6->collide(sel_pos, top_left)) {
+        button = 6;
+        return true;
+    }
+    if (m_button7->collide(sel_pos, top_left)) {
+        button = 7;
+        return true;
+    }
+    if (m_button8->collide(sel_pos, top_left)) {
+        button = 8;
+        return true;
+    }
+    return false;
+}
+
+Float3 MaterialMenu::pos_at_zlevel(float z, const MouseVector& mv) const
+{
+        Float2 sel_pos = mv.position_at_z(z);
+        return {sel_pos.v1, sel_pos.v2, -1.0};
 }
 
 void MaterialMenu::press(void)

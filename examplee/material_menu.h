@@ -12,6 +12,7 @@
 #include "texture.h"
 #include "uniform.h"
 #include "image_panel.h"
+#include "mouse_vector.h"
 
 class MaterialMenu
 {
@@ -24,6 +25,7 @@ public:
     void update_uniform();
     CadModel model() const;
     float width() const;
+    bool button_selected(const MouseVector& mv, const Float3& top_left, bool hidden, int& button) const;
 
     void press(void);
     void release(void);
@@ -43,6 +45,7 @@ protected:
     ImagePanel* m_panel5;
     ImagePanel* m_panel6;
     ImagePanel* m_panel7;
+    Float3 pos_at_zlevel(float z, const MouseVector& mv) const;
 };
 
 #endif // _MATERIAL_MENU_H_

@@ -16,6 +16,7 @@ public:
     void rotate_ay(float deg);
     void rotate_ax(float deg);
     Float2 position_at_y(float y) const;
+    Float2 position_at_z(float z) const;
 
 private:
     Float3 m_origin;

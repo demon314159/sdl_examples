@@ -192,11 +192,18 @@ bool Toy::mouse(SDL_Event* e, bool on)
         }
     } else if (e->button.button == SDL_BUTTON_RIGHT) {
         if (on) {
-            m_menu->press();
-            if (m_camera->hidden()) {
-                m_camera->unhide(HIDE_TIME);
-            } else {
-                m_camera->hide(-m_menu->width(), 0.0, 0.0, HIDE_TIME);
+            int button;
+            MouseVector mv = m_camera->new_fixed_mouse_vector(e->button.x, e->button.y);
+            if (m_menu->button_selected(mv, m_camera->top_left(), m_camera->hidden(), button)) {
+                printf("button selected: %d\n", button);
+                if (button == 1) {
+                    m_menu->press();
+                    if (m_camera->hidden()) {
+                        m_camera->unhide(HIDE_TIME);
+                    } else {
+                        m_camera->hide(-m_menu->width(), 0.0, 0.0, HIDE_TIME);
+                    }
+                }
             }
         } else {
             m_menu->release();
