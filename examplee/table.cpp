@@ -3,7 +3,7 @@
 //
 
 #include "table.h"
-#include "cube_shape.h"
+#include "plane_shape.h"
 #include "look.h"
 #include "pi.h"
 #include <math.h>
@@ -17,17 +17,34 @@ Table::Table(float dimx, float dimy, float dimz)
     , m_base({1,1})
     , m_size({1,1})
     , m_animate()
+    , m_size_vector(new float[2])
 {
+    m_size_vector[0] = 1.0;
+    m_size_vector[1] = 1.0;
+
 }
 
 Table::~Table()
 {
+    delete [] m_size_vector;
 }
 
 CadModel Table::model(float animation_id) const
 {
-    CadModel cm(CubeShape(m_dimx, TABLE_THICKNESS, m_dimz), TABLE_PAINT, animation_id);
+    CadModel cm;
+    CadModel ps(PlaneShape(m_dimx, m_dimz, TABLE_TEXTURE_ID), TABLE_PAINT, animation_id);
+    cm.add(ps, 0.0, 0.0, 0.0);
+    ps.rotate_ax(180.0);
+    cm.add(ps, 0.0, 0.0, 0.0);
+
     return cm;
+}
+
+const float* Table::size_data()
+{
+    m_size_vector[0] = (float) m_size.v1;
+    m_size_vector[1] = (float) m_size.v2;
+    return m_size_vector;
 }
 
 const float* Table::data()
@@ -44,4 +61,9 @@ void Table::change_size(Int2 base, Int2 size)
 {
     m_base = base;
     m_size = size;
+}
+
+void Table::build_texture(Texture* texture) const
+{
+    texture->add("p_table.png", "texture8");
 }

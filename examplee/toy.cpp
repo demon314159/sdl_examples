@@ -29,6 +29,7 @@ Toy::Toy()
     adjust_table_size();
 
     m_camera->frame(bb);
+    m_camera->hide(-m_menu->width(), 0.0, 0.0, 0.0);
 }
 
 Toy::~Toy()
@@ -53,6 +54,7 @@ Camera* Toy::get_camera() const
 void Toy::build_texture()
 {
     m_menu->build_texture(m_texture);
+    m_table->build_texture(m_texture);
 }
 
 void Toy::build_model()
@@ -77,6 +79,7 @@ void Toy::build_uniform()
     m_uniform->add("animation_0_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_choose->data());
     m_menu->build_uniform(m_uniform);
     m_uniform->add("animation_9_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_table->data());
+    m_uniform->add("table_size", UNIFORM_TYPE_1_FLOAT_VECTOR, 2, m_table->size_data());
 }
 
 void Toy::update_uniform()
@@ -84,6 +87,7 @@ void Toy::update_uniform()
     m_choose->data();
     m_menu->update_uniform();
     m_table->data();
+    m_table->size_data();
 }
 
 void Toy::advance(int nanoseconds)
@@ -271,7 +275,6 @@ void Toy::adjust_table_size()
     bb.vmin.v3 -= 2;
     bb.vmax.v1 += 2;
     bb.vmax.v3 += 2;
-    printf("mat base = (%d, %d)  size %d x %d\n", bb.vmin.v1, bb.vmax.v3, bb.vmax.v1 - bb.vmin.v1 + 1, bb.vmax.v3 - bb.vmin.v3 + 1);
     m_table->change_size({bb.vmin.v1, bb.vmax.v3}, {bb.vmax.v1 - bb.vmin.v1 + 1, bb.vmax.v3 - bb.vmin.v3 + 1});
 }
 

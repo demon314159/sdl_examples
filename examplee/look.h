@@ -39,6 +39,7 @@
 #define IMAGE5_TEXTURE_ID 5.0f
 #define IMAGE6_TEXTURE_ID 6.0f
 #define IMAGE7_TEXTURE_ID 7.0f
+#define TABLE_TEXTURE_ID  8.0f
 
 class Look
 {

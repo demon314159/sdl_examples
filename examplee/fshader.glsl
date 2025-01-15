@@ -6,15 +6,7 @@ in vec2 v_texture_position;
 in float v_texture_id;
 in float v_animation_id;
 
-uniform float msg_1_box;
-uniform float msg_2_box;
-uniform float msg_3_box;
-uniform float msg_4_box;
-uniform float msg_5_box;
-uniform float msg_6_box;
-uniform float msg_7_box;
-
-uniform float count_data[2];
+uniform float table_size[2];
 
 uniform sampler2D texture1;
 uniform sampler2D texture2;
@@ -24,11 +16,6 @@ uniform sampler2D texture5;
 uniform sampler2D texture6;
 uniform sampler2D texture7;
 uniform sampler2D texture8;
-uniform sampler2D texture9;
-uniform sampler2D texture10;
-uniform sampler2D texture11;
-uniform sampler2D texture12;
-uniform sampler2D texture13;
 
 void main()
 {
@@ -54,44 +41,18 @@ void main()
             billy = texture(texture4, v_texture_position);
             gl_FragColor = billy;
         } else if (v_texture_id < 5.5) { // Fifth texture
-            vec2 ttt;
-            ttt = vec2(v_texture_position.x, v_texture_position.y + msg_1_box);
-            gl_FragColor = texture(texture5, ttt);
+            billy = texture(texture5, v_texture_position);
+            gl_FragColor = billy;
         } else if (v_texture_id < 6.5) { // Sixth texture
-            vec2 ttt;
-            ttt = vec2(v_texture_position.x, v_texture_position.y + msg_2_box);
-            gl_FragColor = texture(texture6, ttt);
+            billy = texture(texture6, v_texture_position);
+            gl_FragColor = billy;
         } else if (v_texture_id < 7.5) { // Seventh texture
-            vec2 ttt;
-            ttt = vec2(v_texture_position.x, v_texture_position.y + msg_3_box);
-            gl_FragColor = texture(texture7, ttt);
+            billy = texture(texture7, v_texture_position);
+            gl_FragColor = billy;
         } else if (v_texture_id < 8.5) { // Eighth texture
             vec2 ttt;
-            ttt = vec2(v_texture_position.x, v_texture_position.y + msg_4_box);
+            ttt = vec2(v_texture_position.x * table_size[0], v_texture_position.y * table_size[1]);
             gl_FragColor = texture(texture8, ttt);
-        } else if (v_texture_id < 9.5) { // Ninth texture
-            vec2 ttt;
-            ttt = vec2(v_texture_position.x, v_texture_position.y + msg_5_box);
-            gl_FragColor = texture(texture9, ttt);
-        } else if (v_texture_id < 10.5) { // Tenth texture
-            vec2 ttt;
-            ttt = vec2(v_texture_position.x, v_texture_position.y + msg_6_box);
-            gl_FragColor = texture(texture10, ttt);
-        } else if (v_texture_id < 11.5) { // Digit texture
-            vec2 ttt;
-            if (v_animation_id < 46.5) {
-                ttt = vec2(v_texture_position.x + count_data[0], v_texture_position.y);
-            } else {
-                ttt = vec2(v_texture_position.x + count_data[1], v_texture_position.y);
-            }
-            gl_FragColor = texture(texture11, ttt);
-        } else if (v_texture_id < 12.5) { // pb_about texture
-            billy = texture(texture12, v_texture_position);
-            gl_FragColor = billy;
-        } else if (v_texture_id < 13.5) { // msg_about texture
-            vec2 ttt;
-            ttt = vec2(v_texture_position.x, v_texture_position.y + msg_7_box);
-            gl_FragColor = texture(texture13, ttt);
         }
     }
 }
