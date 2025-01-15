@@ -85,8 +85,7 @@ void Toy::update_uniform()
 {
     m_choose->data();
     m_menu->update_uniform();
-    m_table->data();
-    m_table->size_data();
+    m_table->update_uniform();
 }
 
 void Toy::advance(int nanoseconds)

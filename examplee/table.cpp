@@ -71,3 +71,10 @@ void Table::build_uniform(Uniform* uniform)
     uniform->add("animation_9_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, data());
     uniform->add("table_size", UNIFORM_TYPE_1_FLOAT_VECTOR, 2, size_data());
 }
+
+void Table::update_uniform()
+{
+    data();
+    size_data();
+}
+

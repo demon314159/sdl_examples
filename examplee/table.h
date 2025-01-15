@@ -22,6 +22,7 @@ public:
     void change_size(Int2 base, Int2 size);
     void build_texture(Texture* texture) const;
     void build_uniform(Uniform* uniform);
+    void update_uniform();
 
 protected:
     float m_dimx;
