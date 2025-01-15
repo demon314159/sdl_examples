@@ -11,13 +11,15 @@
 #define HIDE_TIME 0.25
 
 Toy::Toy()
-    : m_doc(new Document("first.brk"))
+    : m_table(NULL)
+    , m_doc(new Document("first.brk"))
     , m_history(new History())
     , m_choose(new Choose(DIMX, DIMY, DIMZ, MARKER_COLOR))
     , m_seconds(0.0)
     , m_menu(NULL)
 {
     m_menu = new MaterialMenu();
+    m_table = new Table(UNIT_SQUARE, 0.002, UNIT_SQUARE);
     build_texture();
     build_model();
     build_uniform();
@@ -28,6 +30,7 @@ Toy::Toy()
 
 Toy::~Toy()
 {
+    delete m_table;
     delete m_menu;
     delete m_choose;
     delete m_history;
@@ -52,14 +55,15 @@ void Toy::build_texture()
 void Toy::build_model()
 {
     m_model->clear();
-//    CadModel csx(CubeShape(0.2, 0.002, 0.002), PaintCan(0.0, 1.0, 1.0), 0.0);
-//    CadModel csy(CubeShape(0.002, 0.2, 0.002), PaintCan(0.0, 0.0, 1.0), 0.0);
-///    CadModel csz(CubeShape(0.002, 0.002, 0.2), PaintCan(0.0, 1.0, 0.0), 0.0);
-//    m_model->add(csx, 0.0, 0.0, 0.0);
-//    m_model->add(csy, 0.0, 0.0, 0.0);
-//    m_model->add(csz, 0.0, 0.0, 0.0);
+    CadModel csx(CubeShape(0.2, 0.002, 0.002), PaintCan(0.0, 1.0, 1.0), 0.0);
+    CadModel csy(CubeShape(0.002, 0.2, 0.002), PaintCan(0.0, 0.0, 1.0), 0.0);
+    CadModel csz(CubeShape(0.002, 0.002, 0.2), PaintCan(0.0, 1.0, 0.0), 0.0);
+    m_model->add(csx, 0.0, 0.0, 0.0);
+    m_model->add(csy, 0.0, 0.0, 0.0);
+    m_model->add(csz, 0.0, 0.0, 0.0);
     m_model->add(m_choose->model(MARKER_ANIMATION_ID));
     m_model->add(m_menu->model());
+    m_model->add(m_table->model(TABLE_ANIMATION_ID));
 }
 
 void Toy::build_uniform()
@@ -69,12 +73,14 @@ void Toy::build_uniform()
     }
     m_uniform->add("animation_0_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_choose->data());
     m_menu->build_uniform(m_uniform);
+    m_uniform->add("animation_9_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_table->data());
 }
 
 void Toy::update_uniform()
 {
     m_choose->data();
     m_menu->update_uniform();
+    m_table->data();
 }
 
 void Toy::advance(int nanoseconds)

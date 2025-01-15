@@ -160,7 +160,7 @@ BoundingBox VertexImage::bounding_box() const
 bool VertexImage::vertex_regular(int ix) const
 {
     float id = m_vertex_data[ix].animation_id;
-    if (id > 1.5 && id < 12.5)
+    if (id > 1.5 && id < 13.5)
         return false;
     return id < 98.5;
 }

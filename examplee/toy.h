@@ -9,6 +9,7 @@
 #include "document.h"
 #include "choose.h"
 #include "history.h"
+#include "table.h"
 #include "material_menu.h"
 
 class Toy: public AnimatedToy
@@ -24,6 +25,7 @@ public:
     Camera* get_camera() const;
 
 private:
+    Table* m_table;
     Document* m_doc;
     History* m_history;
     Choose* m_choose;

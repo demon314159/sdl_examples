@@ -87,7 +87,7 @@ const float* Choose::data()
         y -= (m_dimy / 2.0 - m_dimy / 16.0);
         m_animation.translate(x, y, z);
     } else {
-        m_animation.translate(0.0, -5.0, 0.0);
+        m_animation.translate(0.0, 0.0, 0.0);
     }
     return m_animation.data();
 }
