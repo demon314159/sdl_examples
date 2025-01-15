@@ -14,6 +14,14 @@
 #include "image_panel.h"
 #include "mouse_vector.h"
 
+#define MATERIAL_BRICK         0
+#define MATERIAL_DOUBLE_BRICK  1
+#define MATERIAL_TRIPLE_BRICK  2
+#define MATERIAL_GABLE_BRICK   3
+#define MATERIAL_WINDOW        4
+#define MATERIAL_DOOR          5
+#define MATERIAL_ROOF          6
+
 class MaterialMenu
 {
 public:
@@ -25,13 +33,14 @@ public:
     void update_uniform();
     CadModel model() const;
     float width() const;
-    bool button_selected(const MouseVector& mv, const Float3& top_left, bool hidden, int& button) const;
-
-    void press(void);
+    int material() const;
+    bool hide_button_pressed(const MouseVector& mv, const Float3& top_left) const;
+    bool menu_button_pressed(const MouseVector& mv, const Float3& top_left);
     void release(void);
 
 protected:
     float m_width;
+    float m_material;
     PushButton* m_button1;
     PushButton* m_button2;
     PushButton* m_button3;

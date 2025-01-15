@@ -21,7 +21,8 @@
 
 
 MaterialMenu::MaterialMenu()
-    : m_button1(NULL)
+    : m_material(0)
+    , m_button1(NULL)
     , m_button2(NULL)
     , m_button3(NULL)
     , m_button4(NULL)
@@ -105,8 +106,6 @@ void MaterialMenu::update_uniform()
 CadModel MaterialMenu::model() const
 {
     CadModel cm;
-//    CadModel body(CubeShape(m_width, m_height, m_depth), PaintCan(1.0, 1.0, 1.0), FIXED_ANIMATION_ID);
-//    cm.add(body, m_position.v1, m_position.v2, m_position.v3);
     cm.add(m_button1->model(FIXED_ANIMATION_ID, BUTTON1_ANIMATION_ID));
     cm.add(m_button2->model(HIDE_FIXED_ANIMATION_ID, BUTTON2_ANIMATION_ID));
     cm.add(m_button3->model(HIDE_FIXED_ANIMATION_ID, BUTTON3_ANIMATION_ID));
@@ -128,42 +127,57 @@ float MaterialMenu::width() const
     return m_width;
 }
 
-bool MaterialMenu::button_selected(const MouseVector& mv, const Float3& top_left, bool hidden, int& button) const
+int MaterialMenu::material() const
+{
+    return m_material;
+}
+
+bool MaterialMenu::hide_button_pressed(const MouseVector& mv, const Float3& top_left) const
 {
     Float3 sel_pos = pos_at_zlevel(-1.0, mv);
     if (m_button1->collide(sel_pos, top_left)) {
-        button = 1;
+        m_button1->press();
         return true;
     }
-    if (hidden) {
-        return false;
-    }
+    return false;
+}
+
+bool MaterialMenu::menu_button_pressed(const MouseVector& mv, const Float3& top_left)
+{
+    Float3 sel_pos = pos_at_zlevel(-1.0, mv);
     if (m_button2->collide(sel_pos, top_left)) {
-        button = 2;
+        m_button2->press();
+        m_material = MATERIAL_BRICK;
         return true;
     }
     if (m_button3->collide(sel_pos, top_left)) {
-        button = 3;
+        m_button3->press();
+        m_material = MATERIAL_DOUBLE_BRICK;
         return true;
     }
     if (m_button4->collide(sel_pos, top_left)) {
-        button = 4;
+        m_button4->press();
+        m_material = MATERIAL_TRIPLE_BRICK;
         return true;
     }
     if (m_button5->collide(sel_pos, top_left)) {
-        button = 5;
+        m_button5->press();
+        m_material = MATERIAL_GABLE_BRICK;
         return true;
     }
     if (m_button6->collide(sel_pos, top_left)) {
-        button = 6;
+        m_button6->press();
+        m_material = MATERIAL_WINDOW;
         return true;
     }
     if (m_button7->collide(sel_pos, top_left)) {
-        button = 7;
+        m_button7->press();
+        m_material = MATERIAL_DOOR;
         return true;
     }
     if (m_button8->collide(sel_pos, top_left)) {
-        button = 8;
+        m_button8->press();
+        m_material = MATERIAL_ROOF;
         return true;
     }
     return false;
@@ -175,13 +189,15 @@ Float3 MaterialMenu::pos_at_zlevel(float z, const MouseVector& mv) const
         return {sel_pos.v1, sel_pos.v2, -1.0};
 }
 
-void MaterialMenu::press(void)
-{
-    m_button1->press();
-}
-
 void MaterialMenu::release(void)
 {
     m_button1->release();
+    m_button2->release();
+    m_button3->release();
+    m_button4->release();
+    m_button5->release();
+    m_button6->release();
+    m_button7->release();
+    m_button8->release();
 }
 

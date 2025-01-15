@@ -147,6 +147,84 @@ bool Toy::top_face_selection(int sx, int sy, Int3& pos) const
     return true;
 }
 
+bool Toy::try_hide_button(int sx, int sy)
+{
+    MouseVector mv = m_camera->new_fixed_mouse_vector(sx, sy);
+    if (m_menu->hide_button_pressed(mv, m_camera->top_left())) {
+        if (m_camera->hidden()) {
+            m_camera->unhide(HIDE_TIME);
+        } else {
+            m_camera->hide(-m_menu->width(), 0.0, 0.0, HIDE_TIME);
+        }
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool Toy::try_menu_button(int sx, int sy)
+{
+    MouseVector mv = m_camera->new_fixed_mouse_vector(sx, sy);
+    if (m_camera->hidden()) {
+        return false;
+    }
+    return m_menu->menu_button_pressed(mv, m_camera->top_left());
+}
+
+void Toy::try_top_face(int sx, int sy)
+{
+    Int3 pos;
+    if (top_face_selection(sx, sy, pos)) {
+        pos.v2++;
+        m_choose->select_choice(pos);
+        Int3 p;
+        int w;
+        int o;
+        if (m_choose->new_element_chosen(p, w, o)) {
+            if (w == 1) {
+                m_history->do_command(new AddElementCommand(new HalfBrickElement(p), m_doc));
+            } else if (w > 1) {
+                w = 2;
+                Element* item;
+                switch(m_menu->material()) {
+                    case MATERIAL_BRICK:
+                        item = new BrickElement(p, o);
+                        break;
+                    case MATERIAL_DOUBLE_BRICK:
+                        item = new DoubleBrickElement(p, o);
+                        break;
+                    case MATERIAL_TRIPLE_BRICK:
+                        item = new TripleBrickElement(p, o);
+                        break;
+                    case MATERIAL_GABLE_BRICK:
+                        item = new GableBrickElement(p, o);
+                        break;
+                    case MATERIAL_WINDOW:
+                        item = new WindowElement(p, o);
+                        break;
+                    case MATERIAL_DOOR:
+                        item = new DoorElement(p, o);
+                        break;
+//                  case MATERIAL_ROOF:
+//                        item = new BrickElement(p, o);
+//                        break;
+                    default:
+                        item = new BrickElement(p, o);
+                        break;
+                }
+                if (!m_doc->occupied(item)) {
+                    m_history->do_command(new AddElementCommand(item, m_doc));
+                } else {
+                    delete item;
+                }
+            }
+            m_choose->select_no_choice();
+        }
+    } else {
+        m_choose->select_no_choice();
+    }
+}
+
 bool Toy::mouse(SDL_Event* e, bool on)
 {
     bool ret_val = AnimatedToy::mouse(e, on);
@@ -158,55 +236,17 @@ bool Toy::mouse(SDL_Event* e, bool on)
         }
     } else if (e->button.button == SDL_BUTTON_LEFT) {
         if (on) {
-            Int3 pos;
-            if (top_face_selection(e->button.x, e->button.y, pos)) {
-                pos.v2++;
-                m_choose->select_choice(pos);
-                Int3 p;
-                int w;
-                int o;
-                if (m_choose->new_element_chosen(p, w, o)) {
-                    if (w == 1) {
-                        m_history->do_command(new AddElementCommand(new HalfBrickElement(p), m_doc));
-                    } else if (w > 1) {
-                        w = 2;
-                        Element* item;
-                        item = new BrickElement(p, o);
-//                        item = new DoubleBrickElement(p, o);
-//                        item = new TripleBrickElement(p, o);
-//                        item = new GableBrickElement(p, o);
-//                        item = new WindowElement(p, o);
-//                        item = new DoorElement(p, o);
-                        if (!m_doc->occupied(item)) {
-                            m_history->do_command(new AddElementCommand(item, m_doc));
-                        } else {
-                            delete item;
-                        }
-                    }
-                    m_choose->select_no_choice();
-                }
-            } else {
-                m_choose->select_no_choice();
-            }
-        } else {
-        }
-    } else if (e->button.button == SDL_BUTTON_RIGHT) {
-        if (on) {
-            int button;
-            MouseVector mv = m_camera->new_fixed_mouse_vector(e->button.x, e->button.y);
-            if (m_menu->button_selected(mv, m_camera->top_left(), m_camera->hidden(), button)) {
-                printf("button selected: %d\n", button);
-                if (button == 1) {
-                    m_menu->press();
-                    if (m_camera->hidden()) {
-                        m_camera->unhide(HIDE_TIME);
-                    } else {
-                        m_camera->hide(-m_menu->width(), 0.0, 0.0, HIDE_TIME);
-                    }
+            if (!try_hide_button(e->button.x, e->button.y)) {
+                if (!try_menu_button(e->button.x, e->button.y)) {
+                    try_top_face(e->button.x, e->button.y);
                 }
             }
         } else {
             m_menu->release();
+        }
+    } else if (e->button.button == SDL_BUTTON_RIGHT) {
+        if (on) {
+        } else {
         }
     }
     return false;
