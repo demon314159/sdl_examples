@@ -17,7 +17,6 @@ Table::Table(float dimx, float dimy, float dimz)
     , m_base({1,1})
     , m_size({1,1})
     , m_animate()
-    , m_size_vector(new float[2])
 {
     m_size_vector[0] = 1.0;
     m_size_vector[1] = 1.0;
@@ -26,7 +25,6 @@ Table::Table(float dimx, float dimy, float dimz)
 
 Table::~Table()
 {
-    delete [] m_size_vector;
 }
 
 CadModel Table::model(float animation_id) const
@@ -66,4 +64,10 @@ void Table::change_size(Int2 base, Int2 size)
 void Table::build_texture(Texture* texture) const
 {
     texture->add("p_table.png", "texture8");
+}
+
+void Table::build_uniform(Uniform* uniform)
+{
+    uniform->add("animation_9_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, data());
+    uniform->add("table_size", UNIFORM_TYPE_1_FLOAT_VECTOR, 2, size_data());
 }

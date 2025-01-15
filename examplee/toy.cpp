@@ -78,8 +78,7 @@ void Toy::build_uniform()
     }
     m_uniform->add("animation_0_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_choose->data());
     m_menu->build_uniform(m_uniform);
-    m_uniform->add("animation_9_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_table->data());
-    m_uniform->add("table_size", UNIFORM_TYPE_1_FLOAT_VECTOR, 2, m_table->size_data());
+    m_table->build_uniform(m_uniform);
 }
 
 void Toy::update_uniform()

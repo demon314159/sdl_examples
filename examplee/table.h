@@ -9,6 +9,7 @@
 #include "cad_model.h"
 #include "matrix4x4.h"
 #include "texture.h"
+#include "uniform.h"
 
 class Table
 {
@@ -20,6 +21,7 @@ public:
     const float* size_data();
     void change_size(Int2 base, Int2 size);
     void build_texture(Texture* texture) const;
+    void build_uniform(Uniform* uniform);
 
 protected:
     float m_dimx;
@@ -28,7 +30,7 @@ protected:
     Int2 m_base;
     Int2 m_size;
     Matrix4x4 m_animate;
-    float* m_size_vector;
+    float m_size_vector[2];
 };
 
 #endif // _TABLE_H_
