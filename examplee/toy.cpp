@@ -19,12 +19,15 @@ Toy::Toy()
     , m_menu(NULL)
 {
     m_menu = new MaterialMenu();
-    m_table = new Table(UNIT_SQUARE, 0.002, UNIT_SQUARE);
+    m_table = new Table(DIMX, DIMY, DIMZ);
     build_texture();
     build_model();
     build_uniform();
     BoundingBox bb = m_model->bounding_box();
     m_doc->building()->update_bounding_box(bb);
+
+    adjust_table_size();
+
     m_camera->frame(bb);
 }
 
@@ -94,6 +97,9 @@ void Toy::advance(int nanoseconds)
     }
     update_uniform();
     m_camera->update_hide_fixed_matrix();
+    if (m_doc->just_one_change() || m_doc->many_changes()) {
+        adjust_table_size();
+    }
 }
 
 bool Toy::button(int code, bool shifted, bool on)
@@ -256,5 +262,16 @@ bool Toy::mouse(SDL_Event* e, bool on)
         }
     }
     return false;
+}
+
+void Toy::adjust_table_size()
+{
+    IntegerBoundingBox bb = m_doc->integer_bounding_box();
+    bb.vmin.v1 -= 2;
+    bb.vmin.v3 -= 2;
+    bb.vmax.v1 += 2;
+    bb.vmax.v3 += 2;
+    printf("mat base = (%d, %d)  size %d x %d\n", bb.vmin.v1, bb.vmax.v3, bb.vmax.v1 - bb.vmin.v1 + 1, bb.vmax.v3 - bb.vmin.v3 + 1);
+    m_table->change_size({bb.vmin.v1, bb.vmax.v3}, {bb.vmax.v1 - bb.vmin.v1 + 1, bb.vmax.v3 - bb.vmin.v3 + 1});
 }
 

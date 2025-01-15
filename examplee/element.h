@@ -9,6 +9,7 @@
 #include "int3.h"
 #include "float3.h"
 #include "cad_model.h"
+#include "bounding_box.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -47,6 +48,7 @@ public:
     int height() const;
     int orientation() const;
     bool contains(int x, int y, int z) const;
+    void update_integer_bounding_box(IntegerBoundingBox& bb);
 
     virtual void save_to_file(FILE* ffo) const = 0;
     virtual const CadModel* model() const;

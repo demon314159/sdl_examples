@@ -41,6 +41,7 @@ private:
     bool try_hide_button(int sx, int sy);
     bool try_menu_button(int sx, int sy);
     void try_top_face(int sx, int sy);
+    void adjust_table_size();
 };
 
 #endif // _TOY_H_

@@ -6,10 +6,16 @@
 #define _BOUNDING_BOX_H_
 
 #include "float3.h"
+#include "int3.h"
 
 struct BoundingBox {
     Float3 vmin;
     Float3 vmax;
+};
+
+struct IntegerBoundingBox {
+    Int3 vmin;
+    Int3 vmax;
 };
 
 #endif // _BOUNDING_BOX_H_

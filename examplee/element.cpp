@@ -7,6 +7,7 @@
 #include "gable_brick_shape.h"
 #include "door_model.h"
 #include "window_model.h"
+#include <algorithm>
 
 Element::Element(Int3 pos, int width, int height, int orientation)
     : m_removed(false)
@@ -270,4 +271,38 @@ void DoorElement::save_to_file(FILE* ffo) const
 const CadModel* DoorElement::model() const
 {
     return &m_model;
+}
+
+void Element::update_integer_bounding_box(IntegerBoundingBox& bb)
+{
+    // Do first unit at m_pos
+    Int3 pos = m_pos;
+    bb.vmin.v1 = std::min(bb.vmin.v1, pos.v1);
+    bb.vmin.v2 = std::min(bb.vmin.v2, pos.v2);
+    bb.vmin.v3 = std::min(bb.vmin.v3, pos.v3);
+    bb.vmax.v1 = std::max(bb.vmax.v1, pos.v1);
+    bb.vmax.v2 = std::max(bb.vmax.v2, pos.v2);
+    bb.vmax.v3 = std::max(bb.vmax.v3, pos.v3);
+    if (m_height > 0) {
+        // Do top unit
+        pos.v2 += (m_height - 1);
+        bb.vmin.v2 = std::min(bb.vmin.v2, pos.v2);
+        bb.vmax.v2 = std::max(bb.vmax.v2, pos.v2);
+    }
+    if (m_width > 0) {
+        // Do last unit based on orientation
+        if (m_orientation == 3) {
+            pos.v3 += (m_width - 1);
+        } else if (m_orientation == 2) {
+            pos.v1 -= (m_width - 1);
+        } else if (m_orientation == 1) {
+            pos.v3 -= (m_width - 1);
+        } else {
+            pos.v1 += (m_width - 1);
+        }
+        bb.vmin.v1 = std::min(bb.vmin.v1, pos.v1);
+        bb.vmin.v3 = std::min(bb.vmin.v3, pos.v3);
+        bb.vmax.v1 = std::max(bb.vmax.v1, pos.v1);
+        bb.vmax.v3 = std::max(bb.vmax.v3, pos.v3);
+    }
 }

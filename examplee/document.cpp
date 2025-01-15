@@ -426,3 +426,23 @@ bool Document::occupied(const Element* e) const
     return false;
 }
 
+IntegerBoundingBox Document::integer_bounding_box() const
+{
+    IntegerBoundingBox bb;
+    if (m_elements <= 0) {
+        bb.vmin.v1 = -1;
+        bb.vmin.v2 = 0;
+        bb.vmin.v3 = -1;
+        bb.vmax.v1 = 1;
+        bb.vmax.v2 = 0;
+        bb.vmax.v3 = 1;
+        return bb;
+    }
+    bb.vmin = m_element_ptr[0]->pos();  // Start with something real
+    bb.vmax = m_element_ptr[0]->pos();
+    for (int i = 0; i < m_elements; i++) {
+       m_element_ptr[i]->update_integer_bounding_box(bb);
+    }
+    return bb;
+}
+

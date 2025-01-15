@@ -28,6 +28,7 @@ public:
     void rotate_ay(float angle);
     void rotate_az(float angle);
     void rotate(float angle, Float3 axes);
+    void stretch(float x, float y, float z);
 
     float get(int row, int col) const;
     void set(int row, int col, float v);

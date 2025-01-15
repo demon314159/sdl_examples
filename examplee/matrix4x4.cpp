@@ -208,3 +208,16 @@ void Matrix4x4::rotate(float angle, Float3 axes)
     tb = *this * qa.rotation_matrix();
     *this = tb;
 }
+
+void Matrix4x4::stretch(float x, float y, float z)
+{
+    Matrix4x4 ta;
+    Matrix4x4 tb;
+    ta.unity();
+    ta.set(0, 0, x);
+    ta.set(1, 1, y);
+    ta.set(2, 2, z);
+    tb = *this * ta;
+    *this = tb;
+}
+

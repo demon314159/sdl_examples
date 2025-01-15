@@ -7,6 +7,7 @@
 #include "element.h"
 #include "token_file.h"
 #include "vertex_image.h"
+#include "bounding_box.h"
 
 // one_change means that one element has changed and only a small patch will be made to the vertex data
 // many_changes means that more than one element has changed and the vertex data will be rebuilt entirely
@@ -48,6 +49,7 @@ public:
     int glass_index(int ix) const;
     bool occupied(int x, int y, int z) const;
     bool occupied(const Element* e) const;
+    IntegerBoundingBox integer_bounding_box() const;
 
 private:
     bool m_one_change;
