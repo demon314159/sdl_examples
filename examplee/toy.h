@@ -23,6 +23,7 @@ public:
     void advance(int nanoseconds) override;
     Document* get_doc() const;
     Camera* get_camera() const;
+    void reframe();
 
 private:
     Table* m_table;

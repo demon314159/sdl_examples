@@ -23,12 +23,8 @@ Toy::Toy()
     build_texture();
     build_model();
     build_uniform();
-    BoundingBox bb = m_model->bounding_box();
-    m_doc->building()->update_bounding_box(bb);
-
+    reframe();
     adjust_table_size();
-
-    m_camera->frame(bb);
     m_camera->hide(-m_menu->width(), 0.0, 0.0, 0.0);
 }
 
@@ -39,6 +35,16 @@ Toy::~Toy()
     delete m_choose;
     delete m_history;
     delete m_doc;
+}
+
+void Toy::reframe()
+{
+    BoundingBox bb = m_doc->building()->bounding_box();
+    bb.vmin.v1 -= (2.0 * DIMX);
+    bb.vmin.v3 -= (2.0 * DIMZ);
+    bb.vmax.v1 += (2.0 * DIMX);
+    bb.vmax.v3 += (2.0 * DIMZ);
+    m_camera->frame(bb);
 }
 
 Document* Toy::get_doc() const
@@ -60,12 +66,6 @@ void Toy::build_texture()
 void Toy::build_model()
 {
     m_model->clear();
-    CadModel csx(CubeShape(0.2, 0.002, 0.002), PaintCan(0.0, 1.0, 1.0), 0.0);
-    CadModel csy(CubeShape(0.002, 0.2, 0.002), PaintCan(0.0, 0.0, 1.0), 0.0);
-    CadModel csz(CubeShape(0.002, 0.002, 0.2), PaintCan(0.0, 1.0, 0.0), 0.0);
-    m_model->add(csx, 0.0, 0.0, 0.0);
-    m_model->add(csy, 0.0, 0.0, 0.0);
-    m_model->add(csz, 0.0, 0.0, 0.0);
     m_model->add(m_choose->model(MARKER_ANIMATION_ID));
     m_model->add(m_menu->model());
     m_model->add(m_table->model(TABLE_ANIMATION_ID));

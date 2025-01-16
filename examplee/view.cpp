@@ -329,10 +329,7 @@ void View::render()
             copy_building_vertices();
         }
         m_toy->get_doc()->clear_changes();
-        BoundingBox bb = m_toy->model()->bounding_box();
-        m_toy->get_doc()->building()->update_bounding_box(bb);
-        m_toy->get_camera()->frame(bb);
-
+        m_toy->reframe();
     }
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glUseProgram(m_program);

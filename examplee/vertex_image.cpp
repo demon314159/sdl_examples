@@ -143,12 +143,12 @@ BoundingBox VertexImage::bounding_box() const
 {
     BoundingBox bb;
     if (m_vertex_count == 0) {
-        bb.vmin.v1 = -0.5;
-        bb.vmin.v2 = 0.0;
-        bb.vmin.v3 = -0.5;
-        bb.vmax.v1 = 0.5;
-        bb.vmax.v2 = 1.0;
-        bb.vmax.v3 = 0.5;
+        bb.vmin.v1 = -DIMX / 2.0;
+        bb.vmin.v2 = -DIMY / 2.0;
+        bb.vmin.v3 = -DIMZ / 2.0;
+        bb.vmax.v1 = DIMX / 2.0;
+        bb.vmax.v2 = DIMY / 2.0;
+        bb.vmax.v3 = DIMZ / 2.0;
         return bb;
     }
     bb.vmin = m_vertex_data[0].position;
