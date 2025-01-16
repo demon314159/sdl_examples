@@ -18,7 +18,7 @@ public:
     void release();
 
     bool collide(const Float3& sel_pos, const Float3& top_left) const;
-    CadModel model(float body_animation_id, float button_animation_id) const;
+    CadModel model(float body_animation_id, float button_animation_id, float lamp_texture_id = 0.0) const;
     const float* data();
 
 protected:

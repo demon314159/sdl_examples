@@ -5,12 +5,13 @@
 #include "button_shape.h"
 #include "math.h"
 
-ButtonShape::ButtonShape(float radius, float height, float minor_radius, int steps, int minor_steps)
+ButtonShape::ButtonShape(float radius, float height, float minor_radius, int steps, int minor_steps, float texture_id)
     : m_height(height)
     , m_major_radius(radius)
     , m_minor_radius(minor_radius)
     , m_major_steps(steps)
     , m_minor_steps(minor_steps)
+    , m_texture_id(texture_id)
     , m_size_known(false)
     , m_facet_count(0)
     , m_facet(NULL)
@@ -38,6 +39,11 @@ int ButtonShape::facets() const
 Facet ButtonShape::facet(int facet_ix) const
 {
     return m_facet[facet_ix];
+}
+
+bool ButtonShape::uses_texture() const
+{
+    return true;
 }
 
 void ButtonShape::define_shape()
@@ -74,25 +80,24 @@ void ButtonShape::slice_slice(int step, int steps, const Float3& pa, const Float
     Float3 p4 = rotate_ay(pb, ay1);
     add_face(p1, p2, p3, p4);
     if (top) {
-        add_face({0.0, m_height, 0.0}, p4, p3);
+        add_face({0.0, m_height, 0.0}, p4, p3, false, m_texture_id);
     }
     if (bottom) {
         add_face(p1, p2, {p2.v1, 0.0, p2.v3}, {p1.v1, 0.0, p1.v3}, true);
     }
-
 }
 
-
-void ButtonShape::add_face(Float3 v1, Float3 v2, Float3 v3, Float3 v4, bool flip)
+void ButtonShape::add_face(Float3 v1, Float3 v2, Float3 v3, Float3 v4, bool flip, float texture_id)
 {
-    add_face(v1, v2, v3, flip);
-    add_face(v1, v3, v4, flip);
+    add_face(v1, v2, v3, flip, texture_id);
+    add_face(v1, v3, v4, flip, texture_id);
 }
 
-void ButtonShape::add_face(Float3 v1, Float3 v2, Float3 v3, bool flip)
+void ButtonShape::add_face(Float3 v1, Float3 v2, Float3 v3, bool flip, float texture_id)
 {
     if (m_size_known) {
         m_facet[m_facet_count].animation_id = 0.0;
+        m_facet[m_facet_count].texture_id = texture_id;
         m_facet[m_facet_count].color = {1.0, 1.0, 1.0};
         if (flip) {
             m_facet[m_facet_count].v1 = v1;

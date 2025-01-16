@@ -40,6 +40,13 @@
 #define IMAGE6_TEXTURE_ID 6.0f
 #define IMAGE7_TEXTURE_ID 7.0f
 #define TABLE_TEXTURE_ID  8.0f
+#define LAMP1_TEXTURE_ID  9.0f
+#define LAMP2_TEXTURE_ID  10.0f
+#define LAMP3_TEXTURE_ID  11.0f
+#define LAMP4_TEXTURE_ID  12.0f
+#define LAMP5_TEXTURE_ID  13.0f
+#define LAMP6_TEXTURE_ID  14.0f
+#define LAMP7_TEXTURE_ID  15.0f
 
 class Look
 {
