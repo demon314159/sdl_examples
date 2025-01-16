@@ -153,6 +153,11 @@ bool Toy::top_face_selection(int sx, int sy, Int3& pos) const
             }
         }
     }
+    if (sel_pos.v2 == -1) { // No top faces selected
+        if (!m_table->contains(sel_pos.v1, sel_pos.v3)) {
+            return false;
+        }
+    }
     // Check to see if final candidate has anything above it
     if (m_doc->occupied(sel_pos.v1, sel_pos.v2 + 1, sel_pos.v3)) {
         return false;

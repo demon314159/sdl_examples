@@ -23,6 +23,7 @@ public:
     void build_texture(Texture* texture) const;
     void build_uniform(Uniform* uniform);
     void update_uniform();
+    bool contains(int x, int z) const;
 
 protected:
     float m_dimx;

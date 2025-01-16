@@ -78,3 +78,20 @@ void Table::update_uniform()
     size_data();
 }
 
+bool Table::contains(int x, int z) const
+{
+    if (x < m_base.v1) {
+        return false;
+    }
+    if (x > (m_base.v1 + m_size.v1 - 1)) {
+        return false;
+    }
+    if (z > m_base.v2) {
+        return false;
+    }
+    if ( z < (m_base.v2 - m_size.v2 + 1)) {
+        return false;
+    }
+    return true;
+}
+
