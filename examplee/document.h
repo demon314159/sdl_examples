@@ -44,9 +44,7 @@ public:
     void note_one_change(int ix);
     void note_many_changes();
     const VertexImage* building() const;
-    const VertexImage* glass() const;
     int building_index(int ix) const;
-    int glass_index(int ix) const;
     bool occupied(int x, int y, int z) const;
     bool occupied(const Element* e) const;
     IntegerBoundingBox integer_bounding_box() const;
@@ -60,9 +58,7 @@ private:
     int m_elements;
     Element** m_element_ptr;
     int* m_building_index;
-    int* m_glass_index;
     VertexImage* m_building;
-    VertexImage* m_glass;
 
     void double_the_storage();
     bool expect(TokenFile& tf, const char* pattern, char* error_message);

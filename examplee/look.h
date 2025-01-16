@@ -12,7 +12,6 @@
 #define BRICK_PAINT PaintCan(1.0, 0.0, 0.0)
 #define DOOR_PAINT PaintCan(1.0, 1.0, 1.0)
 #define WINDOW_PAINT PaintCan(1.0, 1.0, 1.0)
-#define GLASS_PAINT PaintCan(0.96, 0.99, 1.0)
 #define TABLE_PAINT PaintCan(0.4, 0.8, 1.0)
 
 #define DEFAULT_ANIMATION_ID 0.0f
@@ -30,7 +29,6 @@
 #define BUTTON7_ANIMATION_ID 11.0f
 #define BUTTON8_ANIMATION_ID 12.0f
 #define TABLE_ANIMATION_ID   13.0f
-#define GLASS_ANIMATION_ID 99.0f
 
 #define IMAGE1_TEXTURE_ID 1.0f
 #define IMAGE2_TEXTURE_ID 2.0f

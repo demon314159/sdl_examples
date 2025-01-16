@@ -16,11 +16,9 @@ Document::Document(int max_elements)
     , m_max_elements(max_elements)
     , m_elements(0)
     , m_building(new VertexImage(1024 * 1024))
-    , m_glass(new VertexImage(128 * 1024))
 {
     m_element_ptr = new Element*[m_max_elements];
     m_building_index = new int[m_max_elements];
-    m_glass_index = new int[m_max_elements];
 }
 
 Document::Document(const char* file_name, int max_elements)
@@ -30,12 +28,10 @@ Document::Document(const char* file_name, int max_elements)
     , m_max_elements(max_elements)
     , m_elements(0)
     , m_building(new VertexImage())
-    , m_glass(new VertexImage())
 {
     char error_message[MAX_TOKEN_CHARS + 1];
     m_element_ptr = new Element*[m_max_elements];
     m_building_index = new int[m_max_elements];
-    m_glass_index = new int[m_max_elements];
     if (!load(file_name, error_message)) {
         printf("Document::Document(%s, %d): %s\n", file_name, max_elements, error_message);
     }
@@ -46,10 +42,8 @@ Document::~Document()
     for (int i = 0; i < m_elements; i++) {
         delete m_element_ptr[i];
     }
-    delete [] m_glass_index;
     delete [] m_building_index;
     delete [] m_element_ptr;
-    delete m_glass;
     delete m_building;
 }
 
@@ -87,14 +81,10 @@ void Document::add_element(Element* e)
     }
     m_element_ptr[m_elements] = e;
     m_building_index[m_elements] = m_building->vertex_count();
-    m_glass_index[m_elements] = m_glass->vertex_count();
     if (m_elements == 0) {
         note_many_changes();
     }
-
-    m_building->add_element(e, false);
-    m_glass->add_element(e, true);
-
+    m_building->add_element(e);
     note_one_change(m_elements);
     ++m_elements;
 }
@@ -105,8 +95,7 @@ void Document::remove_element(int ix)
         return;
     int index = std::min(ix, m_elements - 1);
     m_element_ptr[index]->remove();
-    m_building->update_element(m_building_index[index], m_element_ptr[index], false);
-    m_glass->update_element(m_glass_index[index], m_element_ptr[index], true);
+    m_building->update_element(m_building_index[index], m_element_ptr[index]);
     note_one_change(ix);
 }
 
@@ -119,7 +108,6 @@ Element* Document::remove_last_element()
     --m_elements;
     note_one_change(index);
     m_building->trim_to(m_building_index[index]);
-    m_glass->trim_to(m_glass_index[index]);
     return e;
 }
 
@@ -129,8 +117,7 @@ void Document::unremove_element(int ix)
         return;
     int index = std::min(ix, m_elements - 1);
     m_element_ptr[index]->unremove();
-    m_building->update_element(m_building_index[index], m_element_ptr[index], false);
-    m_glass->update_element(m_glass_index[index], m_element_ptr[index], true);
+    m_building->update_element(m_building_index[index], m_element_ptr[index]);
     note_one_change(ix);
 }
 
@@ -262,19 +249,15 @@ void Document::double_the_storage()
     m_max_elements = 2 * m_max_elements;
     Element** temp_element_ptr = new Element*[m_max_elements];
     int* temp_building_index = new int[m_max_elements];
-    int* temp_glass_index = new int[m_max_elements];
 
     for (int i = 0; i < m_elements; i++) {
         temp_element_ptr[i] = m_element_ptr[i];
         temp_building_index[i] = m_building_index[i];
-        temp_glass_index[i] = m_glass_index[i];
     }
     delete [] m_element_ptr;
     delete [] m_building_index;
-    delete [] m_glass_index;
     m_element_ptr = temp_element_ptr;
     m_building_index = temp_building_index;
-    m_glass_index = temp_glass_index;
 }
 
 bool Document::expect(TokenFile& tf, const char* pattern, char* error_message)
@@ -361,11 +344,6 @@ const VertexImage* Document::building() const
     return m_building;
 }
 
-const VertexImage* Document::glass() const
-{
-    return m_glass;
-}
-
 int Document::changed_ix() const
 {
     return m_changed_ix;
@@ -378,15 +356,6 @@ int Document::building_index(int ix) const
     if (ix >= (m_elements))
         return m_building->vertex_count();
     return m_building_index[ix];
-}
-
-int Document::glass_index(int ix) const
-{
-    if (m_elements < 1)
-        return 0;
-    if (ix >= (m_elements))
-        return m_glass->vertex_count();
-    return m_glass_index[ix];
 }
 
 bool Document::occupied(int x, int y, int z) const

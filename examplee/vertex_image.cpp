@@ -25,7 +25,7 @@ void VertexImage::trim_to(int vix)
     m_vertex_count = vix;
 }
 
-void VertexImage::add_element(Element* e, bool transparent)
+void VertexImage::add_element(Element* e)
 {
     float an_id;
     Float3 vp;
@@ -36,28 +36,26 @@ void VertexImage::add_element(Element* e, bool transparent)
     const CadModel* model = e->model();
     for (int i = 0; i < model->facets(); i++) {
         an_id = model->facet_animation_id(i);
-        if ((transparent && (an_id == 99.0)) || (!transparent && (an_id != 99.0))) {
-            // Common
-            vd.animation_id = an_id;
-            vd.texture_id = model->facet_texture_id(i);
-            vd.normal = model->facet_normal(i);
-            vd.color = model->facet_color(i);
-            // Vertex 1
-            vp = model->facet_v1(i);
-            vd.position = {vp.v1 + pos.v1, vp.v2 + pos.v2, vp.v3 + pos.v3};
-            vd.texture_position = model->facet_texture_v1(i);
-            add_vertex(vd);
-            // Vertex 2
-            vp = model->facet_v2(i);
-            vd.position = {vp.v1 + pos.v1, vp.v2 + pos.v2, vp.v3 + pos.v3};
-            vd.texture_position = model->facet_texture_v2(i);
-            add_vertex(vd);
-            // Vertex 3
-            vp = model->facet_v3(i);
-            vd.position = {vp.v1 + pos.v1, vp.v2 + pos.v2, vp.v3 + pos.v3};
-            vd.texture_position = model->facet_texture_v3(i);
-            add_vertex(vd);
-        }
+        // Common
+        vd.animation_id = an_id;
+        vd.texture_id = model->facet_texture_id(i);
+        vd.normal = model->facet_normal(i);
+        vd.color = model->facet_color(i);
+        // Vertex 1
+        vp = model->facet_v1(i);
+        vd.position = {vp.v1 + pos.v1, vp.v2 + pos.v2, vp.v3 + pos.v3};
+        vd.texture_position = model->facet_texture_v1(i);
+        add_vertex(vd);
+        // Vertex 2
+        vp = model->facet_v2(i);
+        vd.position = {vp.v1 + pos.v1, vp.v2 + pos.v2, vp.v3 + pos.v3};
+        vd.texture_position = model->facet_texture_v2(i);
+        add_vertex(vd);
+        // Vertex 3
+        vp = model->facet_v3(i);
+        vd.position = {vp.v1 + pos.v1, vp.v2 + pos.v2, vp.v3 + pos.v3};
+        vd.texture_position = model->facet_texture_v3(i);
+        add_vertex(vd);
     }
 }
 
@@ -83,7 +81,7 @@ void VertexImage::double_the_storage()
     m_vertex_data = temp;
 }
 
-void VertexImage::update_element(int start_ix, const Element* e, bool transparent)
+void VertexImage::update_element(int start_ix, const Element* e)
 {
     float dd = 0.04;
     float dx = dd * 10;
@@ -97,40 +95,38 @@ void VertexImage::update_element(int start_ix, const Element* e, bool transparen
     const CadModel* model = e->model();
     for (int i = 0; i < model->facets(); i++) {
         an_id = model->facet_animation_id(i);
-        if ((transparent && (an_id == 99.0)) || (!transparent && (an_id != 99.0))) {
 
-            vd.animation_id = removed ? 3.0 : an_id;
-            vd.texture_id = removed ? 0.0 : model->facet_texture_id(i);
-            vd.normal = model->facet_normal(i);
-            vd.color = model->facet_color(i);
+        vd.animation_id = removed ? 3.0 : an_id;
+        vd.texture_id = removed ? 0.0 : model->facet_texture_id(i);
+        vd.normal = model->facet_normal(i);
+        vd.color = model->facet_color(i);
 
-            if (removed) {
-                vd.position = {dx, -dd, 0.0};
-            } else {
-                vp = model->facet_v1(i);
-                vd.position = {vp.v1 + pos.v1, vp.v2 + pos.v2, vp.v3 + pos.v3};
-            }
-            vd.texture_position = model->facet_texture_v1(i);
-            m_vertex_data[start_ix++] = vd;
-
-            if (removed) {
-                vd.position = {dx - dd, -2 * dd, 0.0};
-            } else {
-                vp = model->facet_v2(i);
-                vd.position = {vp.v1 + pos.v1, vp.v2 + pos.v2, vp.v3 + pos.v3};
-            }
-            vd.texture_position = model->facet_texture_v2(i);
-            m_vertex_data[start_ix++] = vd;
-
-            if (removed) {
-                vd.position = {dx + dd, -2 * dd, 0.0};
-            } else {
-                vp = model->facet_v3(i);
-                vd.position = {vp.v1 + pos.v1, vp.v2 + pos.v2, vp.v3 + pos.v3};
-            }
-            vd.texture_position = model->facet_texture_v3(i);
-            m_vertex_data[start_ix++] = vd;
+        if (removed) {
+            vd.position = {dx, -dd, 0.0};
+        } else {
+            vp = model->facet_v1(i);
+            vd.position = {vp.v1 + pos.v1, vp.v2 + pos.v2, vp.v3 + pos.v3};
         }
+        vd.texture_position = model->facet_texture_v1(i);
+        m_vertex_data[start_ix++] = vd;
+
+        if (removed) {
+            vd.position = {dx - dd, -2 * dd, 0.0};
+        } else {
+            vp = model->facet_v2(i);
+            vd.position = {vp.v1 + pos.v1, vp.v2 + pos.v2, vp.v3 + pos.v3};
+        }
+        vd.texture_position = model->facet_texture_v2(i);
+        m_vertex_data[start_ix++] = vd;
+
+        if (removed) {
+            vd.position = {dx + dd, -2 * dd, 0.0};
+        } else {
+            vp = model->facet_v3(i);
+            vd.position = {vp.v1 + pos.v1, vp.v2 + pos.v2, vp.v3 + pos.v3};
+        }
+        vd.texture_position = model->facet_texture_v3(i);
+        m_vertex_data[start_ix++] = vd;
     }
 }
 

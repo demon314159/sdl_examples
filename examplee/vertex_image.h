@@ -12,8 +12,8 @@ public:
     VertexImage(int max_vertex_count = 1024 * 1024);
     ~VertexImage();
     int vertex_count() const;
-    void add_element(Element* e, bool transparent);
-    void update_element(int start_ix, const Element* e, bool transparent);
+    void add_element(Element* e);
+    void update_element(int start_ix, const Element* e);
     const VertexData* vertex_data() const;
     void trim_to(int vix);
     BoundingBox bounding_box() const;
