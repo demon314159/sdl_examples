@@ -35,6 +35,7 @@ MaterialMenu::MaterialMenu()
     , m_panel5(NULL)
     , m_panel6(NULL)
     , m_panel7(NULL)
+    , m_lamp_data(new float[3 * BUTTON_LAMPS])
 {
     m_button1 = new PushButton(BUTTON_RADIUS, BUTTON_RADIUS / 4.0, {XPOS, YPOS + 1.0 * YPITCH, 0.0});
     m_button2 = new PushButton(BUTTON_RADIUS, BUTTON_RADIUS / 4.0, {XPOS, YPOS, 0.0});
@@ -50,11 +51,12 @@ MaterialMenu::MaterialMenu()
     m_panel6 = new ImagePanel(IMAGEY * 479.0 / 933.0, IMAGEY, {XPOS2, YPOS - 5.0 * YPITCH, 0.0} );
     m_panel7 = new ImagePanel(IMAGEY * 199.0 / 116.0, IMAGEY, {XPOS2, YPOS - 6.0 * YPITCH, 0.0} );
     m_width = XPOS2 + BIG_IMAGEY * 804.0 / 628.0;
+    update_lamp_data();
 }
-
 
 MaterialMenu::~MaterialMenu()
 {
+    delete [] m_lamp_data;
     delete m_panel7;
     delete m_panel6;
     delete m_panel5;
@@ -79,7 +81,7 @@ void MaterialMenu::build_texture(Texture* texture) const
     texture->add("p_roof.png", "texture7");
 }
 
-void MaterialMenu::build_uniform(Uniform* uniform) const
+void MaterialMenu::build_uniform(Uniform* uniform)
 {
     uniform->add("animation_1_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_button1->data());
     uniform->add("animation_2_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_button2->data());
@@ -89,6 +91,7 @@ void MaterialMenu::build_uniform(Uniform* uniform) const
     uniform->add("animation_6_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_button6->data());
     uniform->add("animation_7_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_button7->data());
     uniform->add("animation_8_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_button8->data());
+    uniform->add("lamp_color", UNIFORM_TYPE_3_FLOAT_VECTOR, BUTTON_LAMPS, (void*) m_lamp_data);
 }
 
 void MaterialMenu::update_uniform()
@@ -101,6 +104,24 @@ void MaterialMenu::update_uniform()
     m_button6->data();
     m_button7->data();
     m_button8->data();
+    update_lamp_data();
+}
+
+void MaterialMenu::update_lamp_data()
+{
+    for (int i = 0; i < BUTTON_LAMPS; i++) {
+        if (m_material == i) {
+           Float3 c = PUSH_BUTTON_COLOR_LIT.ambient_color();
+           m_lamp_data[3 * i + 0] = c.v1;
+           m_lamp_data[3 * i + 1] = c.v2;
+           m_lamp_data[3 * i + 2] = c.v3;
+        } else {
+           Float3 c = PUSH_BUTTON_COLOR.ambient_color();
+           m_lamp_data[3 * i + 0] = c.v1;
+           m_lamp_data[3 * i + 1] = c.v2;
+           m_lamp_data[3 * i + 2] = c.v3;
+        }
+    }
 }
 
 CadModel MaterialMenu::model() const

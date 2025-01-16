@@ -22,6 +22,8 @@
 #define MATERIAL_DOOR          5
 #define MATERIAL_ROOF          6
 
+#define BUTTON_LAMPS 7
+
 class MaterialMenu
 {
 public:
@@ -29,7 +31,7 @@ public:
     ~MaterialMenu();
 
     void build_texture(Texture* texture) const;
-    void build_uniform(Uniform* uniform) const;
+    void build_uniform(Uniform* uniform);
     void update_uniform();
     CadModel model() const;
     float width() const;
@@ -40,7 +42,7 @@ public:
 
 protected:
     float m_width;
-    float m_material;
+    int m_material;
     PushButton* m_button1;
     PushButton* m_button2;
     PushButton* m_button3;
@@ -54,7 +56,9 @@ protected:
     ImagePanel* m_panel5;
     ImagePanel* m_panel6;
     ImagePanel* m_panel7;
+    float* m_lamp_data;
     Float3 pos_at_zlevel(float z, const MouseVector& mv) const;
+    void update_lamp_data();
 };
 
 #endif // _MATERIAL_MENU_H_

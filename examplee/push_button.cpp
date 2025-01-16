@@ -9,9 +9,6 @@
 #include "pi.h"
 #include <math.h>
 
-#define PUSH_BUTTON_COLOR PaintCan(1.0, 0.25, 0.25)
-#define BEVEL_COLOR PaintCan(0.25, 0.25, 0.25)
-
 #define MAJOR_STEPS 100
 #define MINOR_STEPS 20
 #define RATIO 6.0f

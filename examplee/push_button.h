@@ -9,6 +9,11 @@
 #include "cad_model.h"
 #include "matrix4x4.h"
 
+#define PUSH_BUTTON_COLOR PaintCan(1.0, 0.25, 0.25)
+#define PUSH_BUTTON_COLOR_LIT PaintCan(0.25, 0.75, 0.25)
+
+#define BEVEL_COLOR PaintCan(0.25, 0.25, 0.25)
+
 class PushButton
 {
 public:
