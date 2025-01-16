@@ -186,18 +186,30 @@ bool Document::load(const char* file_name, char* error_message)
                 return false;
             }
             add_element(new BrickElement({x, y, z}, o));
-        } else if (0 == strcmp(ename, "DoubleBrick")) {
+        } else if (0 == strcmp(ename, "HalfFoundation")) {
+            int x, y, z;
+            if (!parse_3_parms(tf, x, y, z, error_message)) {
+                return false;
+            }
+            add_element(new HalfFoundationElement({x, y, z}));
+        } else if (0 == strcmp(ename, "Foundation")) {
             int x, y, z, o;
             if (!parse_4_parms(tf, x, y, z, o, error_message)) {
                 return false;
             }
-            add_element(new DoubleBrickElement({x, y, z}, o));
-        } else if (0 == strcmp(ename, "TripleBrick")) {
+            add_element(new FoundationElement({x, y, z}, o));
+        } else if (0 == strcmp(ename, "DoubleFoundation")) {
             int x, y, z, o;
             if (!parse_4_parms(tf, x, y, z, o, error_message)) {
                 return false;
             }
-            add_element(new TripleBrickElement({x, y, z}, o));
+            add_element(new DoubleFoundationElement({x, y, z}, o));
+        } else if (0 == strcmp(ename, "TripleFoundation")) {
+            int x, y, z, o;
+            if (!parse_4_parms(tf, x, y, z, o, error_message)) {
+                return false;
+            }
+            add_element(new TripleFoundationElement({x, y, z}, o));
         } else if (0 == strcmp(ename, "GableBrick")) {
             int x, y, z, o;
             if (!parse_4_parms(tf, x, y, z, o, error_message)) {
@@ -217,7 +229,7 @@ bool Document::load(const char* file_name, char* error_message)
             }
             add_element(new DoorElement({x, y, z}, o));
         } else {
-            sprintf(error_message, "Line %d: Expecting 'HalfBrick', 'Brick', 'DoubleBrick', 'TripleBricki', 'GableBrick', 'Window' or 'Door' but found '%s'", tf.line_count(), ename);
+            sprintf(error_message, "Line %d: Expecting 'HalfBrick', 'Brick', 'HalfFoundation', 'Foundation', 'DoubleFoundation', 'TripleFoundation', 'GableBrick', 'Window' or 'Door' but found '%s'", tf.line_count(), ename);
             return false;
         }
     }

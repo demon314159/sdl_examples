@@ -61,7 +61,7 @@ protected:
     bool in_range(int v, int v1, int v2) const;
 private:
     CadModel m_model;
-    static CadModel m_halfbrick_model;
+    static CadModel m_half_brick_model;
     static CadModel m_brick_model_ns;
     static CadModel m_brick_model_ew;
 };
@@ -86,30 +86,55 @@ protected:
 private:
 };
 
-class DoubleBrickElement: public Element
+class HalfFoundationElement: public Element
 {
 public:
-    DoubleBrickElement(Int3 pos, int orientation);
-    DoubleBrickElement() = delete;
+    HalfFoundationElement(Int3 pos);
+    HalfFoundationElement() = delete;
     void save_to_file(FILE* ffo) const override;
     const CadModel* model() const override;
 protected:
 private:
-    static CadModel m_double_brick_model_ns;
-    static CadModel m_double_brick_model_ew;
+    static CadModel m_half_foundation_model;
 };
 
-class TripleBrickElement: public Element
+class FoundationElement: public Element
 {
 public:
-    TripleBrickElement(Int3 pos, int orientation);
-    TripleBrickElement() = delete;
+    FoundationElement(Int3 pos, int orientation);
+    FoundationElement() = delete;
     void save_to_file(FILE* ffo) const override;
     const CadModel* model() const override;
 protected:
 private:
-    static CadModel m_triple_brick_model_ns;
-    static CadModel m_triple_brick_model_ew;
+    static CadModel m_foundation_model_ns;
+    static CadModel m_foundation_model_ew;
+};
+
+class DoubleFoundationElement: public Element
+{
+public:
+    DoubleFoundationElement(Int3 pos, int orientation);
+    DoubleFoundationElement() = delete;
+    void save_to_file(FILE* ffo) const override;
+    const CadModel* model() const override;
+protected:
+private:
+    static CadModel m_double_foundation_model_ns;
+    static CadModel m_double_foundation_model_ew;
+};
+
+class TripleFoundationElement: public Element
+{
+public:
+    TripleFoundationElement(Int3 pos, int orientation);
+    TripleFoundationElement() = delete;
+    void save_to_file(FILE* ffo) const override;
+    const CadModel* model() const override;
+protected:
+private:
+    static CadModel m_triple_foundation_model_ns;
+    static CadModel m_triple_foundation_model_ew;
 };
 
 class GableBrickElement: public Element

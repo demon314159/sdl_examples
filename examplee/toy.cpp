@@ -201,7 +201,15 @@ void Toy::try_top_face(int sx, int sy)
         int o;
         if (m_choose->new_element_chosen(p, w, o)) {
             if (w == 1) {
-                m_history->do_command(new AddElementCommand(new HalfBrickElement(p), m_doc));
+                switch(m_menu->material()) {
+                    case MATERIAL_FOUNDATION:
+                    case MATERIAL_DOUBLE_FOUNDATION:
+                    case MATERIAL_TRIPLE_FOUNDATION:
+                        m_history->do_command(new AddElementCommand(new HalfFoundationElement(p), m_doc));
+                        break;
+                    default:
+                        m_history->do_command(new AddElementCommand(new HalfBrickElement(p), m_doc));
+                }
             } else if (w > 1) {
                 w = 2;
                 Element* item;
@@ -209,24 +217,27 @@ void Toy::try_top_face(int sx, int sy)
                     case MATERIAL_BRICK:
                         item = new BrickElement(p, o);
                         break;
-                    case MATERIAL_DOUBLE_BRICK:
-                        item = new DoubleBrickElement(p, o);
+                    case MATERIAL_FOUNDATION:
+                        item = new FoundationElement(p, o);
                         break;
-                    case MATERIAL_TRIPLE_BRICK:
-                        item = new TripleBrickElement(p, o);
+                    case MATERIAL_DOUBLE_FOUNDATION:
+                        item = new DoubleFoundationElement(p, o);
+                        break;
+                    case MATERIAL_TRIPLE_FOUNDATION:
+                        item = new TripleFoundationElement(p, o);
                         break;
                     case MATERIAL_GABLE_BRICK:
                         item = new GableBrickElement(p, o);
                         break;
+//                  case MATERIAL_ROOF:
+//                        item = new BrickElement(p, o);
+//                        break;
                     case MATERIAL_WINDOW:
                         item = new WindowElement(p, o);
                         break;
                     case MATERIAL_DOOR:
                         item = new DoorElement(p, o);
                         break;
-//                  case MATERIAL_ROOF:
-//                        item = new BrickElement(p, o);
-//                        break;
                     default:
                         item = new BrickElement(p, o);
                         break;

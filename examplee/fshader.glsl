@@ -7,7 +7,7 @@ in float v_texture_id;
 in float v_animation_id;
 
 uniform float table_size[2];
-uniform vec3 lamp_color[7];
+uniform vec3 lamp_color[8];
 
 uniform sampler2D texture1;
 uniform sampler2D texture2;
@@ -68,6 +68,8 @@ void main()
             gl_FragColor = vec4(lamp_color[5], 1.0);
         } else if (v_texture_id < 15.5) { // Seventh button lamp
             gl_FragColor = vec4(lamp_color[6], 1.0);
+        } else if (v_texture_id < 16.5) { // Eighth button lamp
+            gl_FragColor = vec4(lamp_color[7], 1.0);
         }
     }
 }

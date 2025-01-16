@@ -10,6 +10,7 @@
 #define BACKGROUND_COLOR PaintCan(1.0, 0.682, 0.259)
 #define MARKER_COLOR PaintCan(0.0, 1.0, 0.0)
 #define BRICK_PAINT PaintCan(1.0, 0.0, 0.0)
+#define FOUNDATION_PAINT PaintCan(0.8, 0.8, 0.8)
 #define DOOR_PAINT PaintCan(1.0, 1.0, 1.0)
 #define WINDOW_PAINT PaintCan(1.0, 1.0, 1.0)
 #define TABLE_PAINT PaintCan(0.4, 0.8, 1.0)
@@ -28,7 +29,8 @@
 #define BUTTON6_ANIMATION_ID 10.0f
 #define BUTTON7_ANIMATION_ID 11.0f
 #define BUTTON8_ANIMATION_ID 12.0f
-#define TABLE_ANIMATION_ID   13.0f
+#define BUTTON9_ANIMATION_ID 13.0f
+#define TABLE_ANIMATION_ID   14.0f
 
 #define IMAGE1_TEXTURE_ID 1.0f
 #define IMAGE2_TEXTURE_ID 2.0f
@@ -45,6 +47,7 @@
 #define LAMP5_TEXTURE_ID  13.0f
 #define LAMP6_TEXTURE_ID  14.0f
 #define LAMP7_TEXTURE_ID  15.0f
+#define LAMP8_TEXTURE_ID  16.0f
 
 class Look
 {

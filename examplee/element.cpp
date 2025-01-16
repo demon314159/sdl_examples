@@ -91,7 +91,7 @@ int Element::orientation() const
 const CadModel* Element::model() const
 {
     if (m_width == 1 && m_height == 1) {
-        return &m_halfbrick_model;
+        return &m_half_brick_model;
     } else if (m_width == 2 && m_height == 1) {
         if (m_orientation == 0 || m_orientation == 2) {
             return &m_brick_model_ns;
@@ -125,7 +125,7 @@ bool Element::in_range(int v, int v1, int v2) const
     }
 }
 
-CadModel Element::m_halfbrick_model(BrickShape(DIMX, DIMY, DIMZ, DIMB), BRICK_PAINT, 0.0);
+CadModel Element::m_half_brick_model(BrickShape(DIMX, DIMY, DIMZ, DIMB), BRICK_PAINT, 0.0);
 CadModel Element::m_brick_model_ns(BrickShape(DIMX * 2.0f, DIMY, DIMZ, DIMB), BRICK_PAINT, 0.0);
 CadModel Element::m_brick_model_ew(BrickShape(DIMX, DIMY, DIMZ * 2.0f, DIMB), BRICK_PAINT, 0.0);
 
@@ -151,51 +151,92 @@ void BrickElement::save_to_file(FILE* ffo) const
         m_pos.v1, m_pos.v2, m_pos.v3, m_orientation);
 }
 
-DoubleBrickElement::DoubleBrickElement(Int3 pos, int orientation)
+CadModel HalfFoundationElement::m_half_foundation_model(BrickShape(DIMX, DIMY, DIMZ, DIMB), FOUNDATION_PAINT, 0.0);
+CadModel FoundationElement::m_foundation_model_ns(BrickShape(DIMX * 2.0f, DIMY, DIMZ, DIMB), FOUNDATION_PAINT, 0.0);
+CadModel FoundationElement::m_foundation_model_ew(BrickShape(DIMX, DIMY, DIMZ * 2.0f, DIMB), FOUNDATION_PAINT, 0.0);
+
+HalfFoundationElement::HalfFoundationElement(Int3 pos)
+    : Element(pos, 1, 1, 0)
+{
+}
+
+void HalfFoundationElement::save_to_file(FILE* ffo) const
+{
+    fprintf(ffo, "HalfFoundation(%0d, %0d, %0d)\n",
+        m_pos.v1, m_pos.v2, m_pos.v3);
+}
+
+const CadModel* HalfFoundationElement::model() const
+{
+    return &m_half_foundation_model;
+}
+
+FoundationElement::FoundationElement(Int3 pos, int orientation)
+    : Element(pos, 2, 1, orientation)
+{
+}
+
+void FoundationElement::save_to_file(FILE* ffo) const
+{
+    fprintf(ffo, "Foundation(%0d, %0d, %0d, %0d)\n",
+        m_pos.v1, m_pos.v2, m_pos.v3, m_orientation);
+}
+
+const CadModel* FoundationElement::model() const
+{
+    if (m_orientation == 0 || m_orientation == 2) {
+        return &m_foundation_model_ns;
+    } else {
+        return &m_foundation_model_ew;
+    }
+}
+
+
+CadModel DoubleFoundationElement::m_double_foundation_model_ns(BrickShape(DIMX * 4.0f, DIMY, DIMZ, DIMB), FOUNDATION_PAINT, 0.0);
+CadModel DoubleFoundationElement::m_double_foundation_model_ew(BrickShape(DIMX, DIMY, DIMZ * 4.0f, DIMB), FOUNDATION_PAINT, 0.0);
+
+DoubleFoundationElement::DoubleFoundationElement(Int3 pos, int orientation)
     : Element(pos, 4, 1, orientation)
 {
 }
 
-void DoubleBrickElement::save_to_file(FILE* ffo) const
+void DoubleFoundationElement::save_to_file(FILE* ffo) const
 {
-    fprintf(ffo, "DoubleBrick(%0d, %0d, %0d, %0d)\n",
+    fprintf(ffo, "DoubleFoundation(%0d, %0d, %0d, %0d)\n",
         m_pos.v1, m_pos.v2, m_pos.v3, m_orientation);
 }
 
-const CadModel* DoubleBrickElement::model() const
+const CadModel* DoubleFoundationElement::model() const
 {
     if (m_orientation == 0 || m_orientation == 2) {
-        return &m_double_brick_model_ns;
+        return &m_double_foundation_model_ns;
     } else {
-        return &m_double_brick_model_ew;
+        return &m_double_foundation_model_ew;
     }
 }
 
-CadModel DoubleBrickElement::m_double_brick_model_ns(BrickShape(DIMX * 4.0f, DIMY, DIMZ, DIMB), BRICK_PAINT, 0.0);
-CadModel DoubleBrickElement::m_double_brick_model_ew(BrickShape(DIMX, DIMY, DIMZ * 4.0f, DIMB), BRICK_PAINT, 0.0);
+CadModel TripleFoundationElement::m_triple_foundation_model_ns(BrickShape(DIMX * 6.0f, DIMY, DIMZ, DIMB), FOUNDATION_PAINT, 0.0);
+CadModel TripleFoundationElement::m_triple_foundation_model_ew(BrickShape(DIMX, DIMY, DIMZ * 6.0f, DIMB), FOUNDATION_PAINT, 0.0);
 
-TripleBrickElement::TripleBrickElement(Int3 pos, int orientation)
+TripleFoundationElement::TripleFoundationElement(Int3 pos, int orientation)
     : Element(pos, 6, 1, orientation)
 {
 }
 
-void TripleBrickElement::save_to_file(FILE* ffo) const
+void TripleFoundationElement::save_to_file(FILE* ffo) const
 {
-    fprintf(ffo, "TripleBrick(%0d, %0d, %0d, %0d)\n",
+    fprintf(ffo, "TripleFoundation(%0d, %0d, %0d, %0d)\n",
         m_pos.v1, m_pos.v2, m_pos.v3, m_orientation);
 }
 
-const CadModel* TripleBrickElement::model() const
+const CadModel* TripleFoundationElement::model() const
 {
     if (m_orientation == 0 || m_orientation == 2) {
-        return &m_triple_brick_model_ns;
+        return &m_triple_foundation_model_ns;
     } else {
-        return &m_triple_brick_model_ew;
+        return &m_triple_foundation_model_ew;
     }
 }
-
-CadModel TripleBrickElement::m_triple_brick_model_ns(BrickShape(DIMX * 6.0f, DIMY, DIMZ, DIMB), BRICK_PAINT, 0.0);
-CadModel TripleBrickElement::m_triple_brick_model_ew(BrickShape(DIMX, DIMY, DIMZ * 6.0f, DIMB), BRICK_PAINT, 0.0);
 
 GableBrickElement::GableBrickElement(Int3 pos, int orientation)
     : Element(pos, 1, 1, orientation)
@@ -226,7 +267,6 @@ WindowElement::WindowElement(Int3 pos, int orientation)
     : Element(pos, 2, 4, orientation)
     , m_model()
 {
-//    m_model.add(WindowModel(DIMX * (float) m_width, DIMY * (float) m_height, DIMZ, DIMB, 1, 2, 0.0), 0.0, 0.0, 0.0);
     m_model.add(WindowModel(DIMX * (float) m_width, DIMY * (float) m_height, DIMZ, DIMB, 2, 3, 0.0), 0.0, 0.0, 0.0);
     if (orientation == 1) {
         m_model.rotate_ay(90.0);

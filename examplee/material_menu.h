@@ -14,15 +14,16 @@
 #include "image_panel.h"
 #include "mouse_vector.h"
 
-#define MATERIAL_BRICK         0
-#define MATERIAL_DOUBLE_BRICK  1
-#define MATERIAL_TRIPLE_BRICK  2
-#define MATERIAL_GABLE_BRICK   3
-#define MATERIAL_WINDOW        4
-#define MATERIAL_DOOR          5
-#define MATERIAL_ROOF          6
+#define MATERIAL_BRICK              0
+#define MATERIAL_FOUNDATION         1
+#define MATERIAL_DOUBLE_FOUNDATION  2
+#define MATERIAL_TRIPLE_FOUNDATION  3
+#define MATERIAL_GABLE_BRICK        4
+#define MATERIAL_ROOF               5
+#define MATERIAL_WINDOW             6
+#define MATERIAL_DOOR               7
 
-#define BUTTON_LAMPS 7
+#define BUTTON_LAMPS 8
 
 class MaterialMenu
 {
@@ -51,6 +52,7 @@ protected:
     PushButton* m_button6;
     PushButton* m_button7;
     PushButton* m_button8;
+    PushButton* m_button9;
     ImagePanel* m_panel1;
     ImagePanel* m_panel2;
     ImagePanel* m_panel5;
