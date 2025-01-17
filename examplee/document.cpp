@@ -416,7 +416,41 @@ bool Document::occupied(const Element* e) const
            }
        }
    }
-    return false;
+   if (e->corner_flag()) {
+        int t_orientation;
+        Int3 t_pos;
+        if (orientation == 3) {
+            t_orientation = 0;
+            t_pos = {pos.v1, pos.v2, pos.v3 + width - 1};
+        } else if (orientation == 2) {
+            t_orientation = 3;
+            t_pos = {pos.v1 - width + 1, pos.v2, pos.v3};
+        } else if (orientation == 1) {
+            t_orientation = 2;
+            t_pos = {pos.v1, pos.v2, pos.v3 - width + 1};
+        } else {
+            t_orientation = 1;
+            t_pos = {pos.v1 + width - 1, pos.v2, pos.v3};
+        }
+       for (int h = 0; h < height; h++) {
+           for (int w = 0; w < width; w++) {
+               bool res;
+               if (t_orientation == 3) {
+                   res = occupied(t_pos.v1, t_pos.v2 + h, t_pos.v3 + w);
+               } else if (t_orientation == 2) {
+                   res = occupied(t_pos.v1 - w, t_pos.v2 + h, t_pos.v3);
+               } else if (t_orientation == 1) {
+                   res = occupied(t_pos.v1, t_pos.v2 + h, t_pos.v3 - w);
+               } else {
+                   res = occupied(t_pos.v1 + w, t_pos.v2 + h, t_pos.v3);
+               }
+               if (res) {
+                   return true;
+               }
+           }
+       }
+   }
+   return false;
 }
 
 IntegerBoundingBox Document::integer_bounding_box() const

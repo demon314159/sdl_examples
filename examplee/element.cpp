@@ -10,12 +10,13 @@
 #include "corner_window_model.h"
 #include <algorithm>
 
-Element::Element(Int3 pos, int width, int height, int orientation)
+Element::Element(Int3 pos, int width, int height, int orientation, bool corner_flag)
     : m_removed(false)
     , m_pos(pos)
     , m_width(width)
     , m_height(height)
     , m_orientation(orientation)
+    , m_corner_flag(corner_flag)
     , m_model()
 {
     if (m_width > 2 || m_height > 1) {
@@ -83,11 +84,10 @@ int Element::orientation() const
     return m_orientation;
 }
 
-//void Element::save_to_file(FILE* ffo) const
-//{
-//    fprintf(ffo, "Brick(%0d, %0d, %0d, %0d, %0d, %0d)\n",
-//        m_pos.v1, m_pos.v2, m_pos.v3, m_width, m_height, m_orientation);
-//}
+bool Element::corner_flag() const
+{
+    return m_corner_flag;
+}
 
 const CadModel* Element::model() const
 {
@@ -105,16 +105,46 @@ const CadModel* Element::model() const
 
 bool Element::contains(int x, int y, int z) const
 {
+    bool res;
     if (m_orientation == 3) {
-        return m_pos.v1 == x && in_range(y, m_pos.v2, m_pos.v2 + m_height - 1) && in_range(z, m_pos.v3, m_pos.v3 + m_width - 1);
+        res = m_pos.v1 == x && in_range(y, m_pos.v2, m_pos.v2 + m_height - 1) && in_range(z, m_pos.v3, m_pos.v3 + m_width - 1);
     } else if (m_orientation == 2) {
-        return in_range(x, m_pos.v1, m_pos.v1 - m_width + 1) && in_range(y, m_pos.v2, m_pos.v2 + m_height - 1) && m_pos.v3 == z;
+        res = in_range(x, m_pos.v1, m_pos.v1 - m_width + 1) && in_range(y, m_pos.v2, m_pos.v2 + m_height - 1) && m_pos.v3 == z;
     } else if (m_orientation == 1) {
-        return m_pos.v1 == x && in_range(y, m_pos.v2, m_pos.v2 + m_height - 1) && in_range(z, m_pos.v3, m_pos.v3 - m_width + 1);
+        res = m_pos.v1 == x && in_range(y, m_pos.v2, m_pos.v2 + m_height - 1) && in_range(z, m_pos.v3, m_pos.v3 - m_width + 1);
     } else {
-        return in_range(x, m_pos.v1, m_pos.v1 + m_width - 1) && in_range(y, m_pos.v2, m_pos.v2 + m_height - 1) && m_pos.v3 == z;
+        res = in_range(x, m_pos.v1, m_pos.v1 + m_width - 1) && in_range(y, m_pos.v2, m_pos.v2 + m_height - 1) && m_pos.v3 == z;
     }
-    return false;
+    if (res) {
+        return true;
+    }
+    if (m_corner_flag) {
+        int t_orientation;
+        Int3 t_pos;
+        if (m_orientation == 3) {
+            t_orientation = 0;
+            t_pos = {m_pos.v1, m_pos.v2, m_pos.v3 + m_width - 1};
+        } else if (m_orientation == 2) {
+            t_orientation = 3;
+            t_pos = {m_pos.v1 - m_width + 1, m_pos.v2, m_pos.v3};
+        } else if (m_orientation == 1) {
+            t_orientation = 2;
+            t_pos = {m_pos.v1, m_pos.v2, m_pos.v3 - m_width + 1};
+        } else {
+            t_orientation = 1;
+            t_pos = {m_pos.v1 + m_width - 1, m_pos.v2, m_pos.v3};
+        }
+        if (t_orientation == 3) {
+            res = t_pos.v1 == x && in_range(y, t_pos.v2, t_pos.v2 + m_height - 1) && in_range(z, t_pos.v3, t_pos.v3 + m_width - 1);
+        } else if (t_orientation == 2) {
+            res = in_range(x, t_pos.v1, t_pos.v1 - m_width + 1) && in_range(y, t_pos.v2, t_pos.v2 + m_height - 1) && t_pos.v3 == z;
+        } else if (t_orientation == 1) {
+            res = t_pos.v1 == x && in_range(y, t_pos.v2, t_pos.v2 + m_height - 1) && in_range(z, t_pos.v3, t_pos.v3 - m_width + 1);
+        } else {
+            res = in_range(x, t_pos.v1, t_pos.v1 + m_width - 1) && in_range(y, t_pos.v2, t_pos.v2 + m_height - 1) && t_pos.v3 == z;
+        }
+    }
+    return res;
 }
 
 bool Element::in_range(int v, int v1, int v2) const
@@ -123,6 +153,70 @@ bool Element::in_range(int v, int v1, int v2) const
         return v >= v2 && v <= v1;
     } else {
         return v >= v1 && v <= v2;
+    }
+}
+
+void Element::update_integer_bounding_box(IntegerBoundingBox& bb)
+{
+    // Do first unit at m_pos
+    Int3 pos = m_pos;
+    bb.vmin.v1 = std::min(bb.vmin.v1, pos.v1);
+    bb.vmin.v2 = std::min(bb.vmin.v2, pos.v2);
+    bb.vmin.v3 = std::min(bb.vmin.v3, pos.v3);
+    bb.vmax.v1 = std::max(bb.vmax.v1, pos.v1);
+    bb.vmax.v2 = std::max(bb.vmax.v2, pos.v2);
+    bb.vmax.v3 = std::max(bb.vmax.v3, pos.v3);
+    if (m_height > 0) {
+        // Do top unit
+        pos.v2 += (m_height - 1);
+        bb.vmin.v2 = std::min(bb.vmin.v2, pos.v2);
+        bb.vmax.v2 = std::max(bb.vmax.v2, pos.v2);
+    }
+    if (m_width > 0) {
+        // Do last unit based on orientation
+        if (m_orientation == 3) {
+            pos.v3 += (m_width - 1);
+        } else if (m_orientation == 2) {
+            pos.v1 -= (m_width - 1);
+        } else if (m_orientation == 1) {
+            pos.v3 -= (m_width - 1);
+        } else {
+            pos.v1 += (m_width - 1);
+        }
+        bb.vmin.v1 = std::min(bb.vmin.v1, pos.v1);
+        bb.vmin.v3 = std::min(bb.vmin.v3, pos.v3);
+        bb.vmax.v1 = std::max(bb.vmax.v1, pos.v1);
+        bb.vmax.v3 = std::max(bb.vmax.v3, pos.v3);
+        if (m_corner_flag) {
+            int t_orientation;
+            if (m_orientation == 3) {
+                t_orientation = 0;
+                pos = {m_pos.v1, m_pos.v2, m_pos.v3 + m_width - 1};
+            } else if (m_orientation == 2) {
+                t_orientation = 3;
+                pos = {m_pos.v1 - m_width + 1, m_pos.v2, m_pos.v3};
+            } else if (m_orientation == 1) {
+                t_orientation = 2;
+                pos = {m_pos.v1, m_pos.v2, m_pos.v3 - m_width + 1};
+            } else {
+                t_orientation = 1;
+                pos = {m_pos.v1 + m_width - 1, m_pos.v2, m_pos.v3};
+            }
+            // Do last unit based on orientation
+            if (t_orientation == 3) {
+                pos.v3 += (m_width - 1);
+            } else if (t_orientation == 2) {
+                pos.v1 -= (m_width - 1);
+            } else if (t_orientation == 1) {
+                pos.v3 -= (m_width - 1);
+            } else {
+                pos.v1 += (m_width - 1);
+            }
+            bb.vmin.v1 = std::min(bb.vmin.v1, pos.v1);
+            bb.vmin.v3 = std::min(bb.vmin.v3, pos.v3);
+            bb.vmax.v1 = std::max(bb.vmax.v1, pos.v1);
+            bb.vmax.v3 = std::max(bb.vmax.v3, pos.v3);
+        }
     }
 }
 
@@ -309,7 +403,7 @@ const CadModel* WindowElement::model() const
 //***  CornerWindowElement ***
 
 CornerWindowElement::CornerWindowElement(Int3 pos, int orientation)
-    : Element(pos, 5, 4, orientation)
+    : Element(pos, 5, 4, orientation, true)
     , m_model()
 {
     m_model.add(CornerWindowModel(DIMX * (float) m_width, DIMY * (float) m_height, DIMZ, DIMB, 7, 3, 0.0), 0.0, 0.0, 0.0);
@@ -387,36 +481,5 @@ const CadModel* BackDoorElement::model() const
     return &m_model;
 }
 
-void Element::update_integer_bounding_box(IntegerBoundingBox& bb)
-{
-    // Do first unit at m_pos
-    Int3 pos = m_pos;
-    bb.vmin.v1 = std::min(bb.vmin.v1, pos.v1);
-    bb.vmin.v2 = std::min(bb.vmin.v2, pos.v2);
-    bb.vmin.v3 = std::min(bb.vmin.v3, pos.v3);
-    bb.vmax.v1 = std::max(bb.vmax.v1, pos.v1);
-    bb.vmax.v2 = std::max(bb.vmax.v2, pos.v2);
-    bb.vmax.v3 = std::max(bb.vmax.v3, pos.v3);
-    if (m_height > 0) {
-        // Do top unit
-        pos.v2 += (m_height - 1);
-        bb.vmin.v2 = std::min(bb.vmin.v2, pos.v2);
-        bb.vmax.v2 = std::max(bb.vmax.v2, pos.v2);
-    }
-    if (m_width > 0) {
-        // Do last unit based on orientation
-        if (m_orientation == 3) {
-            pos.v3 += (m_width - 1);
-        } else if (m_orientation == 2) {
-            pos.v1 -= (m_width - 1);
-        } else if (m_orientation == 1) {
-            pos.v3 -= (m_width - 1);
-        } else {
-            pos.v1 += (m_width - 1);
-        }
-        bb.vmin.v1 = std::min(bb.vmin.v1, pos.v1);
-        bb.vmin.v3 = std::min(bb.vmin.v3, pos.v3);
-        bb.vmax.v1 = std::max(bb.vmax.v1, pos.v1);
-        bb.vmax.v3 = std::max(bb.vmax.v3, pos.v3);
-    }
-}
+
+

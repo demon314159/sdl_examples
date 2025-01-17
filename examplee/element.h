@@ -36,7 +36,7 @@
 class Element
 {
 public:
-    Element(Int3 pos, int width, int height, int orientation);
+    Element(Int3 pos, int width, int height, int orientation, bool corner_flag = false);
     Element() = delete;
     virtual ~Element();
     void remove();
@@ -47,6 +47,7 @@ public:
     int width() const;
     int height() const;
     int orientation() const;
+    bool corner_flag() const;
     bool contains(int x, int y, int z) const;
     void update_integer_bounding_box(IntegerBoundingBox& bb);
 
@@ -58,6 +59,7 @@ protected:
     int m_width;
     int m_height;
     int m_orientation;
+    bool m_corner_flag;
     bool in_range(int v, int v1, int v2) const;
 private:
     CadModel m_model;
