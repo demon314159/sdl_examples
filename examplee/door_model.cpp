@@ -30,6 +30,9 @@ DoorModel::DoorModel(float dimx, float dimy, float dimz, float dimb, int vgrills
     add(upper_sash, 0.0, (dimy - upper_sash_dy) / 2 - dimb, sill_zoffset);
     FrameModel lower_sash(dimx - dimb, lower_sash_dy, f_thickness, dimb, f_stile, f_stile, f_stile, DOOR_PAINT, animation_id);
     add(lower_sash, 0.0, -(dimy - lower_sash_dy) / 2 + dimb, sill_zoffset);
+    CubeShape pane(dimx - dimb, upper_sash_dy, f_jamb / 2);
+    CadModel pane_model(pane, PANE_PAINT, animation_id);
+    add(pane_model, 0.0, (dimy - upper_sash_dy) / 2 - dimb, sill_zoffset);
     CubeShape cube(dimx - dimb, f_mid, f_jamb);
     CadModel cube_model(cube, DOOR_PAINT, animation_id);
     add(cube_model, 0.0, -(dimy - f_mid) / 2, sill_zoffset);
