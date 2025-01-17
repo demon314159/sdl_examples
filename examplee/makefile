@@ -58,11 +58,11 @@ HEADERS = view.h \
 RESOURCES = \
           vshader.glsl \
           fshader.glsl \
-          p_hide.png \
-          p_bricks.png \
+          p_panel1.png \
+          p_panel2.png \
+          p_panel3.png \
           p_window.png \
           p_door.png \
-          p_roof.png \
 
 OBJECTS = main.obj \
           view.obj \

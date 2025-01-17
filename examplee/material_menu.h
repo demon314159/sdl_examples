@@ -14,11 +14,11 @@
 #include "image_panel.h"
 #include "mouse_vector.h"
 
-#define MATERIAL_BRICK              0
-#define MATERIAL_FOUNDATION         1
-#define MATERIAL_DOUBLE_FOUNDATION  2
-#define MATERIAL_TRIPLE_FOUNDATION  3
-#define MATERIAL_GABLE_BRICK        4
+#define MATERIAL_GABLE_BRICK        0
+#define MATERIAL_BRICK              1
+#define MATERIAL_FOUNDATION         2
+#define MATERIAL_DOUBLE_FOUNDATION  3
+#define MATERIAL_TRIPLE_FOUNDATION  4
 #define MATERIAL_ROOF               5
 #define MATERIAL_WINDOW             6
 #define MATERIAL_CORNER_WINDOW      7
@@ -59,9 +59,9 @@ protected:
     PushButton* m_button11;
     ImagePanel* m_panel1;
     ImagePanel* m_panel2;
+    ImagePanel* m_panel3;
     ImagePanel* m_panel5;
     ImagePanel* m_panel6;
-    ImagePanel* m_panel7;
     float* m_lamp_data;
     Float3 pos_at_zlevel(float z, const MouseVector& mv) const;
     void update_lamp_data();

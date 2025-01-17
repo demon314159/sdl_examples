@@ -1,10 +1,10 @@
 
 vshader.glsl      CUSTOM vshader.glsl
 fshader.glsl      CUSTOM fshader.glsl
-p_hide.png        CUSTOM p_hide.png
-p_bricks.png      CUSTOM p_bricks.png
+p_panel1.png      CUSTOM p_panel1.png
+p_panel2.png      CUSTOM p_panel2.png
+p_panel3.png      CUSTOM p_panel3.png
 p_window.png      CUSTOM p_window.png
 p_door.png        CUSTOM p_door.png
-p_roof.png        CUSTOM p_roof.png
 p_table.png       CUSTOM p_table.png
 

@@ -17,8 +17,10 @@
 #define YPOS (- 2.0 * BUTTON_RADIUS - YPITCH)
 
 #define IMAGEY (YPITCH * 0.9)
-#define BIG_IMAGEY (0.9 * (4.0 * YPITCH))
+#define BIG_IMAGEY (0.95 * (5.0 * YPITCH))
 
+#define BIG_WIDTH  466.0
+#define BIG_HEIGHT 466.0
 
 MaterialMenu::MaterialMenu()
     : m_material(0)
@@ -35,9 +37,9 @@ MaterialMenu::MaterialMenu()
     , m_button11(NULL)
     , m_panel1(NULL)
     , m_panel2(NULL)
+    , m_panel3(NULL)
     , m_panel5(NULL)
     , m_panel6(NULL)
-    , m_panel7(NULL)
     , m_lamp_data(new float[3 * BUTTON_LAMPS])
 {
     m_button1 = new PushButton(BUTTON_RADIUS, BUTTON_RADIUS / 4.0, {XPOS, YPOS + 1.0 * YPITCH, 0.0});
@@ -51,21 +53,21 @@ MaterialMenu::MaterialMenu()
     m_button9 = new PushButton(BUTTON_RADIUS, BUTTON_RADIUS / 4.0, {XPOS, YPOS - 7.0 * YPITCH, 0.0});
     m_button10 = new PushButton(BUTTON_RADIUS, BUTTON_RADIUS / 4.0, {XPOS, YPOS - 8.0 * YPITCH, 0.0});
     m_button11 = new PushButton(BUTTON_RADIUS, BUTTON_RADIUS / 4.0, {XPOS, YPOS - 9.0 * YPITCH, 0.0});
-    m_panel2 = new ImagePanel(IMAGEY * 193.0 / 91.0, IMAGEY, {XPOS2, YPOS + YPITCH, 0.0} );
-    m_panel1 = new ImagePanel(BIG_IMAGEY * 804.0 / 628.0, BIG_IMAGEY, {XPOS2, YPOS - 1.5 * YPITCH, 0.0} );
-    m_panel5 = new ImagePanel(IMAGEY * 640.0 / 842.0, IMAGEY, {XPOS2, YPOS - 4.0 * YPITCH, 0.0} );
-    m_panel6 = new ImagePanel(IMAGEY * 479.0 / 933.0, IMAGEY, {XPOS2, YPOS - 5.0 * YPITCH, 0.0} );
-    m_panel7 = new ImagePanel(IMAGEY * 199.0 / 116.0, IMAGEY, {XPOS2, YPOS - 6.0 * YPITCH, 0.0} );
-    m_width = XPOS2 + BIG_IMAGEY * 804.0 / 628.0;
+    m_panel1 = new ImagePanel(IMAGEY * 193.0 / 91.0, IMAGEY, {XPOS2, YPOS + YPITCH, 0.0} );
+    m_panel2 = new ImagePanel(BIG_IMAGEY * BIG_WIDTH / BIG_HEIGHT, BIG_IMAGEY, {XPOS2, YPOS - 2.0 * YPITCH, 0.0} );
+    m_panel3 = new ImagePanel(IMAGEY * 199.0 / 116.0, IMAGEY, {XPOS2, YPOS - 5.0 * YPITCH, 0.0} );
+    m_panel5 = new ImagePanel(IMAGEY * 640.0 / 842.0, IMAGEY, {XPOS2, YPOS - 6.0 * YPITCH, 0.0} );
+    m_panel6 = new ImagePanel(IMAGEY * 479.0 / 933.0, IMAGEY, {XPOS2, YPOS - 7.0 * YPITCH, 0.0} );
+    m_width = XPOS2 + BIG_IMAGEY * BIG_WIDTH / BIG_HEIGHT;
     update_lamp_data();
 }
 
 MaterialMenu::~MaterialMenu()
 {
     delete [] m_lamp_data;
-    delete m_panel7;
     delete m_panel6;
     delete m_panel5;
+    delete m_panel3;
     delete m_panel2;
     delete m_panel1;
     delete m_button11;
@@ -83,11 +85,11 @@ MaterialMenu::~MaterialMenu()
 
 void MaterialMenu::build_texture(Texture* texture) const
 {
-    texture->add("p_bricks.png", "texture1");
-    texture->add("p_hide.png", "texture2");
+    texture->add("p_panel1.png", "texture1");
+    texture->add("p_panel2.png", "texture2");
+    texture->add("p_panel3.png", "texture3");
     texture->add("p_window.png", "texture5");
     texture->add("p_door.png", "texture6");
-    texture->add("p_roof.png", "texture7");
 }
 
 void MaterialMenu::build_uniform(Uniform* uniform)
@@ -155,9 +157,9 @@ CadModel MaterialMenu::model() const
     cm.add(m_button11->model(HIDE_FIXED_ANIMATION_ID, BUTTON11_ANIMATION_ID, LAMP10_TEXTURE_ID));
     cm.add(m_panel1->model(HIDE_FIXED_ANIMATION_ID, IMAGE1_TEXTURE_ID));
     cm.add(m_panel2->model(HIDE_FIXED_ANIMATION_ID, IMAGE2_TEXTURE_ID));
+    cm.add(m_panel3->model(HIDE_FIXED_ANIMATION_ID, IMAGE3_TEXTURE_ID));
     cm.add(m_panel5->model(HIDE_FIXED_ANIMATION_ID, IMAGE5_TEXTURE_ID));
     cm.add(m_panel6->model(HIDE_FIXED_ANIMATION_ID, IMAGE6_TEXTURE_ID));
-    cm.add(m_panel7->model(HIDE_FIXED_ANIMATION_ID, IMAGE7_TEXTURE_ID));
     return cm;
 }
 
@@ -186,27 +188,27 @@ bool MaterialMenu::menu_button_pressed(const MouseVector& mv, const Float3& top_
     Float3 sel_pos = pos_at_zlevel(-1.0, mv);
     if (m_button2->collide(sel_pos, top_left)) {
         m_button2->press();
-        m_material = MATERIAL_BRICK;
+        m_material = MATERIAL_GABLE_BRICK;
         return true;
     }
     if (m_button3->collide(sel_pos, top_left)) {
         m_button3->press();
-        m_material = MATERIAL_FOUNDATION;
+        m_material = MATERIAL_BRICK;
         return true;
     }
     if (m_button4->collide(sel_pos, top_left)) {
         m_button4->press();
-        m_material = MATERIAL_DOUBLE_FOUNDATION;
+        m_material = MATERIAL_FOUNDATION;
         return true;
     }
     if (m_button5->collide(sel_pos, top_left)) {
         m_button5->press();
-        m_material = MATERIAL_TRIPLE_FOUNDATION;
+        m_material = MATERIAL_DOUBLE_FOUNDATION;
         return true;
     }
     if (m_button6->collide(sel_pos, top_left)) {
         m_button6->press();
-        m_material = MATERIAL_GABLE_BRICK;
+        m_material = MATERIAL_TRIPLE_FOUNDATION;
         return true;
     }
     if (m_button7->collide(sel_pos, top_left)) {
