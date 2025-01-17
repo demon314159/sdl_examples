@@ -105,6 +105,9 @@ const CadModel* Element::model() const
 
 bool Element::contains(int x, int y, int z) const
 {
+    if (m_removed) {
+        return false;
+    }
     if (partial_contains(m_pos, m_width, m_height, m_orientation, x, y, z)) {
         return true;
     }

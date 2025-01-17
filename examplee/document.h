@@ -45,8 +45,8 @@ public:
     void note_many_changes();
     const VertexImage* building() const;
     int building_index(int ix) const;
-    bool occupied(int x, int y, int z) const;
-    bool occupied(const Element* e) const;
+    bool location_occupied(int x, int y, int z) const;
+    bool element_occupied(const Element* e) const;
     IntegerBoundingBox integer_bounding_box() const;
 
 private:
@@ -66,6 +66,7 @@ private:
     bool parse_integer(TokenFile& tf, int &v, char* error_message);
     bool parse_3_parms(TokenFile& tf, int& x, int& y, int& z, char* error_message);
     bool parse_4_parms(TokenFile& tf, int& x, int& y, int& z, int& o, char* error_message);
+    bool partial_element_occupied(Int3 pos, int width, int height, int orientation) const;
 };
 
 #endif // _DOCUMENT_H_

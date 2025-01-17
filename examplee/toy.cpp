@@ -159,7 +159,7 @@ bool Toy::top_face_selection(int sx, int sy, Int3& pos) const
         }
     }
     // Check to see if final candidate has anything above it
-    if (m_doc->occupied(sel_pos.v1, sel_pos.v2 + 1, sel_pos.v3)) {
+    if (m_doc->location_occupied(sel_pos.v1, sel_pos.v2 + 1, sel_pos.v3)) {
         return false;
     }
     pos = sel_pos;
@@ -248,7 +248,7 @@ void Toy::try_top_face(int sx, int sy)
                         item = new BrickElement(p, o);
                         break;
                 }
-                if (!m_doc->occupied(item)) {
+                if (!m_doc->element_occupied(item)) {
                     m_history->do_command(new AddElementCommand(item, m_doc));
                 } else {
                     delete item;

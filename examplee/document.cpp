@@ -382,7 +382,7 @@ int Document::building_index(int ix) const
     return m_building_index[ix];
 }
 
-bool Document::occupied(int x, int y, int z) const
+bool Document::location_occupied(int x, int y, int z) const
 {
     for (int i = 0; i < m_elements; i++) {
         const Element* e = element(i);
@@ -393,62 +393,52 @@ bool Document::occupied(int x, int y, int z) const
     return false;
 }
 
-bool Document::occupied(const Element* e) const
+bool Document::partial_element_occupied(Int3 pos, int width, int height, int orientation) const
 {
-   Int3 pos = e->pos();
-   int width = e->width();
-   int height = e->height();
-   int orientation = e->orientation();
-   for (int h = 0; h < height; h++) {
-       for (int w = 0; w < width; w++) {
-           bool res;
-           if (orientation == 3) {
-               res = occupied(pos.v1, pos.v2 + h, pos.v3 + w);
-           } else if (orientation == 2) {
-               res = occupied(pos.v1 -w, pos.v2 + h, pos.v3);
-           } else if (orientation == 1) {
-               res = occupied(pos.v1, pos.v2 + h, pos.v3 - w);
-           } else {
-               res = occupied(pos.v1 + w, pos.v2 + h, pos.v3);
-           }
-           if (res) {
-               return true;
-           }
-       }
-   }
-   if (e->corner_flag()) {
+    bool res;
+    for (int h = 0; h < height; h++) {
+        for (int w = 0; w < width; w++) {
+            if (orientation == 3) {
+                res = location_occupied(pos.v1, pos.v2 + h, pos.v3 + w);
+            } else if (orientation == 2) {
+                res = location_occupied(pos.v1 - w, pos.v2 + h, pos.v3);
+            } else if (orientation == 1) {
+                res = location_occupied(pos.v1, pos.v2 + h, pos.v3 - w);
+            } else {
+                res = location_occupied(pos.v1 + w, pos.v2 + h, pos.v3);
+            }
+            if (res) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool Document::element_occupied(const Element* e) const
+{
+    if (partial_element_occupied(e->pos(), e->width(), e->height(), e->orientation())) {
+        return true;
+    }
+    if (e->corner_flag()) {
         int t_orientation;
         Int3 t_pos;
-        if (orientation == 3) {
+        if (e->orientation() == 3) {
             t_orientation = 0;
-            t_pos = {pos.v1, pos.v2, pos.v3 + width - 1};
-        } else if (orientation == 2) {
+            t_pos = {e->pos().v1, e->pos().v2, e->pos().v3 + e->width() - 1};
+        } else if (e->orientation() == 2) {
             t_orientation = 3;
-            t_pos = {pos.v1 - width + 1, pos.v2, pos.v3};
-        } else if (orientation == 1) {
+            t_pos = {e->pos().v1 - e->width() + 1, e->pos().v2, e->pos().v3};
+        } else if (e->orientation() == 1) {
             t_orientation = 2;
-            t_pos = {pos.v1, pos.v2, pos.v3 - width + 1};
+            t_pos = {e->pos().v1, e->pos().v2, e->pos().v3 - e->width() + 1};
         } else {
             t_orientation = 1;
-            t_pos = {pos.v1 + width - 1, pos.v2, pos.v3};
+            t_pos = {e->pos().v1 + e->width() - 1, e->pos().v2, e->pos().v3};
         }
-       for (int h = 0; h < height; h++) {
-           for (int w = 0; w < width; w++) {
-               bool res;
-               if (t_orientation == 3) {
-                   res = occupied(t_pos.v1, t_pos.v2 + h, t_pos.v3 + w);
-               } else if (t_orientation == 2) {
-                   res = occupied(t_pos.v1 - w, t_pos.v2 + h, t_pos.v3);
-               } else if (t_orientation == 1) {
-                   res = occupied(t_pos.v1, t_pos.v2 + h, t_pos.v3 - w);
-               } else {
-                   res = occupied(t_pos.v1 + w, t_pos.v2 + h, t_pos.v3);
-               }
-               if (res) {
-                   return true;
-               }
-           }
-       }
+        if (partial_element_occupied(t_pos, e->width(), e->height(), t_orientation)) {
+            return true;
+        }
    }
    return false;
 }
