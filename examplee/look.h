@@ -52,7 +52,7 @@
 #define LAMP7_TEXTURE_ID  15.0f
 #define LAMP8_TEXTURE_ID  16.0f
 #define LAMP9_TEXTURE_ID  17.0f
-#define LAMP10_TEXTURE_ID 16.0f
+#define LAMP10_TEXTURE_ID 18.0f
 
 class Look
 {
