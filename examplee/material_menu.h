@@ -21,9 +21,11 @@
 #define MATERIAL_GABLE_BRICK        4
 #define MATERIAL_ROOF               5
 #define MATERIAL_WINDOW             6
-#define MATERIAL_DOOR               7
+#define MATERIAL_CORNER_WINDOW      7
+#define MATERIAL_FRONT_DOOR         8
+#define MATERIAL_BACK_DOOR          9
 
-#define BUTTON_LAMPS 8
+#define BUTTON_LAMPS 10
 
 class MaterialMenu
 {
@@ -53,6 +55,8 @@ protected:
     PushButton* m_button7;
     PushButton* m_button8;
     PushButton* m_button9;
+    PushButton* m_button10;
+    PushButton* m_button11;
     ImagePanel* m_panel1;
     ImagePanel* m_panel2;
     ImagePanel* m_panel5;

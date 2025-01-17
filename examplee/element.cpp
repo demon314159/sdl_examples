@@ -125,9 +125,9 @@ bool Element::in_range(int v, int v1, int v2) const
     }
 }
 
+//***  HalfBrickElement ***
+
 CadModel Element::m_half_brick_model(BrickShape(DIMX, DIMY, DIMZ, DIMB), BRICK_PAINT, 0.0);
-CadModel Element::m_brick_model_ns(BrickShape(DIMX * 2.0f, DIMY, DIMZ, DIMB), BRICK_PAINT, 0.0);
-CadModel Element::m_brick_model_ew(BrickShape(DIMX, DIMY, DIMZ * 2.0f, DIMB), BRICK_PAINT, 0.0);
 
 HalfBrickElement::HalfBrickElement(Int3 pos)
     : Element(pos, 1, 1, 0)
@@ -140,6 +140,11 @@ void HalfBrickElement::save_to_file(FILE* ffo) const
         m_pos.v1, m_pos.v2, m_pos.v3);
 }
 
+//***  BrickElement ***
+
+CadModel Element::m_brick_model_ns(BrickShape(DIMX * 2.0f, DIMY, DIMZ, DIMB), BRICK_PAINT, 0.0);
+CadModel Element::m_brick_model_ew(BrickShape(DIMX, DIMY, DIMZ * 2.0f, DIMB), BRICK_PAINT, 0.0);
+
 BrickElement::BrickElement(Int3 pos, int orientation)
     : Element(pos, 2, 1, orientation)
 {
@@ -151,9 +156,9 @@ void BrickElement::save_to_file(FILE* ffo) const
         m_pos.v1, m_pos.v2, m_pos.v3, m_orientation);
 }
 
+//***  HalfFoundationElement ***
+
 CadModel HalfFoundationElement::m_half_foundation_model(BrickShape(DIMX, DIMY, DIMZ, DIMB), FOUNDATION_PAINT, 0.0);
-CadModel FoundationElement::m_foundation_model_ns(BrickShape(DIMX * 2.0f, DIMY, DIMZ, DIMB), FOUNDATION_PAINT, 0.0);
-CadModel FoundationElement::m_foundation_model_ew(BrickShape(DIMX, DIMY, DIMZ * 2.0f, DIMB), FOUNDATION_PAINT, 0.0);
 
 HalfFoundationElement::HalfFoundationElement(Int3 pos)
     : Element(pos, 1, 1, 0)
@@ -170,6 +175,11 @@ const CadModel* HalfFoundationElement::model() const
 {
     return &m_half_foundation_model;
 }
+
+//***  FoundationElement ***
+
+CadModel FoundationElement::m_foundation_model_ns(BrickShape(DIMX * 2.0f, DIMY, DIMZ, DIMB), FOUNDATION_PAINT, 0.0);
+CadModel FoundationElement::m_foundation_model_ew(BrickShape(DIMX, DIMY, DIMZ * 2.0f, DIMB), FOUNDATION_PAINT, 0.0);
 
 FoundationElement::FoundationElement(Int3 pos, int orientation)
     : Element(pos, 2, 1, orientation)
@@ -191,6 +201,7 @@ const CadModel* FoundationElement::model() const
     }
 }
 
+//***  DoubleFoundationElement ***
 
 CadModel DoubleFoundationElement::m_double_foundation_model_ns(BrickShape(DIMX * 4.0f, DIMY, DIMZ, DIMB), FOUNDATION_PAINT, 0.0);
 CadModel DoubleFoundationElement::m_double_foundation_model_ew(BrickShape(DIMX, DIMY, DIMZ * 4.0f, DIMB), FOUNDATION_PAINT, 0.0);
@@ -215,6 +226,8 @@ const CadModel* DoubleFoundationElement::model() const
     }
 }
 
+//***  DoubleFoundationElement ***
+
 CadModel TripleFoundationElement::m_triple_foundation_model_ns(BrickShape(DIMX * 6.0f, DIMY, DIMZ, DIMB), FOUNDATION_PAINT, 0.0);
 CadModel TripleFoundationElement::m_triple_foundation_model_ew(BrickShape(DIMX, DIMY, DIMZ * 6.0f, DIMB), FOUNDATION_PAINT, 0.0);
 
@@ -237,6 +250,8 @@ const CadModel* TripleFoundationElement::model() const
         return &m_triple_foundation_model_ew;
     }
 }
+
+//***  GableBrickElement ***
 
 GableBrickElement::GableBrickElement(Int3 pos, int orientation)
     : Element(pos, 1, 1, orientation)
@@ -263,6 +278,8 @@ const CadModel* GableBrickElement::model() const
     return &m_model;
 }
 
+//***  WindowElement ***
+
 WindowElement::WindowElement(Int3 pos, int orientation)
     : Element(pos, 2, 4, orientation)
     , m_model()
@@ -288,7 +305,36 @@ const CadModel* WindowElement::model() const
     return &m_model;
 }
 
-DoorElement::DoorElement(Int3 pos, int orientation)
+//***  CornerWindowElement ***
+
+CornerWindowElement::CornerWindowElement(Int3 pos, int orientation)
+    : Element(pos, 2, 4, orientation)
+    , m_model()
+{
+    m_model.add(WindowModel(DIMX * (float) m_width, DIMY * (float) m_height, DIMZ, DIMB, 2, 3, 0.0), 0.0, 0.0, 0.0);
+    if (orientation == 1) {
+        m_model.rotate_ay(90.0);
+    } else if (orientation == 2) {
+        m_model.rotate_ay(180.0);
+    } else if (orientation == 3) {
+        m_model.rotate_ay(270.0);
+    }
+}
+
+void CornerWindowElement::save_to_file(FILE* ffo) const
+{
+    fprintf(ffo, "CornerWindow(%0d, %0d, %0d, %0d)\n",
+        m_pos.v1, m_pos.v2, m_pos.v3, m_orientation);
+}
+
+const CadModel* CornerWindowElement::model() const
+{
+    return &m_model;
+}
+
+//***  FrontDoorElement ***
+
+FrontDoorElement::FrontDoorElement(Int3 pos, int orientation)
     : Element(pos, 2, 6, orientation)
     , m_model()
 {
@@ -302,13 +348,40 @@ DoorElement::DoorElement(Int3 pos, int orientation)
     }
 }
 
-void DoorElement::save_to_file(FILE* ffo) const
+void FrontDoorElement::save_to_file(FILE* ffo) const
 {
-    fprintf(ffo, "Door(%0d, %0d, %0d, %0d)\n",
+    fprintf(ffo, "FrontDoor(%0d, %0d, %0d, %0d)\n",
         m_pos.v1, m_pos.v2, m_pos.v3, m_orientation);
 }
 
-const CadModel* DoorElement::model() const
+const CadModel* FrontDoorElement::model() const
+{
+    return &m_model;
+}
+
+//***  BackDoorElement ***
+
+BackDoorElement::BackDoorElement(Int3 pos, int orientation)
+    : Element(pos, 2, 6, orientation)
+    , m_model()
+{
+    m_model.add(DoorModel(DIMX * (float) m_width, DIMY * (float) m_height, DIMZ, DIMB, 2, 1, 0.0), 0.0, 0.0, 0.0);
+    if (orientation == 1) {
+        m_model.rotate_ay(90.0);
+    } else if (orientation == 2) {
+        m_model.rotate_ay(180.0);
+    } else if (orientation == 3) {
+        m_model.rotate_ay(270.0);
+    }
+}
+
+void BackDoorElement::save_to_file(FILE* ffo) const
+{
+    fprintf(ffo, "BackDoor(%0d, %0d, %0d, %0d)\n",
+        m_pos.v1, m_pos.v2, m_pos.v3, m_orientation);
+}
+
+const CadModel* BackDoorElement::model() const
 {
     return &m_model;
 }

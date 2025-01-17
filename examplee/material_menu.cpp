@@ -31,6 +31,8 @@ MaterialMenu::MaterialMenu()
     , m_button7(NULL)
     , m_button8(NULL)
     , m_button9(NULL)
+    , m_button10(NULL)
+    , m_button11(NULL)
     , m_panel1(NULL)
     , m_panel2(NULL)
     , m_panel5(NULL)
@@ -47,6 +49,8 @@ MaterialMenu::MaterialMenu()
     m_button7 = new PushButton(BUTTON_RADIUS, BUTTON_RADIUS / 4.0, {XPOS, YPOS - 5.0 * YPITCH, 0.0});
     m_button8 = new PushButton(BUTTON_RADIUS, BUTTON_RADIUS / 4.0, {XPOS, YPOS - 6.0 * YPITCH, 0.0});
     m_button9 = new PushButton(BUTTON_RADIUS, BUTTON_RADIUS / 4.0, {XPOS, YPOS - 7.0 * YPITCH, 0.0});
+    m_button10 = new PushButton(BUTTON_RADIUS, BUTTON_RADIUS / 4.0, {XPOS, YPOS - 8.0 * YPITCH, 0.0});
+    m_button11 = new PushButton(BUTTON_RADIUS, BUTTON_RADIUS / 4.0, {XPOS, YPOS - 9.0 * YPITCH, 0.0});
     m_panel2 = new ImagePanel(IMAGEY * 193.0 / 91.0, IMAGEY, {XPOS2, YPOS + YPITCH, 0.0} );
     m_panel1 = new ImagePanel(BIG_IMAGEY * 804.0 / 628.0, BIG_IMAGEY, {XPOS2, YPOS - 1.5 * YPITCH, 0.0} );
     m_panel5 = new ImagePanel(IMAGEY * 640.0 / 842.0, IMAGEY, {XPOS2, YPOS - 4.0 * YPITCH, 0.0} );
@@ -64,6 +68,8 @@ MaterialMenu::~MaterialMenu()
     delete m_panel5;
     delete m_panel2;
     delete m_panel1;
+    delete m_button11;
+    delete m_button10;
     delete m_button9;
     delete m_button8;
     delete m_button7;
@@ -95,6 +101,8 @@ void MaterialMenu::build_uniform(Uniform* uniform)
     uniform->add("animation_7_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_button7->data());
     uniform->add("animation_8_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_button8->data());
     uniform->add("animation_9_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_button9->data());
+    uniform->add("animation_10_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_button10->data());
+    uniform->add("animation_11_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_button11->data());
     uniform->add("lamp_color", UNIFORM_TYPE_3_FLOAT_VECTOR, BUTTON_LAMPS, (void*) m_lamp_data);
 }
 
@@ -109,6 +117,8 @@ void MaterialMenu::update_uniform()
     m_button7->data();
     m_button8->data();
     m_button9->data();
+    m_button10->data();
+    m_button11->data();
     update_lamp_data();
 }
 
@@ -141,6 +151,8 @@ CadModel MaterialMenu::model() const
     cm.add(m_button7->model(HIDE_FIXED_ANIMATION_ID, BUTTON7_ANIMATION_ID, LAMP6_TEXTURE_ID));
     cm.add(m_button8->model(HIDE_FIXED_ANIMATION_ID, BUTTON8_ANIMATION_ID, LAMP7_TEXTURE_ID));
     cm.add(m_button9->model(HIDE_FIXED_ANIMATION_ID, BUTTON9_ANIMATION_ID, LAMP8_TEXTURE_ID));
+    cm.add(m_button10->model(HIDE_FIXED_ANIMATION_ID, BUTTON10_ANIMATION_ID, LAMP9_TEXTURE_ID));
+    cm.add(m_button11->model(HIDE_FIXED_ANIMATION_ID, BUTTON11_ANIMATION_ID, LAMP10_TEXTURE_ID));
     cm.add(m_panel1->model(HIDE_FIXED_ANIMATION_ID, IMAGE1_TEXTURE_ID));
     cm.add(m_panel2->model(HIDE_FIXED_ANIMATION_ID, IMAGE2_TEXTURE_ID));
     cm.add(m_panel5->model(HIDE_FIXED_ANIMATION_ID, IMAGE5_TEXTURE_ID));
@@ -209,7 +221,17 @@ bool MaterialMenu::menu_button_pressed(const MouseVector& mv, const Float3& top_
     }
     if (m_button9->collide(sel_pos, top_left)) {
         m_button9->press();
-        m_material = MATERIAL_DOOR;
+        m_material = MATERIAL_CORNER_WINDOW;
+        return true;
+    }
+    if (m_button10->collide(sel_pos, top_left)) {
+        m_button10->press();
+        m_material = MATERIAL_FRONT_DOOR;
+        return true;
+    }
+    if (m_button11->collide(sel_pos, top_left)) {
+        m_button11->press();
+        m_material = MATERIAL_BACK_DOOR;
         return true;
     }
     return false;
@@ -231,5 +253,8 @@ void MaterialMenu::release(void)
     m_button6->release();
     m_button7->release();
     m_button8->release();
+    m_button9->release();
+    m_button10->release();
+    m_button11->release();
 }
 

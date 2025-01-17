@@ -161,11 +161,35 @@ private:
     CadModel m_model;
 };
 
-class DoorElement: public Element
+class CornerWindowElement: public Element
 {
 public:
-    DoorElement(Int3 pos, int orientation);
-    DoorElement() = delete;
+    CornerWindowElement(Int3 pos, int orientation);
+    CornerWindowElement() = delete;
+    void save_to_file(FILE* ffo) const override;
+    const CadModel* model() const override;
+protected:
+private:
+    CadModel m_model;
+};
+
+class FrontDoorElement: public Element
+{
+public:
+    FrontDoorElement(Int3 pos, int orientation);
+    FrontDoorElement() = delete;
+    void save_to_file(FILE* ffo) const override;
+    const CadModel* model() const override;
+protected:
+private:
+    CadModel m_model;
+};
+
+class BackDoorElement: public Element
+{
+public:
+    BackDoorElement(Int3 pos, int orientation);
+    BackDoorElement() = delete;
     void save_to_file(FILE* ffo) const override;
     const CadModel* model() const override;
 protected:

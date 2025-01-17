@@ -222,14 +222,26 @@ bool Document::load(const char* file_name, char* error_message)
                 return false;
             }
             add_element(new WindowElement({x, y, z}, o));
-        } else if (0 == strcmp(ename, "Door")) {
+        } else if (0 == strcmp(ename, "CornerWindow")) {
             int x, y, z, o;
             if (!parse_4_parms(tf, x, y, z, o, error_message)) {
                 return false;
             }
-            add_element(new DoorElement({x, y, z}, o));
+            add_element(new CornerWindowElement({x, y, z}, o));
+        } else if (0 == strcmp(ename, "FrontDoor")) {
+            int x, y, z, o;
+            if (!parse_4_parms(tf, x, y, z, o, error_message)) {
+                return false;
+            }
+            add_element(new FrontDoorElement({x, y, z}, o));
+        } else if (0 == strcmp(ename, "BackDoor")) {
+            int x, y, z, o;
+            if (!parse_4_parms(tf, x, y, z, o, error_message)) {
+                return false;
+            }
+            add_element(new BackDoorElement({x, y, z}, o));
         } else {
-            sprintf(error_message, "Line %d: Expecting 'HalfBrick', 'Brick', 'HalfFoundation', 'Foundation', 'DoubleFoundation', 'TripleFoundation', 'GableBrick', 'Window' or 'Door' but found '%s'", tf.line_count(), ename);
+            sprintf(error_message, "Line %d: Expecting 'HalfBrick', 'Brick', 'HalfFoundation', 'Foundation', 'DoubleFoundation', 'TripleFoundation', 'GableBrick', 'Window', 'CornerWindow', 'FrontDoor' or 'BackDoor' but found '%s'", tf.line_count(), ename);
             return false;
         }
     }

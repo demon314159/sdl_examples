@@ -16,41 +16,8 @@ uniform mat4 animation_7_matrix;
 uniform mat4 animation_8_matrix;
 uniform mat4 animation_9_matrix;
 uniform mat4 animation_10_matrix;
-
 uniform mat4 animation_11_matrix;
 uniform mat4 animation_12_matrix;
-uniform mat4 animation_13_matrix;
-uniform mat4 animation_14_matrix;
-uniform mat4 animation_15_matrix;
-uniform mat4 animation_16_matrix;
-uniform mat4 animation_17_matrix;
-uniform mat4 animation_18_matrix;
-uniform mat4 animation_19_matrix;
-uniform mat4 animation_20_matrix;
-uniform mat4 animation_21_matrix;
-uniform mat4 animation_22_matrix;
-uniform mat4 animation_23_matrix;
-uniform mat4 animation_24_matrix;
-uniform mat4 animation_25_matrix;
-uniform mat4 animation_26_matrix;
-uniform mat4 animation_27_matrix;
-uniform mat4 animation_28_matrix;
-uniform mat4 animation_29_matrix;
-uniform mat4 animation_30_matrix;
-uniform mat4 animation_31_matrix;
-uniform mat4 animation_32_matrix;
-uniform mat4 animation_33_matrix;
-uniform mat4 animation_34_matrix;
-uniform mat4 animation_35_matrix;
-uniform mat4 animation_36_matrix;
-uniform mat4 animation_37_matrix;
-uniform mat4 animation_38_matrix;
-uniform mat4 animation_39_matrix;
-uniform mat4 animation_40_matrix;
-uniform mat4 animation_41_matrix;
-uniform mat4 animation_42_matrix;
-uniform mat4 animation_43_matrix;
-uniform mat4 animation_44_matrix;
 
 in vec3 a_position;
 in vec3 a_normal;
@@ -88,7 +55,7 @@ void main()
             gl_Position = hide_fixed_matrix * vec4(a_position, 1.0);
             v_normal = vec4(billy, 0.0);
             v_color = vec4(a_color, 1.0);
-        } else if (a_animation_id < 14.5) {  // Animated objects
+        } else if (a_animation_id < 16.5) {  // Animated objects
             if (a_animation_id < 4.5) {          // Marker
                 gl_Position = mvp_matrix * animation_0_matrix * vec4(a_position, 1.0);
                 v_normal = rot_matrix * animation_0_matrix * vec4(billy, 0.0);
@@ -119,8 +86,14 @@ void main()
             } else if (a_animation_id < 13.5) {   // Button 9
                 gl_Position = hide_fixed_matrix * animation_9_matrix * vec4(a_position, 1.0);
                 v_normal = animation_9_matrix * vec4(billy, 0.0);
-            } else if (a_animation_id < 14.5) {   // Table
-                gl_Position = mvp_matrix * animation_10_matrix * vec4(a_position, 1.0);
+            } else if (a_animation_id < 14.5) {   // Button 10
+                gl_Position = hide_fixed_matrix * animation_10_matrix * vec4(a_position, 1.0);
+                v_normal = animation_10_matrix * vec4(billy, 0.0);
+            } else if (a_animation_id < 15.5) {   // Button 11
+                gl_Position = hide_fixed_matrix * animation_11_matrix * vec4(a_position, 1.0);
+                v_normal = animation_11_matrix * vec4(billy, 0.0);
+            } else if (a_animation_id < 16.5) {   // Table
+                gl_Position = mvp_matrix * animation_12_matrix * vec4(a_position, 1.0);
                 v_normal = vec4(0.0, 0.0, 1.0, 0.0);
             }
             v_color = vec4(a_color, 1.0);

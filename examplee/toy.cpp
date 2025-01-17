@@ -235,8 +235,14 @@ void Toy::try_top_face(int sx, int sy)
                     case MATERIAL_WINDOW:
                         item = new WindowElement(p, o);
                         break;
-                    case MATERIAL_DOOR:
-                        item = new DoorElement(p, o);
+                    case MATERIAL_CORNER_WINDOW:
+                        item = new CornerWindowElement(p, o);
+                        break;
+                    case MATERIAL_FRONT_DOOR:
+                        item = new FrontDoorElement(p, o);
+                        break;
+                    case MATERIAL_BACK_DOOR:
+                        item = new BackDoorElement(p, o);
                         break;
                     default:
                         item = new BrickElement(p, o);
