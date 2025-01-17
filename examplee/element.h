@@ -60,12 +60,13 @@ protected:
     int m_height;
     int m_orientation;
     bool m_corner_flag;
-    bool in_range(int v, int v1, int v2) const;
 private:
     CadModel m_model;
     static CadModel m_half_brick_model;
     static CadModel m_brick_model_ns;
     static CadModel m_brick_model_ew;
+    bool in_range(int v, int v1, int v2) const;
+    bool partial_contains(Int3 pos, int width, int height, int orientation, int x, int y, int z) const;
 };
 
 class HalfBrickElement: public Element

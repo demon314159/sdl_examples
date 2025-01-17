@@ -105,17 +105,7 @@ const CadModel* Element::model() const
 
 bool Element::contains(int x, int y, int z) const
 {
-    bool res;
-    if (m_orientation == 3) {
-        res = m_pos.v1 == x && in_range(y, m_pos.v2, m_pos.v2 + m_height - 1) && in_range(z, m_pos.v3, m_pos.v3 + m_width - 1);
-    } else if (m_orientation == 2) {
-        res = in_range(x, m_pos.v1, m_pos.v1 - m_width + 1) && in_range(y, m_pos.v2, m_pos.v2 + m_height - 1) && m_pos.v3 == z;
-    } else if (m_orientation == 1) {
-        res = m_pos.v1 == x && in_range(y, m_pos.v2, m_pos.v2 + m_height - 1) && in_range(z, m_pos.v3, m_pos.v3 - m_width + 1);
-    } else {
-        res = in_range(x, m_pos.v1, m_pos.v1 + m_width - 1) && in_range(y, m_pos.v2, m_pos.v2 + m_height - 1) && m_pos.v3 == z;
-    }
-    if (res) {
+    if (partial_contains(m_pos, m_width, m_height, m_orientation, x, y, z)) {
         return true;
     }
     if (m_corner_flag) {
@@ -134,26 +124,11 @@ bool Element::contains(int x, int y, int z) const
             t_orientation = 1;
             t_pos = {m_pos.v1 + m_width - 1, m_pos.v2, m_pos.v3};
         }
-        if (t_orientation == 3) {
-            res = t_pos.v1 == x && in_range(y, t_pos.v2, t_pos.v2 + m_height - 1) && in_range(z, t_pos.v3, t_pos.v3 + m_width - 1);
-        } else if (t_orientation == 2) {
-            res = in_range(x, t_pos.v1, t_pos.v1 - m_width + 1) && in_range(y, t_pos.v2, t_pos.v2 + m_height - 1) && t_pos.v3 == z;
-        } else if (t_orientation == 1) {
-            res = t_pos.v1 == x && in_range(y, t_pos.v2, t_pos.v2 + m_height - 1) && in_range(z, t_pos.v3, t_pos.v3 - m_width + 1);
-        } else {
-            res = in_range(x, t_pos.v1, t_pos.v1 + m_width - 1) && in_range(y, t_pos.v2, t_pos.v2 + m_height - 1) && t_pos.v3 == z;
+        if (partial_contains(t_pos, m_width, m_height, t_orientation, x, y, z)) {
+            return true;
         }
     }
-    return res;
-}
-
-bool Element::in_range(int v, int v1, int v2) const
-{
-    if (v1 > v2) {
-        return v >= v2 && v <= v1;
-    } else {
-        return v >= v1 && v <= v2;
-    }
+    return false;
 }
 
 void Element::update_integer_bounding_box(IntegerBoundingBox& bb)
@@ -217,6 +192,29 @@ void Element::update_integer_bounding_box(IntegerBoundingBox& bb)
             bb.vmax.v1 = std::max(bb.vmax.v1, pos.v1);
             bb.vmax.v3 = std::max(bb.vmax.v3, pos.v3);
         }
+    }
+}
+
+bool Element::in_range(int v, int v1, int v2) const
+{
+    if (v1 > v2) {
+        return v >= v2 && v <= v1;
+    } else {
+        return v >= v1 && v <= v2;
+    }
+}
+
+bool Element::partial_contains(Int3 pos, int width, int height, int orientation, int x, int y, int z) const
+{
+    bool res;
+    if (orientation == 3) {
+        return pos.v1 == x && in_range(y, pos.v2, pos.v2 + height - 1) && in_range(z, pos.v3, pos.v3 + width - 1);
+    } else if (orientation == 2) {
+        return in_range(x, pos.v1, pos.v1 - width + 1) && in_range(y, pos.v2, pos.v2 + height - 1) && pos.v3 == z;
+    } else if (orientation == 1) {
+        return pos.v1 == x && in_range(y, pos.v2, pos.v2 + height - 1) && in_range(z, pos.v3, pos.v3 - width + 1);
+    } else {
+        return in_range(x, pos.v1, pos.v1 + width - 1) && in_range(y, pos.v2, pos.v2 + height - 1) && pos.v3 == z;
     }
 }
 
