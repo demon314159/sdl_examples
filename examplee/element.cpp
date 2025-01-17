@@ -7,6 +7,7 @@
 #include "gable_brick_shape.h"
 #include "door_model.h"
 #include "window_model.h"
+#include "corner_window_model.h"
 #include <algorithm>
 
 Element::Element(Int3 pos, int width, int height, int orientation)
@@ -308,10 +309,10 @@ const CadModel* WindowElement::model() const
 //***  CornerWindowElement ***
 
 CornerWindowElement::CornerWindowElement(Int3 pos, int orientation)
-    : Element(pos, 2, 4, orientation)
+    : Element(pos, 5, 4, orientation)
     , m_model()
 {
-    m_model.add(WindowModel(DIMX * (float) m_width, DIMY * (float) m_height, DIMZ, DIMB, 2, 3, 0.0), 0.0, 0.0, 0.0);
+    m_model.add(CornerWindowModel(DIMX * (float) m_width, DIMY * (float) m_height, DIMZ, DIMB, 7, 3, 0.0), 0.0, 0.0, 0.0);
     if (orientation == 1) {
         m_model.rotate_ay(90.0);
     } else if (orientation == 2) {

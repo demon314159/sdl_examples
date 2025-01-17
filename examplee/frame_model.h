@@ -10,7 +10,8 @@
 class FrameModel: public CadModel
 {
 public:
-    FrameModel(float dimx, float dimy, float dimz, float dimb, float sill, float head, float jamb, const PaintCan& paint_can, float animation_id = 0.0);
+    FrameModel(float dimx, float dimy, float dimz, float dimb, float sill, float head, float jamb, const PaintCan& paint_can, float animation_id = 0.0,
+               bool no_left_side = false, bool no_right_size = false);
     virtual ~FrameModel();
 
 private:
@@ -23,6 +24,8 @@ private:
     float m_jamb;
     const PaintCan& m_paint_can;
     float m_animation_id;
+    bool m_no_left_side;
+    bool m_no_right_side;
     void define_model();
 };
 

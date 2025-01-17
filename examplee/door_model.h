@@ -14,10 +14,6 @@ public:
     virtual ~DoorModel();
 
 private:
-    float m_dimx;
-    float m_dimy;
-    float m_dimz;
-    float m_dimb;
 };
 
 #endif // _DOOR_MODEL_H_

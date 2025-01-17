@@ -10,14 +10,12 @@
 class WindowModel: public CadModel
 {
 public:
-    WindowModel(float dimx, float dimy, float dimz, float dimb, int vgrilles, int hgrilles, float animation_id = 0.0);
+    WindowModel(float dimx, float dimy, float dimz, float dimb, int vgrilles, int hgrilles,
+                float animation_id = 0.0,
+                bool no_left_side = false, bool no_right_side = false);
     virtual ~WindowModel();
 
 private:
-    float m_dimx;
-    float m_dimy;
-    float m_dimz;
-    float m_dimb;
 };
 
 #endif // _WINDOW_MODEL_H_
