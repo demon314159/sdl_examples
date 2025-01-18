@@ -38,7 +38,7 @@ MaterialMenu::MaterialMenu()
     , m_panel1(NULL)
     , m_panel2(NULL)
     , m_panel3(NULL)
-    , m_panel5(NULL)
+    , m_panel4(NULL)
     , m_panel6(NULL)
     , m_lamp_data(new float[3 * BUTTON_LAMPS])
 {
@@ -56,8 +56,8 @@ MaterialMenu::MaterialMenu()
     m_panel1 = new ImagePanel(IMAGEY * 193.0 / 91.0, IMAGEY, {XPOS2, YPOS + YPITCH, 0.0} );
     m_panel2 = new ImagePanel(BIG_IMAGEY * BIG_WIDTH / BIG_HEIGHT, BIG_IMAGEY, {XPOS2, YPOS - 2.0 * YPITCH, 0.0} );
     m_panel3 = new ImagePanel(IMAGEY * 199.0 / 116.0, IMAGEY, {XPOS2, YPOS - 5.0 * YPITCH, 0.0} );
-    m_panel5 = new ImagePanel(IMAGEY * 640.0 / 842.0, IMAGEY, {XPOS2, YPOS - 6.0 * YPITCH, 0.0} );
-    m_panel6 = new ImagePanel(IMAGEY * 479.0 / 933.0, IMAGEY, {XPOS2, YPOS - 7.0 * YPITCH, 0.0} );
+    m_panel4 = new ImagePanel(2.0 * IMAGEY * 444.0 / 540.0, IMAGEY * 2.0, {XPOS2, YPOS - 6.5 * YPITCH, 0.0} );
+    m_panel6 = new ImagePanel(IMAGEY * 479.0 / 933.0, IMAGEY, {XPOS2, YPOS - 8.0 * YPITCH, 0.0} );
     m_width = XPOS2 + BIG_IMAGEY * BIG_WIDTH / BIG_HEIGHT;
     update_lamp_data();
 }
@@ -66,7 +66,7 @@ MaterialMenu::~MaterialMenu()
 {
     delete [] m_lamp_data;
     delete m_panel6;
-    delete m_panel5;
+    delete m_panel4;
     delete m_panel3;
     delete m_panel2;
     delete m_panel1;
@@ -88,7 +88,7 @@ void MaterialMenu::build_texture(Texture* texture) const
     texture->add("p_panel1.png", "texture1");
     texture->add("p_panel2.png", "texture2");
     texture->add("p_panel3.png", "texture3");
-    texture->add("p_window.png", "texture5");
+    texture->add("p_panel4.png", "texture4");
     texture->add("p_door.png", "texture6");
 }
 
@@ -158,7 +158,7 @@ CadModel MaterialMenu::model() const
     cm.add(m_panel1->model(HIDE_FIXED_ANIMATION_ID, IMAGE1_TEXTURE_ID));
     cm.add(m_panel2->model(HIDE_FIXED_ANIMATION_ID, IMAGE2_TEXTURE_ID));
     cm.add(m_panel3->model(HIDE_FIXED_ANIMATION_ID, IMAGE3_TEXTURE_ID));
-    cm.add(m_panel5->model(HIDE_FIXED_ANIMATION_ID, IMAGE5_TEXTURE_ID));
+    cm.add(m_panel4->model(HIDE_FIXED_ANIMATION_ID, IMAGE4_TEXTURE_ID));
     cm.add(m_panel6->model(HIDE_FIXED_ANIMATION_ID, IMAGE6_TEXTURE_ID));
     return cm;
 }
