@@ -447,12 +447,12 @@ IntegerBoundingBox Document::integer_bounding_box() const
 {
     IntegerBoundingBox bb;
     if (m_elements <= 0) {
-        bb.vmin.v1 = -1;
+        bb.vmin.v1 = 0;
         bb.vmin.v2 = 0;
-        bb.vmin.v3 = -1;
-        bb.vmax.v1 = 1;
+        bb.vmin.v3 = 0;
+        bb.vmax.v1 = 0;
         bb.vmax.v2 = 0;
-        bb.vmax.v3 = 1;
+        bb.vmax.v3 = 0;
         return bb;
     }
     bb.vmin = m_element_ptr[0]->pos();  // Start with something real

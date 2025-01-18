@@ -110,8 +110,12 @@ bool Toy::button(int code, bool shifted, bool on)
     if (!ret_val)
         return false;
     switch (code) {
-        case SDL_SCANCODE_C:
+        case SDL_SCANCODE_S:
+            char error_msg[256];
             if (on) {
+                if (!m_doc->save("saved.brk", error_msg)) {
+                    printf("Toy::button save: %s\n", error_msg);
+                }
             }
             break;
         case SDL_SCANCODE_U:

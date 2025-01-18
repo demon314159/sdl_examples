@@ -61,6 +61,7 @@ protected:
     ImagePanel* m_panel2;
     ImagePanel* m_panel3;
     ImagePanel* m_panel4;
+    ImagePanel* m_panel5;
     ImagePanel* m_panel6;
     float* m_lamp_data;
     Float3 pos_at_zlevel(float z, const MouseVector& mv) const;

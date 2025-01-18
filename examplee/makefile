@@ -42,6 +42,7 @@ HEADERS = view.h \
           history.h \
           frame_model.h \
           door_model.h \
+          front_door_model.h \
           window_model.h \
           corner_window_model.h \
           gable_brick_shape.h \
@@ -62,6 +63,7 @@ RESOURCES = \
           p_panel2.png \
           p_panel3.png \
           p_panel4.png \
+          p_panel5.png \
           p_panel6.png \
 
 OBJECTS = main.obj \
@@ -100,6 +102,7 @@ OBJECTS = main.obj \
           history.obj \
           frame_model.obj \
           door_model.obj \
+          front_door_model.obj \
           window_model.obj \
           corner_window_model.obj \
           gable_brick_shape.obj \

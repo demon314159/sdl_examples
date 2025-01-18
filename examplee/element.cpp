@@ -6,6 +6,7 @@
 #include "look.h"
 #include "gable_brick_shape.h"
 #include "door_model.h"
+#include "front_door_model.h"
 #include "window_model.h"
 #include "corner_window_model.h"
 #include <algorithm>
@@ -434,7 +435,7 @@ FrontDoorElement::FrontDoorElement(Int3 pos, int orientation)
     : Element(pos, 2, 6, orientation)
     , m_model()
 {
-    m_model.add(DoorModel(DIMX * (float) m_width, DIMY * (float) m_height, DIMZ, DIMB, 2, 1, 0.0), 0.0, 0.0, 0.0);
+    m_model.add(FrontDoorModel(DIMX * (float) m_width, DIMY * (float) m_height, DIMZ, DIMB, 2, 4, 0.0), 0.0, 0.0, 0.0);
     if (orientation == 1) {
         m_model.rotate_ay(90.0);
     } else if (orientation == 2) {

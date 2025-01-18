@@ -36,7 +36,6 @@ WindowModel::WindowModel(float dimx, float dimy, float dimz, float dimb, int vgr
             add(vgrille, -dx / 2.0 + (space + f_grille) * (float) (i + 1) - f_grille / 2.0, 0.0, sill_offset);
         }
     }
-
     if (hgrills > 0) {
         BrickShape hs(dimx, f_grille, f_grille, dimb);
         CadModel hgrille(hs, WINDOW_PAINT, animation_id);
