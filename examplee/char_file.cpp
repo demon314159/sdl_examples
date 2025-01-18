@@ -20,7 +20,7 @@ CharFile::CharFile(const char* file_name)
     , m_buf(NULL)
 {
     m_error_message[0] = 0;
-    FILE* ffi = fopen(file_name, "r");
+    FILE* ffi = fopen(file_name, "rb");
     if (ffi == NULL) {
         sprintf(m_error_message, "Error opening file '%s'", file_name);
         m_error_flag = true;

@@ -250,7 +250,7 @@ bool Document::load(const char* file_name, char* error_message)
 
 bool Document::save(const char* file_name, char* error_message) const
 {
-    FILE* ffo = fopen(file_name, "w");
+    FILE* ffo = fopen(file_name, "wb");
     if (ffo == NULL) {
         sprintf(error_message, "Error opening file '%s'", file_name);
         return false;
