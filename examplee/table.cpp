@@ -30,7 +30,7 @@ Table::~Table()
 CadModel Table::model(float animation_id) const
 {
     CadModel cm;
-    CadModel ps(PlaneShape(m_dimx, m_dimz, TABLE_TEXTURE_ID), TABLE_PAINT, animation_id);
+    CadModel ps(PlaneShape(m_dimx, m_dimz, IMAGE7_TEXTURE_ID), TABLE_PAINT, animation_id);
     cm.add(ps, 0.0, 0.0, 0.0);
     ps.rotate_ax(180.0);
     cm.add(ps, 0.0, 0.0, 0.0);
@@ -63,7 +63,7 @@ void Table::change_size(Int2 base, Int2 size)
 
 void Table::build_texture(Texture* texture) const
 {
-    texture->add("p_table.png", "texture8");
+    texture->add("p_panel7.png", "texture7");
 }
 
 void Table::build_uniform(Uniform* uniform)

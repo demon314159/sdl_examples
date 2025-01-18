@@ -65,6 +65,7 @@ RESOURCES = \
           p_panel4.png \
           p_panel5.png \
           p_panel6.png \
+          p_panel7.png \
 
 OBJECTS = main.obj \
           view.obj \
