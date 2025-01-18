@@ -46,6 +46,7 @@ HEADERS = view.h \
           window_model.h \
           corner_window_model.h \
           gable_brick_shape.h \
+          roof_shape.h \
           button_shape.h \
           push_button.h \
           image_panel.h \
@@ -107,6 +108,7 @@ OBJECTS = main.obj \
           window_model.obj \
           corner_window_model.obj \
           gable_brick_shape.obj \
+          roof_shape.obj \
           button_shape.obj \
           push_button.obj \
           image_panel.obj \

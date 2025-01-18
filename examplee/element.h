@@ -69,6 +69,18 @@ private:
     bool partial_contains(Int3 pos, int width, int height, int orientation, int x, int y, int z) const;
 };
 
+class GableBrickElement: public Element
+{
+public:
+    GableBrickElement(Int3 pos, int orientation);
+    GableBrickElement() = delete;
+    void save_to_file(FILE* ffo) const override;
+    const CadModel* model() const override;
+protected:
+private:
+    CadModel m_model;
+};
+
 class HalfBrickElement: public Element
 {
 public:
@@ -140,15 +152,14 @@ private:
     static CadModel m_triple_foundation_model_ew;
 };
 
-class GableBrickElement: public Element
+class RoofElement: public Element
 {
 public:
-    GableBrickElement(Int3 pos, int orientation);
-    GableBrickElement() = delete;
+    RoofElement(Int3 pos, int width, int orientation);
+    RoofElement() = delete;
     void save_to_file(FILE* ffo) const override;
     const CadModel* model() const override;
 protected:
-private:
     CadModel m_model;
 };
 

@@ -147,6 +147,25 @@ bool Document::parse_4_parms(TokenFile& tf, int& x, int& y, int& z, int& o, char
     return true;
 }
 
+bool Document::parse_5_parms(TokenFile& tf, int& x, int& y, int& z, int& w, int& o, char* error_message)
+{
+    if (!expect(tf, "(", error_message))
+        return false;
+    if (!parse_integer3(tf, x, y, z, error_message))
+        return false;
+    if (!expect(tf, ",", error_message))
+        return false;
+    if (!parse_integer(tf, w, error_message))
+        return false;
+    if (!expect(tf, ",", error_message))
+        return false;
+    if (!parse_integer(tf, o, error_message))
+        return false;
+    if (!expect(tf, ")", error_message))
+       return false;
+    return true;
+}
+
 // This adds to document, only used with new document so far
 bool Document::load(const char* file_name, char* error_message)
 {
@@ -216,6 +235,12 @@ bool Document::load(const char* file_name, char* error_message)
                 return false;
             }
             add_element(new GableBrickElement({x, y, z}, o));
+        } else if (0 == strcmp(ename, "Roof")) {
+            int x, y, z, w, o;
+            if (!parse_5_parms(tf, x, y, z, w, o, error_message)) {
+                return false;
+            }
+            add_element(new RoofElement({x, y, z}, w, o));
         } else if (0 == strcmp(ename, "Window")) {
             int x, y, z, o;
             if (!parse_4_parms(tf, x, y, z, o, error_message)) {
@@ -241,7 +266,7 @@ bool Document::load(const char* file_name, char* error_message)
             }
             add_element(new BackDoorElement({x, y, z}, o));
         } else {
-            sprintf(error_message, "Line %d: Expecting 'HalfBrick', 'Brick', 'HalfFoundation', 'Foundation', 'DoubleFoundation', 'TripleFoundation', 'GableBrick', 'Window', 'CornerWindow', 'FrontDoor' or 'BackDoor' but found '%s'", tf.line_count(), ename);
+            sprintf(error_message, "Line %d: Expecting ' GableBrick', 'HalfBrick', 'Brick', 'HalfFoundation', 'Foundation', 'DoubleFoundation', 'TripleFoundation', 'Roof', 'Window', 'CornerWindow', 'FrontDoor' or 'BackDoor' but found '%s'", tf.line_count(), ename);
             return false;
         }
     }

@@ -215,9 +215,11 @@ void Toy::try_top_face(int sx, int sy)
                         m_history->do_command(new AddElementCommand(new HalfBrickElement(p), m_doc));
                 }
             } else if (w > 1) {
-                w = 2;
                 Element* item;
                 switch(m_menu->material()) {
+                    case MATERIAL_GABLE_BRICK:
+                        item = new GableBrickElement(p, o);
+                        break;
                     case MATERIAL_BRICK:
                         item = new BrickElement(p, o);
                         break;
@@ -230,12 +232,9 @@ void Toy::try_top_face(int sx, int sy)
                     case MATERIAL_TRIPLE_FOUNDATION:
                         item = new TripleFoundationElement(p, o);
                         break;
-                    case MATERIAL_GABLE_BRICK:
-                        item = new GableBrickElement(p, o);
+                    case MATERIAL_ROOF:
+                        item = new RoofElement(p, w, o);
                         break;
-//                  case MATERIAL_ROOF:
-//                        item = new BrickElement(p, o);
-//                        break;
                     case MATERIAL_WINDOW:
                         item = new WindowElement(p, o);
                         break;

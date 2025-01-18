@@ -14,6 +14,7 @@
 #define DOOR_PAINT PaintCan(1.0, 1.0, 1.0)
 #define WINDOW_PAINT PaintCan(1.0, 1.0, 1.0)
 #define PANE_PAINT PaintCan(0.25, 0.25, 0.25)
+#define ROOF_PAINT PaintCan(0.0, 0.8, 0.2)
 #define TABLE_PAINT PaintCan(0.4, 0.8, 1.0)
 
 #define DEFAULT_ANIMATION_ID 0.0f

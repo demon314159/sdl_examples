@@ -66,6 +66,7 @@ private:
     bool parse_integer(TokenFile& tf, int &v, char* error_message);
     bool parse_3_parms(TokenFile& tf, int& x, int& y, int& z, char* error_message);
     bool parse_4_parms(TokenFile& tf, int& x, int& y, int& z, int& o, char* error_message);
+    bool parse_5_parms(TokenFile& tf, int& x, int& y, int& z, int& w, int& o, char* error_message);
     bool partial_element_occupied(Int3 pos, int width, int height, int orientation) const;
 };
 

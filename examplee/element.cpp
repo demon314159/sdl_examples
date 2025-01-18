@@ -9,6 +9,7 @@
 #include "front_door_model.h"
 #include "window_model.h"
 #include "corner_window_model.h"
+#include "roof_shape.h"
 #include <algorithm>
 
 Element::Element(Int3 pos, int width, int height, int orientation, bool corner_flag)
@@ -222,6 +223,33 @@ bool Element::partial_contains(Int3 pos, int width, int height, int orientation,
     }
 }
 
+//***  GableBrickElement ***
+
+GableBrickElement::GableBrickElement(Int3 pos, int orientation)
+    : Element(pos, 1, 1, orientation)
+    , m_model()
+{
+    m_model.add(GableBrickShape(DIMX, DIMY, DIMZ, DIMB), BRICK_PAINT, 0.0);
+    if (orientation == 1) {
+        m_model.rotate_ay(90.0);
+    } else if (orientation == 2) {
+        m_model.rotate_ay(180.0);
+    } else if (orientation == 3) {
+        m_model.rotate_ay(270.0);
+    }
+}
+
+void GableBrickElement::save_to_file(FILE* ffo) const
+{
+    fprintf(ffo, "GableBrick(%0d, %0d, %0d, %0d)\n",
+        m_pos.v1, m_pos.v2, m_pos.v3, m_orientation);
+}
+
+const CadModel* GableBrickElement::model() const
+{
+    return &m_model;
+}
+
 //***  HalfBrickElement ***
 
 CadModel Element::m_half_brick_model(BrickShape(DIMX, DIMY, DIMZ, DIMB), BRICK_PAINT, 0.0);
@@ -323,7 +351,7 @@ const CadModel* DoubleFoundationElement::model() const
     }
 }
 
-//***  DoubleFoundationElement ***
+//***  TripleFoundationElement ***
 
 CadModel TripleFoundationElement::m_triple_foundation_model_ns(BrickShape(DIMX * 6.0f, DIMY, DIMZ, DIMB), FOUNDATION_PAINT, 0.0);
 CadModel TripleFoundationElement::m_triple_foundation_model_ew(BrickShape(DIMX, DIMY, DIMZ * 6.0f, DIMB), FOUNDATION_PAINT, 0.0);
@@ -348,13 +376,17 @@ const CadModel* TripleFoundationElement::model() const
     }
 }
 
-//***  GableBrickElement ***
+//***  RoofElement ***
 
-GableBrickElement::GableBrickElement(Int3 pos, int orientation)
-    : Element(pos, 1, 1, orientation)
+RoofElement::RoofElement(Int3 pos, int width, int orientation)
+    : Element(pos, width, 1, orientation)
     , m_model()
 {
-    m_model.add(GableBrickShape(DIMX, DIMY, DIMZ, DIMB), BRICK_PAINT, 0.0);
+    CadModel rm(RoofShape(DIMX, DIMX, DIMX, DIMB, DIMX / 20.0), ROOF_PAINT, 0.0);
+    for (int i = 0; i < width; i++) {
+        float hw = 0.5 * DIMX * (float) width;
+        m_model.add(rm, 0.5 * DIMX - hw + DIMX * (float) i, -DIMY);
+    }
     if (orientation == 1) {
         m_model.rotate_ay(90.0);
     } else if (orientation == 2) {
@@ -364,13 +396,13 @@ GableBrickElement::GableBrickElement(Int3 pos, int orientation)
     }
 }
 
-void GableBrickElement::save_to_file(FILE* ffo) const
+void RoofElement::save_to_file(FILE* ffo) const
 {
-    fprintf(ffo, "GableBrick(%0d, %0d, %0d, %0d)\n",
-        m_pos.v1, m_pos.v2, m_pos.v3, m_orientation);
+    fprintf(ffo, "Roof(%0d, %0d, %0d, %0d, %0d)\n",
+        m_pos.v1, m_pos.v2, m_pos.v3, m_width, m_orientation);
 }
 
-const CadModel* GableBrickElement::model() const
+const CadModel* RoofElement::model() const
 {
     return &m_model;
 }
