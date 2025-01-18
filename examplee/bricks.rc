@@ -4,7 +4,7 @@ fshader.glsl      CUSTOM fshader.glsl
 p_panel1.png      CUSTOM p_panel1.png
 p_panel2.png      CUSTOM p_panel2.png
 p_panel3.png      CUSTOM p_panel3.png
-p_Panel4.png      CUSTOM p_panel4.png
-p_door.png        CUSTOM p_door.png
+p_panel4.png      CUSTOM p_panel4.png
+p_panel6.png      CUSTOM p_panel6.png
 p_table.png       CUSTOM p_table.png
 

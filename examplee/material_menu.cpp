@@ -57,7 +57,7 @@ MaterialMenu::MaterialMenu()
     m_panel2 = new ImagePanel(BIG_IMAGEY * BIG_WIDTH / BIG_HEIGHT, BIG_IMAGEY, {XPOS2, YPOS - 2.0 * YPITCH, 0.0} );
     m_panel3 = new ImagePanel(IMAGEY * 199.0 / 116.0, IMAGEY, {XPOS2, YPOS - 5.0 * YPITCH, 0.0} );
     m_panel4 = new ImagePanel(2.0 * IMAGEY * 444.0 / 540.0, IMAGEY * 2.0, {XPOS2, YPOS - 6.5 * YPITCH, 0.0} );
-    m_panel6 = new ImagePanel(IMAGEY * 479.0 / 933.0, IMAGEY, {XPOS2, YPOS - 8.0 * YPITCH, 0.0} );
+    m_panel6 = new ImagePanel(IMAGEY * 265.0 / 477.0, IMAGEY, {XPOS2, YPOS - 9.0 * YPITCH, 0.0} );
     m_width = XPOS2 + BIG_IMAGEY * BIG_WIDTH / BIG_HEIGHT;
     update_lamp_data();
 }
@@ -89,7 +89,7 @@ void MaterialMenu::build_texture(Texture* texture) const
     texture->add("p_panel2.png", "texture2");
     texture->add("p_panel3.png", "texture3");
     texture->add("p_panel4.png", "texture4");
-    texture->add("p_door.png", "texture6");
+    texture->add("p_panel6.png", "texture6");
 }
 
 void MaterialMenu::build_uniform(Uniform* uniform)
