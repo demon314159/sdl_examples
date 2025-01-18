@@ -40,10 +40,12 @@ Toy::~Toy()
 void Toy::reframe()
 {
     BoundingBox bb = m_doc->building()->bounding_box();
+    // Add the table effect
     bb.vmin.v1 -= (2.0 * DIMX);
     bb.vmin.v3 -= (2.0 * DIMZ);
     bb.vmax.v1 += (2.0 * DIMX);
     bb.vmax.v3 += (2.0 * DIMZ);
+    bb.vmin.v2 = (-DIMY / 2.0);
     m_camera->frame(bb);
 }
 
@@ -126,6 +128,11 @@ bool Toy::button(int code, bool shifted, bool on)
         case SDL_SCANCODE_R:
             if (on) {
                 m_history->redo_command();
+            }
+            break;
+        case SDL_SCANCODE_ESCAPE:
+            if (on) {
+                m_choose->select_no_choice();
             }
             break;
         default:
