@@ -13,8 +13,9 @@ public:
     Float3 vector() const;
     void set_new_vector(Float3 origin, Float3 vector);
     void translate(Float3 off);
-    void rotate_ay(float deg);
     void rotate_ax(float deg);
+    void rotate_ay(float deg);
+    void rotate_az(float deg);
     Float2 position_at_y(float y) const;
     Float2 position_at_z(float z) const;
 

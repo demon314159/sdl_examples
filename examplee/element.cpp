@@ -12,13 +12,14 @@
 #include "roof_shape.h"
 #include <algorithm>
 
-Element::Element(Int3 pos, int width, int height, int orientation, bool corner_flag)
+Element::Element(Int3 pos, int width, int height, int orientation, bool corner_flag, bool gable_flag)
     : m_removed(false)
     , m_pos(pos)
     , m_width(width)
     , m_height(height)
     , m_orientation(orientation)
     , m_corner_flag(corner_flag)
+    , m_gable_flag(gable_flag)
     , m_model()
 {
     if (m_width > 2 || m_height > 1) {
@@ -89,6 +90,11 @@ int Element::orientation() const
 bool Element::corner_flag() const
 {
     return m_corner_flag;
+}
+
+bool Element::gable_flag() const
+{
+    return m_gable_flag;
 }
 
 const CadModel* Element::model() const
@@ -226,7 +232,7 @@ bool Element::partial_contains(Int3 pos, int width, int height, int orientation,
 //***  GableBrickElement ***
 
 GableBrickElement::GableBrickElement(Int3 pos, int orientation)
-    : Element(pos, 1, 1, orientation)
+    : Element(pos, 1, 1, orientation, false, true)
     , m_model()
 {
     m_model.add(GableBrickShape(DIMX, DIMY, DIMZ, DIMB), BRICK_PAINT, 0.0);

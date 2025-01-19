@@ -32,11 +32,12 @@
 #define DIMY  (UNIT_SQUARE * 2.0f / 3.0f)
 #define DIMZ  UNIT_SQUARE
 #define DIMB  (UNIT_SQUARE / 40.0f)
+#define GABLE_ANGLE 33.69006753
 
 class Element
 {
 public:
-    Element(Int3 pos, int width, int height, int orientation, bool corner_flag = false);
+    Element(Int3 pos, int width, int height, int orientation, bool corner_flag = false, bool gable_flag = false);
     Element() = delete;
     virtual ~Element();
     void remove();
@@ -48,6 +49,7 @@ public:
     int height() const;
     int orientation() const;
     bool corner_flag() const;
+    bool gable_flag() const;
     bool contains(int x, int y, int z) const;
     void update_integer_bounding_box(IntegerBoundingBox& bb);
 
@@ -60,6 +62,7 @@ protected:
     int m_height;
     int m_orientation;
     bool m_corner_flag;
+    bool m_gable_flag;
 private:
     CadModel m_model;
     static CadModel m_half_brick_model;

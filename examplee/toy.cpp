@@ -6,6 +6,8 @@
 #include "cube_shape.h"
 #include <math.h>
 #include "look.h"
+#include "pi.h"
+
 #include <stdio.h>
 
 #define HIDE_TIME 0.25
@@ -134,6 +136,7 @@ bool Toy::button(int code, bool shifted, bool on)
             if (on) {
                 m_choose->select_no_choice();
             }
+
             break;
         default:
             break;
@@ -141,7 +144,7 @@ bool Toy::button(int code, bool shifted, bool on)
     return ret_val;
 }
 
-Int3 Toy::coord_at_level(int iy, const MouseVector& mv) const
+Int3 Toy::top_face_coord_at_level(int iy, const MouseVector& mv) const
 {
         float level = DIMY / 2.0 + DIMY * (float) iy;
         Float2 sel_pos = mv.position_at_y(level);
@@ -150,18 +153,78 @@ Int3 Toy::coord_at_level(int iy, const MouseVector& mv) const
         return {ix, iy, iz};
 }
 
+//
+// Translate the frame so the brick is at 0.0
+// Rotate the frame of reference by 33.69 degrees so the gable face on the XZ plane at y = 0
+// Find the position on the XZ plane
+// UnRotate the position by -33.69 degrees
+// UnTranslate the position
+// Convert position to integer
+//
+Int3 Toy::gable_face_coord(Int3 pos, int orientation, const MouseVector& mv) const
+{
+    Float3 mvv = mv.vector();
+    float cx = DIMX * (float) pos.v1;
+    float cy = DIMY * (float) pos.v2;
+    float cz = DIMZ * (float) pos.v3;
+    MouseVector tmv = mv;
+    // Translate gable face to XZ plane at 0,0,0
+    tmv.translate({-cx, -cy, -cz});
+    Float2 sel_pos;
+    Float3 new_pos;
+    if (orientation == 3) {        // Rotate frame about ax +33.69
+        tmv.rotate_ax(GABLE_ANGLE);
+        sel_pos = tmv.position_at_y(0.0);
+        new_pos = {sel_pos.v1, 0.0, sel_pos.v2};
+        new_pos = rotate_ax(new_pos, -GABLE_ANGLE);
+    } else if (orientation == 2) { // Rotate frame about az +33.69 degrees
+        tmv.rotate_az(GABLE_ANGLE);
+        sel_pos = tmv.position_at_y(0.0);
+        new_pos = {sel_pos.v1, 0.0, sel_pos.v2};
+        new_pos = rotate_az(new_pos, -GABLE_ANGLE);
+    } else if (orientation == 1) { // Rotate frame about ax -33.69 degrees
+        tmv.rotate_ax(-GABLE_ANGLE);
+        sel_pos = tmv.position_at_y(0.0);
+        new_pos = {sel_pos.v1, 0.0, sel_pos.v2};
+        new_pos = rotate_ax(new_pos, GABLE_ANGLE);
+    } else {                       // Rotate frame about az -33.69 degrees
+        tmv.rotate_az(-GABLE_ANGLE);
+        sel_pos = tmv.position_at_y(0.0);
+        new_pos = {sel_pos.v1, 0.0, sel_pos.v2};
+        new_pos = rotate_az(new_pos, GABLE_ANGLE);
+    }
+    // Untranslate
+    new_pos = translate(new_pos, cx, cy, cz);
+    int ix = round(new_pos.v1 / DIMX);
+    int iy = round(new_pos.v2 / DIMY);
+    int iz = round(new_pos.v3 / DIMZ);
+    return {ix, iy, iz};
+}
+
 bool Toy::top_face_selection(int sx, int sy, Int3& pos) const
 {
     MouseVector mv = m_camera->new_mouse_vector(sx, sy);
-    Int3 sel_pos = coord_at_level(-1, mv);
+    Float3 v = mv.vector();
+    Int3 sel_pos = top_face_coord_at_level(-1, mv);
     for (int i = 0; i < m_doc->elements(); i++) {
         const Element* e = m_doc->element(i);
         int y = e->pos().v2 + e->height() - 1;
         if (y > sel_pos.v2) {
-            Int3 new_pos = coord_at_level(y, mv);
+            Int3 new_pos;
+
+            if (e->gable_flag()) {
+                new_pos = gable_face_coord(e->pos(), e->orientation(), mv);
+                // Could be at a different y
+            } else {
+                new_pos = top_face_coord_at_level(y, mv);
+                // Will be at same y
+            }
+
             if (e->contains(new_pos.v1, new_pos.v2, new_pos.v3)) {
                 sel_pos = new_pos;
             }
+
+
         }
     }
     if (sel_pos.v2 == -1) { // No top faces selected
@@ -308,3 +371,35 @@ void Toy::adjust_table_size()
     m_table->change_size({bb.vmin.v1, bb.vmax.v3}, {bb.vmax.v1 - bb.vmin.v1 + 1, bb.vmax.v3 - bb.vmin.v3 + 1});
 }
 
+Float3 Toy::rotate_ax(Float3 p, float angle) const
+{
+   Float3 p1 = p;
+   p1.v2 = p.v2 * cos(angle * PI / 180.0) - p.v3 * sin(angle * PI / 180.0);
+   p1.v3 = p.v2 * sin(angle * PI / 180.0) + p.v3 * cos(angle * PI / 180.0);
+   return p1;
+}
+
+Float3 Toy::rotate_ay(Float3 p, float angle) const
+{
+   Float3 p1 = p;
+   p1.v1 = p.v1 * cos(angle * PI / 180.0) + p.v3 * sin(angle * PI / 180.0);
+   p1.v3 = -p.v1 * sin(angle * PI / 180.0) + p.v3 * cos(angle * PI / 180.0);
+   return p1;
+}
+
+Float3 Toy::rotate_az(Float3 p, float angle) const
+{
+   Float3 p1 = p;
+   p1.v1 = p.v1 * cos(angle * PI / 180.0) - p.v2 * sin(angle * PI / 180.0);
+   p1.v2 = p.v1 * sin(angle * PI / 180.0) + p.v2 * cos(angle * PI / 180.0);
+   return p1;
+}
+
+Float3 Toy::translate(Float3 p, float dx, float dy, float dz) const
+{
+    Float3 p1;
+    p1.v1 = p.v1 + dx;
+    p1.v2 = p.v2 + dy;
+    p1.v3 = p.v3 + dz;
+    return p1;
+}
