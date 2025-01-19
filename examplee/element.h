@@ -166,6 +166,17 @@ protected:
     CadModel m_model;
 };
 
+class FlatRoofElement: public Element
+{
+public:
+    FlatRoofElement(Int3 pos, int width, int orientation);
+    FlatRoofElement() = delete;
+    void save_to_file(FILE* ffo) const override;
+    const CadModel* model() const override;
+protected:
+    CadModel m_model;
+};
+
 class WindowElement: public Element
 {
 public:

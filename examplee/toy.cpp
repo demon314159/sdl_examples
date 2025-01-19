@@ -290,6 +290,10 @@ void Toy::try_top_face(int sx, int sy)
                     case MATERIAL_TRIPLE_FOUNDATION:
                         m_history->do_command(new AddElementCommand(new HalfFoundationElement(p), m_doc));
                         break;
+                    case MATERIAL_ROOF:
+                        m_choose->adjust_roof_orientation(p, w, o);
+                        m_history->do_command(new AddElementCommand(new RoofElement(p, w, o), m_doc));
+                        break;
                     default:
                         m_history->do_command(new AddElementCommand(new HalfBrickElement(p), m_doc));
                 }
@@ -312,7 +316,7 @@ void Toy::try_top_face(int sx, int sy)
                         item = new TripleFoundationElement(p, o);
                         break;
                     case MATERIAL_ROOF:
-                        m_choose->adjust_roof_orientation(p, o);
+                        m_choose->adjust_roof_orientation(p, w, o);
                         item = new RoofElement(p, w, o);
                         break;
                     case MATERIAL_WINDOW:

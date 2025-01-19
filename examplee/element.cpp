@@ -413,6 +413,39 @@ const CadModel* RoofElement::model() const
     return &m_model;
 }
 
+//***  FlatRoofElement ***
+
+FlatRoofElement::FlatRoofElement(Int3 pos, int width, int orientation)
+    : Element(pos, width, 1, orientation)
+    , m_model()
+{
+
+
+    CadModel rm(BrickShape(DIMX, DIMY, DIMZ, DIMB), ROOF_PAINT, 0.0);
+    for (int i = 0; i < width; i++) {
+        float hw = 0.5 * DIMX * (float) width;
+        m_model.add(rm, 0.5 * DIMX - hw + DIMX * (float) i, -DIMY);
+    }
+    if (orientation == 1) {
+        m_model.rotate_ay(90.0);
+    } else if (orientation == 2) {
+        m_model.rotate_ay(180.0);
+    } else if (orientation == 3) {
+        m_model.rotate_ay(270.0);
+    }
+}
+
+void FlatRoofElement::save_to_file(FILE* ffo) const
+{
+    fprintf(ffo, "FlatRoof(%0d, %0d, %0d, %0d, %0d)\n",
+        m_pos.v1, m_pos.v2, m_pos.v3, m_width, m_orientation);
+}
+
+const CadModel* FlatRoofElement::model() const
+{
+    return &m_model;
+}
+
 //***  WindowElement ***
 
 WindowElement::WindowElement(Int3 pos, int orientation)

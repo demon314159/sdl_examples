@@ -6,6 +6,10 @@
 #include "math.h"
 #include "cylinder_shape.h"
 
+
+#include <stdio.h>
+
+
 #define GABLE_ANGLE 33.69006753
 
 Choose::Choose(float dimx, float dimy, float dimz, const PaintCan& marker_color)
@@ -40,19 +44,19 @@ void Choose::select_no_choice()
     m_second_choice = {0, 0, 0};
 }
 
-void Choose::select_choice(Int3 c, bool gable_flag, int gable_orientation)
+void Choose::select_choice(Int3 p, bool gable_flag, int gable_orientation)
 {
     if (m_first_selected && !m_second_selected) {
         m_second_selected = true;
         m_second_gable_flag = gable_flag;
         m_second_gable_orientation = gable_orientation;
-        m_second_choice = c;
+        m_second_choice = p;
     } else {
         m_first_selected = true;
         m_first_gable_flag = gable_flag;
         m_first_gable_orientation = gable_orientation;
         m_second_selected = false;
-        m_first_choice = c;
+        m_first_choice = p;
         m_second_choice = {0, 0, 0};
     }
 }
@@ -124,12 +128,17 @@ bool Choose::valid_roof_selection() const
     return m_first_gable_flag && m_second_gable_flag && m_first_gable_orientation == m_second_gable_orientation;
 }
 
-void Choose::adjust_roof_orientation(Int3& p, int& o)
+void Choose::adjust_roof_orientation(Int3& p, int w, int& o)
 {
-    int normal_o = (m_first_gable_orientation - 1) & 3;
-    if (normal_o == o) {
-        return;
+    if (w == 1) {
+        o = (m_first_gable_orientation - 1) & 3;
+    } else {
+        int normal_o = (m_first_gable_orientation - 1) & 3;
+        if (normal_o == o) {
+            return;
+        }
+        o = (o + 2) & 3;
+        p = m_second_choice;
     }
-    o = (o + 2) & 3;
-    p = m_second_choice;
 }
+
