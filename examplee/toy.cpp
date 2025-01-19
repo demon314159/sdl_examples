@@ -282,7 +282,7 @@ void Toy::try_top_face(int sx, int sy)
         Int3 p;
         int w;
         int o;
-        if (m_choose->new_element_chosen(p, w, o) && !(m_menu->material() == MATERIAL_ROOF && !m_choose->valid_roof_selection() )) {
+        if (m_choose->new_element_chosen(p, w, o)) {
             if (w == 1) {
                 switch(m_menu->material()) {
                     case MATERIAL_FOUNDATION:
@@ -291,8 +291,12 @@ void Toy::try_top_face(int sx, int sy)
                         m_history->do_command(new AddElementCommand(new HalfFoundationElement(p), m_doc));
                         break;
                     case MATERIAL_ROOF:
-                        m_choose->adjust_roof_orientation(p, w, o);
-                        m_history->do_command(new AddElementCommand(new RoofElement(p, w, o), m_doc));
+                        if (m_choose->valid_roof_selection()) {
+                            m_choose->adjust_roof_orientation(p, w, o);
+                            m_history->do_command(new AddElementCommand(new RoofElement(p, w, o), m_doc));
+                        } else {
+                            m_history->do_command(new AddElementCommand(new FlatRoofElement(p, w, o), m_doc));
+                        }
                         break;
                     default:
                         m_history->do_command(new AddElementCommand(new HalfBrickElement(p), m_doc));
@@ -316,8 +320,12 @@ void Toy::try_top_face(int sx, int sy)
                         item = new TripleFoundationElement(p, o);
                         break;
                     case MATERIAL_ROOF:
-                        m_choose->adjust_roof_orientation(p, w, o);
-                        item = new RoofElement(p, w, o);
+                        if (m_choose->valid_roof_selection()) {
+                            m_choose->adjust_roof_orientation(p, w, o);
+                            item = new RoofElement(p, w, o);
+                        } else {
+                            item = new FlatRoofElement(p, w, o);
+                        }
                         break;
                     case MATERIAL_WINDOW:
                         item = new WindowElement(p, o);

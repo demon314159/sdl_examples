@@ -420,11 +420,17 @@ FlatRoofElement::FlatRoofElement(Int3 pos, int width, int orientation)
     , m_model()
 {
 
+//    CadModel rm(FlatRoofShape(DIMX, DIMX, DIMX, DIMB, DIMX / 20.0), ROOF_PAINT, 0.0);
+//    for (int i = 0; i < width; i++) {
+//        float hw = 0.5 * DIMX * (float) width;
+//        m_model.add(rm, 0.5 * DIMX - hw + DIMX * (float) i);
+//    }
 
-    CadModel rm(BrickShape(DIMX, DIMY, DIMZ, DIMB), ROOF_PAINT, 0.0);
+    float thickness = 1.1 * (DIMY / 2.0);
+    CadModel rm(BrickShape(DIMX * 1.5, thickness, DIMX * 1.5, DIMB), ROOF_PAINT, 0.0);
     for (int i = 0; i < width; i++) {
         float hw = 0.5 * DIMX * (float) width;
-        m_model.add(rm, 0.5 * DIMX - hw + DIMX * (float) i, -DIMY);
+        m_model.add(rm, 0.5 * DIMX - hw + DIMX * (float) i, -(DIMY - thickness) / 2.0);
     }
     if (orientation == 1) {
         m_model.rotate_ay(90.0);
