@@ -18,6 +18,8 @@ public:
     CadModel model(float animation_id) const;
     const float* data();
     bool new_element_chosen(Int3& pos, int& width, int& orientation) const;
+    bool valid_roof_selection() const;
+    void adjust_roof_orientation(Int3& p, int& o);
 
 private:
     float m_dimx;
@@ -28,6 +30,8 @@ private:
     bool m_first_gable_flag;
     int m_first_gable_orientation;
     bool m_second_selected;
+    bool m_second_gable_flag;
+    int m_second_gable_orientation;
     Int3 m_first_choice;
     Int3 m_second_choice;
     Matrix4x4 m_animation;

@@ -282,7 +282,7 @@ void Toy::try_top_face(int sx, int sy)
         Int3 p;
         int w;
         int o;
-        if (m_choose->new_element_chosen(p, w, o)) {
+        if (m_choose->new_element_chosen(p, w, o) && !(m_menu->material() == MATERIAL_ROOF && !m_choose->valid_roof_selection() )) {
             if (w == 1) {
                 switch(m_menu->material()) {
                     case MATERIAL_FOUNDATION:
@@ -312,6 +312,7 @@ void Toy::try_top_face(int sx, int sy)
                         item = new TripleFoundationElement(p, o);
                         break;
                     case MATERIAL_ROOF:
+                        m_choose->adjust_roof_orientation(p, o);
                         item = new RoofElement(p, w, o);
                         break;
                     case MATERIAL_WINDOW:

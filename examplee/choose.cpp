@@ -17,6 +17,8 @@ Choose::Choose(float dimx, float dimy, float dimz, const PaintCan& marker_color)
     , m_first_gable_flag(false)
     , m_first_gable_orientation(0)
     , m_second_selected(false)
+    , m_second_gable_flag(false)
+    , m_second_gable_orientation(0)
     , m_first_choice({0, 0, 0})
     , m_second_choice({0, 0, 0})
 {
@@ -29,10 +31,12 @@ Choose::~Choose()
 void Choose::select_no_choice()
 {
     m_first_selected = false;
-    m_second_selected = false;
-    m_first_choice = {0, 0, 0};
     m_first_gable_flag = false;
     m_first_gable_orientation = 0;
+    m_second_selected = false;
+    m_second_gable_flag = false;
+    m_second_gable_orientation = 0;
+    m_first_choice = {0, 0, 0};
     m_second_choice = {0, 0, 0};
 }
 
@@ -40,6 +44,8 @@ void Choose::select_choice(Int3 c, bool gable_flag, int gable_orientation)
 {
     if (m_first_selected && !m_second_selected) {
         m_second_selected = true;
+        m_second_gable_flag = gable_flag;
+        m_second_gable_orientation = gable_orientation;
         m_second_choice = c;
     } else {
         m_first_selected = true;
@@ -113,3 +119,17 @@ const float* Choose::data()
     return m_animation.data();
 }
 
+bool Choose::valid_roof_selection() const
+{
+    return m_first_gable_flag && m_second_gable_flag && m_first_gable_orientation == m_second_gable_orientation;
+}
+
+void Choose::adjust_roof_orientation(Int3& p, int& o)
+{
+    int normal_o = (m_first_gable_orientation - 1) & 3;
+    if (normal_o == o) {
+        return;
+    }
+    o = (o + 2) & 3;
+    p = m_second_choice;
+}
