@@ -37,7 +37,7 @@ private:
     void build_model();
     void build_uniform();
     void update_uniform();
-    bool top_face_selection(int sx, int sy, Int3& pos) const;
+    bool top_face_selection(int sx, int sy, Int3& pos, bool& gable_flag, int& gable_orientation) const;
     Int3 top_face_coord_at_level(int iy, const MouseVector& mv) const;
     Int3 gable_face_coord(Int3 pos, int orientation, const MouseVector& mv) const;
     bool try_hide_button(int sx, int sy);

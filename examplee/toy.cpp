@@ -201,8 +201,11 @@ Int3 Toy::gable_face_coord(Int3 pos, int orientation, const MouseVector& mv) con
     return {ix, iy, iz};
 }
 
-bool Toy::top_face_selection(int sx, int sy, Int3& pos) const
+bool Toy::top_face_selection(int sx, int sy, Int3& pos, bool& gable_flag, int& gable_orientation) const
 {
+    gable_flag = false;
+    gable_orientation = 0;
+
     MouseVector mv = m_camera->new_mouse_vector(sx, sy);
     Float3 v = mv.vector();
     Int3 sel_pos = top_face_coord_at_level(-1, mv);
@@ -222,9 +225,11 @@ bool Toy::top_face_selection(int sx, int sy, Int3& pos) const
 
             if (e->contains(new_pos.v1, new_pos.v2, new_pos.v3)) {
                 sel_pos = new_pos;
+                gable_flag = e->gable_flag();
+                if (gable_flag) {
+                    gable_orientation = e->orientation();
+                }
             }
-
-
         }
     }
     if (sel_pos.v2 == -1) { // No top faces selected
@@ -234,6 +239,8 @@ bool Toy::top_face_selection(int sx, int sy, Int3& pos) const
     }
     // Check to see if final candidate has anything above it
     if (m_doc->location_occupied(sel_pos.v1, sel_pos.v2 + 1, sel_pos.v3)) {
+        gable_flag = false;
+        gable_orientation = 0;
         return false;
     }
     pos = sel_pos;
@@ -267,9 +274,11 @@ bool Toy::try_menu_button(int sx, int sy)
 void Toy::try_top_face(int sx, int sy)
 {
     Int3 pos;
-    if (top_face_selection(sx, sy, pos)) {
+    bool gable_flag;
+    int gable_orientation;
+    if (top_face_selection(sx, sy, pos, gable_flag, gable_orientation)) {
         pos.v2++;
-        m_choose->select_choice(pos);
+        m_choose->select_choice(pos, gable_flag, gable_orientation);
         Int3 p;
         int w;
         int o;

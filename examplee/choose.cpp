@@ -6,12 +6,16 @@
 #include "math.h"
 #include "cylinder_shape.h"
 
+#define GABLE_ANGLE 33.69006753
+
 Choose::Choose(float dimx, float dimy, float dimz, const PaintCan& marker_color)
     : m_dimx(dimx)
     , m_dimy(dimy)
     , m_dimz(dimz)
     , m_color(marker_color)
     , m_first_selected(false)
+    , m_first_gable_flag(false)
+    , m_first_gable_orientation(0)
     , m_second_selected(false)
     , m_first_choice({0, 0, 0})
     , m_second_choice({0, 0, 0})
@@ -27,16 +31,20 @@ void Choose::select_no_choice()
     m_first_selected = false;
     m_second_selected = false;
     m_first_choice = {0, 0, 0};
+    m_first_gable_flag = false;
+    m_first_gable_orientation = 0;
     m_second_choice = {0, 0, 0};
 }
 
-void Choose::select_choice(Int3 c)
+void Choose::select_choice(Int3 c, bool gable_flag, int gable_orientation)
 {
     if (m_first_selected && !m_second_selected) {
         m_second_selected = true;
         m_second_choice = c;
     } else {
         m_first_selected = true;
+        m_first_gable_flag = gable_flag;
+        m_first_gable_orientation = gable_orientation;
         m_second_selected = false;
         m_first_choice = c;
         m_second_choice = {0, 0, 0};
@@ -85,7 +93,20 @@ const float* Choose::data()
         float y = m_dimy * (float) m_first_choice.v2;
         float z = m_dimz * (float) m_first_choice.v3;
         y -= (m_dimy / 2.0 - m_dimy / 16.0);
-        m_animation.translate(x, y, z);
+        if (m_first_gable_flag) {
+            m_animation.translate(x, y - m_dimy / 2.0, z);
+            if (m_first_gable_orientation == 3) {
+                m_animation.rotate_ax(-GABLE_ANGLE);
+            } else if (m_first_gable_orientation == 2) {
+                m_animation.rotate_az(-GABLE_ANGLE);
+            } else if (m_first_gable_orientation == 1) {
+                m_animation.rotate_ax(GABLE_ANGLE);
+            } else {
+                m_animation.rotate_az(GABLE_ANGLE);
+            }
+        } else {
+            m_animation.translate(x, y, z);
+        }
     } else {
         m_animation.translate(0.0, 0.0, 0.0);
     }
