@@ -37,7 +37,7 @@
 class Element
 {
 public:
-    Element(Int3 pos, int width, int height, int orientation, bool corner_flag = false, bool gable_flag = false);
+    Element(Int3 pos, int width, int height, int orientation);
     Element() = delete;
     virtual ~Element();
     void remove();
@@ -48,21 +48,19 @@ public:
     int width() const;
     int height() const;
     int orientation() const;
-    bool corner_flag() const;
-    bool gable_flag() const;
     bool contains(int x, int y, int z) const;
     void update_integer_bounding_box(IntegerBoundingBox& bb);
 
     virtual void save_to_file(FILE* ffo) const = 0;
     virtual const CadModel* model() const;
+    virtual bool corner_flag() const;
+    virtual bool gable_flag() const;
 protected:
     bool m_removed;
     Int3 m_pos;
     int m_width;
     int m_height;
     int m_orientation;
-    bool m_corner_flag;
-    bool m_gable_flag;
 private:
     CadModel m_model;
     static CadModel m_half_brick_model;
@@ -79,6 +77,7 @@ public:
     GableBrickElement() = delete;
     void save_to_file(FILE* ffo) const override;
     const CadModel* model() const override;
+    bool gable_flag() const override;
 protected:
 private:
     CadModel m_model;
@@ -196,6 +195,7 @@ public:
     CornerWindowElement() = delete;
     void save_to_file(FILE* ffo) const override;
     const CadModel* model() const override;
+    bool corner_flag() const override;
 protected:
 private:
     CadModel m_model;

@@ -12,14 +12,12 @@
 #include "roof_shape.h"
 #include <algorithm>
 
-Element::Element(Int3 pos, int width, int height, int orientation, bool corner_flag, bool gable_flag)
+Element::Element(Int3 pos, int width, int height, int orientation)
     : m_removed(false)
     , m_pos(pos)
     , m_width(width)
     , m_height(height)
     , m_orientation(orientation)
-    , m_corner_flag(corner_flag)
-    , m_gable_flag(gable_flag)
     , m_model()
 {
     if (m_width > 2 || m_height > 1) {
@@ -89,12 +87,12 @@ int Element::orientation() const
 
 bool Element::corner_flag() const
 {
-    return m_corner_flag;
+    return false;
 }
 
 bool Element::gable_flag() const
 {
-    return m_gable_flag;
+    return false;
 }
 
 const CadModel* Element::model() const
@@ -119,7 +117,7 @@ bool Element::contains(int x, int y, int z) const
     if (partial_contains(m_pos, m_width, m_height, m_orientation, x, y, z)) {
         return true;
     }
-    if (m_corner_flag) {
+    if (corner_flag()) {
         int t_orientation;
         Int3 t_pos;
         if (m_orientation == 3) {
@@ -173,7 +171,7 @@ void Element::update_integer_bounding_box(IntegerBoundingBox& bb)
         bb.vmin.v3 = std::min(bb.vmin.v3, pos.v3);
         bb.vmax.v1 = std::max(bb.vmax.v1, pos.v1);
         bb.vmax.v3 = std::max(bb.vmax.v3, pos.v3);
-        if (m_corner_flag) {
+        if (corner_flag()) {
             int t_orientation;
             if (m_orientation == 3) {
                 t_orientation = 0;
@@ -232,7 +230,7 @@ bool Element::partial_contains(Int3 pos, int width, int height, int orientation,
 //***  GableBrickElement ***
 
 GableBrickElement::GableBrickElement(Int3 pos, int orientation)
-    : Element(pos, 1, 1, orientation, false, true)
+    : Element(pos, 1, 1, orientation)
     , m_model()
 {
     m_model.add(GableBrickShape(DIMX, DIMY, DIMZ, DIMB), BRICK_PAINT, 0.0);
@@ -254,6 +252,11 @@ void GableBrickElement::save_to_file(FILE* ffo) const
 const CadModel* GableBrickElement::model() const
 {
     return &m_model;
+}
+
+bool GableBrickElement::gable_flag() const
+{
+    return true;
 }
 
 //***  HalfBrickElement ***
@@ -482,7 +485,7 @@ const CadModel* WindowElement::model() const
 //***  CornerWindowElement ***
 
 CornerWindowElement::CornerWindowElement(Int3 pos, int orientation)
-    : Element(pos, 5, 4, orientation, true)
+    : Element(pos, 5, 4, orientation)
     , m_model()
 {
     m_model.add(CornerWindowModel(DIMX * (float) m_width, DIMY * (float) m_height, DIMZ, DIMB, 7, 3, 0.0), 0.0, 0.0, 0.0);
@@ -504,6 +507,11 @@ void CornerWindowElement::save_to_file(FILE* ffo) const
 const CadModel* CornerWindowElement::model() const
 {
     return &m_model;
+}
+
+bool CornerWindowElement::corner_flag() const
+{
+    return true;
 }
 
 //***  FrontDoorElement ***

@@ -369,7 +369,6 @@ void Toy::try_delete_top_face(int sx, int sy)
         if (pos.v2 >= 0) {
             int ix;
             if (m_doc->find_element(ix, pos.v1, pos.v2, pos.v3)) {
-                printf("    item %d\n", ix);
                 m_history->do_command(new RemoveElementCommand(ix, m_doc));
             }
         }
