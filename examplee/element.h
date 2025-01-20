@@ -55,6 +55,7 @@ public:
     virtual const CadModel* model() const;
     virtual bool corner_flag() const;
     virtual bool gable_flag() const;
+    virtual bool roof_flag() const;
 protected:
     bool m_removed;
     Int3 m_pos;
@@ -161,6 +162,7 @@ public:
     RoofElement() = delete;
     void save_to_file(FILE* ffo) const override;
     const CadModel* model() const override;
+    bool roof_flag() const override;
 protected:
     CadModel m_model;
 };

@@ -201,6 +201,11 @@ Int3 Toy::gable_face_coord(Int3 pos, int orientation, const MouseVector& mv) con
     return {ix, iy, iz};
 }
 
+Int3 Toy::roof_face_coord(Int3 pos, int orientation, const MouseVector& mv) const
+{
+    return {0,0,0};
+}
+
 bool Toy::top_face_selection(int sx, int sy, Int3& pos, bool& gable_flag, int& gable_orientation) const
 {
     gable_flag = false;
@@ -214,8 +219,9 @@ bool Toy::top_face_selection(int sx, int sy, Int3& pos, bool& gable_flag, int& g
         int y = e->pos().v2 + e->height() - 1;
         if (y > sel_pos.v2) {
             Int3 new_pos;
-
-            if (e->gable_flag()) {
+            if (e->roof_flag()) {
+                new_pos = roof_face_coord(e->pos(), e->orientation(), mv);
+            } else if (e->gable_flag()) {
                 new_pos = gable_face_coord(e->pos(), e->orientation(), mv);
                 // Could be at a different y
             } else {

@@ -95,6 +95,11 @@ bool Element::gable_flag() const
     return false;
 }
 
+bool Element::roof_flag() const
+{
+    return false;
+}
+
 const CadModel* Element::model() const
 {
     if (m_width == 1 && m_height == 1) {
@@ -414,6 +419,11 @@ void RoofElement::save_to_file(FILE* ffo) const
 const CadModel* RoofElement::model() const
 {
     return &m_model;
+}
+
+bool RoofElement::roof_flag() const
+{
+    return true;
 }
 
 //***  FlatRoofElement ***
