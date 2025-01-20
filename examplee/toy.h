@@ -43,6 +43,7 @@ private:
     bool try_hide_button(int sx, int sy);
     bool try_menu_button(int sx, int sy);
     void try_top_face(int sx, int sy);
+    void try_delete_top_face(int sx, int sy);
     void adjust_table_size();
     Float3 rotate_ax(Float3 p, float angle) const;
     Float3 rotate_ay(Float3 p, float angle) const;

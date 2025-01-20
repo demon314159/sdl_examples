@@ -494,3 +494,15 @@ IntegerBoundingBox Document::integer_bounding_box() const
     return bb;
 }
 
+bool Document::find_element(int& ix, int x, int y, int z) const
+{
+    for (int i = 0; i < m_elements; i++) {
+        const Element* e = element(i);
+        if (e->contains(x, y, z)) {
+            ix = i;
+            return true;
+        }
+    }
+    return false;
+}
+

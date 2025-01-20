@@ -46,6 +46,7 @@ public:
     const VertexImage* building() const;
     int building_index(int ix) const;
     bool location_occupied(int x, int y, int z) const;
+    bool find_element(int& ix, int x, int y, int z) const;
     bool element_occupied(const Element* e) const;
     IntegerBoundingBox integer_bounding_box() const;
 

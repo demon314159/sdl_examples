@@ -360,6 +360,22 @@ void Toy::try_top_face(int sx, int sy)
     }
 }
 
+void Toy::try_delete_top_face(int sx, int sy)
+{
+    Int3 pos;
+    bool gable_flag;
+    int gable_orientation;
+    if (top_face_selection(sx, sy, pos, gable_flag, gable_orientation)) {
+        if (pos.v2 >= 0) {
+            int ix;
+            if (m_doc->find_element(ix, pos.v1, pos.v2, pos.v3)) {
+                printf("    item %d\n", ix);
+                m_history->do_command(new RemoveElementCommand(ix, m_doc));
+            }
+        }
+    }
+}
+
 bool Toy::mouse(SDL_Event* e, bool on)
 {
     bool ret_val = AnimatedToy::mouse(e, on);
@@ -381,6 +397,7 @@ bool Toy::mouse(SDL_Event* e, bool on)
         }
     } else if (e->button.button == SDL_BUTTON_RIGHT) {
         if (on) {
+            try_delete_top_face(e->button.x, e->button.y);
         } else {
         }
     }
