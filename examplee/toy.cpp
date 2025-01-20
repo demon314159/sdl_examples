@@ -343,10 +343,14 @@ void Toy::try_top_face(int sx, int sy)
                         item = new BrickElement(p, o);
                         break;
                 }
-                if (!m_doc->element_occupied(item)) {
+                if (m_menu->material() == MATERIAL_ROOF) {
                     m_history->do_command(new AddElementCommand(item, m_doc));
                 } else {
-                    delete item;
+                    if (!m_doc->element_occupied(item)) {
+                        m_history->do_command(new AddElementCommand(item, m_doc));
+                    } else {
+                        delete item;
+                    }
                 }
             }
             m_choose->select_no_choice();
