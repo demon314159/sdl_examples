@@ -163,7 +163,6 @@ Int3 Toy::top_face_coord_at_level(int iy, const MouseVector& mv) const
 //
 Int3 Toy::gable_face_coord(Int3 pos, int orientation, const MouseVector& mv) const
 {
-    Float3 mvv = mv.vector();
     float cx = DIMX * (float) pos.v1;
     float cy = DIMY * (float) pos.v2;
     float cz = DIMZ * (float) pos.v3;
@@ -172,7 +171,7 @@ Int3 Toy::gable_face_coord(Int3 pos, int orientation, const MouseVector& mv) con
     tmv.translate({-cx, -cy, -cz});
     Float2 sel_pos;
     Float3 new_pos;
-    if (orientation == 3) {        // Rotate frame about ax +33.69
+    if (orientation == 3) {        // Rotate frame about ax +33.69 degrees
         tmv.rotate_ax(GABLE_ANGLE);
         sel_pos = tmv.position_at_y(0.0);
         new_pos = {sel_pos.v1, 0.0, sel_pos.v2};
@@ -201,9 +200,54 @@ Int3 Toy::gable_face_coord(Int3 pos, int orientation, const MouseVector& mv) con
     return {ix, iy, iz};
 }
 
+bool Toy::in_rectangle(const Float2& p, const Float2& lower_left, const Float2& upper_right) const
+{
+    if (p.v1 < lower_left.v1)
+        return false;
+    if (p.v1 > upper_right.v1)
+        return false;
+    if (p.v2 < lower_left.v2)
+        return false;
+    if (p.v2 > upper_right.v2)
+        return false;
+    return true;
+}
+
 Int3 Toy::roof_face_coord(Int3 pos, int orientation, const MouseVector& mv) const
 {
-    return {0,0,0};
+    float cx = DIMX * (float) pos.v1;
+    float cy = DIMY * (float) pos.v2;
+    float cz = DIMZ * (float) pos.v3;
+    MouseVector tmv = mv;
+    // Translate gable face to XZ plane at 0,0,0
+    tmv.translate({-cx, -cy + DIMY / 2.0f, -cz});
+    Float2 sel_pos;
+    if (orientation == 3) {        //  Rotate frame about az -33.69 degrees
+        tmv.rotate_az(-GABLE_ANGLE);
+        sel_pos = tmv.position_at_y(0.0);
+        if (in_rectangle(sel_pos, {-0.9f * DIMX, -0.75f * DIMX}, {0.6f * DIMX, 0.75f * DIMX})) {
+            return pos;
+        }
+    } else if (orientation == 2) { //  Rotate frame about ax +33.69 degrees
+        tmv.rotate_ax(GABLE_ANGLE);
+        sel_pos = tmv.position_at_y(0.0);
+        if (in_rectangle(sel_pos, {-0.75f * DIMX, -0.9f * DIMX}, {0.75f * DIMX, 0.6f * DIMX})) {
+            return pos;
+        }
+    } else if (orientation == 1) { // Rotate frame about az +33.69 degrees
+        tmv.rotate_az(GABLE_ANGLE);
+        sel_pos = tmv.position_at_y(0.0);
+        if (in_rectangle(sel_pos, {-0.6f * DIMX, -0.75f * DIMX}, {0.9f * DIMX, 0.759f * DIMX})) {
+            return pos;
+        }
+    } else {                       // Rotate frame about ax -33.69 degrees
+        tmv.rotate_ax(-GABLE_ANGLE);
+        sel_pos = tmv.position_at_y(0.0);
+        if (in_rectangle(sel_pos, {-0.75f * DIMX, -0.6f * DIMX}, {0.75f * DIMX, 0.9f * DIMX})) {
+            return pos;
+        }
+    }
+    return {0, -2, 0};
 }
 
 bool Toy::top_face_selection(int sx, int sy, Int3& pos, bool& gable_flag, int& gable_orientation) const
@@ -240,8 +284,15 @@ bool Toy::top_face_selection(int sx, int sy, Int3& pos, bool& gable_flag, int& g
     }
     if (sel_pos.v2 == -1) { // No top faces selected
         if (!m_table->contains(sel_pos.v1, sel_pos.v3)) {
+            gable_flag = false;
+            gable_orientation = 0;
             return false;
         }
+    }
+    if (any_face_of_any_element_selected(mv)) {
+        gable_flag = false;
+        gable_orientation = 0;
+        return false;
     }
     // Check to see if final candidate has anything above it
     if (m_doc->location_occupied(sel_pos.v1, sel_pos.v2 + 1, sel_pos.v3)) {
@@ -450,4 +501,9 @@ Float3 Toy::translate(Float3 p, float dx, float dy, float dz) const
     p1.v2 = p.v2 + dy;
     p1.v3 = p.v3 + dz;
     return p1;
+}
+
+bool Toy::any_face_of_any_element_selected(const MouseVector& mv) const
+{
+    return false;
 }

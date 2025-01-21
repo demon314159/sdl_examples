@@ -50,6 +50,8 @@ private:
     Float3 rotate_ay(Float3 p, float angle) const;
     Float3 rotate_az(Float3 p, float angle) const;
     Float3 translate(Float3 p, float dx, float dy, float dz) const;
+    bool any_face_of_any_element_selected(const MouseVector& mv) const;
+    bool in_rectangle(const Float2& p, const Float2& lower_left, const Float2& upper_right) const;
 };
 
 #endif // _TOY_H_
