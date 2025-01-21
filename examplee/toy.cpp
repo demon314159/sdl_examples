@@ -289,11 +289,6 @@ bool Toy::top_face_selection(int sx, int sy, Int3& pos, bool& gable_flag, int& g
             return false;
         }
     }
-    if (any_face_of_any_element_selected(mv)) {
-        gable_flag = false;
-        gable_orientation = 0;
-        return false;
-    }
     // Check to see if final candidate has anything above it
     if (m_doc->location_occupied(sel_pos.v1, sel_pos.v2 + 1, sel_pos.v3)) {
         gable_flag = false;
@@ -503,7 +498,3 @@ Float3 Toy::translate(Float3 p, float dx, float dy, float dz) const
     return p1;
 }
 
-bool Toy::any_face_of_any_element_selected(const MouseVector& mv) const
-{
-    return false;
-}
