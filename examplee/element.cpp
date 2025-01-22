@@ -231,10 +231,15 @@ bool Element::partial_contains(Int3 pos, int width, int height, int orientation,
         return in_range(x, pos.v1, pos.v1 + width - 1) && in_range(y, pos.v2, pos.v2 + height - 1) && pos.v3 == z;
     }
 }
+int Element::faces() const
+{
+    return 6;
+}
 
-Face Element::face(int ix) const
+Face Element::face(int ix, bool* top_face) const
 {
     Face f;
+    bool tf_flag;
     Face bf; // bottom_face
     Face tf; // top_face
     if (m_orientation == 3) {
@@ -277,36 +282,46 @@ Face Element::face(int ix) const
     switch (ix) {
         case BOTTOM_FACE:
             f = bf;
+            tf_flag = false;
             break;
         case TOP_FACE:
             f = tf;
+            tf_flag = true;
             break;
         case LEFT_FACE:
             f.v1 = bf.v1;
             f.v2 = bf.v2;
             f.v3 = tf.v2;
             f.v4 = tf.v1;
+            tf_flag = false;
             break;
         case RIGHT_FACE:
             f.v1 = bf.v4;
             f.v2 = bf.v3;
             f.v3 = tf.v3;
             f.v4 = tf.v4;
+            tf_flag = false;
             break;
         case FRONT_FACE:
             f.v1 = bf.v2;
             f.v2 = bf.v3;
             f.v3 = tf.v3;
             f.v4 = tf.v2;
+            tf_flag = false;
             break;
         case BACK_FACE:
             f.v1 = bf.v1;
             f.v2 = bf.v4;
             f.v3 = tf.v4;
             f.v4 = tf.v1;
+            tf_flag = false;
             break;
         default:
             f = tf;
+            tf_flag = true;
+    }
+    if (top_face != NULL) {
+        *top_face = tf_flag;
     }
     return f;
 }
