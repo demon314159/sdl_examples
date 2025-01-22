@@ -11,6 +11,7 @@
 #include <stdio.h>
 
 #define HIDE_TIME 0.25
+#define THRESHOLD 0.00001
 
 Toy::Toy()
     : m_table(NULL)
@@ -530,7 +531,11 @@ void Toy::try_delete_top_face(int sx, int sy)
         for (int j = 0; j < e->faces(); j++) {
             float depth;
             bool top_face;
-            if (face_intersection(mv, e->face(j, &top_face), depth)) {
+
+
+//            if (face_intersection(mv, e->face(j, &top_face), depth)) {
+            if (mouse_vector_intersects_face(mv, e->face(j, &top_face), depth)) {
+
                 if (depth < min_depth) {
                     min_depth = depth;
                     min_element = i;
@@ -586,11 +591,100 @@ bool Toy::face_intersection(const MouseVector& mv, const Face& face, float& dept
             return true;
         }
     } else {
-        printf("    slanting face\n");
-        return false;
+        if (in_slanting_face(mv, face, depth)) {
+            printf("    Hit slanting face at depth = %.3f\n", depth);
+            return true;
+        }
     }
     return false;
 }
+
+//
+// The following is a better version of the above and should replace it
+//
+bool Toy::mouse_vector_intersects_face(const MouseVector& mv, const Face& f, float& depth) const
+{
+    Float3 vec = mv.vector();
+    Float3 org = mv.origin();
+    Float3 plane = normal(f);
+
+    double denom = plane.v1 * vec.v1 + plane.v2 * vec.v2 + plane.v3 * vec.v3;
+    if (fabs(denom) < THRESHOLD) {
+        return false;
+    }
+    double num_a = plane.v1 * f.v1.v1 + plane.v2 * f.v1.v2 + plane.v3 * f.v1.v3;
+    double num_b = plane.v1 * org.v1 + plane.v2 * org.v2 + plane.v3 * org.v3;
+
+    double t = (num_a - num_b) / denom;
+    Float3 ip;
+    ip.v1 = org.v1 + t * vec.v1;
+    ip.v2 = org.v2 + t * vec.v2;
+    ip.v3 = org.v3 + t * vec.v3;
+
+    if (in_face(ip, f)) {
+        depth = (float) t;
+        return true;
+    }
+    return false;
+}
+
+Float3 Toy::normal(const Face& f) const
+{
+    Float3 p1, p2, p3;
+    p1 = f.v1;
+    p2 = f.v2;
+    p3 = f.v3;
+    Float3 va, vb;
+    va.v1 = p2.v1 - p1.v1;
+    va.v2 = p2.v2 - p1.v2;
+    va.v3 = p2.v3 - p1.v3;
+    vb.v1 = p3.v1 - p1.v1;
+    vb.v2 = p3.v2 - p1.v2;
+    vb.v3 = p3.v3 - p1.v3;
+    Float3 xp;
+    xp.v1 = va.v2 * vb.v3 - vb.v2 * va.v3;
+    xp.v2 = vb.v1 * va.v3 - va.v1 * vb.v3;
+    xp.v3 = va.v1 * vb.v2 - vb.v1 * va.v2;
+    return xp;
+}
+
+bool Toy::in_face(const Float3& p, const Face& f) const
+{
+    double area1 = quad_area(f.v1, f.v2, f.v3, f.v4);
+    double area2 = tri_area(f.v1, f.v2, p) + tri_area(f.v2, f.v3, p) + tri_area(f.v3, f.v4, p) + tri_area(f.v4, f.v1, p);
+    return area2 <= (1.01 * area1);
+}
+
+double Toy::length(const Float3& v1, const Float3& v2) const
+{
+    double a = v1.v1 - v2.v1;
+    double b = v1.v2 - v2.v2;
+    double c = v1.v3 - v2.v3;
+    return sqrt(a * a + b * b + c * c);
+}
+
+double Toy::tri_area(const Float3& v1, const Float3& v2, const Float3& v3) const
+{
+    double a = length(v1, v2);
+    double b = length(v2, v3);
+    double c = length(v3, v1);
+    double s = (a + b + c) / 2.0;
+    return sqrt(fabs(s * (s - a) * (s - b) * (s - c)));
+}
+
+double Toy::quad_area(const Float3& v1, const Float3& v2, const Float3& v3, const Float3& v4) const
+{
+    double a = length(v1, v2);
+    double b = length(v2, v3);
+    double c = length(v3, v4);
+    double d = length(v4, v1);
+    double p = length(v1, v3);
+    double q = length(v2, v4);
+    double k = b * b + d * d - a * a - c * c;
+    return sqrt(fabs(4.0 * p * p * q * q - k * k)) / 4.0;
+}
+
+// Following may be junk in awhile
 
 double Toy::length(Float2 v1, Float2 v2) const
 {
@@ -627,4 +721,8 @@ bool Toy::in_rectangle(const Float2& p, const Float2& v1, const Float2& v2, cons
     return area2 <= (1.01 * area1);
 }
 
+bool Toy::in_slanting_face(const MouseVector& mv, const Face& face, float& depth) const
+{
+    return false;
+}
 
