@@ -64,6 +64,7 @@ protected:
     int m_width;
     int m_height;
     int m_orientation;
+    Face general_face(Int3 pos, int width, int height, int orientation, int ix, bool* top_face) const;
 private:
     CadModel m_model;
     static CadModel m_half_brick_model;
@@ -200,6 +201,8 @@ public:
     void save_to_file(FILE* ffo) const override;
     const CadModel* model() const override;
     bool corner_flag() const override;
+    int faces() const override;
+    Face face(int ix, bool* top_face = NULL) const override;
 protected:
 private:
     CadModel m_model;

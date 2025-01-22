@@ -231,6 +231,7 @@ bool Element::partial_contains(Int3 pos, int width, int height, int orientation,
         return in_range(x, pos.v1, pos.v1 + width - 1) && in_range(y, pos.v2, pos.v2 + height - 1) && pos.v3 == z;
     }
 }
+
 int Element::faces() const
 {
     return 6;
@@ -238,46 +239,51 @@ int Element::faces() const
 
 Face Element::face(int ix, bool* top_face) const
 {
+    return general_face(m_pos, m_width, m_height, m_orientation, ix, top_face);
+}
+
+Face Element::general_face(Int3 pos, int width, int height, int orientation, int ix, bool* top_face) const
+{
     Face f;
     bool tf_flag;
     Face bf; // bottom_face
     Face tf; // top_face
-    if (m_orientation == 3) {
-        bf.v1 = {DIMX * (float) m_pos.v1 - DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f, DIMZ * (float) m_pos.v3 - DIMZ / 2.0f};
-        bf.v2 = {DIMX * (float) m_pos.v1 - DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f, DIMZ * (float) m_pos.v3 - DIMZ / 2.0f + DIMZ * (float) m_width};
-        bf.v3 = {DIMX * (float) m_pos.v1 + DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f, DIMZ * (float) m_pos.v3 - DIMZ / 2.0f + DIMZ * (float) m_width};
-        bf.v4 = {DIMX * (float) m_pos.v1 + DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f, DIMZ * (float) m_pos.v3 - DIMZ / 2.0f};
-        tf.v1 = {DIMX * (float) m_pos.v1 - DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f + DIMY * (float) m_height, DIMZ * (float) m_pos.v3 - DIMZ / 2.0f};
-        tf.v2 = {DIMX * (float) m_pos.v1 - DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f + DIMY * (float) m_height, DIMZ * (float) m_pos.v3 - DIMZ / 2.0f + DIMZ * (float) m_width};
-        tf.v3 = {DIMX * (float) m_pos.v1 + DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f + DIMY * (float) m_height, DIMZ * (float) m_pos.v3 - DIMZ / 2.0f + DIMZ * (float) m_width};
-        tf.v4 = {DIMX * (float) m_pos.v1 + DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f + DIMY * (float) m_height, DIMZ * (float) m_pos.v3 - DIMZ / 2.0f};
-    } else if (m_orientation == 2) {
-        bf.v1 = {DIMX * (float) m_pos.v1 + DIMX / 2.0f - DIMX * (float) m_width, DIMY * (float) m_pos.v2 - DIMY / 2.0f, DIMZ * (float) m_pos.v3 - DIMZ / 2.0f};
-        bf.v2 = {DIMX * (float) m_pos.v1 + DIMX / 2.0f - DIMX * (float) m_width, DIMY * (float) m_pos.v2 - DIMY / 2.0f, DIMZ * (float) m_pos.v3 + DIMZ / 2.0f};
-        bf.v3 = {DIMX * (float) m_pos.v1 + DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f, DIMZ * (float) m_pos.v3 + DIMZ / 2.0f};
-        bf.v4 = {DIMX * (float) m_pos.v1 + DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f, DIMZ * (float) m_pos.v3 - DIMZ / 2.0f};
-        tf.v1 = {DIMX * (float) m_pos.v1 + DIMX / 2.0f - DIMX * (float) m_width, DIMY * (float) m_pos.v2 - DIMY / 2.0f + DIMY * (float) m_height, DIMZ * (float) m_pos.v3 - DIMZ / 2.0f};
-        tf.v2 = {DIMX * (float) m_pos.v1 + DIMX / 2.0f - DIMX * (float) m_width, DIMY * (float) m_pos.v2 - DIMY / 2.0f + DIMY * (float) m_height, DIMZ * (float) m_pos.v3 + DIMZ / 2.0f};
-        tf.v3 = {DIMX * (float) m_pos.v1 + DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f + DIMY * (float) m_height, DIMZ * (float) m_pos.v3 + DIMZ / 2.0f};
-        tf.v4 = {DIMX * (float) m_pos.v1 + DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f + DIMY * (float) m_height, DIMZ * (float) m_pos.v3 - DIMZ / 2.0f};
-    } else if (m_orientation == 1) {
-        bf.v1 = {DIMX * (float) m_pos.v1 - DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f, DIMZ * (float) m_pos.v3 + DIMZ / 2.0f - DIMZ * (float) m_width};
-        bf.v2 = {DIMX * (float) m_pos.v1 - DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f, DIMZ * (float) m_pos.v3 + DIMZ / 2.0f};
-        bf.v3 = {DIMX * (float) m_pos.v1 + DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f, DIMZ * (float) m_pos.v3 + DIMZ / 2.0f};
-        bf.v4 = {DIMX * (float) m_pos.v1 + DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f, DIMZ * (float) m_pos.v3 + DIMZ / 2.0f - DIMZ * (float) m_width};
-        tf.v1 = {DIMX * (float) m_pos.v1 - DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f + DIMY * (float) m_height, DIMZ * (float) m_pos.v3 + DIMZ / 2.0f - DIMZ * (float) m_width};
-        tf.v2 = {DIMX * (float) m_pos.v1 - DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f + DIMY * (float) m_height, DIMZ * (float) m_pos.v3 + DIMZ / 2.0f};
-        tf.v3 = {DIMX * (float) m_pos.v1 + DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f + DIMY * (float) m_height, DIMZ * (float) m_pos.v3 + DIMZ / 2.0f};
-        tf.v4 = {DIMX * (float) m_pos.v1 + DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f + DIMY * (float) m_height, DIMZ * (float) m_pos.v3 + DIMZ / 2.0f - DIMZ * (float) m_width};
+    if (orientation == 3) {
+        bf.v1 = {DIMX * (float) pos.v1 - DIMX / 2.0f, DIMY * (float) pos.v2 - DIMY / 2.0f, DIMZ * (float) pos.v3 - DIMZ / 2.0f};
+        bf.v2 = {DIMX * (float) pos.v1 - DIMX / 2.0f, DIMY * (float) pos.v2 - DIMY / 2.0f, DIMZ * (float) pos.v3 - DIMZ / 2.0f + DIMZ * (float) width};
+        bf.v3 = {DIMX * (float) pos.v1 + DIMX / 2.0f, DIMY * (float) pos.v2 - DIMY / 2.0f, DIMZ * (float) pos.v3 - DIMZ / 2.0f + DIMZ * (float) width};
+        bf.v4 = {DIMX * (float) pos.v1 + DIMX / 2.0f, DIMY * (float) pos.v2 - DIMY / 2.0f, DIMZ * (float) pos.v3 - DIMZ / 2.0f};
+        tf.v1 = {DIMX * (float) pos.v1 - DIMX / 2.0f, DIMY * (float) pos.v2 - DIMY / 2.0f + DIMY * (float) height, DIMZ * (float) pos.v3 - DIMZ / 2.0f};
+        tf.v2 = {DIMX * (float) pos.v1 - DIMX / 2.0f, DIMY * (float) pos.v2 - DIMY / 2.0f + DIMY * (float) height, DIMZ * (float) pos.v3 - DIMZ / 2.0f + DIMZ * (float) width};
+        tf.v3 = {DIMX * (float) pos.v1 + DIMX / 2.0f, DIMY * (float) pos.v2 - DIMY / 2.0f + DIMY * (float) height, DIMZ * (float) pos.v3 - DIMZ / 2.0f + DIMZ * (float) width};
+        tf.v4 = {DIMX * (float) pos.v1 + DIMX / 2.0f, DIMY * (float) pos.v2 - DIMY / 2.0f + DIMY * (float) height, DIMZ * (float) pos.v3 - DIMZ / 2.0f};
+    } else if (orientation == 2) {
+        bf.v1 = {DIMX * (float) pos.v1 + DIMX / 2.0f - DIMX * (float) width, DIMY * (float) pos.v2 - DIMY / 2.0f, DIMZ * (float) pos.v3 - DIMZ / 2.0f};
+        bf.v2 = {DIMX * (float) pos.v1 + DIMX / 2.0f - DIMX * (float) width, DIMY * (float) pos.v2 - DIMY / 2.0f, DIMZ * (float) pos.v3 + DIMZ / 2.0f};
+        bf.v3 = {DIMX * (float) pos.v1 + DIMX / 2.0f, DIMY * (float) pos.v2 - DIMY / 2.0f, DIMZ * (float) pos.v3 + DIMZ / 2.0f};
+        bf.v4 = {DIMX * (float) pos.v1 + DIMX / 2.0f, DIMY * (float) pos.v2 - DIMY / 2.0f, DIMZ * (float) pos.v3 - DIMZ / 2.0f};
+        tf.v1 = {DIMX * (float) pos.v1 + DIMX / 2.0f - DIMX * (float) width, DIMY * (float) pos.v2 - DIMY / 2.0f + DIMY * (float) height, DIMZ * (float) pos.v3 - DIMZ / 2.0f};
+        tf.v2 = {DIMX * (float) pos.v1 + DIMX / 2.0f - DIMX * (float) width, DIMY * (float) pos.v2 - DIMY / 2.0f + DIMY * (float) height, DIMZ * (float) pos.v3 + DIMZ / 2.0f};
+        tf.v3 = {DIMX * (float) pos.v1 + DIMX / 2.0f, DIMY * (float) pos.v2 - DIMY / 2.0f + DIMY * (float) height, DIMZ * (float) pos.v3 + DIMZ / 2.0f};
+        tf.v4 = {DIMX * (float) pos.v1 + DIMX / 2.0f, DIMY * (float) pos.v2 - DIMY / 2.0f + DIMY * (float) height, DIMZ * (float) pos.v3 - DIMZ / 2.0f};
+    } else if (orientation == 1) {
+        bf.v1 = {DIMX * (float) pos.v1 - DIMX / 2.0f, DIMY * (float) pos.v2 - DIMY / 2.0f, DIMZ * (float) pos.v3 + DIMZ / 2.0f - DIMZ * (float) width};
+        bf.v2 = {DIMX * (float) pos.v1 - DIMX / 2.0f, DIMY * (float) pos.v2 - DIMY / 2.0f, DIMZ * (float) pos.v3 + DIMZ / 2.0f};
+        bf.v3 = {DIMX * (float) pos.v1 + DIMX / 2.0f, DIMY * (float) pos.v2 - DIMY / 2.0f, DIMZ * (float) pos.v3 + DIMZ / 2.0f};
+        bf.v4 = {DIMX * (float) pos.v1 + DIMX / 2.0f, DIMY * (float) pos.v2 - DIMY / 2.0f, DIMZ * (float) pos.v3 + DIMZ / 2.0f - DIMZ * (float) width};
+        tf.v1 = {DIMX * (float) pos.v1 - DIMX / 2.0f, DIMY * (float) pos.v2 - DIMY / 2.0f + DIMY * (float) height, DIMZ * (float) pos.v3 + DIMZ / 2.0f - DIMZ * (float) width};
+        tf.v2 = {DIMX * (float) pos.v1 - DIMX / 2.0f, DIMY * (float) pos.v2 - DIMY / 2.0f + DIMY * (float) height, DIMZ * (float) pos.v3 + DIMZ / 2.0f};
+        tf.v3 = {DIMX * (float) pos.v1 + DIMX / 2.0f, DIMY * (float) pos.v2 - DIMY / 2.0f + DIMY * (float) height, DIMZ * (float) pos.v3 + DIMZ / 2.0f};
+        tf.v4 = {DIMX * (float) pos.v1 + DIMX / 2.0f, DIMY * (float) pos.v2 - DIMY / 2.0f + DIMY * (float) height, DIMZ * (float) pos.v3 + DIMZ / 2.0f - DIMZ * (float) width};
     } else {
-        bf.v1 = {DIMX * (float) m_pos.v1 - DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f, DIMZ * (float) m_pos.v3 - DIMZ / 2.0f};
-        bf.v2 = {DIMX * (float) m_pos.v1 - DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f, DIMZ * (float) m_pos.v3 + DIMZ / 2.0f};
-        bf.v3 = {DIMX * (float) m_pos.v1 - DIMX / 2.0f + DIMX * (float) m_width, DIMY * (float) m_pos.v2 - DIMY / 2.0f, DIMZ * (float) m_pos.v3 + DIMZ / 2.0f};
-        bf.v4 = {DIMX * (float) m_pos.v1 - DIMX / 2.0f + DIMX * (float) m_width, DIMY * (float) m_pos.v2 - DIMY / 2.0f, DIMZ * (float) m_pos.v3 - DIMZ / 2.0f};
-        tf.v1 = {DIMX * (float) m_pos.v1 - DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f + DIMY * (float) m_height, DIMZ * (float) m_pos.v3 - DIMZ / 2.0f};
-        tf.v2 = {DIMX * (float) m_pos.v1 - DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f + DIMY * (float) m_height, DIMZ * (float) m_pos.v3 + DIMZ / 2.0f};
-        tf.v3 = {DIMX * (float) m_pos.v1 - DIMX / 2.0f + DIMX * (float) m_width, DIMY * (float) m_pos.v2 - DIMY / 2.0f + DIMY * (float) m_height, DIMZ * (float) m_pos.v3 + DIMZ / 2.0f};
-        tf.v4 = {DIMX * (float) m_pos.v1 - DIMX / 2.0f + DIMX * (float) m_width, DIMY * (float) m_pos.v2 - DIMY / 2.0f + DIMY * (float) m_height, DIMZ * (float) m_pos.v3 - DIMZ / 2.0f};
+        bf.v1 = {DIMX * (float) pos.v1 - DIMX / 2.0f, DIMY * (float) pos.v2 - DIMY / 2.0f, DIMZ * (float) pos.v3 - DIMZ / 2.0f};
+        bf.v2 = {DIMX * (float) pos.v1 - DIMX / 2.0f, DIMY * (float) pos.v2 - DIMY / 2.0f, DIMZ * (float) pos.v3 + DIMZ / 2.0f};
+        bf.v3 = {DIMX * (float) pos.v1 - DIMX / 2.0f + DIMX * (float) width, DIMY * (float) pos.v2 - DIMY / 2.0f, DIMZ * (float) pos.v3 + DIMZ / 2.0f};
+        bf.v4 = {DIMX * (float) pos.v1 - DIMX / 2.0f + DIMX * (float) width, DIMY * (float) pos.v2 - DIMY / 2.0f, DIMZ * (float) pos.v3 - DIMZ / 2.0f};
+        tf.v1 = {DIMX * (float) pos.v1 - DIMX / 2.0f, DIMY * (float) pos.v2 - DIMY / 2.0f + DIMY * (float) height, DIMZ * (float) pos.v3 - DIMZ / 2.0f};
+        tf.v2 = {DIMX * (float) pos.v1 - DIMX / 2.0f, DIMY * (float) pos.v2 - DIMY / 2.0f + DIMY * (float) height, DIMZ * (float) pos.v3 + DIMZ / 2.0f};
+        tf.v3 = {DIMX * (float) pos.v1 - DIMX / 2.0f + DIMX * (float) width, DIMY * (float) pos.v2 - DIMY / 2.0f + DIMY * (float) height, DIMZ * (float) pos.v3 + DIMZ / 2.0f};
+        tf.v4 = {DIMX * (float) pos.v1 - DIMX / 2.0f + DIMX * (float) width, DIMY * (float) pos.v2 - DIMY / 2.0f + DIMY * (float) height, DIMZ * (float) pos.v3 - DIMZ / 2.0f};
     }
     switch (ix) {
         case BOTTOM_FACE:
@@ -616,6 +622,35 @@ const CadModel* CornerWindowElement::model() const
 bool CornerWindowElement::corner_flag() const
 {
     return true;
+}
+
+int CornerWindowElement::faces() const
+{
+    return 12;
+}
+
+Face CornerWindowElement::face(int ix, bool* top_face) const
+{
+    if (ix < 6) {
+        return general_face(m_pos, m_width, m_height, m_orientation, ix, top_face);
+    } else {
+        Int3 pos = m_pos;
+        int orientation;
+        if (m_orientation == 3) {
+            pos.v3 += (m_width - 1);
+            orientation = 0;
+        } else if (m_orientation == 2) {
+            pos.v1 -= (m_width - 1);
+            orientation = 3;
+        } else if (m_orientation == 1) {
+            pos.v3 -= (m_width - 1);
+            orientation = 2;
+        } else {
+            pos.v1 += (m_width - 1);
+            orientation = 1;
+        }
+        return general_face(pos, m_width, m_height, orientation, ix - 6, top_face);
+    }
 }
 
 //***  FrontDoorElement ***
