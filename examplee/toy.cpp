@@ -146,11 +146,12 @@ bool Toy::button(int code, bool shifted, bool on)
 
 Int3 Toy::top_face_coord_at_level(int iy, const MouseVector& mv) const
 {
-        float level = DIMY / 2.0 + DIMY * (float) iy;
-        Float2 sel_pos = mv.position_at_y(level);
-        int ix = round(sel_pos.v1 / DIMX);
-        int iz = round(sel_pos.v2 / DIMZ);
-        return {ix, iy, iz};
+    float depth;
+    float level = DIMY / 2.0 + DIMY * (float) iy;
+    Float2 sel_pos = mv.position_at_y(level, depth);
+    int ix = round(sel_pos.v1 / DIMX);
+    int iz = round(sel_pos.v2 / DIMZ);
+    return {ix, iy, iz};
 }
 
 //
@@ -171,24 +172,25 @@ Int3 Toy::gable_face_coord(Int3 pos, int orientation, const MouseVector& mv) con
     tmv.translate({-cx, -cy, -cz});
     Float2 sel_pos;
     Float3 new_pos;
+    float depth;
     if (orientation == 3) {        // Rotate frame about ax +33.69 degrees
         tmv.rotate_ax(GABLE_ANGLE);
-        sel_pos = tmv.position_at_y(0.0);
+        sel_pos = tmv.position_at_y(0.0, depth);
         new_pos = {sel_pos.v1, 0.0, sel_pos.v2};
         new_pos = rotate_ax(new_pos, -GABLE_ANGLE);
     } else if (orientation == 2) { // Rotate frame about az +33.69 degrees
         tmv.rotate_az(GABLE_ANGLE);
-        sel_pos = tmv.position_at_y(0.0);
+        sel_pos = tmv.position_at_y(0.0, depth);
         new_pos = {sel_pos.v1, 0.0, sel_pos.v2};
         new_pos = rotate_az(new_pos, -GABLE_ANGLE);
     } else if (orientation == 1) { // Rotate frame about ax -33.69 degrees
         tmv.rotate_ax(-GABLE_ANGLE);
-        sel_pos = tmv.position_at_y(0.0);
+        sel_pos = tmv.position_at_y(0.0, depth);
         new_pos = {sel_pos.v1, 0.0, sel_pos.v2};
         new_pos = rotate_ax(new_pos, GABLE_ANGLE);
     } else {                       // Rotate frame about az -33.69 degrees
         tmv.rotate_az(-GABLE_ANGLE);
-        sel_pos = tmv.position_at_y(0.0);
+        sel_pos = tmv.position_at_y(0.0, depth);
         new_pos = {sel_pos.v1, 0.0, sel_pos.v2};
         new_pos = rotate_az(new_pos, GABLE_ANGLE);
     }
@@ -222,27 +224,28 @@ Int3 Toy::roof_face_coord(Int3 pos, int orientation, const MouseVector& mv) cons
     // Translate gable face to XZ plane at 0,0,0
     tmv.translate({-cx, -cy + DIMY / 2.0f, -cz});
     Float2 sel_pos;
+    float depth;
     if (orientation == 3) {        //  Rotate frame about az -33.69 degrees
         tmv.rotate_az(-GABLE_ANGLE);
-        sel_pos = tmv.position_at_y(0.0);
+        sel_pos = tmv.position_at_y(0.0, depth);
         if (in_rectangle(sel_pos, {-0.9f * DIMX, -0.75f * DIMX}, {0.6f * DIMX, 0.75f * DIMX})) {
             return pos;
         }
     } else if (orientation == 2) { //  Rotate frame about ax +33.69 degrees
         tmv.rotate_ax(GABLE_ANGLE);
-        sel_pos = tmv.position_at_y(0.0);
+        sel_pos = tmv.position_at_y(0.0, depth);
         if (in_rectangle(sel_pos, {-0.75f * DIMX, -0.9f * DIMX}, {0.75f * DIMX, 0.6f * DIMX})) {
             return pos;
         }
     } else if (orientation == 1) { // Rotate frame about az +33.69 degrees
         tmv.rotate_az(GABLE_ANGLE);
-        sel_pos = tmv.position_at_y(0.0);
+        sel_pos = tmv.position_at_y(0.0, depth);
         if (in_rectangle(sel_pos, {-0.6f * DIMX, -0.75f * DIMX}, {0.9f * DIMX, 0.759f * DIMX})) {
             return pos;
         }
     } else {                       // Rotate frame about ax -33.69 degrees
         tmv.rotate_ax(-GABLE_ANGLE);
-        sel_pos = tmv.position_at_y(0.0);
+        sel_pos = tmv.position_at_y(0.0, depth);
         if (in_rectangle(sel_pos, {-0.75f * DIMX, -0.6f * DIMX}, {0.75f * DIMX, 0.9f * DIMX})) {
             return pos;
         }
@@ -414,6 +417,29 @@ void Toy::try_top_face(int sx, int sy)
 
 void Toy::try_delete_top_face(int sx, int sy)
 {
+    printf("try_delete_top_face\n");
+    MouseVector mv = m_camera->new_mouse_vector(sx, sy);
+    Float3 v = mv.vector();
+    float min_depth = 100.0;
+    int min_element;
+    int min_face;
+    for (int i = 0; i < m_doc->elements(); i++) {
+        const Element* e = m_doc->element(i);
+        for (int j = 0; j < 6; j++) {
+            float depth;
+            if (face_intersection(mv, e->face(j), depth)) {
+                if (depth < min_depth) {
+                    min_depth = depth;
+                    min_element = i;
+                    min_face = j;
+                }
+            }
+        }
+    }
+    if (min_depth < 99.0) {
+        printf("    Element %d intersection on face %d\n", min_element, min_face);
+    }
+#ifdef NEVERMORE
     Int3 pos;
     bool gable_flag;
     int gable_orientation;
@@ -425,6 +451,7 @@ void Toy::try_delete_top_face(int sx, int sy)
             }
         }
     }
+#endif
 }
 
 bool Toy::mouse(SDL_Event* e, bool on)
@@ -498,3 +525,65 @@ Float3 Toy::translate(Float3 p, float dx, float dy, float dz) const
     return p1;
 }
 
+float Toy::min_x(const Face& face) const
+{
+    return fmin(fmin(face.v1.v1, face.v2.v1), fmin(face.v3.v1, face.v4.v1));
+}
+
+float Toy::min_y(const Face& face) const
+{
+    return fmin(fmin(face.v1.v2, face.v2.v2), fmin(face.v3.v2, face.v4.v2));
+}
+
+float Toy::min_z(const Face& face) const
+{
+    return fmin(fmin(face.v1.v3, face.v2.v3), fmin(face.v3.v3, face.v4.v3));
+}
+
+float Toy::max_x(const Face& face) const
+{
+    return fmax(fmax(face.v1.v1, face.v2.v1), fmax(face.v3.v1, face.v4.v1));
+}
+
+float Toy::max_y(const Face& face) const
+{
+    return fmax(fmax(face.v1.v2, face.v2.v2), fmax(face.v3.v2, face.v4.v2));
+}
+
+float Toy::max_z(const Face& face) const
+{
+    return fmax(fmax(face.v1.v3, face.v2.v3), fmax(face.v3.v3, face.v4.v3));
+}
+
+bool Toy::face_intersection(const MouseVector& mv, const Face& face, float& depth) const
+{
+    Float2 sel_pos;
+    if (face.v1.v1 == face.v2.v1 && face.v1.v1 == face.v3.v1 && face.v1.v1 == face.v4.v1) {
+        sel_pos = mv.position_at_x(face.v1.v1, depth);
+        Float2 lower_left = {min_y(face), min_z(face)};
+        Float2 upper_right = {max_y(face), max_z(face)};
+        if (in_rectangle(sel_pos, lower_left, upper_right)) {
+            printf("    Hit YZ face at pos (%.3f, %3f, %3f)  depth = %.3f\n", face.v1.v1, sel_pos.v1, sel_pos.v2, depth);
+            return true;
+        }
+    } else if (face.v1.v2 == face.v2.v2 && face.v1.v2 == face.v3.v2 && face.v1.v2 == face.v4.v2) {
+        sel_pos = mv.position_at_y(face.v1.v2, depth);
+        Float2 lower_left = {min_x(face), min_z(face)};
+        Float2 upper_right = {max_x(face), max_z(face)};
+        if (in_rectangle(sel_pos, lower_left, upper_right)) {
+            printf("    Hit XZ face at pos (%.3f, %3f, %3f)  depth = %.3f\n", sel_pos.v1, face.v1.v2, sel_pos.v2, depth);
+            return true;
+        }
+    } else if (face.v1.v3 == face.v2.v3 && face.v1.v3 == face.v3.v3 && face.v1.v3 == face.v4.v3) {
+        sel_pos = mv.position_at_z(face.v1.v3, depth);
+        Float2 lower_left = {min_x(face), min_y(face)};
+        Float2 upper_right = {max_x(face), max_y(face)};
+        if (in_rectangle(sel_pos, lower_left, upper_right)) {
+            printf("    Hit XY face at pos (%.3f, %3f, %3f)  depth = %.3f\n", sel_pos.v1, sel_pos.v2, face.v1.v3, depth);
+            return true;
+        }
+    } else {
+        printf("    slanting face\n");
+    }
+    return false;
+}

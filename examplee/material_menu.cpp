@@ -246,8 +246,9 @@ bool MaterialMenu::menu_button_pressed(const MouseVector& mv, const Float3& top_
 
 Float3 MaterialMenu::pos_at_zlevel(float z, const MouseVector& mv) const
 {
-        Float2 sel_pos = mv.position_at_z(z);
-        return {sel_pos.v1, sel_pos.v2, -1.0};
+    float depth;
+    Float2 sel_pos = mv.position_at_z(z, depth);
+    return {sel_pos.v1, sel_pos.v2, -1.0};
 }
 
 void MaterialMenu::release(void)

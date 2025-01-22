@@ -51,6 +51,13 @@ private:
     Float3 rotate_az(Float3 p, float angle) const;
     Float3 translate(Float3 p, float dx, float dy, float dz) const;
     bool in_rectangle(const Float2& p, const Float2& lower_left, const Float2& upper_right) const;
+    bool face_intersection(const MouseVector& mv, const Face& face, float& depth) const;
+    float min_x(const Face& face) const;
+    float min_y(const Face& face) const;
+    float min_z(const Face& face) const;
+    float max_x(const Face& face) const;
+    float max_y(const Face& face) const;
+    float max_z(const Face& face) const;
 };
 
 #endif // _TOY_H_

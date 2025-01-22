@@ -56,6 +56,7 @@ public:
     virtual bool corner_flag() const;
     virtual bool gable_flag() const;
     virtual bool roof_flag() const;
+    virtual Face face(int ix) const;
 protected:
     bool m_removed;
     Int3 m_pos;

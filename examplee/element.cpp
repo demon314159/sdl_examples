@@ -232,6 +232,85 @@ bool Element::partial_contains(Int3 pos, int width, int height, int orientation,
     }
 }
 
+Face Element::face(int ix) const
+{
+    Face f;
+    Face bf; // bottom_face
+    Face tf; // top_face
+    if (m_orientation == 3) {
+        bf.v1 = {DIMX * (float) m_pos.v1 - DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f, DIMZ * (float) m_pos.v3 - DIMZ / 2.0f};
+        bf.v2 = {DIMX * (float) m_pos.v1 - DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f, DIMZ * (float) m_pos.v3 - DIMZ / 2.0f + DIMZ * (float) m_width};
+        bf.v3 = {DIMX * (float) m_pos.v1 + DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f, DIMZ * (float) m_pos.v3 - DIMZ / 2.0f + DIMZ * (float) m_width};
+        bf.v4 = {DIMX * (float) m_pos.v1 + DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f, DIMZ * (float) m_pos.v3 - DIMZ / 2.0f};
+        tf.v1 = {DIMX * (float) m_pos.v1 - DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f + DIMY * (float) m_height, DIMZ * (float) m_pos.v3 - DIMZ / 2.0f};
+        tf.v2 = {DIMX * (float) m_pos.v1 - DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f + DIMY * (float) m_height, DIMZ * (float) m_pos.v3 - DIMZ / 2.0f + DIMZ * (float) m_width};
+        tf.v3 = {DIMX * (float) m_pos.v1 + DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f + DIMY * (float) m_height, DIMZ * (float) m_pos.v3 - DIMZ / 2.0f + DIMZ * (float) m_width};
+        tf.v4 = {DIMX * (float) m_pos.v1 + DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f + DIMY * (float) m_height, DIMZ * (float) m_pos.v3 - DIMZ / 2.0f};
+    } else if (m_orientation == 2) {
+        bf.v1 = {DIMX * (float) m_pos.v1 + DIMX / 2.0f - DIMX * (float) m_width, DIMY * (float) m_pos.v2 - DIMY / 2.0f, DIMZ * (float) m_pos.v3 - DIMZ / 2.0f};
+        bf.v2 = {DIMX * (float) m_pos.v1 + DIMX / 2.0f - DIMX * (float) m_width, DIMY * (float) m_pos.v2 - DIMY / 2.0f, DIMZ * (float) m_pos.v3 + DIMZ / 2.0f};
+        bf.v3 = {DIMX * (float) m_pos.v1 + DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f, DIMZ * (float) m_pos.v3 + DIMZ / 2.0f};
+        bf.v4 = {DIMX * (float) m_pos.v1 + DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f, DIMZ * (float) m_pos.v3 - DIMZ / 2.0f};
+        tf.v1 = {DIMX * (float) m_pos.v1 + DIMX / 2.0f - DIMX * (float) m_width, DIMY * (float) m_pos.v2 - DIMY / 2.0f + DIMY * (float) m_height, DIMZ * (float) m_pos.v3 - DIMZ / 2.0f};
+        tf.v2 = {DIMX * (float) m_pos.v1 + DIMX / 2.0f - DIMX * (float) m_width, DIMY * (float) m_pos.v2 - DIMY / 2.0f + DIMY * (float) m_height, DIMZ * (float) m_pos.v3 + DIMZ / 2.0f};
+        tf.v3 = {DIMX * (float) m_pos.v1 + DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f + DIMY * (float) m_height, DIMZ * (float) m_pos.v3 + DIMZ / 2.0f};
+        tf.v4 = {DIMX * (float) m_pos.v1 + DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f + DIMY * (float) m_height, DIMZ * (float) m_pos.v3 - DIMZ / 2.0f};
+    } else if (m_orientation == 1) {
+        bf.v1 = {DIMX * (float) m_pos.v1 - DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f, DIMZ * (float) m_pos.v3 + DIMZ / 2.0f - DIMZ * (float) m_width};
+        bf.v2 = {DIMX * (float) m_pos.v1 - DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f, DIMZ * (float) m_pos.v3 + DIMZ / 2.0f};
+        bf.v3 = {DIMX * (float) m_pos.v1 + DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f, DIMZ * (float) m_pos.v3 + DIMZ / 2.0f};
+        bf.v4 = {DIMX * (float) m_pos.v1 + DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f, DIMZ * (float) m_pos.v3 + DIMZ / 2.0f - DIMZ * (float) m_width};
+        tf.v1 = {DIMX * (float) m_pos.v1 - DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f + DIMY * (float) m_height, DIMZ * (float) m_pos.v3 + DIMZ / 2.0f - DIMZ * (float) m_width};
+        tf.v2 = {DIMX * (float) m_pos.v1 - DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f + DIMY * (float) m_height, DIMZ * (float) m_pos.v3 + DIMZ / 2.0f};
+        tf.v3 = {DIMX * (float) m_pos.v1 + DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f + DIMY * (float) m_height, DIMZ * (float) m_pos.v3 + DIMZ / 2.0f};
+        tf.v4 = {DIMX * (float) m_pos.v1 + DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f + DIMY * (float) m_height, DIMZ * (float) m_pos.v3 + DIMZ / 2.0f - DIMZ * (float) m_width};
+    } else {
+        bf.v1 = {DIMX * (float) m_pos.v1 - DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f, DIMZ * (float) m_pos.v3 - DIMZ / 2.0f};
+        bf.v2 = {DIMX * (float) m_pos.v1 - DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f, DIMZ * (float) m_pos.v3 + DIMZ / 2.0f};
+        bf.v3 = {DIMX * (float) m_pos.v1 - DIMX / 2.0f + DIMX * (float) m_width, DIMY * (float) m_pos.v2 - DIMY / 2.0f, DIMZ * (float) m_pos.v3 + DIMZ / 2.0f};
+        bf.v4 = {DIMX * (float) m_pos.v1 - DIMX / 2.0f + DIMX * (float) m_width, DIMY * (float) m_pos.v2 - DIMY / 2.0f, DIMZ * (float) m_pos.v3 - DIMZ / 2.0f};
+        tf.v1 = {DIMX * (float) m_pos.v1 - DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f + DIMY * (float) m_height, DIMZ * (float) m_pos.v3 - DIMZ / 2.0f};
+        tf.v2 = {DIMX * (float) m_pos.v1 - DIMX / 2.0f, DIMY * (float) m_pos.v2 - DIMY / 2.0f + DIMY * (float) m_height, DIMZ * (float) m_pos.v3 + DIMZ / 2.0f};
+        tf.v3 = {DIMX * (float) m_pos.v1 - DIMX / 2.0f + DIMX * (float) m_width, DIMY * (float) m_pos.v2 - DIMY / 2.0f + DIMY * (float) m_height, DIMZ * (float) m_pos.v3 + DIMZ / 2.0f};
+        tf.v4 = {DIMX * (float) m_pos.v1 - DIMX / 2.0f + DIMX * (float) m_width, DIMY * (float) m_pos.v2 - DIMY / 2.0f + DIMY * (float) m_height, DIMZ * (float) m_pos.v3 - DIMZ / 2.0f};
+    }
+    switch (ix) {
+        case BOTTOM_FACE:
+            f = bf;
+            break;
+        case TOP_FACE:
+            f = tf;
+            break;
+        case LEFT_FACE:
+            f.v1 = bf.v1;
+            f.v2 = bf.v2;
+            f.v3 = tf.v2;
+            f.v4 = tf.v1;
+            break;
+        case RIGHT_FACE:
+            f.v1 = bf.v4;
+            f.v2 = bf.v3;
+            f.v3 = tf.v3;
+            f.v4 = tf.v4;
+            break;
+        case FRONT_FACE:
+            f.v1 = bf.v2;
+            f.v2 = bf.v3;
+            f.v3 = tf.v3;
+            f.v4 = tf.v2;
+            break;
+        case BACK_FACE:
+            f.v1 = bf.v1;
+            f.v2 = bf.v4;
+            f.v3 = tf.v4;
+            f.v4 = tf.v1;
+            break;
+        default:
+            f = tf;
+    }
+    return f;
+}
+
 //***  GableBrickElement ***
 
 GableBrickElement::GableBrickElement(Int3 pos, int orientation)
