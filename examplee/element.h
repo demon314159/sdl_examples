@@ -64,6 +64,8 @@ protected:
     int m_width;
     int m_height;
     int m_orientation;
+    Face general_top_face(Int3 pos, int width, int height, int orientation) const;
+    Face general_bottom_face(Int3 pos, int width, int height, int orientation) const;
     Face general_face(Int3 pos, int width, int height, int orientation, int ix, bool* top_face) const;
 private:
     CadModel m_model;
@@ -82,6 +84,8 @@ public:
     void save_to_file(FILE* ffo) const override;
     const CadModel* model() const override;
     bool gable_flag() const override;
+    int faces() const;
+    Face face(int ix, bool* top_face = NULL) const;
 protected:
 private:
     CadModel m_model;

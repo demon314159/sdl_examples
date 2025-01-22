@@ -58,6 +58,10 @@ private:
     float max_x(const Face& face) const;
     float max_y(const Face& face) const;
     float max_z(const Face& face) const;
+    bool same(const Float2& a, const Float2& b) const;
+    double length(Float2 v1, Float2 v2) const;
+    double triangle_area(Float2 v1, Float2 v2, Float2 v3) const;
+    bool in_triangle(Float2 p, Float2 v1, Float2 v2, Float2 v3) const;
 };
 
 #endif // _TOY_H_
