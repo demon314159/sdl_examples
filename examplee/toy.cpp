@@ -565,50 +565,29 @@ bool Toy::same(const Float2& a, const Float2& b) const
 
 bool Toy::face_intersection(const MouseVector& mv, const Face& face, float& depth) const
 {
+
     Float2 sel_pos;
-    Float2 lower_left;
-    Float2 lower_right;
-    Float2 upper_left;
-    Float2 upper_right;
     if (face.v1.v1 == face.v2.v1 && face.v1.v1 == face.v3.v1 && face.v1.v1 == face.v4.v1) {
         sel_pos = mv.position_at_x(face.v1.v1, depth);
-        lower_left = {min_y(face), min_z(face)};
-        lower_right = {min_y(face), max_z(face)};
-        upper_left = {max_y(face), min_z(face)};
-        upper_right = {max_y(face), max_z(face)};
+        if (in_rectangle(sel_pos, {face.v1.v2, face.v1.v3}, {face.v2.v2, face.v2.v3}, {face.v3.v2, face.v3.v3}, {face.v4.v2, face.v4.v3})) {
+            printf("    Hit YZ face at pos (%.3f, %3f, %3f)  depth = %.3f\n", face.v1.v1, sel_pos.v1, sel_pos.v2, depth);
+            return true;
+        }
     } else if (face.v1.v2 == face.v2.v2 && face.v1.v2 == face.v3.v2 && face.v1.v2 == face.v4.v2) {
         sel_pos = mv.position_at_y(face.v1.v2, depth);
-        lower_left = {min_x(face), min_z(face)};
-        lower_right = {min_x(face), max_z(face)};
-        upper_left = {max_x(face), min_z(face)};
-        upper_right = {max_x(face), max_z(face)};
+        if (in_rectangle(sel_pos, {face.v1.v1, face.v1.v3}, {face.v2.v1, face.v2.v3}, {face.v3.v1, face.v3.v3}, {face.v4.v1, face.v4.v3})) {
+            printf("    Hit XZ face at pos (%.3f, %3f, %3f)  depth = %.3f\n", sel_pos.v1, face.v1.v2, sel_pos.v2, depth);
+            return true;
+        }
     } else if (face.v1.v3 == face.v2.v3 && face.v1.v3 == face.v3.v3 && face.v1.v3 == face.v4.v3) {
         sel_pos = mv.position_at_z(face.v1.v3, depth);
-        lower_left = {min_x(face), min_y(face)};
-        lower_right = {max_x(face), min_y(face)};
-        upper_left = {min_x(face), max_y(face)};
-        upper_right = {max_x(face), max_y(face)};
+        if (in_rectangle(sel_pos, {face.v1.v1, face.v1.v2}, {face.v2.v1, face.v2.v2}, {face.v3.v1, face.v3.v2}, {face.v4.v1, face.v4.v2})) {
+            printf("    Hit XY face at pos (%.3f, %3f, %3f)  depth = %.3f\n", sel_pos.v1, sel_pos.v2, face.v1.v3, depth);
+            return true;
+        }
     } else {
         printf("    slanting face\n");
         return false;
-    }
-    if (same(upper_left, lower_left)) {
-        if (in_triangle(sel_pos, lower_left, lower_right, upper_right)) {
-            printf("    Hit triangle face at pos (%.3f, %3f, %3f)  depth = %.3f\n", face.v1.v1, sel_pos.v1, sel_pos.v2, depth);
-            return true;
-        }
-    } else if (same(upper_right, lower_right)) {
-        if (in_triangle(sel_pos, lower_left, lower_right, upper_left)) {
-            printf("    Hit triangle face at pos (%.3f, %3f, %3f)  depth = %.3f\n", face.v1.v1, sel_pos.v1, sel_pos.v2, depth);
-            return true;
-        }
-    } else if (in_rectangle(sel_pos, lower_left, upper_right)) {
-        printf("    v1 = %.3f, %.3f\n", lower_left.v1, lower_left.v2);
-        printf("    v2 = %.3f, %.3f\n", lower_right.v1, lower_right.v2);
-        printf("    v3 = %.3f, %.3f\n", upper_left.v1, upper_left.v2);
-        printf("    v4 = %.3f, %.3f\n", upper_right.v1, upper_right.v2);
-        printf("    Hit face at pos (%.3f, %3f, %3f)  depth = %.3f\n", face.v1.v1, sel_pos.v1, sel_pos.v2, depth);
-        return true;
     }
     return false;
 }
@@ -620,7 +599,7 @@ double Toy::length(Float2 v1, Float2 v2) const
     return sqrt(a * a + b * b);
 }
 
-double Toy::triangle_area(Float2 v1, Float2 v2, Float2 v3) const
+double Toy::tri_area(Float2 v1, Float2 v2, Float2 v3) const
 {
     double a = length(v1, v2);
     double b = length(v2, v3);
@@ -629,9 +608,23 @@ double Toy::triangle_area(Float2 v1, Float2 v2, Float2 v3) const
     return sqrt(fabs(s * (s - a) * (s - b) * (s - c)));
 }
 
-bool Toy::in_triangle(Float2 p, Float2 v1, Float2 v2, Float2 v3) const
+double Toy::quad_area(Float2 v1, Float2 v2, Float2 v3, Float2 v4) const
 {
-    double a1 = triangle_area(v1, v2, v3);
-    double a2 = triangle_area(p, v1, v2) + triangle_area(p, v2, v3) + triangle_area(p, v1, v3);
-    return a2 < (a1 * 1.05);
+    double a = length(v1, v2);
+    double b = length(v2, v3);
+    double c = length(v3, v4);
+    double d = length(v4, v1);
+    double p = length(v1, v3);
+    double q = length(v2, v4);
+    double k = b * b + d * d - a * a - c * c;
+    return sqrt(fabs(4.0 * p * p * q * q - k * k)) / 4.0;
 }
+
+bool Toy::in_rectangle(const Float2& p, const Float2& v1, const Float2& v2, const Float2& v3, const Float2& v4) const
+{
+    double area1 = quad_area(v1, v2, v3, v4);
+    double area2 = tri_area(p, v1, v2) + tri_area(p, v2, v3) + tri_area(p, v3, v4) + tri_area(p, v4, v1);
+    return area2 <= (1.01 * area1);
+}
+
+
