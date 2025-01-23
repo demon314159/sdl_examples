@@ -38,44 +38,19 @@ private:
     void build_uniform();
     void update_uniform();
     bool top_face_selection(int sx, int sy, Int3& pos, bool& gable_flag, int& gable_orientation) const;
-    Int3 top_face_coord_at_level(int iy, const MouseVector& mv) const;
-    Int3 gable_face_coord(Int3 pos, int orientation, const MouseVector& mv) const;
-    Int3 roof_face_coord(Int3 pos, int orientation, const MouseVector& mv) const;
     bool try_hide_button(int sx, int sy);
     bool try_menu_button(int sx, int sy);
     void try_top_face(int sx, int sy);
     void try_delete_top_face(int sx, int sy);
     void adjust_table_size();
-    Float3 rotate_ax(Float3 p, float angle) const;
-    Float3 rotate_ay(Float3 p, float angle) const;
-    Float3 rotate_az(Float3 p, float angle) const;
-    Float3 translate(Float3 p, float dx, float dy, float dz) const;
-    bool in_rectangle(const Float2& p, const Float2& lower_left, const Float2& upper_right) const;
-    bool in_rectangle(const Float2& p, const Float2& v1, const Float2& v2, const Float2& v3, const Float2& v4) const;
 
-
-
-    bool face_intersection(const MouseVector& mv, const Face& face, float& depth) const;
-    bool mouse_vector_intersects_face(const MouseVector& mv, const Face& f, float& depth) const;
+    Int3 table_coord_selected(const MouseVector& mv, float& depth) const;
+    bool mouse_vector_intersects_face(const MouseVector& mv, const Face& f, float& depth, Float3& ip) const;
     Float3 normal(const Face& f) const;
     bool in_face(const Float3& p, const Face& f) const;
     double length(const Float3& v1, const Float3& v2) const;
     double tri_area(const Float3& v1, const Float3& v2, const Float3& v3) const;
     double quad_area(const Float3& v1, const Float3& v2, const Float3& v3, const Float3& v4) const;
-
-
-
-    float min_x(const Face& face) const;
-    float min_y(const Face& face) const;
-    float min_z(const Face& face) const;
-    float max_x(const Face& face) const;
-    float max_y(const Face& face) const;
-    float max_z(const Face& face) const;
-    bool same(const Float2& a, const Float2& b) const;
-    double length(Float2 v1, Float2 v2) const;
-    double tri_area(Float2 v1, Float2 v2, Float2 v3) const;
-    double quad_area(Float2 v1, Float2 v2, Float2 v3, Float2 v4) const;
-    bool in_slanting_face(const MouseVector& mv, const Face& face, float& depth) const;
 };
 
 #endif // _TOY_H_

@@ -77,41 +77,44 @@ void MouseVector::rotate_az(float deg)
 
 #define THRESHOLD 0.0001
 
-Float2 MouseVector::position_at_x(float x, float& depth) const
+Float3 MouseVector::position_at_x(float x, float& depth) const
 {
     float demon = m_vector.v1;
     if (fabs(demon) < THRESHOLD) {
         float demon = THRESHOLD;
     }
     double t = (x - m_origin.v1) / demon;
-    Float2 pt = {(float) (m_origin.v2 + t * m_vector.v2),
+    Float3 pt = {x,
+                 (float) (m_origin.v2 + t * m_vector.v2),
                  (float) (m_origin.v3 + t * m_vector.v3)};
     depth = (float) t;
     return pt;
 }
 
-Float2 MouseVector::position_at_y(float y, float& depth) const
+Float3 MouseVector::position_at_y(float y, float& depth) const
 {
     float demon = m_vector.v2;
     if (fabs(demon) < THRESHOLD) {
         float demon = THRESHOLD;
     }
     double t = (y - m_origin.v2) / demon;
-    Float2 pt = {(float) (m_origin.v1 + t * m_vector.v1),
+    Float3 pt = {(float) (m_origin.v1 + t * m_vector.v1),
+                 y,
                  (float) (m_origin.v3 + t * m_vector.v3)};
     depth = (float) t;
     return pt;
 }
 
-Float2 MouseVector::position_at_z(float z, float& depth) const
+Float3 MouseVector::position_at_z(float z, float& depth) const
 {
     float demon = m_vector.v3;
     if (fabs(demon) < THRESHOLD) {
         float demon = THRESHOLD;
     }
     double t = (z - m_origin.v3) / demon;
-    Float2 pt = {(float) (m_origin.v1 + t * m_vector.v1),
-                 (float) (m_origin.v2 + t * m_vector.v2)};
+    Float3 pt = {(float) (m_origin.v1 + t * m_vector.v1),
+                 (float) (m_origin.v2 + t * m_vector.v2),
+                 z};
     depth = (float) t;
     return pt;
 }

@@ -648,7 +648,6 @@ int RoofElement::faces() const
 Face RoofElement::face(int ix, bool* top_face) const
 {
     Face f;
-    bool tf_flag;
 
     float thickness = 1.5 * DIMX / 20.0;
     float underhang = DIMX / 4.0;
@@ -697,34 +696,27 @@ Face RoofElement::face(int ix, bool* top_face) const
     switch (ix) {
         case BOTTOM_FACE:
             f = {{x0, y0, z0}, {x0, y1, z1}, {x1, y2, z1}, {x1, y3, z0}};
-            tf_flag = false;
             break;
         case TOP_FACE:
             f = {{x0, y0 + thickness, z0}, {x0, y1 + thickness, z1}, {x1, y2 + thickness, z1}, {x1, y3 + thickness, z0}};
-            tf_flag = true;
             break;
         case LEFT_FACE:
             f = {{x0, y0, z0}, {x0, y1, z1}, {x0, y1 + thickness, z1}, {x0, y0 + thickness, z0}};
-            tf_flag = false;
             break;
         case RIGHT_FACE:
             f = {{x1, y3, z0}, {x1, y2, z1}, {x1, y2 + thickness, z1}, {x1, y3 + thickness, z0}};
-            tf_flag = false;
             break;
         case FRONT_FACE:
             f = {{x0, y1, z1}, {x1, y2, z1}, {x1, y2 + thickness, z1}, {x0, y1 + thickness, z1}};
-            tf_flag = false;
             break;
         case BACK_FACE:
             f = {{x0, y0, z0}, {x1, y3, z0}, {x1, y3 + thickness, z0}, {x0, y0 + thickness, z0}};
-            tf_flag = false;
             break;
         default:
             f = {{x0, y0 + thickness, z0}, {x0, y1 + thickness, z1}, {x1, y2 + thickness, z1}, {x1, y3 + thickness, z0}};
-            tf_flag = true;
     }
     if (top_face != NULL) {
-        *top_face = tf_flag;
+        *top_face = false;
     }
     return f;
 }
@@ -777,7 +769,6 @@ int FlatRoofElement::faces() const
 Face FlatRoofElement::face(int ix, bool* top_face) const
 {
     Face f;
-    bool tf_flag;
     Face bf; // bottom_face
     Face tf; // top_face
     tf = flat_roof_top_face(m_pos, m_width, m_orientation);
@@ -785,46 +776,39 @@ Face FlatRoofElement::face(int ix, bool* top_face) const
     switch (ix) {
         case BOTTOM_FACE:
             f = bf;
-            tf_flag = false;
             break;
         case TOP_FACE:
             f = tf;
-            tf_flag = true;
             break;
         case LEFT_FACE:
             f.v1 = bf.v1;
             f.v2 = bf.v2;
             f.v3 = tf.v2;
             f.v4 = tf.v1;
-            tf_flag = false;
             break;
         case RIGHT_FACE:
             f.v1 = bf.v4;
             f.v2 = bf.v3;
             f.v3 = tf.v3;
             f.v4 = tf.v4;
-            tf_flag = false;
             break;
         case FRONT_FACE:
             f.v1 = bf.v2;
             f.v2 = bf.v3;
             f.v3 = tf.v3;
             f.v4 = tf.v2;
-            tf_flag = false;
             break;
         case BACK_FACE:
             f.v1 = bf.v1;
             f.v2 = bf.v4;
             f.v3 = tf.v4;
             f.v4 = tf.v1;
-            tf_flag = false;
             break;
         default:
             f = tf;
-            tf_flag = true;
     }
     if (top_face != NULL) {
-        *top_face = tf_flag;
+        *top_face = false;
     }
     return f;
 }

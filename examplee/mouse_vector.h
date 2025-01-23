@@ -16,9 +16,9 @@ public:
     void rotate_ax(float deg);
     void rotate_ay(float deg);
     void rotate_az(float deg);
-    Float2 position_at_x(float x, float& depth) const;
-    Float2 position_at_y(float y, float& depth) const;
-    Float2 position_at_z(float z, float& depth) const;
+    Float3 position_at_x(float x, float& depth) const;
+    Float3 position_at_y(float y, float& depth) const;
+    Float3 position_at_z(float z, float& depth) const;
 
 private:
     Float3 m_origin;

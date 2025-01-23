@@ -145,113 +145,13 @@ bool Toy::button(int code, bool shifted, bool on)
     return ret_val;
 }
 
-Int3 Toy::top_face_coord_at_level(int iy, const MouseVector& mv) const
+Int3 Toy::table_coord_selected(const MouseVector& mv, float& depth) const
 {
-    float depth;
-    float level = DIMY / 2.0 + DIMY * (float) iy;
-    Float2 sel_pos = mv.position_at_y(level, depth);
+    float level = -DIMY / 2.0;
+    Float3 sel_pos = mv.position_at_y(level, depth);
     int ix = round(sel_pos.v1 / DIMX);
-    int iz = round(sel_pos.v2 / DIMZ);
-    return {ix, iy, iz};
-}
-
-//
-// Translate the frame so the brick is at 0.0
-// Rotate the frame of reference by 33.69 degrees so the gable face on the XZ plane at y = 0
-// Find the position on the XZ plane
-// UnRotate the position by -33.69 degrees
-// UnTranslate the position
-// Convert position to integer
-//
-Int3 Toy::gable_face_coord(Int3 pos, int orientation, const MouseVector& mv) const
-{
-    float cx = DIMX * (float) pos.v1;
-    float cy = DIMY * (float) pos.v2;
-    float cz = DIMZ * (float) pos.v3;
-    MouseVector tmv = mv;
-    // Translate gable face to XZ plane at 0,0,0
-    tmv.translate({-cx, -cy, -cz});
-    Float2 sel_pos;
-    Float3 new_pos;
-    float depth;
-    if (orientation == 3) {        // Rotate frame about ax +33.69 degrees
-        tmv.rotate_ax(GABLE_ANGLE);
-        sel_pos = tmv.position_at_y(0.0, depth);
-        new_pos = {sel_pos.v1, 0.0, sel_pos.v2};
-        new_pos = rotate_ax(new_pos, -GABLE_ANGLE);
-    } else if (orientation == 2) { // Rotate frame about az +33.69 degrees
-        tmv.rotate_az(GABLE_ANGLE);
-        sel_pos = tmv.position_at_y(0.0, depth);
-        new_pos = {sel_pos.v1, 0.0, sel_pos.v2};
-        new_pos = rotate_az(new_pos, -GABLE_ANGLE);
-    } else if (orientation == 1) { // Rotate frame about ax -33.69 degrees
-        tmv.rotate_ax(-GABLE_ANGLE);
-        sel_pos = tmv.position_at_y(0.0, depth);
-        new_pos = {sel_pos.v1, 0.0, sel_pos.v2};
-        new_pos = rotate_ax(new_pos, GABLE_ANGLE);
-    } else {                       // Rotate frame about az -33.69 degrees
-        tmv.rotate_az(-GABLE_ANGLE);
-        sel_pos = tmv.position_at_y(0.0, depth);
-        new_pos = {sel_pos.v1, 0.0, sel_pos.v2};
-        new_pos = rotate_az(new_pos, GABLE_ANGLE);
-    }
-    // Untranslate
-    new_pos = translate(new_pos, cx, cy, cz);
-    int ix = round(new_pos.v1 / DIMX);
-    int iy = round(new_pos.v2 / DIMY);
-    int iz = round(new_pos.v3 / DIMZ);
-    return {ix, iy, iz};
-}
-
-bool Toy::in_rectangle(const Float2& p, const Float2& lower_left, const Float2& upper_right) const
-{
-    if (p.v1 < lower_left.v1)
-        return false;
-    if (p.v1 > upper_right.v1)
-        return false;
-    if (p.v2 < lower_left.v2)
-        return false;
-    if (p.v2 > upper_right.v2)
-        return false;
-    return true;
-}
-
-Int3 Toy::roof_face_coord(Int3 pos, int orientation, const MouseVector& mv) const
-{
-    float cx = DIMX * (float) pos.v1;
-    float cy = DIMY * (float) pos.v2;
-    float cz = DIMZ * (float) pos.v3;
-    MouseVector tmv = mv;
-    // Translate gable face to XZ plane at 0,0,0
-    tmv.translate({-cx, -cy + DIMY / 2.0f, -cz});
-    Float2 sel_pos;
-    float depth;
-    if (orientation == 3) {        //  Rotate frame about az -33.69 degrees
-        tmv.rotate_az(-GABLE_ANGLE);
-        sel_pos = tmv.position_at_y(0.0, depth);
-        if (in_rectangle(sel_pos, {-0.9f * DIMX, -0.75f * DIMX}, {0.6f * DIMX, 0.75f * DIMX})) {
-            return pos;
-        }
-    } else if (orientation == 2) { //  Rotate frame about ax +33.69 degrees
-        tmv.rotate_ax(GABLE_ANGLE);
-        sel_pos = tmv.position_at_y(0.0, depth);
-        if (in_rectangle(sel_pos, {-0.75f * DIMX, -0.9f * DIMX}, {0.75f * DIMX, 0.6f * DIMX})) {
-            return pos;
-        }
-    } else if (orientation == 1) { // Rotate frame about az +33.69 degrees
-        tmv.rotate_az(GABLE_ANGLE);
-        sel_pos = tmv.position_at_y(0.0, depth);
-        if (in_rectangle(sel_pos, {-0.6f * DIMX, -0.75f * DIMX}, {0.9f * DIMX, 0.759f * DIMX})) {
-            return pos;
-        }
-    } else {                       // Rotate frame about ax -33.69 degrees
-        tmv.rotate_ax(-GABLE_ANGLE);
-        sel_pos = tmv.position_at_y(0.0, depth);
-        if (in_rectangle(sel_pos, {-0.75f * DIMX, -0.6f * DIMX}, {0.75f * DIMX, 0.9f * DIMX})) {
-            return pos;
-        }
-    }
-    return {0, -2, 0};
+    int iz = round(sel_pos.v3 / DIMZ);
+    return {ix, -1, iz};
 }
 
 bool Toy::top_face_selection(int sx, int sy, Int3& pos, bool& gable_flag, int& gable_orientation) const
@@ -261,33 +161,48 @@ bool Toy::top_face_selection(int sx, int sy, Int3& pos, bool& gable_flag, int& g
 
     MouseVector mv = m_camera->new_mouse_vector(sx, sy);
     Float3 v = mv.vector();
-    Int3 sel_pos = top_face_coord_at_level(-1, mv);
+    float min_depth;
+    int min_element = -1;
+    Float3 min_ip = {0.0, 0.0, 0.0};
+    bool min_top_face = false;
+    Int3 sel_pos = table_coord_selected(mv, min_depth);
+    printf("table_coord = (%d, %d, %d) at depth %.3f\n", sel_pos.v1, sel_pos.v2, sel_pos.v3, min_depth);
+
     for (int i = 0; i < m_doc->elements(); i++) {
         const Element* e = m_doc->element(i);
-        int y = e->pos().v2 + e->height() - 1;
-        if (y > sel_pos.v2) {
-            Int3 new_pos;
-            if (e->roof_flag()) {
-                new_pos = roof_face_coord(e->pos(), e->orientation(), mv);
-            } else if (e->gable_flag()) {
-                new_pos = gable_face_coord(e->pos(), e->orientation(), mv);
-                // Could be at a different y
-            } else {
-                new_pos = top_face_coord_at_level(y, mv);
-                // Will be at same y
-            }
-
-            if (e->contains(new_pos.v1, new_pos.v2, new_pos.v3)) {
-                sel_pos = new_pos;
-                gable_flag = e->gable_flag();
-                if (gable_flag) {
-                    gable_orientation = e->orientation();
+        for (int j = 0; j < e->faces(); j++) {
+            float depth;
+            bool top_face;
+            Float3 ip;
+            if (mouse_vector_intersects_face(mv, e->face(j, &top_face), depth, ip)) {
+                if (depth < min_depth) {
+                    min_depth = depth;
+                    min_element = i;
+                    min_ip = ip;
+                    min_top_face = top_face;
                 }
             }
         }
     }
-    if (sel_pos.v2 == -1) { // No top faces selected
+    if (min_element < 0) { // No element faces selected
         if (!m_table->contains(sel_pos.v1, sel_pos.v3)) {
+            gable_flag = false;
+            gable_orientation = 0;
+            return false;
+        }
+    } else {
+        if (min_top_face) {
+            gable_flag = m_doc->element(min_element)->gable_flag();
+            if (gable_flag) {
+                gable_orientation = m_doc->element(min_element)->orientation();
+                sel_pos = {(int) round(min_ip.v1 / DIMX), (int) round((min_ip.v2) / DIMY), (int) round(min_ip.v3 / DIMZ)};
+            } else {
+                sel_pos = {(int) round(min_ip.v1 / DIMX), (int) round((min_ip.v2 - DIMY / 2.0) / DIMY), (int) round(min_ip.v3 / DIMZ)};
+            }
+            printf("Element %d top face selected at (%d, %d, %d)  depth %.3f\n", min_element,
+                    sel_pos.v1, sel_pos.v2, sel_pos.v3, min_depth);
+        } else {
+            printf("Element %d other face selected at depth %.3f\n", min_element, min_depth);
             gable_flag = false;
             gable_orientation = 0;
             return false;
@@ -454,69 +369,6 @@ void Toy::adjust_table_size()
     m_table->change_size({bb.vmin.v1, bb.vmax.v3}, {bb.vmax.v1 - bb.vmin.v1 + 1, bb.vmax.v3 - bb.vmin.v3 + 1});
 }
 
-Float3 Toy::rotate_ax(Float3 p, float angle) const
-{
-   Float3 p1 = p;
-   p1.v2 = p.v2 * cos(angle * PI / 180.0) - p.v3 * sin(angle * PI / 180.0);
-   p1.v3 = p.v2 * sin(angle * PI / 180.0) + p.v3 * cos(angle * PI / 180.0);
-   return p1;
-}
-
-Float3 Toy::rotate_ay(Float3 p, float angle) const
-{
-   Float3 p1 = p;
-   p1.v1 = p.v1 * cos(angle * PI / 180.0) + p.v3 * sin(angle * PI / 180.0);
-   p1.v3 = -p.v1 * sin(angle * PI / 180.0) + p.v3 * cos(angle * PI / 180.0);
-   return p1;
-}
-
-Float3 Toy::rotate_az(Float3 p, float angle) const
-{
-   Float3 p1 = p;
-   p1.v1 = p.v1 * cos(angle * PI / 180.0) - p.v2 * sin(angle * PI / 180.0);
-   p1.v2 = p.v1 * sin(angle * PI / 180.0) + p.v2 * cos(angle * PI / 180.0);
-   return p1;
-}
-
-Float3 Toy::translate(Float3 p, float dx, float dy, float dz) const
-{
-    Float3 p1;
-    p1.v1 = p.v1 + dx;
-    p1.v2 = p.v2 + dy;
-    p1.v3 = p.v3 + dz;
-    return p1;
-}
-
-float Toy::min_x(const Face& face) const
-{
-    return fmin(fmin(face.v1.v1, face.v2.v1), fmin(face.v3.v1, face.v4.v1));
-}
-
-float Toy::min_y(const Face& face) const
-{
-    return fmin(fmin(face.v1.v2, face.v2.v2), fmin(face.v3.v2, face.v4.v2));
-}
-
-float Toy::min_z(const Face& face) const
-{
-    return fmin(fmin(face.v1.v3, face.v2.v3), fmin(face.v3.v3, face.v4.v3));
-}
-
-float Toy::max_x(const Face& face) const
-{
-    return fmax(fmax(face.v1.v1, face.v2.v1), fmax(face.v3.v1, face.v4.v1));
-}
-
-float Toy::max_y(const Face& face) const
-{
-    return fmax(fmax(face.v1.v2, face.v2.v2), fmax(face.v3.v2, face.v4.v2));
-}
-
-float Toy::max_z(const Face& face) const
-{
-    return fmax(fmax(face.v1.v3, face.v2.v3), fmax(face.v3.v3, face.v4.v3));
-}
-
 void Toy::try_delete_top_face(int sx, int sy)
 {
     printf("try_delete_top_face\n");
@@ -533,12 +385,10 @@ void Toy::try_delete_top_face(int sx, int sy)
             bool top_face;
 
 
-//            if (face_intersection(mv, e->face(j, &top_face), depth)) {
-            if (mouse_vector_intersects_face(mv, e->face(j, &top_face), depth)) {
-                printf("    Hit element %d, face %d,  depth = %.3f,  top_face = %d\n", i, j, depth, top_face ? 1 : 0);
+//            if (face_intersection(mv, e->face(j, &top_face), depth)) o{
+            Float3 ip;
+            if (mouse_vector_intersects_face(mv, e->face(j, &top_face), depth, ip)) {
                 Face f = e->face(j);
-                printf("        face(%d) = (%.3f, %.3f, %.3f)  (%.3f, %.3f, %.3f) (%.3f, %.3f, %.3f) (%.3f, %.3f, %.3f)\n",
-                    j, f.v1.v1, f.v1.v2, f.v1.v3, f.v2.v1, f.v2.v2, f.v2.v3, f.v3.v1, f.v3.v2, f.v3.v3, f.v4.v1, f.v4.v2, f.v4.v3);
                 if (depth < min_depth) {
                     min_depth = depth;
                     min_element = i;
@@ -566,46 +416,7 @@ void Toy::try_delete_top_face(int sx, int sy)
 #endif
 }
 
-bool Toy::same(const Float2& a, const Float2& b) const
-{
-    return a.v1 == b.v1 && a.v2 == b.v2;
-}
-
-bool Toy::face_intersection(const MouseVector& mv, const Face& face, float& depth) const
-{
-
-    Float2 sel_pos;
-    if (face.v1.v1 == face.v2.v1 && face.v1.v1 == face.v3.v1 && face.v1.v1 == face.v4.v1) {
-        sel_pos = mv.position_at_x(face.v1.v1, depth);
-        if (in_rectangle(sel_pos, {face.v1.v2, face.v1.v3}, {face.v2.v2, face.v2.v3}, {face.v3.v2, face.v3.v3}, {face.v4.v2, face.v4.v3})) {
-            printf("    Hit YZ face at pos (%.3f, %3f, %3f)  depth = %.3f\n", face.v1.v1, sel_pos.v1, sel_pos.v2, depth);
-            return true;
-        }
-    } else if (face.v1.v2 == face.v2.v2 && face.v1.v2 == face.v3.v2 && face.v1.v2 == face.v4.v2) {
-        sel_pos = mv.position_at_y(face.v1.v2, depth);
-        if (in_rectangle(sel_pos, {face.v1.v1, face.v1.v3}, {face.v2.v1, face.v2.v3}, {face.v3.v1, face.v3.v3}, {face.v4.v1, face.v4.v3})) {
-            printf("    Hit XZ face at pos (%.3f, %3f, %3f)  depth = %.3f\n", sel_pos.v1, face.v1.v2, sel_pos.v2, depth);
-            return true;
-        }
-    } else if (face.v1.v3 == face.v2.v3 && face.v1.v3 == face.v3.v3 && face.v1.v3 == face.v4.v3) {
-        sel_pos = mv.position_at_z(face.v1.v3, depth);
-        if (in_rectangle(sel_pos, {face.v1.v1, face.v1.v2}, {face.v2.v1, face.v2.v2}, {face.v3.v1, face.v3.v2}, {face.v4.v1, face.v4.v2})) {
-            printf("    Hit XY face at pos (%.3f, %3f, %3f)  depth = %.3f\n", sel_pos.v1, sel_pos.v2, face.v1.v3, depth);
-            return true;
-        }
-    } else {
-        if (in_slanting_face(mv, face, depth)) {
-            printf("    Hit slanting face at depth = %.3f\n", depth);
-            return true;
-        }
-    }
-    return false;
-}
-
-//
-// The following is a better version of the above and should replace it
-//
-bool Toy::mouse_vector_intersects_face(const MouseVector& mv, const Face& f, float& depth) const
+bool Toy::mouse_vector_intersects_face(const MouseVector& mv, const Face& f, float& depth, Float3& ip) const
 {
     Float3 vec = mv.vector();
     Float3 org = mv.origin();
@@ -619,7 +430,6 @@ bool Toy::mouse_vector_intersects_face(const MouseVector& mv, const Face& f, flo
     double num_b = plane.v1 * org.v1 + plane.v2 * org.v2 + plane.v3 * org.v3;
 
     double t = (num_a - num_b) / denom;
-    Float3 ip;
     ip.v1 = org.v1 + t * vec.v1;
     ip.v2 = org.v2 + t * vec.v2;
     ip.v3 = org.v3 + t * vec.v3;
@@ -687,45 +497,4 @@ double Toy::quad_area(const Float3& v1, const Float3& v2, const Float3& v3, cons
     return sqrt(fabs(4.0 * p * p * q * q - k * k)) / 4.0;
 }
 
-// Following may be junk in awhile
-
-double Toy::length(Float2 v1, Float2 v2) const
-{
-    double a = v1.v1 - v2.v1;
-    double b = v1.v2 - v2.v2;
-    return sqrt(a * a + b * b);
-}
-
-double Toy::tri_area(Float2 v1, Float2 v2, Float2 v3) const
-{
-    double a = length(v1, v2);
-    double b = length(v2, v3);
-    double c = length(v3, v1);
-    double s = (a + b + c) / 2.0;
-    return sqrt(fabs(s * (s - a) * (s - b) * (s - c)));
-}
-
-double Toy::quad_area(Float2 v1, Float2 v2, Float2 v3, Float2 v4) const
-{
-    double a = length(v1, v2);
-    double b = length(v2, v3);
-    double c = length(v3, v4);
-    double d = length(v4, v1);
-    double p = length(v1, v3);
-    double q = length(v2, v4);
-    double k = b * b + d * d - a * a - c * c;
-    return sqrt(fabs(4.0 * p * p * q * q - k * k)) / 4.0;
-}
-
-bool Toy::in_rectangle(const Float2& p, const Float2& v1, const Float2& v2, const Float2& v3, const Float2& v4) const
-{
-    double area1 = quad_area(v1, v2, v3, v4);
-    double area2 = tri_area(p, v1, v2) + tri_area(p, v2, v3) + tri_area(p, v3, v4) + tri_area(p, v4, v1);
-    return area2 <= (1.01 * area1);
-}
-
-bool Toy::in_slanting_face(const MouseVector& mv, const Face& face, float& depth) const
-{
-    return false;
-}
 
