@@ -640,6 +640,94 @@ bool RoofElement::roof_flag() const
     return true;
 }
 
+int RoofElement::faces() const
+{
+    return 6;
+}
+
+Face RoofElement::face(int ix, bool* top_face) const
+{
+    Face f;
+    bool tf_flag;
+
+    float thickness = 1.5 * DIMX / 20.0;
+    float underhang = DIMX / 40.0;
+
+    float x0, x1, y0, y1, y2, y3, z0, z1;
+    float bx = DIMX * (float) m_pos.v1;
+    float by = DIMY * (float) m_pos.v2 - DIMY;
+    float bz = DIMZ * (float) m_pos.v3;
+    if (m_orientation == 3) {
+        x0 = bx - 3.0 * DIMX / 4.0;
+        x1 = bx + DIMX / 2.0;
+        y0 = by - 3.0 * DIMY / 4.0;
+        y1 = y0;
+        y2 = by + DIMY / 2.0;
+        y3 = y2;
+        z0 = bz - 3.0 * DIMZ / 4.0;
+        z1 = bz + 3.0 * DIMZ / 4.0 + DIMZ * (float) (m_width - 1);
+    } else if (m_orientation == 2) {
+        x0 = bx - 3.0 * DIMX / 4.0 - DIMX * (float) (m_width - 1);
+        x1 = bx + 3.0 * DIMX / 4.0;
+        y0 = by - 3.0 * DIMY / 4.0;
+        y1 = by + DIMY / 2.0;
+        y2 = y1;
+        y3 = y0;
+        z0 = bz - 3.0 * DIMZ / 4.0;
+        z1 = bz + DIMZ / 2.0;
+    } else if (m_orientation == 1) {
+        x0 = bx - DIMX / 2.0;
+        x1 = bx + 3.0 * DIMX / 4.0;
+        y0 = by + DIMY / 2.0;
+        y1 = y0;
+        y2 = by - 3.0 * DIMY / 4.0;
+        y3 = y2;
+        z0 = bz - 3.0 * DIMZ / 4.0 - DIMZ * (float) (m_width - 1);
+        z1 = bz + 3.0 * DIMZ / 4.0;
+    } else {
+        x0 = bx - 3.0 * DIMX / 4.0;
+        x1 = bx + 3.0 * DIMX / 4.0 + DIMX * (float) (m_width - 1);
+        y0 = by + DIMY / 2.0;
+        y1 = by - 3.0 * DIMY / 4.0;
+        y2 = y1;
+        y3 = y0;
+        z0 = bz - DIMZ / 2.0;
+        z1 = bz + 3.0 * DIMZ / 4.0;
+    }
+    switch (ix) {
+        case BOTTOM_FACE:
+            f = {{x0, y0, z0}, {x0, y1, z1}, {x1, y2, z1}, {x1, y3, z0}};
+            tf_flag = false;
+            break;
+        case TOP_FACE:
+            f = {{x0, y0 + thickness, z0}, {x0, y1 + thickness, z1}, {x1, y2 + thickness, z1}, {x1, y3 + thickness, z0}};
+            tf_flag = true;
+            break;
+        case LEFT_FACE:
+            f = {{x0, y0, z0}, {x0, y1, z1}, {x0, y1 + thickness, z1}, {x0, y0 + thickness, z0}};
+            tf_flag = false;
+            break;
+        case RIGHT_FACE:
+            f = {{x1, y3, z0}, {x1, y2, z1}, {x1, y2 + thickness, z1}, {x1, y3 + thickness, z0}};
+            tf_flag = false;
+            break;
+        case FRONT_FACE:
+            f = {{x0, y1, z1}, {x1, y2, z1}, {x1, y2 + thickness, z1}, {x0, y1 + thickness, z1}};
+            tf_flag = false;
+            break;
+        case BACK_FACE:
+            f = {{x0, y0, z0}, {x1, y3, z0}, {x1, y3 + thickness, z0}, {x0, y0 + thickness, z0}};
+            tf_flag = false;
+            break;
+        default:
+            f = {{x0, y0 + thickness, z0}, {x0, y1 + thickness, z1}, {x1, y2 + thickness, z1}, {x1, y3 + thickness, z0}};
+            tf_flag = true;
+    }
+    if (top_face != NULL) {
+        *top_face = tf_flag;
+    }
+    return f;
+}
 //***  FlatRoofElement ***
 
 FlatRoofElement::FlatRoofElement(Int3 pos, int width, int orientation)

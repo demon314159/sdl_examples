@@ -535,7 +535,10 @@ void Toy::try_delete_top_face(int sx, int sy)
 
 //            if (face_intersection(mv, e->face(j, &top_face), depth)) {
             if (mouse_vector_intersects_face(mv, e->face(j, &top_face), depth)) {
-
+                printf("    Hit element %d, face %d,  depth = %.3f,  top_face = %d\n", i, j, depth, top_face ? 1 : 0);
+                Face f = e->face(j);
+                printf("        face(%d) = (%.3f, %.3f, %.3f)  (%.3f, %.3f, %.3f) (%.3f, %.3f, %.3f) (%.3f, %.3f, %.3f)\n",
+                    j, f.v1.v1, f.v1.v2, f.v1.v3, f.v2.v1, f.v2.v2, f.v2.v3, f.v3.v1, f.v3.v2, f.v3.v3, f.v4.v1, f.v4.v2, f.v4.v3);
                 if (depth < min_depth) {
                     min_depth = depth;
                     min_element = i;

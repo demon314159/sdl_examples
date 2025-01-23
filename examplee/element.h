@@ -170,6 +170,8 @@ public:
     void save_to_file(FILE* ffo) const override;
     const CadModel* model() const override;
     bool roof_flag() const override;
+    int faces() const override;
+    Face face(int ix, bool* top_face = NULL) const override;
 protected:
     CadModel m_model;
 };
