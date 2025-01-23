@@ -48,7 +48,8 @@ void RoofShape::define_shape()
     float x6 = x0 + m_dimx;
     float x7_5 = x0 + 5 * m_dimx / 4;
 
-    float smidge = m_dimx / 40.0;
+//    float smidge = m_dimx / 40.0;
+    float smidge = m_dimx / 4.0;
 
     float ym1_5 = smidge -m_dimy / 2;
     float y1_5 = smidge -m_dimy / 6;

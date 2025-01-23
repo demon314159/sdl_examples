@@ -651,7 +651,7 @@ Face RoofElement::face(int ix, bool* top_face) const
     bool tf_flag;
 
     float thickness = 1.5 * DIMX / 20.0;
-    float underhang = DIMX / 40.0;
+    float underhang = DIMX / 4.0;
 
     float x0, x1, y0, y1, y2, y3, z0, z1;
     float bx = DIMX * (float) m_pos.v1;
@@ -742,6 +742,8 @@ FlatRoofElement::FlatRoofElement(Int3 pos, int width, int orientation)
 //    }
 
     float thickness = 1.1 * (DIMY / 2.0);
+//    float thickness = 2.0 * DIMX / 20.0 + DIMX / 40.0;
+
     CadModel rm(BrickShape(DIMX * 1.5, thickness, DIMX * 1.5, DIMB), ROOF_PAINT, 0.0);
     for (int i = 0; i < width; i++) {
         float hw = 0.5 * DIMX * (float) width;
