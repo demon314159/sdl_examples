@@ -183,8 +183,12 @@ public:
     FlatRoofElement() = delete;
     void save_to_file(FILE* ffo) const override;
     const CadModel* model() const override;
+    int faces() const override;
+    Face face(int ix, bool* top_face = NULL) const override;
 protected:
     CadModel m_model;
+    Face flat_roof_top_face(Int3 pos, int width, int orientation) const;
+    Face flat_roof_bottom_face(Int3 pos, int width, int orientation) const;
 };
 
 class WindowElement: public Element

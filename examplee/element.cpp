@@ -769,6 +769,126 @@ const CadModel* FlatRoofElement::model() const
     return &m_model;
 }
 
+int FlatRoofElement::faces() const
+{
+    return 6;
+}
+
+Face FlatRoofElement::face(int ix, bool* top_face) const
+{
+    Face f;
+    bool tf_flag;
+    Face bf; // bottom_face
+    Face tf; // top_face
+    tf = flat_roof_top_face(m_pos, m_width, m_orientation);
+    bf = flat_roof_bottom_face(m_pos, m_width, m_orientation);
+    switch (ix) {
+        case BOTTOM_FACE:
+            f = bf;
+            tf_flag = false;
+            break;
+        case TOP_FACE:
+            f = tf;
+            tf_flag = true;
+            break;
+        case LEFT_FACE:
+            f.v1 = bf.v1;
+            f.v2 = bf.v2;
+            f.v3 = tf.v2;
+            f.v4 = tf.v1;
+            tf_flag = false;
+            break;
+        case RIGHT_FACE:
+            f.v1 = bf.v4;
+            f.v2 = bf.v3;
+            f.v3 = tf.v3;
+            f.v4 = tf.v4;
+            tf_flag = false;
+            break;
+        case FRONT_FACE:
+            f.v1 = bf.v2;
+            f.v2 = bf.v3;
+            f.v3 = tf.v3;
+            f.v4 = tf.v2;
+            tf_flag = false;
+            break;
+        case BACK_FACE:
+            f.v1 = bf.v1;
+            f.v2 = bf.v4;
+            f.v3 = tf.v4;
+            f.v4 = tf.v1;
+            tf_flag = false;
+            break;
+        default:
+            f = tf;
+            tf_flag = true;
+    }
+    if (top_face != NULL) {
+        *top_face = tf_flag;
+    }
+    return f;
+}
+
+Face FlatRoofElement::flat_roof_top_face(Int3 pos, int width, int orientation) const
+{
+    float thickness = 1.1 * (DIMY / 2.0);
+    Face tf; // top_face
+    float short_x = 3.0 * DIMX / 4.0;
+    float long_x = DIMX * (float) (m_width - 1) + 3.0 * DIMX / 4.0;
+    if (orientation == 3) {
+        tf.v1 = {DIMX * (float) pos.v1 - short_x, DIMY * (float) pos.v2 - DIMY / 2.0f + thickness, DIMZ * (float) pos.v3 - short_x};
+        tf.v2 = {DIMX * (float) pos.v1 - short_x, DIMY * (float) pos.v2 - DIMY / 2.0f + thickness, DIMZ * (float) pos.v3 + long_x};
+        tf.v3 = {DIMX * (float) pos.v1 + short_x, DIMY * (float) pos.v2 - DIMY / 2.0f + thickness, DIMZ * (float) pos.v3 + long_x};
+        tf.v4 = {DIMX * (float) pos.v1 + short_x, DIMY * (float) pos.v2 - DIMY / 2.0f + thickness, DIMZ * (float) pos.v3 - short_x};
+    } else if (orientation == 2) {
+        tf.v1 = {DIMX * (float) pos.v1 - long_x, DIMY * (float) pos.v2 - DIMY / 2.0f + thickness, DIMZ * (float) pos.v3 - short_x};
+        tf.v2 = {DIMX * (float) pos.v1 - long_x, DIMY * (float) pos.v2 - DIMY / 2.0f + thickness, DIMZ * (float) pos.v3 + short_x};
+        tf.v3 = {DIMX * (float) pos.v1 + short_x, DIMY * (float) pos.v2 - DIMY / 2.0f + thickness, DIMZ * (float) pos.v3 + short_x};
+        tf.v4 = {DIMX * (float) pos.v1 + short_x, DIMY * (float) pos.v2 - DIMY / 2.0f + thickness, DIMZ * (float) pos.v3 - short_x};
+    } else if (orientation == 1) {
+        tf.v1 = {DIMX * (float) pos.v1 - short_x, DIMY * (float) pos.v2 - DIMY / 2.0f + thickness, DIMZ * (float) pos.v3 - long_x};
+        tf.v2 = {DIMX * (float) pos.v1 - short_x, DIMY * (float) pos.v2 - DIMY / 2.0f + thickness, DIMZ * (float) pos.v3 + short_x};
+        tf.v3 = {DIMX * (float) pos.v1 + short_x, DIMY * (float) pos.v2 - DIMY / 2.0f + thickness, DIMZ * (float) pos.v3 + short_x};
+        tf.v4 = {DIMX * (float) pos.v1 + short_x, DIMY * (float) pos.v2 - DIMY / 2.0f + thickness, DIMZ * (float) pos.v3 - long_x};
+    } else {
+        tf.v1 = {DIMX * (float) pos.v1 - short_x, DIMY * (float) pos.v2 - DIMY / 2.0f + thickness, DIMZ * (float) pos.v3 - short_x};
+        tf.v2 = {DIMX * (float) pos.v1 - short_x, DIMY * (float) pos.v2 - DIMY / 2.0f + thickness, DIMZ * (float) pos.v3 + short_x};
+        tf.v3 = {DIMX * (float) pos.v1 + long_x, DIMY * (float) pos.v2 - DIMY / 2.0f + thickness, DIMZ * (float) pos.v3 + short_x};
+        tf.v4 = {DIMX * (float) pos.v1 + long_x, DIMY * (float) pos.v2 - DIMY / 2.0f + thickness, DIMZ * (float) pos.v3 - short_x};
+    }
+    return tf;
+}
+
+Face FlatRoofElement::flat_roof_bottom_face(Int3 pos, int width, int orientation) const
+{
+    float thickness = 1.1 * (DIMY / 2.0);
+    Face bf; // bottom_face
+    float short_x = 3.0 * DIMX / 4.0;
+    float long_x = DIMX * (float) (m_width - 1) + 3.0 * DIMX / 4.0;
+    if (orientation == 3) {
+        bf.v1 = {DIMX * (float) pos.v1 - short_x, DIMY * (float) pos.v2 - DIMY / 2.0f, DIMZ * (float) pos.v3 - short_x};
+        bf.v2 = {DIMX * (float) pos.v1 - short_x, DIMY * (float) pos.v2 - DIMY / 2.0f, DIMZ * (float) pos.v3 + long_x};
+        bf.v3 = {DIMX * (float) pos.v1 + short_x, DIMY * (float) pos.v2 - DIMY / 2.0f, DIMZ * (float) pos.v3 + long_x};
+        bf.v4 = {DIMX * (float) pos.v1 + short_x, DIMY * (float) pos.v2 - DIMY / 2.0f, DIMZ * (float) pos.v3 - short_x};
+    } else if (orientation == 2) {
+        bf.v1 = {DIMX * (float) pos.v1 - long_x, DIMY * (float) pos.v2 - DIMY / 2.0f, DIMZ * (float) pos.v3 - short_x};
+        bf.v2 = {DIMX * (float) pos.v1 - long_x, DIMY * (float) pos.v2 - DIMY / 2.0f, DIMZ * (float) pos.v3 + short_x};
+        bf.v3 = {DIMX * (float) pos.v1 + short_x, DIMY * (float) pos.v2 - DIMY / 2.0f, DIMZ * (float) pos.v3 + short_x};
+        bf.v4 = {DIMX * (float) pos.v1 + short_x, DIMY * (float) pos.v2 - DIMY / 2.0f, DIMZ * (float) pos.v3 - short_x};
+    } else if (orientation == 1) {
+        bf.v1 = {DIMX * (float) pos.v1 - short_x, DIMY * (float) pos.v2 - DIMY / 2.0f, DIMZ * (float) pos.v3 - long_x};
+        bf.v2 = {DIMX * (float) pos.v1 - short_x, DIMY * (float) pos.v2 - DIMY / 2.0f, DIMZ * (float) pos.v3 + short_x};
+        bf.v3 = {DIMX * (float) pos.v1 + short_x, DIMY * (float) pos.v2 - DIMY / 2.0f, DIMZ * (float) pos.v3 + short_x};
+        bf.v4 = {DIMX * (float) pos.v1 + short_x, DIMY * (float) pos.v2 - DIMY / 2.0f, DIMZ * (float) pos.v3 - long_x};
+    } else {
+        bf.v1 = {DIMX * (float) pos.v1 - short_x, DIMY * (float) pos.v2 - DIMY / 2.0f, DIMZ * (float) pos.v3 - short_x};
+        bf.v2 = {DIMX * (float) pos.v1 - short_x, DIMY * (float) pos.v2 - DIMY / 2.0f, DIMZ * (float) pos.v3 + short_x};
+        bf.v3 = {DIMX * (float) pos.v1 + long_x, DIMY * (float) pos.v2 - DIMY / 2.0f, DIMZ * (float) pos.v3 + short_x};
+        bf.v4 = {DIMX * (float) pos.v1 + long_x, DIMY * (float) pos.v2 - DIMY / 2.0f, DIMZ * (float) pos.v3 - short_x};
+    }
+    return bf;
+}
+
 //***  WindowElement ***
 
 WindowElement::WindowElement(Int3 pos, int orientation)
