@@ -41,7 +41,7 @@ private:
     bool try_hide_button(int sx, int sy);
     bool try_menu_button(int sx, int sy);
     void try_top_face(int sx, int sy);
-    void try_delete_top_face(int sx, int sy);
+    void try_delete_any_face(int sx, int sy);
     void adjust_table_size();
 
     Int3 table_coord_selected(const MouseVector& mv, float& depth) const;

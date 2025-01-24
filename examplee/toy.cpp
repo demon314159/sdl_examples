@@ -166,20 +166,20 @@ bool Toy::top_face_selection(int sx, int sy, Int3& pos, bool& gable_flag, int& g
     Float3 min_ip = {0.0, 0.0, 0.0};
     bool min_top_face = false;
     Int3 sel_pos = table_coord_selected(mv, min_depth);
-    printf("table_coord = (%d, %d, %d) at depth %.3f\n", sel_pos.v1, sel_pos.v2, sel_pos.v3, min_depth);
-
     for (int i = 0; i < m_doc->elements(); i++) {
         const Element* e = m_doc->element(i);
-        for (int j = 0; j < e->faces(); j++) {
-            float depth;
-            bool top_face;
-            Float3 ip;
-            if (mouse_vector_intersects_face(mv, e->face(j, &top_face), depth, ip)) {
-                if (depth < min_depth) {
-                    min_depth = depth;
-                    min_element = i;
-                    min_ip = ip;
-                    min_top_face = top_face;
+        if (!e->removed()) {
+            for (int j = 0; j < e->faces(); j++) {
+                float depth;
+                bool top_face;
+                Float3 ip;
+                if (mouse_vector_intersects_face(mv, e->face(j, &top_face), depth, ip)) {
+                    if (depth < min_depth) {
+                        min_depth = depth;
+                        min_element = i;
+                        min_ip = ip;
+                        min_top_face = top_face;
+                    }
                 }
             }
         }
@@ -199,10 +199,7 @@ bool Toy::top_face_selection(int sx, int sy, Int3& pos, bool& gable_flag, int& g
             } else {
                 sel_pos = {(int) round(min_ip.v1 / DIMX), (int) round((min_ip.v2 - DIMY / 2.0) / DIMY), (int) round(min_ip.v3 / DIMZ)};
             }
-            printf("Element %d top face selected at (%d, %d, %d)  depth %.3f\n", min_element,
-                    sel_pos.v1, sel_pos.v2, sel_pos.v3, min_depth);
         } else {
-            printf("Element %d other face selected at depth %.3f\n", min_element, min_depth);
             gable_flag = false;
             gable_orientation = 0;
             return false;
@@ -352,7 +349,7 @@ bool Toy::mouse(SDL_Event* e, bool on)
         }
     } else if (e->button.button == SDL_BUTTON_RIGHT) {
         if (on) {
-            try_delete_top_face(e->button.x, e->button.y);
+            try_delete_any_face(e->button.x, e->button.y);
         } else {
         }
     }
@@ -369,51 +366,32 @@ void Toy::adjust_table_size()
     m_table->change_size({bb.vmin.v1, bb.vmax.v3}, {bb.vmax.v1 - bb.vmin.v1 + 1, bb.vmax.v3 - bb.vmin.v3 + 1});
 }
 
-void Toy::try_delete_top_face(int sx, int sy)
+void Toy::try_delete_any_face(int sx, int sy)
 {
-    printf("try_delete_top_face\n");
     MouseVector mv = m_camera->new_mouse_vector(sx, sy);
     Float3 v = mv.vector();
-    float min_depth = 100.0;
-    int min_element;
-    int min_face;
-    bool min_top_face;
+    float min_depth;
+    int min_element = -1;
+    table_coord_selected(mv, min_depth);  // Just to establish a real depth
     for (int i = 0; i < m_doc->elements(); i++) {
         const Element* e = m_doc->element(i);
-        for (int j = 0; j < e->faces(); j++) {
-            float depth;
-            bool top_face;
-
-
-//            if (face_intersection(mv, e->face(j, &top_face), depth)) o{
-            Float3 ip;
-            if (mouse_vector_intersects_face(mv, e->face(j, &top_face), depth, ip)) {
-                Face f = e->face(j);
-                if (depth < min_depth) {
-                    min_depth = depth;
-                    min_element = i;
-                    min_face = j;
-                    min_top_face = top_face;
+        if (!e->removed()) {
+            for (int j = 0; j < e->faces(); j++) {
+                float depth;
+                bool top_face;
+                Float3 ip;
+                if (mouse_vector_intersects_face(mv, e->face(j, &top_face), depth, ip)) {
+                    if (depth < min_depth) {
+                        min_depth = depth;
+                        min_element = i;
+                    }
                 }
             }
         }
     }
-    if (min_depth < 99.0) {
-        printf("    Element %d intersection on %s (face %d)\n", min_element, min_top_face ? "top_face" : "other_face", min_face);
+    if (min_element >= 0) {
+        m_history->do_command(new RemoveElementCommand(min_element, m_doc));
     }
-#ifdef NEVERMORE
-    Int3 pos;
-    bool gable_flag;
-    int gable_orientation;
-    if (top_face_selection(sx, sy, pos, gable_flag, gable_orientation)) {
-        if (pos.v2 >= 0) {
-            int ix;
-            if (m_doc->find_element(ix, pos.v1, pos.v2, pos.v3)) {
-                m_history->do_command(new RemoveElementCommand(ix, m_doc));
-            }
-        }
-    }
-#endif
 }
 
 bool Toy::mouse_vector_intersects_face(const MouseVector& mv, const Face& f, float& depth, Float3& ip) const
