@@ -3,6 +3,19 @@
 //
 
 #include "document.h"
+#include "gable_brick_element.h"
+#include "half_brick_element.h"
+#include "brick_element.h"
+#include "half_foundation_element.h"
+#include "foundation_element.h"
+#include "double_foundation_element.h"
+#include "triple_foundation_element.h"
+#include "roof_element.h"
+#include "flat_roof_element.h"
+#include "window_element.h"
+#include "corner_window_element.h"
+#include "front_door_element.h"
+#include "back_door_element.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>

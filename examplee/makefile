@@ -33,6 +33,19 @@ HEADERS = view.h \
           \
           brick_shape.h \
           element.h \
+          gable_brick_element.h \
+          half_brick_element.h \
+          brick_element.h \
+          half_foundation_element.h \
+          foundation_element.h \
+          double_foundation_element.h \
+          triple_foundation_element.h \
+          roof_element.h \
+          flat_roof_element.h \
+          window_element.h \
+          corner_window_element.h \
+          front_door_element.h \
+          back_door_element.h \
           vertex_image.h \
           token_file.h \
           document.h \
@@ -95,6 +108,19 @@ OBJECTS = main.obj \
           \
           brick_shape.obj \
           element.obj \
+          gable_brick_element.obj \
+          half_brick_element.obj \
+          brick_element.obj \
+          half_foundation_element.obj \
+          foundation_element.obj \
+          double_foundation_element.obj \
+          triple_foundation_element.obj \
+          roof_element.obj \
+          flat_roof_element.obj \
+          window_element.obj \
+          corner_window_element.obj \
+          front_door_element.obj \
+          back_door_element.obj \
           vertex_image.obj \
           token_file.obj \
           document.obj \
