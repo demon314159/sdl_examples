@@ -37,6 +37,7 @@ private:
     void build_model();
     void build_uniform();
     void update_uniform();
+    Int3 table_coord_selected(const MouseVector& mv, float& depth) const;
     bool top_face_selection(int sx, int sy, Int3& pos, bool& gable_flag, int& gable_orientation) const;
     bool try_hide_button(int sx, int sy);
     bool try_menu_button(int sx, int sy);
@@ -44,7 +45,6 @@ private:
     void try_delete_any_face(int sx, int sy);
     void adjust_table_size();
 
-    Int3 table_coord_selected(const MouseVector& mv, float& depth) const;
     bool mouse_vector_intersects_face(const MouseVector& mv, const Face& f, float& depth, Float3& ip) const;
     Float3 normal(const Face& f) const;
     bool in_face(const Float3& p, const Face& f) const;

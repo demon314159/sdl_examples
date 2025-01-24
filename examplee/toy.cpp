@@ -328,44 +328,6 @@ void Toy::try_top_face(int sx, int sy)
     }
 }
 
-bool Toy::mouse(SDL_Event* e, bool on)
-{
-    bool ret_val = AnimatedToy::mouse(e, on);
-    if (!ret_val)
-        return false;
-    if (e->button.button == SDL_BUTTON_MIDDLE) {
-        if (on) {
-        } else {
-        }
-    } else if (e->button.button == SDL_BUTTON_LEFT) {
-        if (on) {
-            if (!try_hide_button(e->button.x, e->button.y)) {
-                if (!try_menu_button(e->button.x, e->button.y)) {
-                    try_top_face(e->button.x, e->button.y);
-                }
-            }
-        } else {
-            m_menu->release();
-        }
-    } else if (e->button.button == SDL_BUTTON_RIGHT) {
-        if (on) {
-            try_delete_any_face(e->button.x, e->button.y);
-        } else {
-        }
-    }
-    return false;
-}
-
-void Toy::adjust_table_size()
-{
-    IntegerBoundingBox bb = m_doc->integer_bounding_box();
-    bb.vmin.v1 -= 2;
-    bb.vmin.v3 -= 2;
-    bb.vmax.v1 += 2;
-    bb.vmax.v3 += 2;
-    m_table->change_size({bb.vmin.v1, bb.vmax.v3}, {bb.vmax.v1 - bb.vmin.v1 + 1, bb.vmax.v3 - bb.vmin.v3 + 1});
-}
-
 void Toy::try_delete_any_face(int sx, int sy)
 {
     MouseVector mv = m_camera->new_mouse_vector(sx, sy);
@@ -392,6 +354,44 @@ void Toy::try_delete_any_face(int sx, int sy)
     if (min_element >= 0) {
         m_history->do_command(new RemoveElementCommand(min_element, m_doc));
     }
+}
+
+void Toy::adjust_table_size()
+{
+    IntegerBoundingBox bb = m_doc->integer_bounding_box();
+    bb.vmin.v1 -= 2;
+    bb.vmin.v3 -= 2;
+    bb.vmax.v1 += 2;
+    bb.vmax.v3 += 2;
+    m_table->change_size({bb.vmin.v1, bb.vmax.v3}, {bb.vmax.v1 - bb.vmin.v1 + 1, bb.vmax.v3 - bb.vmin.v3 + 1});
+}
+
+bool Toy::mouse(SDL_Event* e, bool on)
+{
+    bool ret_val = AnimatedToy::mouse(e, on);
+    if (!ret_val)
+        return false;
+    if (e->button.button == SDL_BUTTON_MIDDLE) {
+        if (on) {
+        } else {
+        }
+    } else if (e->button.button == SDL_BUTTON_LEFT) {
+        if (on) {
+            if (!try_hide_button(e->button.x, e->button.y)) {
+                if (!try_menu_button(e->button.x, e->button.y)) {
+                    try_top_face(e->button.x, e->button.y);
+                }
+            }
+        } else {
+            m_menu->release();
+        }
+    } else if (e->button.button == SDL_BUTTON_RIGHT) {
+        if (on) {
+            try_delete_any_face(e->button.x, e->button.y);
+        } else {
+        }
+    }
+    return false;
 }
 
 bool Toy::mouse_vector_intersects_face(const MouseVector& mv, const Face& f, float& depth, Float3& ip) const

@@ -55,7 +55,6 @@ public:
     virtual const CadModel* model() const;
     virtual bool corner_flag() const;
     virtual bool gable_flag() const;
-    virtual bool roof_flag() const;
     virtual int faces() const;
     virtual Face face(int ix, bool* top_face = NULL) const;
 protected:
@@ -169,7 +168,6 @@ public:
     RoofElement() = delete;
     void save_to_file(FILE* ffo) const override;
     const CadModel* model() const override;
-    bool roof_flag() const override;
     int faces() const override;
     Face face(int ix, bool* top_face = NULL) const override;
 protected:
