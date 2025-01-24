@@ -63,6 +63,7 @@ HEADERS = view.h \
           button_shape.h \
           push_button.h \
           image_panel.h \
+          image_button.h \
           material_menu.h \
           table.h \
           \
@@ -138,6 +139,7 @@ OBJECTS = main.obj \
           button_shape.obj \
           push_button.obj \
           image_panel.obj \
+          image_button.obj \
           material_menu.obj \
           table.obj \
           \

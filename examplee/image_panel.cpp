@@ -17,6 +17,21 @@ ImagePanel::~ImagePanel()
 {
 }
 
+float ImagePanel::width() const
+{
+    return m_width;
+}
+
+float ImagePanel::height() const
+{
+    return m_height;
+}
+
+Float3 ImagePanel::position() const
+{
+    return m_position;
+}
+
 CadModel ImagePanel::model(float animation_id, float texture_id) const
 {
     CadModel cm;

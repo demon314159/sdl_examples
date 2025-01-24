@@ -12,6 +12,7 @@
 #include "texture.h"
 #include "uniform.h"
 #include "image_panel.h"
+#include "image_button.h"
 #include "mouse_vector.h"
 
 #define MATERIAL_GABLE_BRICK        0
@@ -63,6 +64,7 @@ protected:
     ImagePanel* m_panel4;
     ImagePanel* m_panel5;
     ImagePanel* m_panel6;
+    ImageButton* m_ibutton2;
     float* m_lamp_data;
     Float3 pos_at_zlevel(float z, const MouseVector& mv) const;
     void update_lamp_data();

@@ -65,7 +65,7 @@ bool PushButton::collide(const Float3& sel_pos, const Float3& top_left) const
     float dx = sel_pos.v1 - bpx;
     float dy = sel_pos.v2 - bpy;
     float r = sqrt(dx * dx + dy * dy);
-    return r <= m_radius;
+    return r <= (1.8 * m_radius);
 
 
 }
