@@ -32,16 +32,28 @@
 #define PANEL6_DIMX 265.0
 #define PANEL6_DIMY 477.0
 
-#define IBUTTON2_POSITION { 4.0, 4.0}
-#define IBUTTON2_REGION { 90.0, 65.0}
+#define IBUTTON1_POSITION {0.0, 0.0}
+#define IBUTTON1_REGION {193.0, 91.0}
+#define IBUTTON2_POSITION {4.0, 4.0}
+#define IBUTTON2_REGION {90.0, 65.0}
 #define IBUTTON3_POSITION { 2.0, 104.0}
-#define IBUTTON3_REGION { 310.0, 62.0}
+#define IBUTTON3_REGION {310.0, 62.0}
 #define IBUTTON4_POSITION { 3.0, 208.0}
-#define IBUTTON4_REGION { 308.0, 53.0}
+#define IBUTTON4_REGION {308.0, 53.0}
 #define IBUTTON5_POSITION { 4.0, 304.0}
-#define IBUTTON5_REGION { 308.0, 60.0}
+#define IBUTTON5_REGION {308.0, 60.0}
 #define IBUTTON6_POSITION { 3.0, 400.0}
-#define IBUTTON6_REGION { 461.0, 65.0}
+#define IBUTTON6_REGION {461.0, 65.0}
+#define IBUTTON7_POSITION { 0.0, 0.0}
+#define IBUTTON7_REGION {199.0, 116.0}
+#define IBUTTON8_POSITION { 60.0, 7.0}
+#define IBUTTON8_REGION {184.0, 220.0}
+#define IBUTTON9_POSITION {8.0, 253.0}
+#define IBUTTON9_REGION {422.0, 282.0}
+#define IBUTTON10_POSITION {.0, 0.0}
+#define IBUTTON10_REGION {264.0, 476.0}
+#define IBUTTON11_POSITION {0.0, 0.0}
+#define IBUTTON11_REGION {265.0, 477.0}
 
 MaterialMenu::MaterialMenu()
     : m_material(MATERIAL_BRICK)
@@ -62,11 +74,17 @@ MaterialMenu::MaterialMenu()
     , m_panel4(NULL)
     , m_panel5(NULL)
     , m_panel6(NULL)
+    , m_ibutton1(NULL)
     , m_ibutton2(NULL)
     , m_ibutton3(NULL)
     , m_ibutton4(NULL)
     , m_ibutton5(NULL)
     , m_ibutton6(NULL)
+    , m_ibutton7(NULL)
+    , m_ibutton8(NULL)
+    , m_ibutton9(NULL)
+    , m_ibutton10(NULL)
+    , m_ibutton11(NULL)
     , m_lamp_data(new float[3 * BUTTON_LAMPS])
 {
     m_button1 = new PushButton(BUTTON_RADIUS, BUTTON_RADIUS / 4.0, {XPOS, YPOS + 1.0 * YPITCH, 0.0});
@@ -86,11 +104,17 @@ MaterialMenu::MaterialMenu()
     m_panel4 = new ImagePanel(2.0 * IMAGEY * PANEL4_DIMX / PANEL4_DIMY, IMAGEY * 2.0, {XPOS2, YPOS - 6.5 * YPITCH, 0.0} );
     m_panel5 = new ImagePanel(IMAGEY * PANEL5_DIMX / PANEL5_DIMY, IMAGEY, {XPOS2, YPOS - 8.0 * YPITCH, 0.0} );
     m_panel6 = new ImagePanel(IMAGEY * PANEL6_DIMX / PANEL6_DIMY, IMAGEY, {XPOS2, YPOS - 9.0 * YPITCH, 0.0} );
+    m_ibutton1 = new ImageButton(m_panel1, PANEL1_DIMX, PANEL1_DIMY, IBUTTON1_POSITION, IBUTTON1_REGION);
     m_ibutton2 = new ImageButton(m_panel2, PANEL2_DIMX, PANEL2_DIMY, IBUTTON2_POSITION, IBUTTON2_REGION);
     m_ibutton3 = new ImageButton(m_panel2, PANEL2_DIMX, PANEL2_DIMY, IBUTTON3_POSITION, IBUTTON3_REGION);
     m_ibutton4 = new ImageButton(m_panel2, PANEL2_DIMX, PANEL2_DIMY, IBUTTON4_POSITION, IBUTTON4_REGION);
     m_ibutton5 = new ImageButton(m_panel2, PANEL2_DIMX, PANEL2_DIMY, IBUTTON5_POSITION, IBUTTON5_REGION);
     m_ibutton6 = new ImageButton(m_panel2, PANEL2_DIMX, PANEL2_DIMY, IBUTTON6_POSITION, IBUTTON6_REGION);
+    m_ibutton7 = new ImageButton(m_panel3, PANEL3_DIMX, PANEL3_DIMY, IBUTTON7_POSITION, IBUTTON7_REGION);
+    m_ibutton8 = new ImageButton(m_panel4, PANEL4_DIMX, PANEL4_DIMY, IBUTTON8_POSITION, IBUTTON8_REGION);
+    m_ibutton9 = new ImageButton(m_panel4, PANEL4_DIMX, PANEL4_DIMY, IBUTTON9_POSITION, IBUTTON9_REGION);
+    m_ibutton10 = new ImageButton(m_panel5, PANEL5_DIMX, PANEL6_DIMY, IBUTTON10_POSITION, IBUTTON10_REGION);
+    m_ibutton11 = new ImageButton(m_panel6, PANEL5_DIMX, PANEL6_DIMY, IBUTTON11_POSITION, IBUTTON11_REGION);
     m_width = XPOS2 + BIG_IMAGEY * PANEL2_DIMX / PANEL2_DIMY;
     update_lamp_data();
 }
@@ -98,11 +122,17 @@ MaterialMenu::MaterialMenu()
 MaterialMenu::~MaterialMenu()
 {
     delete [] m_lamp_data;
+    delete m_ibutton11;
+    delete m_ibutton10;
+    delete m_ibutton9;
+    delete m_ibutton8;
+    delete m_ibutton7;
     delete m_ibutton6;
     delete m_ibutton5;
     delete m_ibutton4;
     delete m_ibutton3;
     delete m_ibutton2;
+    delete m_ibutton1;
     delete m_panel6;
     delete m_panel5;
     delete m_panel4;
@@ -214,10 +244,10 @@ int MaterialMenu::material() const
     return m_material;
 }
 
-bool MaterialMenu::hide_button_pressed(const MouseVector& mv, const Float3& top_left) const
+bool MaterialMenu::hide_button_pressed(const MouseVector& mv, const Float3& top_left, bool hidden) const
 {
     Float3 sel_pos = pos_at_zlevel(-1.0, mv);
-    if (m_button1->collide(sel_pos, top_left)) {
+    if (m_button1->collide(sel_pos, top_left) || (!hidden && m_ibutton1->collide(sel_pos, top_left))) {
         m_button1->press();
         return true;
     }
@@ -252,27 +282,27 @@ bool MaterialMenu::menu_button_pressed(const MouseVector& mv, const Float3& top_
         m_material = MATERIAL_TRIPLE_FOUNDATION;
         return true;
     }
-    if (m_button7->collide(sel_pos, top_left)) {
+    if (m_button7->collide(sel_pos, top_left) || m_ibutton7->collide(sel_pos, top_left)) {
         m_button7->press();
         m_material = MATERIAL_ROOF;
         return true;
     }
-    if (m_button8->collide(sel_pos, top_left)) {
+    if (m_button8->collide(sel_pos, top_left) || m_ibutton8->collide(sel_pos, top_left)) {
         m_button8->press();
         m_material = MATERIAL_WINDOW;
         return true;
     }
-    if (m_button9->collide(sel_pos, top_left)) {
+    if (m_button9->collide(sel_pos, top_left) || m_ibutton9->collide(sel_pos, top_left)) {
         m_button9->press();
         m_material = MATERIAL_CORNER_WINDOW;
         return true;
     }
-    if (m_button10->collide(sel_pos, top_left)) {
+    if (m_button10->collide(sel_pos, top_left) || m_ibutton10->collide(sel_pos, top_left)) {
         m_button10->press();
         m_material = MATERIAL_FRONT_DOOR;
         return true;
     }
-    if (m_button11->collide(sel_pos, top_left)) {
+    if (m_button11->collide(sel_pos, top_left) || m_ibutton11->collide(sel_pos, top_left)) {
         m_button11->press();
         m_material = MATERIAL_BACK_DOOR;
         return true;

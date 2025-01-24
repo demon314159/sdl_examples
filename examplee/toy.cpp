@@ -231,7 +231,7 @@ bool Toy::top_face_selection(int sx, int sy, Int3& pos, bool& gable_flag, int& g
 bool Toy::try_hide_button(int sx, int sy)
 {
     MouseVector mv = m_camera->new_fixed_mouse_vector(sx, sy);
-    if (m_menu->hide_button_pressed(mv, m_camera->top_left())) {
+    if (m_menu->hide_button_pressed(mv, m_camera->top_left(), m_camera->hidden())) {
         if (m_camera->hidden()) {
             m_camera->unhide(HIDE_TIME);
         } else {

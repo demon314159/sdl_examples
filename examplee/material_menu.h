@@ -40,7 +40,7 @@ public:
     CadModel model() const;
     float width() const;
     int material() const;
-    bool hide_button_pressed(const MouseVector& mv, const Float3& top_left) const;
+    bool hide_button_pressed(const MouseVector& mv, const Float3& top_left, bool hidden) const;
     bool menu_button_pressed(const MouseVector& mv, const Float3& top_left);
     void release(void);
 
@@ -64,11 +64,17 @@ protected:
     ImagePanel* m_panel4;
     ImagePanel* m_panel5;
     ImagePanel* m_panel6;
+    ImageButton* m_ibutton1;
     ImageButton* m_ibutton2;
     ImageButton* m_ibutton3;
     ImageButton* m_ibutton4;
     ImageButton* m_ibutton5;
     ImageButton* m_ibutton6;
+    ImageButton* m_ibutton7;
+    ImageButton* m_ibutton8;
+    ImageButton* m_ibutton9;
+    ImageButton* m_ibutton10;
+    ImageButton* m_ibutton11;
     float* m_lamp_data;
     Float3 pos_at_zlevel(float z, const MouseVector& mv) const;
     void update_lamp_data();
