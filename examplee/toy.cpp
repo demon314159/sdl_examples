@@ -345,9 +345,8 @@ void Toy::try_delete_any_face(int sx, int sy)
 {
     MouseVector mv = m_camera->new_mouse_vector(sx, sy);
     Float3 v = mv.vector();
-    float min_depth;
+    float min_depth = 1000.0;
     int min_element = -1;
-    table_coord_selected(mv, min_depth);  // Just to establish a real depth
     for (int i = 0; i < m_doc->elements(); i++) {
         const Element* e = m_doc->element(i);
         if (!e->removed()) {
