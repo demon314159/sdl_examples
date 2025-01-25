@@ -65,6 +65,7 @@ HEADERS = view.h \
           image_panel.h \
           image_button.h \
           material_menu.h \
+          command_menu.h \
           table.h \
           \
 # note: all of the files after toy.h are there for toy.cpp only
@@ -141,6 +142,7 @@ OBJECTS = main.obj \
           image_panel.obj \
           image_button.obj \
           material_menu.obj \
+          command_menu.obj \
           table.obj \
           \
 # note: all of the files after toy.obj are there for toy.cpp only

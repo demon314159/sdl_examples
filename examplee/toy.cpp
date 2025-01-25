@@ -32,22 +32,26 @@ Toy::Toy()
     , m_history(new History())
     , m_choose(new Choose(DIMX, DIMY, DIMZ, MARKER_COLOR))
     , m_seconds(0.0)
-    , m_menu(NULL)
+    , m_left_menu(NULL)
+    , m_right_menu(NULL)
 {
-    m_menu = new MaterialMenu();
+    m_left_menu = new MaterialMenu();
+    m_right_menu = new CommandMenu();
     m_table = new Table(DIMX, DIMY, DIMZ);
     build_texture();
     build_model();
     build_uniform();
     reframe();
     adjust_table_size();
-    m_camera->hide_left(-m_menu->width(), 0.0, 0.0, 0.0);
+    m_camera->hide_left(-m_left_menu->width(), 0.0, 0.0, 0.0);
+    m_camera->hide_right(m_right_menu->width(), 0.0, 0.0, 0.0);
 }
 
 Toy::~Toy()
 {
     delete m_table;
-    delete m_menu;
+    delete m_right_menu;
+    delete m_left_menu;
     delete m_choose;
     delete m_history;
     delete m_doc;
@@ -77,7 +81,8 @@ Camera* Toy::get_camera() const
 
 void Toy::build_texture()
 {
-    m_menu->build_texture(m_texture);
+    m_left_menu->build_texture(m_texture);
+    m_right_menu->build_texture(m_texture);
     m_table->build_texture(m_texture);
 }
 
@@ -85,7 +90,8 @@ void Toy::build_model()
 {
     m_model->clear();
     m_model->add(m_choose->model(MARKER_ANIMATION_ID));
-    m_model->add(m_menu->model());
+    m_model->add(m_left_menu->model());
+    m_model->add(m_right_menu->model());
     m_model->add(m_table->model(TABLE_ANIMATION_ID));
 }
 
@@ -95,14 +101,16 @@ void Toy::build_uniform()
         m_uniform->add(m_texture->uniform_name(i), UNIFORM_TYPE_1_INTEGER_VECTOR, 1, m_texture->data(i));
     }
     m_uniform->add("animation_0_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_choose->data());
-    m_menu->build_uniform(m_uniform);
+    m_left_menu->build_uniform(m_uniform);
+    m_right_menu->build_uniform(m_uniform);
     m_table->build_uniform(m_uniform);
 }
 
 void Toy::update_uniform()
 {
     m_choose->data();
-    m_menu->update_uniform();
+    m_left_menu->update_uniform();
+    m_right_menu->update_uniform();
     m_table->update_uniform();
 }
 
@@ -231,11 +239,18 @@ bool Toy::top_face_selection(int sx, int sy, Int3& pos, bool& gable_flag, int& g
 bool Toy::try_hide_button(int sx, int sy)
 {
     MouseVector mv = m_camera->new_fixed_mouse_vector(sx, sy);
-    if (m_menu->hide_button_pressed(mv, m_camera->top_left(), m_camera->hidden_left())) {
+    if (m_left_menu->hide_button_pressed(mv, m_camera->top_left(), m_camera->hidden_left())) {
         if (m_camera->hidden_left()) {
             m_camera->unhide_left(HIDE_TIME);
         } else {
-            m_camera->hide_left(-m_menu->width(), 0.0, 0.0, HIDE_TIME);
+            m_camera->hide_left(-m_left_menu->width(), 0.0, 0.0, HIDE_TIME);
+        }
+        return true;
+    } else if (m_right_menu->hide_button_pressed(mv, m_camera->top_right(), m_camera->hidden_right())) {
+        if (m_camera->hidden_right()) {
+            m_camera->unhide_right(HIDE_TIME);
+        } else {
+            m_camera->hide_right(m_right_menu->width(), 0.0, 0.0, HIDE_TIME);
         }
         return true;
     } else {
@@ -246,10 +261,17 @@ bool Toy::try_hide_button(int sx, int sy)
 bool Toy::try_menu_button(int sx, int sy)
 {
     MouseVector mv = m_camera->new_fixed_mouse_vector(sx, sy);
-    if (m_camera->hidden_left()) {
-        return false;
+    if (!m_camera->hidden_left()) {
+        if (m_left_menu->menu_button_pressed(mv, m_camera->top_left())) {
+            return true;
+        }
     }
-    return m_menu->menu_button_pressed(mv, m_camera->top_left());
+    if (!m_camera->hidden_right()) {
+        if (m_right_menu->menu_button_pressed(mv, m_camera->top_right())) {
+            return true;
+        }
+    }
+    return false;
 }
 
 void Toy::try_top_face(int sx, int sy)
@@ -265,7 +287,7 @@ void Toy::try_top_face(int sx, int sy)
         int o;
         if (m_choose->new_element_chosen(p, w, o)) {
             if (w == 1) {
-                switch(m_menu->material()) {
+                switch(m_left_menu->material()) {
                     case MATERIAL_FOUNDATION:
                     case MATERIAL_DOUBLE_FOUNDATION:
                     case MATERIAL_TRIPLE_FOUNDATION:
@@ -284,7 +306,7 @@ void Toy::try_top_face(int sx, int sy)
                 }
             } else if (w > 1) {
                 Element* item;
-                switch(m_menu->material()) {
+                switch(m_left_menu->material()) {
                     case MATERIAL_GABLE_BRICK:
                         item = new GableBrickElement(p, o);
                         break;
@@ -324,7 +346,7 @@ void Toy::try_top_face(int sx, int sy)
                         item = new BrickElement(p, o);
                         break;
                 }
-                if (m_menu->material() == MATERIAL_ROOF) {
+                if (m_left_menu->material() == MATERIAL_ROOF) {
                     m_history->do_command(new AddElementCommand(item, m_doc));
                 } else {
                     if (!m_doc->element_occupied(item)) {
@@ -395,7 +417,8 @@ bool Toy::mouse(SDL_Event* e, bool on)
                 }
             }
         } else {
-            m_menu->release();
+            m_left_menu->release();
+            m_right_menu->release();
         }
     } else if (e->button.button == SDL_BUTTON_RIGHT) {
         if (on) {

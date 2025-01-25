@@ -68,7 +68,7 @@ void Table::build_texture(Texture* texture) const
 
 void Table::build_uniform(Uniform* uniform)
 {
-    uniform->add("animation_12_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, data());
+    uniform->add("animation_21_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, data());
     uniform->add("table_size", UNIFORM_TYPE_1_FLOAT_VECTOR, 2, size_data());
 }
 

@@ -16,6 +16,10 @@ Camera::Camera(int width, int height, float initial_mag, const Float2& initial_o
     , m_hide_left_velocity({0.0, 0.0, 0.0})
     , m_hidden_left(false)
     , m_width(width)
+    , m_right_time_left(0.0)
+    , m_hide_right_position({0.0, 0.0, 0.0})
+    , m_hide_right_velocity({0.0, 0.0, 0.0})
+    , m_hidden_right(false)
     , m_height(height)
     , m_pose(new Pose(MAX_POSES))
     , m_mag(initial_mag)
@@ -27,8 +31,10 @@ Camera::Camera(int width, int height, float initial_mag, const Float2& initial_o
     , m_object_center({0.0, 0.0, 0.0})
     , m_fixed_projection()
     , m_projection()
-    , m_fixed_matrix()
+    , m_fixed_left_matrix()
+    , m_fixed_right_matrix()
     , m_hide_left_matrix()
+    , m_hide_right_matrix()
     , m_mvp_matrix()
     , m_rot_matrix()
 {
@@ -180,7 +186,9 @@ void Camera::update_matrices()
     float dy = tan((m_fov / 2.0) * PI / 180.0);
     float dx = dy * aspect;
     matrix.translate(-dx, dy, -1.0);
-    m_fixed_matrix = m_fixed_projection * matrix;
+    m_fixed_left_matrix = m_fixed_projection * matrix;
+    matrix.translate(dx + dx, 0.0, 0.0);
+    m_fixed_right_matrix = m_fixed_projection * matrix;
     update_hide_matrix();
 
     matrix.unity();
@@ -205,12 +213,11 @@ void Camera::update_hide_matrix()
     matrix.translate(cp.v1, cp.v2, cp.v3);
     m_hide_left_matrix = m_fixed_projection * matrix;
 
-//    Float3 cp = current_hide_position(m_hide_left_position, m_hide_left_velocity, m_left_time_left);
-//    Matrix4x4 matrix;
-//    matrix.unity();
-//    matrix.translate(-dx, dy, -1.0);
-//    matrix.translate(cp.v1, cp.v2, cp.v3);
-//    m_hide_left_matrix = m_fixed_projection * matrix;
+    cp = current_hide_position(m_hide_right_position, m_hide_right_velocity, m_right_time_left);
+    matrix.unity();
+    matrix.translate(dx, dy, -1.0);
+    matrix.translate(cp.v1, cp.v2, cp.v3);
+    m_hide_right_matrix = m_fixed_projection * matrix;
 }
 
 void Camera::advance_hide(float seconds)
@@ -220,11 +227,11 @@ void Camera::advance_hide(float seconds)
     } else {
         m_left_time_left = 0.0;
     }
-//    if (m_left_time_left > seconds) {
-//        m_left_time_left -= seconds;
-//    } else {
-//        m_left_time_left = 0.0;
-//    }
+    if (m_right_time_left > seconds) {
+        m_right_time_left -= seconds;
+    } else {
+        m_right_time_left = 0.0;
+    }
 }
 
 Float3 Camera::current_hide_position(const Float3& p, const Float3& v, float tleft) const
@@ -236,14 +243,24 @@ Float3 Camera::current_hide_position(const Float3& p, const Float3& v, float tle
     return cp;
 }
 
-const float* Camera::fixed_data() const
+const float* Camera::fixed_left_data() const
 {
-    return m_fixed_matrix.data();
+    return m_fixed_left_matrix.data();
+}
+
+const float* Camera::fixed_right_data() const
+{
+    return m_fixed_right_matrix.data();
 }
 
 const float* Camera::hide_left_data() const
 {
     return m_hide_left_matrix.data();
+}
+
+const float* Camera::hide_right_data() const
+{
+    return m_hide_right_matrix.data();
 }
 
 const float* Camera::mvp_data() const
@@ -347,6 +364,42 @@ bool Camera::set_hide_left_position(float posx, float posy, float posz, float pe
 bool Camera::hidden_left() const
 {
     return m_hidden_left;
+}
+
+void Camera::hide_right(float posx, float posy, float posz, float period)
+{
+    if (set_hide_right_position(posx, posy, posz, period)) {
+        m_hidden_right = true;
+        update_matrices();
+    }
+}
+
+void Camera::unhide_right(float period)
+{
+    if (set_hide_right_position(0.0, 0.0, 0.0, period)) {
+        m_hidden_right = false;
+        update_matrices();
+    }
+}
+
+bool Camera::set_hide_right_position(float posx, float posy, float posz, float period)
+{
+    if (m_right_time_left > 0.0) {
+        return false;
+    }
+    if (period > 0.0) {
+        m_hide_right_velocity = velocity({posx, posy, posz}, m_hide_right_position, period);
+        m_right_time_left = period;
+    }
+    m_hide_right_position.v1 = posx;
+    m_hide_right_position.v2 = posy;
+    m_hide_right_position.v3 = posz;
+    return true;
+}
+
+bool Camera::hidden_right() const
+{
+    return m_hidden_right;
 }
 
 Float3 Camera::velocity(const Float3& p1, const Float3& p0, float period) const

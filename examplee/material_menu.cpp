@@ -214,7 +214,7 @@ void MaterialMenu::update_lamp_data()
 CadModel MaterialMenu::model() const
 {
     CadModel cm;
-    cm.add(m_button1->model(FIXED_ANIMATION_ID, BUTTON1_ANIMATION_ID));
+    cm.add(m_button1->model(FIXED_LEFT_ANIMATION_ID, BUTTON1_ANIMATION_ID));
     cm.add(m_button2->model(HIDE_LEFT_ANIMATION_ID, BUTTON2_ANIMATION_ID, LAMP1_TEXTURE_ID));
     cm.add(m_button3->model(HIDE_LEFT_ANIMATION_ID, BUTTON3_ANIMATION_ID, LAMP2_TEXTURE_ID));
     cm.add(m_button4->model(HIDE_LEFT_ANIMATION_ID, BUTTON4_ANIMATION_ID, LAMP3_TEXTURE_ID));

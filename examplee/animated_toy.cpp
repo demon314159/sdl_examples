@@ -22,8 +22,10 @@ AnimatedToy::AnimatedToy()
     , m_camera(new Camera(INITIAL_WIDTH, INITIAL_HEIGHT, INITIAL_MAG, {INITIAL_XOFF, INITIAL_YOFF}, {INITIAL_XROT, INITIAL_YROT}))
     , m_model(new CadModel(CubeShape(0.1, 0.1, 0.1), PaintCan(1.0, 0.0, 0.0), 0.0))
 {
-    m_uniform->add("fixed_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_camera->fixed_data());
+    m_uniform->add("fixed_left_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_camera->fixed_left_data());
+    m_uniform->add("fixed_right_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_camera->fixed_right_data());
     m_uniform->add("hide_left_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_camera->hide_left_data());
+    m_uniform->add("hide_right_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_camera->hide_right_data());
     m_uniform->add("mvp_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_camera->mvp_data());
     m_uniform->add("rot_matrix", UNIFORM_TYPE_MATRIX4_FLOAT_VECTOR, 1, m_camera->rot_data());
     m_camera->frame(m_model);

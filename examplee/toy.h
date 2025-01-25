@@ -11,6 +11,7 @@
 #include "history.h"
 #include "table.h"
 #include "material_menu.h"
+#include "command_menu.h"
 
 class Toy: public AnimatedToy
 {
@@ -30,7 +31,8 @@ private:
     Document* m_doc;
     History* m_history;
     Choose* m_choose;
-    MaterialMenu* m_menu;
+    MaterialMenu* m_left_menu;
+    CommandMenu* m_right_menu;
 
     float m_seconds;
     void build_texture();
