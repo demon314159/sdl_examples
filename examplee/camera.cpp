@@ -11,10 +11,10 @@
 #define MAX_POSES 10
 
 Camera::Camera(int width, int height, float initial_mag, const Float2& initial_offset, const Float2& initial_rotation)
-    : m_time_left(0.0)
-    , m_hide_position({0.0, 0.0, 0.0})
-    , m_hide_velocity({0.0, 0.0, 0.0})
-    , m_hidden(false)
+    : m_left_time_left(0.0)
+    , m_hide_left_position({0.0, 0.0, 0.0})
+    , m_hide_left_velocity({0.0, 0.0, 0.0})
+    , m_hidden_left(false)
     , m_width(width)
     , m_height(height)
     , m_pose(new Pose(MAX_POSES))
@@ -28,7 +28,7 @@ Camera::Camera(int width, int height, float initial_mag, const Float2& initial_o
     , m_fixed_projection()
     , m_projection()
     , m_fixed_matrix()
-    , m_hide_fixed_matrix()
+    , m_hide_left_matrix()
     , m_mvp_matrix()
     , m_rot_matrix()
 {
@@ -159,6 +159,14 @@ Float3 Camera::top_left() const
     return {-dx, dy, -1.0};
 }
 
+Float3 Camera::top_right() const
+{
+    float aspect = float(m_width) / float(m_height ? m_height : 1.0);
+    float dy = tan((m_fov / 2.0) * PI / 180.0);
+    float dx = dy * aspect;
+    return {dx, dy, -1.0};
+}
+
 void Camera::update_matrices()
 {
     float znear = 0.1;
@@ -173,7 +181,7 @@ void Camera::update_matrices()
     float dx = dy * aspect;
     matrix.translate(-dx, dy, -1.0);
     m_fixed_matrix = m_fixed_projection * matrix;
-    update_hide_fixed_matrix();
+    update_hide_matrix();
 
     matrix.unity();
     matrix.translate(m_offset.v1, m_offset.v2, -m_camz - m_object_radius);
@@ -184,26 +192,39 @@ void Camera::update_matrices()
     m_rot_matrix = matrix;
 }
 
-void Camera::update_hide_fixed_matrix()
+void Camera::update_hide_matrix()
 {
-    Float3 cp = current_hide_position(m_hide_position, m_hide_velocity, m_time_left);
-    Matrix4x4 matrix;
-    matrix.unity();
     float aspect = float(m_width) / float(m_height ? m_height : 1.0);
     float dy = tan((m_fov / 2.0) * PI / 180.0);
     float dx = dy * aspect;
+
+    Float3 cp = current_hide_position(m_hide_left_position, m_hide_left_velocity, m_left_time_left);
+    Matrix4x4 matrix;
+    matrix.unity();
     matrix.translate(-dx, dy, -1.0);
     matrix.translate(cp.v1, cp.v2, cp.v3);
-    m_hide_fixed_matrix = m_fixed_projection * matrix;
+    m_hide_left_matrix = m_fixed_projection * matrix;
+
+//    Float3 cp = current_hide_position(m_hide_left_position, m_hide_left_velocity, m_left_time_left);
+//    Matrix4x4 matrix;
+//    matrix.unity();
+//    matrix.translate(-dx, dy, -1.0);
+//    matrix.translate(cp.v1, cp.v2, cp.v3);
+//    m_hide_left_matrix = m_fixed_projection * matrix;
 }
 
-void Camera::advance_hide_fixed(float seconds)
+void Camera::advance_hide(float seconds)
 {
-    if (m_time_left > seconds) {
-        m_time_left -= seconds;
+    if (m_left_time_left > seconds) {
+        m_left_time_left -= seconds;
     } else {
-        m_time_left = 0.0;
+        m_left_time_left = 0.0;
     }
+//    if (m_left_time_left > seconds) {
+//        m_left_time_left -= seconds;
+//    } else {
+//        m_left_time_left = 0.0;
+//    }
 }
 
 Float3 Camera::current_hide_position(const Float3& p, const Float3& v, float tleft) const
@@ -220,9 +241,9 @@ const float* Camera::fixed_data() const
     return m_fixed_matrix.data();
 }
 
-const float* Camera::hide_fixed_data() const
+const float* Camera::hide_left_data() const
 {
-    return m_hide_fixed_matrix.data();
+    return m_hide_left_matrix.data();
 }
 
 const float* Camera::mvp_data() const
@@ -292,40 +313,40 @@ MouseVector Camera::new_fixed_mouse_vector(int sx, int sy) const
     return tmv;
 }
 
-void Camera::hide(float posx, float posy, float posz, float period)
+void Camera::hide_left(float posx, float posy, float posz, float period)
 {
-    if (set_hide_position(posx, posy, posz, period)) {
-        m_hidden = true;
+    if (set_hide_left_position(posx, posy, posz, period)) {
+        m_hidden_left = true;
         update_matrices();
     }
 }
 
-void Camera::unhide(float period)
+void Camera::unhide_left(float period)
 {
-    if (set_hide_position(0.0, 0.0, 0.0, period)) {
-        m_hidden = false;
+    if (set_hide_left_position(0.0, 0.0, 0.0, period)) {
+        m_hidden_left = false;
         update_matrices();
     }
 }
 
-bool Camera::set_hide_position(float posx, float posy, float posz, float period)
+bool Camera::set_hide_left_position(float posx, float posy, float posz, float period)
 {
-    if (m_time_left > 0.0) {
+    if (m_left_time_left > 0.0) {
         return false;
     }
     if (period > 0.0) {
-        m_hide_velocity = velocity({posx, posy, posz}, m_hide_position, period);
-        m_time_left = period;
+        m_hide_left_velocity = velocity({posx, posy, posz}, m_hide_left_position, period);
+        m_left_time_left = period;
     }
-    m_hide_position.v1 = posx;
-    m_hide_position.v2 = posy;
-    m_hide_position.v3 = posz;
+    m_hide_left_position.v1 = posx;
+    m_hide_left_position.v2 = posy;
+    m_hide_left_position.v3 = posz;
     return true;
 }
 
-bool Camera::hidden() const
+bool Camera::hidden_left() const
 {
-    return m_hidden;
+    return m_hidden_left;
 }
 
 Float3 Camera::velocity(const Float3& p1, const Float3& p0, float period) const

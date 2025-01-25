@@ -41,7 +41,7 @@ Toy::Toy()
     build_uniform();
     reframe();
     adjust_table_size();
-    m_camera->hide(-m_menu->width(), 0.0, 0.0, 0.0);
+    m_camera->hide_left(-m_menu->width(), 0.0, 0.0, 0.0);
 }
 
 Toy::~Toy()
@@ -113,10 +113,10 @@ void Toy::advance(int nanoseconds)
     float seconds = 1.0e-3;
     while (m_seconds > seconds) {
         m_seconds -= seconds;
-        m_camera->advance_hide_fixed(seconds);
+        m_camera->advance_hide(seconds);
     }
     update_uniform();
-    m_camera->update_hide_fixed_matrix();
+    m_camera->update_hide_matrix();
     if (m_doc->just_one_change() || m_doc->many_changes()) {
         adjust_table_size();
     }
@@ -231,11 +231,11 @@ bool Toy::top_face_selection(int sx, int sy, Int3& pos, bool& gable_flag, int& g
 bool Toy::try_hide_button(int sx, int sy)
 {
     MouseVector mv = m_camera->new_fixed_mouse_vector(sx, sy);
-    if (m_menu->hide_button_pressed(mv, m_camera->top_left(), m_camera->hidden())) {
-        if (m_camera->hidden()) {
-            m_camera->unhide(HIDE_TIME);
+    if (m_menu->hide_button_pressed(mv, m_camera->top_left(), m_camera->hidden_left())) {
+        if (m_camera->hidden_left()) {
+            m_camera->unhide_left(HIDE_TIME);
         } else {
-            m_camera->hide(-m_menu->width(), 0.0, 0.0, HIDE_TIME);
+            m_camera->hide_left(-m_menu->width(), 0.0, 0.0, HIDE_TIME);
         }
         return true;
     } else {
@@ -246,7 +246,7 @@ bool Toy::try_hide_button(int sx, int sy)
 bool Toy::try_menu_button(int sx, int sy)
 {
     MouseVector mv = m_camera->new_fixed_mouse_vector(sx, sy);
-    if (m_camera->hidden()) {
+    if (m_camera->hidden_left()) {
         return false;
     }
     return m_menu->menu_button_pressed(mv, m_camera->top_left());

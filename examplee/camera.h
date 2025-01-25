@@ -38,29 +38,30 @@ public:
     void translate_y(int pixels);
 
     const float* fixed_data() const;
-    const float* hide_fixed_data() const;
+    const float* hide_left_data() const;
     const float* mvp_data() const;
     const float* rot_data() const;
     void add_pose(const Float2& offset, const Float2& rotation, float mag);
     int poses() const;
     void set_pose(int ix);
-    void hide(float posx, float posy, float posz, float period = 0.0);
-    void unhide(float period = 0.0);
-    bool hidden() const;
+    void hide_left(float posx, float posy, float posz, float period = 0.0);
+    void unhide_left(float period = 0.0);
+    bool hidden_left() const;
 
     MouseVector new_fixed_mouse_vector(int sx, int sy) const;
     MouseVector new_mouse_vector(int sx, int sy) const;
-    void advance_hide_fixed(float seconds);
-    void update_hide_fixed_matrix();
+    void advance_hide(float seconds);
+    void update_hide_matrix();
     Float3 top_left() const;
+    Float3 top_right() const;
 
     void show() const;
 
 private:
-    float m_time_left;
-    Float3 m_hide_position;
-    Float3 m_hide_velocity;
-    bool m_hidden;
+    float m_left_time_left;
+    Float3 m_hide_left_position;
+    Float3 m_hide_left_velocity;
+    bool m_hidden_left;
     int m_width;
     int m_height;
     Pose* m_pose;
@@ -74,12 +75,12 @@ private:
     Matrix4x4 m_fixed_projection;
     Matrix4x4 m_projection;
     Matrix4x4 m_fixed_matrix;
-    Matrix4x4 m_hide_fixed_matrix;
+    Matrix4x4 m_hide_left_matrix;
     Matrix4x4 m_mvp_matrix;
     Matrix4x4 m_rot_matrix;
 
     void update_matrices();
-    bool set_hide_position(float posx, float posy, float posz, float period);
+    bool set_hide_left_position(float posx, float posy, float posz, float period);
     Float3 velocity(const Float3& p1, const Float3& p0, float period) const;
     Float3 current_hide_position(const Float3& p, const Float3& v, float tleft) const;
 };
