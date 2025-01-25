@@ -13,11 +13,15 @@
 #define YPITCH (4.0 * BUTTON_RADIUS)
 
 #define XPOS (-2.0 * BUTTON_RADIUS)
-#define XPOS2 (XPOS - 3.0 * BUTTON_RADIUS)
-#define YPOS (- 2.0 * BUTTON_RADIUS - YPITCH)
+#define XPOS2 (XPOS - 2.0 * BUTTON_RADIUS)
+#define YPOS (- 2.0 * BUTTON_RADIUS)
 
 #define IMAGEY (YPITCH * 0.9)
-#define BIG_IMAGEY (0.95 * (5.0 * YPITCH))
+#define BIG_IMAGEY (9.1 * YPITCH)
+
+#define PANEL8_DIMX 234.0
+#define PANEL8_DIMY 827.0
+#define BIG_IMAGE_WIDTH  (BIG_IMAGEY * PANEL8_DIMX / PANEL8_DIMY)
 
 CommandMenu::CommandMenu()
     : m_command(COMMAND_QUIT)
@@ -30,21 +34,24 @@ CommandMenu::CommandMenu()
     , m_button7(NULL)
     , m_button8(NULL)
     , m_button9(NULL)
+    , m_panel8(NULL)
 {
-    m_button1 = new PushButton(BUTTON_RADIUS, BUTTON_RADIUS / 4.0, {XPOS, YPOS + 1.0 * YPITCH, 0.0});
-    m_button2 = new PushButton(BUTTON_RADIUS, BUTTON_RADIUS / 4.0, {XPOS, YPOS, 0.0});
-    m_button3 = new PushButton(BUTTON_RADIUS, BUTTON_RADIUS / 4.0, {XPOS, YPOS - 1.0 * YPITCH, 0.0});
-    m_button4 = new PushButton(BUTTON_RADIUS, BUTTON_RADIUS / 4.0, {XPOS, YPOS - 2.0 * YPITCH, 0.0});
-    m_button5 = new PushButton(BUTTON_RADIUS, BUTTON_RADIUS / 4.0, {XPOS, YPOS - 3.0 * YPITCH, 0.0});
-    m_button6 = new PushButton(BUTTON_RADIUS, BUTTON_RADIUS / 4.0, {XPOS, YPOS - 4.0 * YPITCH, 0.0});
-    m_button7 = new PushButton(BUTTON_RADIUS, BUTTON_RADIUS / 4.0, {XPOS, YPOS - 5.0 * YPITCH, 0.0});
-    m_button8 = new PushButton(BUTTON_RADIUS, BUTTON_RADIUS / 4.0, {XPOS, YPOS - 6.0 * YPITCH, 0.0});
-    m_button9 = new PushButton(BUTTON_RADIUS, BUTTON_RADIUS / 4.0, {XPOS, YPOS - 7.0 * YPITCH, 0.0});
-    m_width = -XPOS2;
+    m_button1 = new PushButton(BUTTON_RADIUS, BUTTON_RADIUS / 4.0, {XPOS, YPOS, 0.0});
+    m_button2 = new PushButton(BUTTON_RADIUS, BUTTON_RADIUS / 4.0, {XPOS, YPOS - 1.0 * YPITCH, 0.0});
+    m_button3 = new PushButton(BUTTON_RADIUS, BUTTON_RADIUS / 4.0, {XPOS, YPOS - 2.0 * YPITCH, 0.0});
+    m_button4 = new PushButton(BUTTON_RADIUS, BUTTON_RADIUS / 4.0, {XPOS, YPOS - 3.0 * YPITCH, 0.0});
+    m_button5 = new PushButton(BUTTON_RADIUS, BUTTON_RADIUS / 4.0, {XPOS, YPOS - 4.0 * YPITCH, 0.0});
+    m_button6 = new PushButton(BUTTON_RADIUS, BUTTON_RADIUS / 4.0, {XPOS, YPOS - 5.0 * YPITCH, 0.0});
+    m_button7 = new PushButton(BUTTON_RADIUS, BUTTON_RADIUS / 4.0, {XPOS, YPOS - 6.0 * YPITCH, 0.0});
+    m_button8 = new PushButton(BUTTON_RADIUS, BUTTON_RADIUS / 4.0, {XPOS, YPOS - 7.0 * YPITCH, 0.0});
+    m_button9 = new PushButton(BUTTON_RADIUS, BUTTON_RADIUS / 4.0, {XPOS, YPOS - 8.0 * YPITCH, 0.0});
+    m_panel8 = new ImagePanel(BIG_IMAGE_WIDTH, BIG_IMAGEY, {XPOS2 - BIG_IMAGE_WIDTH, YPOS - BIG_IMAGEY / 2.0 + 0.7 * YPITCH, 0.0} );
+    m_width = -XPOS2 + BIG_IMAGE_WIDTH;
 }
 
 CommandMenu::~CommandMenu()
 {
+    delete m_panel8;
     delete m_button9;
     delete m_button8;
     delete m_button7;
@@ -58,6 +65,7 @@ CommandMenu::~CommandMenu()
 
 void CommandMenu::build_texture(Texture* texture) const
 {
+    texture->add("p_panel8.png", "texture8");
 }
 
 void CommandMenu::build_uniform(Uniform* uniform)
@@ -98,6 +106,7 @@ CadModel CommandMenu::model() const
     cm.add(m_button7->model(HIDE_RIGHT_ANIMATION_ID, BUTTON18_ANIMATION_ID));
     cm.add(m_button8->model(HIDE_RIGHT_ANIMATION_ID, BUTTON19_ANIMATION_ID));
     cm.add(m_button9->model(HIDE_RIGHT_ANIMATION_ID, BUTTON20_ANIMATION_ID));
+    cm.add(m_panel8->model(HIDE_RIGHT_ANIMATION_ID, IMAGE8_TEXTURE_ID));
     return cm;
 }
 

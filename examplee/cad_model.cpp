@@ -260,7 +260,7 @@ Facet CadModel::facet(int ix) const
 bool CadModel::facet_regular(int ix) const
 {
     float id = m_facet[ix].animation_id;
-    if (id > 1.5 && id < 17.5)
+    if (id > 1.5 && id < 27.5)
         return false;
     return id < 98.5;
 }

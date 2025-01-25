@@ -16,6 +16,7 @@ uniform sampler2D texture4;
 uniform sampler2D texture5;
 uniform sampler2D texture6;
 uniform sampler2D texture7;
+uniform sampler2D texture8;
 
 void main()
 {
@@ -50,25 +51,28 @@ void main()
             vec2 ttt;
             ttt = vec2(v_texture_position.x * table_size[0], v_texture_position.y * table_size[1]);
             gl_FragColor = texture(texture7, ttt);
-        } else if (v_texture_id < 8.5) { // First button lamp
+        } else if (v_texture_id < 8.5) { // Panel8
+            billy = texture(texture8, v_texture_position);
+            gl_FragColor = billy;
+        } else if (v_texture_id < 9.5) { // First button lamp
             gl_FragColor = vec4(lamp_color[0], 1.0);
-        } else if (v_texture_id < 9.5) { // Second button lamp
+        } else if (v_texture_id < 10.5) { // Second button lamp
             gl_FragColor = vec4(lamp_color[1], 1.0);
-        } else if (v_texture_id < 10.5) { // Third button lamp
+        } else if (v_texture_id < 11.5) { // Third button lamp
             gl_FragColor = vec4(lamp_color[2], 1.0);
-        } else if (v_texture_id < 11.5) { // Fourth button lamp
+        } else if (v_texture_id < 12.5) { // Fourth button lamp
             gl_FragColor = vec4(lamp_color[3], 1.0);
-        } else if (v_texture_id < 12.5) { // Fifth button lamp
+        } else if (v_texture_id < 13.5) { // Fifth button lamp
             gl_FragColor = vec4(lamp_color[4], 1.0);
-        } else if (v_texture_id < 13.5) { // Sixth button lamp
+        } else if (v_texture_id < 14.5) { // Sixth button lamp
             gl_FragColor = vec4(lamp_color[5], 1.0);
-        } else if (v_texture_id < 14.5) { // Seventh button lamp
+        } else if (v_texture_id < 15.5) { // Seventh button lamp
             gl_FragColor = vec4(lamp_color[6], 1.0);
-        } else if (v_texture_id < 15.5) { // Eighth button lamp
+        } else if (v_texture_id < 16.5) { // Eighth button lamp
             gl_FragColor = vec4(lamp_color[7], 1.0);
-        } else if (v_texture_id < 16.5) { // Ninth button lamp
+        } else if (v_texture_id < 17.5) { // Ninth button lamp
             gl_FragColor = vec4(lamp_color[8], 1.0);
-        } else if (v_texture_id < 17.5) { // Tenth button lamp
+        } else if (v_texture_id < 18.5) { // Tenth button lamp
             gl_FragColor = vec4(lamp_color[9], 1.0);
         }
     }

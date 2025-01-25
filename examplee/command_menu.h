@@ -52,6 +52,7 @@ protected:
     PushButton* m_button7;
     PushButton* m_button8;
     PushButton* m_button9;
+    ImagePanel* m_panel8;
     Float3 pos_at_zlevel(float z, const MouseVector& mv) const;
     void update_lamp_data();
 };
