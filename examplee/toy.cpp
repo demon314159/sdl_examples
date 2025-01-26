@@ -298,7 +298,6 @@ void Toy::execute_right_menu_command()
                 m_quit_signal = true;
                 break;
             case COMMAND_NEW:
-                printf("New command\n");
                 m_history->do_command(new NewCommand(this));
                 break;
             case COMMAND_LOAD:
