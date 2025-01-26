@@ -2,7 +2,7 @@
 // command.cpp
 //
 
-#include "command.h"
+#include "toy.h"
 
 Command::~Command()
 {
@@ -61,4 +61,32 @@ void RemoveElementCommand::unexecute()
     m_doc->unremove_element(m_ix);
 }
 
+NewCommand::NewCommand(Toy* toy)
+    : m_toy(toy)
+    , m_new_doc(new Document())
+    , m_replaced_doc(NULL)
+{
+}
+
+NewCommand::~NewCommand()
+{
+    if (m_new_doc != NULL)
+        delete m_new_doc;
+    if (m_replaced_doc != NULL)
+        delete m_replaced_doc;
+}
+
+void NewCommand::execute()
+{
+    m_new_doc->note_many_changes();
+    m_replaced_doc = m_toy->replace_doc(m_new_doc);
+    m_new_doc = NULL;
+}
+
+void NewCommand::unexecute()
+{
+    m_replaced_doc->note_many_changes();
+    m_new_doc = m_toy->replace_doc(m_replaced_doc);
+    m_replaced_doc = NULL;
+}
 

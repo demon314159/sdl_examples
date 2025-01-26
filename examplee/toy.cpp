@@ -80,6 +80,13 @@ Document* Toy::get_doc() const
     return m_doc;
 }
 
+Document* Toy::replace_doc(Document* doc)
+{
+    Document* t = m_doc;
+    m_doc = doc;
+    return t;
+}
+
 Camera* Toy::get_camera() const
 {
     return m_camera;
@@ -292,6 +299,7 @@ void Toy::execute_right_menu_command()
                 break;
             case COMMAND_NEW:
                 printf("New command\n");
+                m_history->do_command(new NewCommand(this));
                 break;
             case COMMAND_LOAD:
                 printf("Load command\n");

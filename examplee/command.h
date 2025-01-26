@@ -7,6 +7,8 @@
 
 #include "document.h"
 
+class Toy;
+
 class Command
 {
 public:
@@ -38,6 +40,19 @@ public:
 private:
     int m_ix;
     Document* m_doc;
+};
+
+class NewCommand: public Command
+{
+public:
+    NewCommand(Toy* toy);
+    ~NewCommand();
+    void execute() override;
+    void unexecute() override;
+private:
+    Toy* m_toy;
+    Document* m_new_doc;
+    Document* m_replaced_doc;
 };
 
 #endif // _COMMAND_H_

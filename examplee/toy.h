@@ -8,8 +8,8 @@
 #include "animated_toy.h"
 #include "document.h"
 #include "choose.h"
-#include "history.h"
 #include "table.h"
+#include "history.h"
 #include "material_menu.h"
 #include "command_menu.h"
 
@@ -24,6 +24,7 @@ public:
     void advance(int nanoseconds) override;
     bool quit_signal() const override;
     Document* get_doc() const;
+    Document* replace_doc(Document* doc);
     Camera* get_camera() const;
     void reframe();
 
@@ -48,6 +49,7 @@ private:
     void try_delete_any_face(int sx, int sy);
     void adjust_table_size();
     void execute_right_menu_command();
+
 
     bool mouse_vector_intersects_face(const MouseVector& mv, const Face& f, float& depth, Float3& ip) const;
     Float3 normal(const Face& f) const;
