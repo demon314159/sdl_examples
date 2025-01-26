@@ -15,14 +15,15 @@
 #include "image_button.h"
 #include "mouse_vector.h"
 
-#define COMMAND_QUIT  0
-#define COMMAND_NEW   1
-#define COMMAND_LOAD  2
-#define COMMAND_SAVE  3
-#define COMMAND_UNDO  4
-#define COMMAND_REDO  5
-#define COMMAND_HELP  6
-#define COMMAND_ABOUT 7
+#define COMMAND_NOP   0
+#define COMMAND_QUIT  1
+#define COMMAND_NEW   2
+#define COMMAND_LOAD  3
+#define COMMAND_SAVE  4
+#define COMMAND_UNDO  5
+#define COMMAND_REDO  6
+#define COMMAND_HELP  7
+#define COMMAND_ABOUT 8
 
 class CommandMenu
 {
@@ -36,6 +37,7 @@ public:
     CadModel model() const;
     float width() const;
     int command() const;
+    void clear_command();
     bool hide_button_pressed(const MouseVector& mv, const Float3& top_right, bool hidden) const;
     bool menu_button_pressed(const MouseVector& mv, const Float3& top_right);
     void release(void);

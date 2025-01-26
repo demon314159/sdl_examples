@@ -43,7 +43,7 @@
 #define IBUTTON9_REGION {220.0, 69.0}
 
 CommandMenu::CommandMenu()
-    : m_command(COMMAND_QUIT)
+    : m_command(COMMAND_NOP)
     , m_button1(NULL)
     , m_button2(NULL)
     , m_button3(NULL)
@@ -166,6 +166,11 @@ int CommandMenu::command() const
     return m_command;
 }
 
+void CommandMenu::clear_command()
+{
+    m_command = COMMAND_NOP;
+}
+
 bool CommandMenu::hide_button_pressed(const MouseVector& mv, const Float3& top_right, bool hidden) const
 {
     Float3 sel_pos = pos_at_zlevel(-1.0, mv);
@@ -180,43 +185,59 @@ bool CommandMenu::menu_button_pressed(const MouseVector& mv, const Float3& top_r
 {
     Float3 sel_pos = pos_at_zlevel(-1.0, mv);
     if (m_button2->collide(sel_pos, top_right) || m_ibutton2->collide(sel_pos, top_right)) {
+        if (!m_button2->pressed()) {
+            m_command = COMMAND_QUIT;
+        }
         m_button2->press();
-        m_command = COMMAND_QUIT;
         return true;
     }
     if (m_button3->collide(sel_pos, top_right) || m_ibutton3->collide(sel_pos, top_right)) {
+        if (!m_button3->pressed()) {
+            m_command = COMMAND_NEW;
+        }
         m_button3->press();
-        m_command = COMMAND_NEW;
         return true;
     }
     if (m_button4->collide(sel_pos, top_right) || m_ibutton4->collide(sel_pos, top_right)) {
+        if (!m_button4->pressed()) {
+            m_command = COMMAND_LOAD;
+        }
         m_button4->press();
-        m_command = COMMAND_LOAD;
         return true;
     }
     if (m_button5->collide(sel_pos, top_right) || m_ibutton5->collide(sel_pos, top_right)) {
+        if (!m_button5->pressed()) {
+            m_command = COMMAND_SAVE;
+        }
         m_button5->press();
-        m_command = COMMAND_SAVE;
         return true;
     }
     if (m_button6->collide(sel_pos, top_right) || m_ibutton6->collide(sel_pos, top_right)) {
+        if (!m_button6->pressed()) {
+            m_command = COMMAND_UNDO;
+        }
         m_button6->press();
-        m_command = COMMAND_UNDO;
         return true;
     }
     if (m_button7->collide(sel_pos, top_right) || m_ibutton7->collide(sel_pos, top_right)) {
+        if (!m_button7->pressed()) {
+            m_command = COMMAND_REDO;
+        }
         m_button7->press();
-        m_command = COMMAND_REDO;
         return true;
     }
     if (m_button8->collide(sel_pos, top_right) || m_ibutton8->collide(sel_pos, top_right)) {
+        if (!m_button8->pressed()) {
+            m_command = COMMAND_HELP;
+        }
         m_button8->press();
-        m_command = COMMAND_HELP;
         return true;
     }
     if (m_button9->collide(sel_pos, top_right) || m_ibutton9->collide(sel_pos, top_right)) {
+        if (!m_button9->pressed()) {
+            m_command = COMMAND_ABOUT;
+        }
         m_button9->press();
-        m_command = COMMAND_ABOUT;
         return true;
     }
     return false;

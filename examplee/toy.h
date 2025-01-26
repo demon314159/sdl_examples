@@ -22,6 +22,7 @@ public:
     bool button(int code, bool shifted, bool on) override;
     bool mouse(SDL_Event* e, bool on) override;
     void advance(int nanoseconds) override;
+    bool quit_signal() const override;
     Document* get_doc() const;
     Camera* get_camera() const;
     void reframe();
@@ -33,7 +34,7 @@ private:
     Choose* m_choose;
     MaterialMenu* m_left_menu;
     CommandMenu* m_right_menu;
-
+    bool m_quit_signal;
     float m_seconds;
     void build_texture();
     void build_model();
@@ -46,6 +47,7 @@ private:
     void try_top_face(int sx, int sy);
     void try_delete_any_face(int sx, int sy);
     void adjust_table_size();
+    void execute_right_menu_command();
 
     bool mouse_vector_intersects_face(const MouseVector& mv, const Face& f, float& depth, Float3& ip) const;
     Float3 normal(const Face& f) const;

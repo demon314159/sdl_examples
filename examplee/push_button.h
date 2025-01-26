@@ -21,6 +21,7 @@ public:
     ~PushButton();
     void press();
     void release();
+    bool pressed() const;
 
     bool collide(const Float3& sel_pos, const Float3& top_corner) const;
     CadModel model(float body_animation_id, float button_animation_id, float lamp_texture_id = 0.0) const;

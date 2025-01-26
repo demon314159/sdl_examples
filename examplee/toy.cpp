@@ -32,6 +32,7 @@ Toy::Toy()
     , m_history(new History())
     , m_choose(new Choose(DIMX, DIMY, DIMZ, MARKER_COLOR))
     , m_seconds(0.0)
+    , m_quit_signal(false)
     , m_left_menu(NULL)
     , m_right_menu(NULL)
 {
@@ -44,7 +45,7 @@ Toy::Toy()
     reframe();
     adjust_table_size();
     m_camera->hide_left(-m_left_menu->width(), 0.0, 0.0, 0.0);
-    m_camera->hide_right(m_right_menu->width(), 0.0, 0.0, 0.0);
+//    m_camera->hide_right(m_right_menu->width(), 0.0, 0.0, 0.0);
 }
 
 Toy::~Toy()
@@ -55,6 +56,11 @@ Toy::~Toy()
     delete m_choose;
     delete m_history;
     delete m_doc;
+}
+
+bool Toy::quit_signal() const
+{
+    return m_quit_signal;
 }
 
 void Toy::reframe()
@@ -268,10 +274,47 @@ bool Toy::try_menu_button(int sx, int sy)
     }
     if (!m_camera->hidden_right()) {
         if (m_right_menu->menu_button_pressed(mv, m_camera->top_right())) {
+            execute_right_menu_command();
             return true;
         }
     }
     return false;
+}
+
+void Toy::execute_right_menu_command()
+{
+    int command = m_right_menu->command();
+    if (command > COMMAND_NOP) {
+        m_right_menu->clear_command();
+        switch(command) {
+            case COMMAND_QUIT:
+                m_quit_signal = true;
+                break;
+            case COMMAND_NEW:
+                printf("New command\n");
+                break;
+            case COMMAND_LOAD:
+                printf("Load command\n");
+                break;
+            case COMMAND_SAVE:
+                printf("Save command\n");
+                break;
+            case COMMAND_UNDO:
+                printf("Undo command\n");
+                break;
+            case COMMAND_REDO:
+                printf("Redo command\n");
+                break;
+            case COMMAND_HELP:
+                printf("Help command\n");
+                break;
+            case COMMAND_ABOUT:
+                printf("About command\n");
+                break;
+            default:
+                printf("Unknown command\n");
+        }
+    }
 }
 
 void Toy::try_top_face(int sx, int sy)

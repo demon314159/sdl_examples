@@ -36,6 +36,11 @@ void PushButton::release()
     m_pressed = false;
 }
 
+bool PushButton::pressed() const
+{
+    return m_pressed;
+}
+
 CadModel PushButton::model(float body_animation_id, float button_animation_id, float lamp_texture_id) const
 {
     float bh = m_height * 0.7f;
