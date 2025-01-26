@@ -20,10 +20,10 @@ ImageButton::~ImageButton()
 {
 }
 
-bool ImageButton::collide(const Float3& sel_pos, const Float3& top_left) const
+bool ImageButton::collide(const Float3& sel_pos, const Float3& top_corner) const
 {
-    float bpx = m_panel->position().v1 + top_left.v1;
-    float bpy = m_panel->position().v2 + top_left.v2 + m_panel->height() / 2.0;
+    float bpx = m_panel->position().v1 + top_corner.v1;
+    float bpy = m_panel->position().v2 + top_corner.v2 + m_panel->height() / 2.0;
     float rx = bpx + m_panel->width() * m_region_pos.v1 / m_image_dimx;
     float ry = bpy - m_panel->height() * m_region_pos.v2 / m_image_dimy;
     float dx = m_panel->width() * m_region_size.v1 / m_image_dimx;

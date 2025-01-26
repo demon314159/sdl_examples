@@ -23,6 +23,11 @@
 #define PANEL8_DIMY 827.0
 #define BIG_IMAGE_WIDTH  (BIG_IMAGEY * PANEL8_DIMX / PANEL8_DIMY)
 
+#define IBUTTON1_POSITION {52.0, 26.0}
+#define IBUTTON1_REGION {170.0, 73.0}
+#define IBUTTON2_POSITION {63.0, 119.0}
+#define IBUTTON2_REGION {161.0, 75.0}
+
 CommandMenu::CommandMenu()
     : m_command(COMMAND_QUIT)
     , m_button1(NULL)
@@ -35,6 +40,8 @@ CommandMenu::CommandMenu()
     , m_button8(NULL)
     , m_button9(NULL)
     , m_panel8(NULL)
+    , m_ibutton1(NULL)
+    , m_ibutton2(NULL)
 {
     m_button1 = new PushButton(BUTTON_RADIUS, BUTTON_RADIUS / 4.0, {XPOS, YPOS, 0.0});
     m_button2 = new PushButton(BUTTON_RADIUS, BUTTON_RADIUS / 4.0, {XPOS, YPOS - 1.0 * YPITCH, 0.0});
@@ -46,11 +53,15 @@ CommandMenu::CommandMenu()
     m_button8 = new PushButton(BUTTON_RADIUS, BUTTON_RADIUS / 4.0, {XPOS, YPOS - 7.0 * YPITCH, 0.0});
     m_button9 = new PushButton(BUTTON_RADIUS, BUTTON_RADIUS / 4.0, {XPOS, YPOS - 8.0 * YPITCH, 0.0});
     m_panel8 = new ImagePanel(BIG_IMAGE_WIDTH, BIG_IMAGEY, {XPOS2 - BIG_IMAGE_WIDTH, YPOS - BIG_IMAGEY / 2.0 + 0.7 * YPITCH, 0.0} );
+    m_ibutton1 = new ImageButton(m_panel8, PANEL8_DIMX, PANEL8_DIMY, IBUTTON1_POSITION, IBUTTON1_REGION);
+    m_ibutton2 = new ImageButton(m_panel8, PANEL8_DIMX, PANEL8_DIMY, IBUTTON2_POSITION, IBUTTON2_REGION);
     m_width = -XPOS2 + BIG_IMAGE_WIDTH;
 }
 
 CommandMenu::~CommandMenu()
 {
+    delete m_ibutton2;
+    delete m_ibutton1;
     delete m_panel8;
     delete m_button9;
     delete m_button8;
@@ -123,7 +134,7 @@ int CommandMenu::command() const
 bool CommandMenu::hide_button_pressed(const MouseVector& mv, const Float3& top_right, bool hidden) const
 {
     Float3 sel_pos = pos_at_zlevel(-1.0, mv);
-    if (m_button1->collide(sel_pos, top_right)) {
+    if (m_button1->collide(sel_pos, top_right) || (!hidden && m_ibutton1->collide(sel_pos, top_right))) {
         m_button1->press();
         return true;
     }
@@ -133,7 +144,7 @@ bool CommandMenu::hide_button_pressed(const MouseVector& mv, const Float3& top_r
 bool CommandMenu::menu_button_pressed(const MouseVector& mv, const Float3& top_right)
 {
     Float3 sel_pos = pos_at_zlevel(-1.0, mv);
-    if (m_button2->collide(sel_pos, top_right)) {
+    if (m_button2->collide(sel_pos, top_right) || m_ibutton2->collide(sel_pos, top_right)) {
         m_button2->press();
         m_command = COMMAND_QUIT;
         return true;

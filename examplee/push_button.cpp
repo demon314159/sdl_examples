@@ -58,10 +58,10 @@ const float* PushButton::data()
     return m_animate.data();
 }
 
-bool PushButton::collide(const Float3& sel_pos, const Float3& top_left) const
+bool PushButton::collide(const Float3& sel_pos, const Float3& top_corner) const
 {
-    float bpx = m_position.v1 + top_left.v1;
-    float bpy = m_position.v2 + top_left.v2;
+    float bpx = m_position.v1 + top_corner.v1;
+    float bpy = m_position.v2 + top_corner.v2;
     float dx = sel_pos.v1 - bpx;
     float dy = sel_pos.v2 - bpy;
     float r = sqrt(dx * dx + dy * dy);

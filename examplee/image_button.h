@@ -14,7 +14,7 @@ public:
     ImageButton(const ImagePanel* panel, float image_dimx, float image_dimy,
                 const Float2& region_pos, const Float2& region_size);
     ~ImageButton();
-    bool collide(const Float3& sel_pos, const Float3& top_left) const;
+    bool collide(const Float3& sel_pos, const Float3& top_corner) const;
 
 protected:
     float m_image_dimx;
