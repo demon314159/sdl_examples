@@ -27,6 +27,20 @@
 #define IBUTTON1_REGION {170.0, 73.0}
 #define IBUTTON2_POSITION {63.0, 119.0}
 #define IBUTTON2_REGION {161.0, 75.0}
+#define IBUTTON3_POSITION {65.0, 210.0}
+#define IBUTTON3_REGION {158.0, 69.0}
+#define IBUTTON4_POSITION {50.0, 301.0}
+#define IBUTTON4_REGION {172.0, 65.0}
+#define IBUTTON5_POSITION {49.0, 391.0}
+#define IBUTTON5_REGION {174.0, 72.0}
+#define IBUTTON6_POSITION {34.0, 482.0}
+#define IBUTTON6_REGION {190.0, 68.0}
+#define IBUTTON7_POSITION {39.0, 569.0}
+#define IBUTTON7_REGION {184.0, 72.0}
+#define IBUTTON8_POSITION {55.0, 661.0}
+#define IBUTTON8_REGION {169.0, 82.0}
+#define IBUTTON9_POSITION {5.0, 750.0}
+#define IBUTTON9_REGION {220.0, 69.0}
 
 CommandMenu::CommandMenu()
     : m_command(COMMAND_QUIT)
@@ -42,6 +56,13 @@ CommandMenu::CommandMenu()
     , m_panel8(NULL)
     , m_ibutton1(NULL)
     , m_ibutton2(NULL)
+    , m_ibutton3(NULL)
+    , m_ibutton4(NULL)
+    , m_ibutton5(NULL)
+    , m_ibutton6(NULL)
+    , m_ibutton7(NULL)
+    , m_ibutton8(NULL)
+    , m_ibutton9(NULL)
 {
     m_button1 = new PushButton(BUTTON_RADIUS, BUTTON_RADIUS / 4.0, {XPOS, YPOS, 0.0});
     m_button2 = new PushButton(BUTTON_RADIUS, BUTTON_RADIUS / 4.0, {XPOS, YPOS - 1.0 * YPITCH, 0.0});
@@ -55,11 +76,25 @@ CommandMenu::CommandMenu()
     m_panel8 = new ImagePanel(BIG_IMAGE_WIDTH, BIG_IMAGEY, {XPOS2 - BIG_IMAGE_WIDTH, YPOS - BIG_IMAGEY / 2.0 + 0.7 * YPITCH, 0.0} );
     m_ibutton1 = new ImageButton(m_panel8, PANEL8_DIMX, PANEL8_DIMY, IBUTTON1_POSITION, IBUTTON1_REGION);
     m_ibutton2 = new ImageButton(m_panel8, PANEL8_DIMX, PANEL8_DIMY, IBUTTON2_POSITION, IBUTTON2_REGION);
+    m_ibutton3 = new ImageButton(m_panel8, PANEL8_DIMX, PANEL8_DIMY, IBUTTON3_POSITION, IBUTTON3_REGION);
+    m_ibutton4 = new ImageButton(m_panel8, PANEL8_DIMX, PANEL8_DIMY, IBUTTON4_POSITION, IBUTTON4_REGION);
+    m_ibutton5 = new ImageButton(m_panel8, PANEL8_DIMX, PANEL8_DIMY, IBUTTON5_POSITION, IBUTTON5_REGION);
+    m_ibutton6 = new ImageButton(m_panel8, PANEL8_DIMX, PANEL8_DIMY, IBUTTON6_POSITION, IBUTTON6_REGION);
+    m_ibutton7 = new ImageButton(m_panel8, PANEL8_DIMX, PANEL8_DIMY, IBUTTON7_POSITION, IBUTTON7_REGION);
+    m_ibutton8 = new ImageButton(m_panel8, PANEL8_DIMX, PANEL8_DIMY, IBUTTON8_POSITION, IBUTTON8_REGION);
+    m_ibutton9 = new ImageButton(m_panel8, PANEL8_DIMX, PANEL8_DIMY, IBUTTON9_POSITION, IBUTTON9_REGION);
     m_width = -XPOS2 + BIG_IMAGE_WIDTH;
 }
 
 CommandMenu::~CommandMenu()
 {
+    delete m_ibutton9;
+    delete m_ibutton8;
+    delete m_ibutton7;
+    delete m_ibutton6;
+    delete m_ibutton5;
+    delete m_ibutton4;
+    delete m_ibutton3;
     delete m_ibutton2;
     delete m_ibutton1;
     delete m_panel8;
@@ -149,37 +184,37 @@ bool CommandMenu::menu_button_pressed(const MouseVector& mv, const Float3& top_r
         m_command = COMMAND_QUIT;
         return true;
     }
-    if (m_button3->collide(sel_pos, top_right)) {
+    if (m_button3->collide(sel_pos, top_right) || m_ibutton3->collide(sel_pos, top_right)) {
         m_button3->press();
         m_command = COMMAND_NEW;
         return true;
     }
-    if (m_button4->collide(sel_pos, top_right)) {
+    if (m_button4->collide(sel_pos, top_right) || m_ibutton4->collide(sel_pos, top_right)) {
         m_button4->press();
         m_command = COMMAND_LOAD;
         return true;
     }
-    if (m_button5->collide(sel_pos, top_right)) {
+    if (m_button5->collide(sel_pos, top_right) || m_ibutton5->collide(sel_pos, top_right)) {
         m_button5->press();
         m_command = COMMAND_SAVE;
         return true;
     }
-    if (m_button6->collide(sel_pos, top_right)) {
+    if (m_button6->collide(sel_pos, top_right) || m_ibutton6->collide(sel_pos, top_right)) {
         m_button6->press();
         m_command = COMMAND_UNDO;
         return true;
     }
-    if (m_button7->collide(sel_pos, top_right)) {
+    if (m_button7->collide(sel_pos, top_right) || m_ibutton7->collide(sel_pos, top_right)) {
         m_button7->press();
         m_command = COMMAND_REDO;
         return true;
     }
-    if (m_button8->collide(sel_pos, top_right)) {
+    if (m_button8->collide(sel_pos, top_right) || m_ibutton8->collide(sel_pos, top_right)) {
         m_button8->press();
         m_command = COMMAND_HELP;
         return true;
     }
-    if (m_button9->collide(sel_pos, top_right)) {
+    if (m_button9->collide(sel_pos, top_right) || m_ibutton9->collide(sel_pos, top_right)) {
         m_button9->press();
         m_command = COMMAND_ABOUT;
         return true;

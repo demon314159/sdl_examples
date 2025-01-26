@@ -55,6 +55,13 @@ protected:
     ImagePanel* m_panel8;
     ImageButton* m_ibutton1;
     ImageButton* m_ibutton2;
+    ImageButton* m_ibutton3;
+    ImageButton* m_ibutton4;
+    ImageButton* m_ibutton5;
+    ImageButton* m_ibutton6;
+    ImageButton* m_ibutton7;
+    ImageButton* m_ibutton8;
+    ImageButton* m_ibutton9;
     Float3 pos_at_zlevel(float z, const MouseVector& mv) const;
     void update_lamp_data();
 };
