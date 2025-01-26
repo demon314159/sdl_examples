@@ -300,10 +300,10 @@ void Toy::execute_right_menu_command()
                 printf("Save command\n");
                 break;
             case COMMAND_UNDO:
-                printf("Undo command\n");
+                m_history->undo_command();
                 break;
             case COMMAND_REDO:
-                printf("Redo command\n");
+                m_history->redo_command();
                 break;
             case COMMAND_HELP:
                 printf("Help command\n");
