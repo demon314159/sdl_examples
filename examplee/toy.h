@@ -57,6 +57,9 @@ private:
     double length(const Float3& v1, const Float3& v2) const;
     double tri_area(const Float3& v1, const Float3& v2, const Float3& v3) const;
     double quad_area(const Float3& v1, const Float3& v2, const Float3& v3, const Float3& v4) const;
+
+    void do_file_load();
+    void do_file_save();
 };
 
 #endif // _TOY_H_

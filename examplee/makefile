@@ -152,7 +152,7 @@ OBJECTS = main.obj \
 
 LIBPATH = /libpath:c:/users/demon/sdl2/lib/x64 /libpath:c:/users/demon/glew/lib/Release/x64
 INCPATH = /Ic:/users/demon/sdl2/include /Ic:/users/demon/glew/include
-LIBRARIES = opengl32.lib glew32.lib SDL2main.lib SDL2.lib shell32.lib SDL2_mixer.lib
+LIBRARIES = opengl32.lib glew32.lib SDL2main.lib SDL2.lib shell32.lib SDL2_mixer.lib comdlg32.lib
 DEPS = $(HEADERS)
 CXX = cl
 LXX = link

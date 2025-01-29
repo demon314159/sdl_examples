@@ -21,6 +21,7 @@
 #include "front_door_element.h"
 #include "back_door_element.h"
 
+#include <windows.h>
 #include <stdio.h>
 
 #define HIDE_TIME 0.25
@@ -301,10 +302,10 @@ void Toy::execute_right_menu_command()
                 m_history->do_command(new NewCommand(this));
                 break;
             case COMMAND_LOAD:
-                printf("Load command\n");
+                do_file_load();
                 break;
             case COMMAND_SAVE:
-                printf("Save command\n");
+                do_file_save();
                 break;
             case COMMAND_UNDO:
                 m_history->undo_command();
@@ -560,4 +561,35 @@ double Toy::quad_area(const Float3& v1, const Float3& v2, const Float3& v3, cons
     return sqrt(fabs(4.0 * p * p * q * q - k * k)) / 4.0;
 }
 
+void Toy::do_file_load()
+{
+    OPENFILENAME ofn;
+    char szFileName[MAX_PATH] = "";
+    ZeroMemory(&ofn, sizeof(ofn));
+    ofn.lStructSize = sizeof(ofn);
+    ofn.hwndOwner = NULL;
+    ofn.lpstrFilter = (LPCSTR)"Brick Files (*.brk)\0*.brk\0All Files (*.*)\0*.*\0";
+    ofn.lpstrFile = (LPSTR)szFileName;
+    ofn.nMaxFile = MAX_PATH;
+    ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
+    ofn.lpstrDefExt = (LPCSTR)"txt";
+    GetOpenFileName(&ofn);
+    m_history->do_command(new LoadCommand(ofn.lpstrFile, this));
+}
 
+void Toy::do_file_save()
+{
+    printf("Toy::do_file_save()\n");
+    OPENFILENAME ofn;
+    char szFileName[MAX_PATH] = "";
+    ZeroMemory(&ofn, sizeof(ofn));
+    ofn.lStructSize = sizeof(ofn);
+    ofn.hwndOwner = NULL;
+    ofn.lpstrFilter = (LPCSTR)"Brick Files (*.brk)\0*.brk\0All Files (*.*)\0*.*\0";
+    ofn.lpstrFile = (LPSTR)szFileName;
+    ofn.nMaxFile = MAX_PATH;
+    ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
+    ofn.lpstrDefExt = (LPCSTR)"txt";
+    GetSaveFileName(&ofn);
+    printf("the path is : '%s'\n", ofn.lpstrFile);
+}

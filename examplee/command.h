@@ -55,4 +55,17 @@ private:
     Document* m_replaced_doc;
 };
 
+class LoadCommand: public Command
+{
+public:
+    LoadCommand(const char* file_name, Toy* toy);
+    ~LoadCommand();
+    void execute() override;
+    void unexecute() override;
+private:
+    Toy* m_toy;
+    Document* m_new_doc;
+    Document* m_replaced_doc;
+};
+
 #endif // _COMMAND_H_

@@ -90,3 +90,32 @@ void NewCommand::unexecute()
     m_replaced_doc = NULL;
 }
 
+LoadCommand::LoadCommand(const char* file_name, Toy* toy)
+    : m_toy(toy)
+    , m_new_doc(new Document(file_name))
+    , m_replaced_doc(NULL)
+{
+}
+
+LoadCommand::~LoadCommand()
+{
+    if (m_new_doc != NULL)
+        delete m_new_doc;
+    if (m_replaced_doc != NULL)
+        delete m_replaced_doc;
+}
+
+void LoadCommand::execute()
+{
+    m_new_doc->note_many_changes();
+    m_replaced_doc = m_toy->replace_doc(m_new_doc);
+    m_new_doc = NULL;
+}
+
+void LoadCommand::unexecute()
+{
+    m_replaced_doc->note_many_changes();
+    m_new_doc = m_toy->replace_doc(m_replaced_doc);
+    m_replaced_doc = NULL;
+}
+
