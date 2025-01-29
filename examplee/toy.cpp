@@ -20,6 +20,10 @@
 #include "corner_window_element.h"
 #include "front_door_element.h"
 #include "back_door_element.h"
+#include "add_element_command.h"
+#include "remove_element_command.h"
+#include "new_document_command.h"
+#include "load_document_command.h"
 
 #include <windows.h>
 #include <stdio.h>
@@ -299,7 +303,7 @@ void Toy::execute_right_menu_command()
                 m_quit_signal = true;
                 break;
             case COMMAND_NEW:
-                m_history->do_command(new NewCommand(this));
+                m_history->do_command(new NewDocumentCommand(this));
                 break;
             case COMMAND_LOAD:
                 do_file_load();
@@ -574,7 +578,7 @@ void Toy::do_file_load()
     ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
     ofn.lpstrDefExt = (LPCSTR)"txt";
     GetOpenFileName(&ofn);
-    m_history->do_command(new LoadCommand(ofn.lpstrFile, this));
+    m_history->do_command(new LoadDocumentCommand(ofn.lpstrFile, this));
 }
 
 void Toy::do_file_save()

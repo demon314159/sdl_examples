@@ -52,6 +52,10 @@ HEADERS = view.h \
           mouse_vector.h \
           choose.h \
           command.h \
+          add_element_command.h \
+          remove_element_command.h \
+          new_document_command.h \
+          load_document_command.h \
           history.h \
           frame_model.h \
           door_model.h \
@@ -130,6 +134,10 @@ OBJECTS = main.obj \
           mouse_vector.obj \
           choose.obj \
           command.obj \
+          add_element_command.obj \
+          remove_element_command.obj \
+          new_document_command.obj \
+          load_document_command.obj \
           history.obj \
           frame_model.obj \
           door_model.obj \
