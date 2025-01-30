@@ -583,7 +583,6 @@ void Toy::do_file_load()
 
 void Toy::do_file_save()
 {
-    printf("Toy::do_file_save()\n");
     OPENFILENAME ofn;
     char szFileName[MAX_PATH] = "";
     ZeroMemory(&ofn, sizeof(ofn));
@@ -595,5 +594,8 @@ void Toy::do_file_save()
     ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
     ofn.lpstrDefExt = (LPCSTR)"txt";
     GetSaveFileName(&ofn);
-    printf("the path is : '%s'\n", ofn.lpstrFile);
+        char error_msg[256];
+    if (!m_doc->save(ofn.lpstrFile, error_msg)) {
+        printf("Toy::do_file_save(): %s\n", error_msg);
+    }
 }
