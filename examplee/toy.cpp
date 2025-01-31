@@ -501,7 +501,6 @@ bool Toy::mouse_vector_intersects_face(const MouseVector& mv, const Face& f, flo
     ip.v1 = org.v1 + t * vec.v1;
     ip.v2 = org.v2 + t * vec.v2;
     ip.v3 = org.v3 + t * vec.v3;
-
     if (in_face(ip, f)) {
         depth = (float) t;
         return true;

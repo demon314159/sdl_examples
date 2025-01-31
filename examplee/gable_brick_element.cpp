@@ -49,18 +49,19 @@ Face GableBrickElement::face(int ix, bool* top_face) const
     Face tf; // top_face
     tf = general_top_face(m_pos, m_width, m_height, m_orientation);
     bf = general_bottom_face(m_pos, m_width, m_height, m_orientation);
+    float h = DIMX / 10.0;
     if (m_orientation == 3) {
-        tf.v4 = bf.v4;
-        tf.v1 = bf.v1;
+        tf.v4.v2 = bf.v4.v2 + h;
+        tf.v1.v2 = bf.v1.v2 + h;
     } else if (m_orientation == 2) {
-        tf.v3 = bf.v3;
-        tf.v4 = bf.v4;
+        tf.v3.v2 = bf.v3.v2 + h;
+        tf.v4.v2 = bf.v4.v2 + h;
     } else if (m_orientation == 1) {
-        tf.v2 = bf.v2;
-        tf.v3 = bf.v3;
+        tf.v2.v2 = bf.v2.v2 + h;
+        tf.v3.v2 = bf.v3.v2 + h;
     } else {
-        tf.v1 = bf.v1;
-        tf.v2 = bf.v2;
+        tf.v1.v2 = bf.v1.v2 + h;
+        tf.v2.v2 = bf.v2.v2 + h;
     }
     switch (ix) {
         case 0:
@@ -93,6 +94,8 @@ Face GableBrickElement::face(int ix, bool* top_face) const
             break;
         case 3:
             if (m_orientation == 1) {
+                f = bf;
+                tf_flag = false;
             } else {
                 f.v1 = bf.v2;
                 f.v2 = bf.v3;
