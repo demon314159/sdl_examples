@@ -29,7 +29,7 @@ View::View(SDL_Window* window)
     , m_vao(0)
     , m_vbo(0)
     , m_frame(0)
-    , m_max_vertex_count(3 * 1024 * 1024)
+    , m_max_vertex_count(4 * 1024 * 1024)
     , m_model_vertex_count(0)
     , m_building_vertex_count(0)
     , m_toy(new Toy())
@@ -250,6 +250,7 @@ void View::copy_model_facets()
 void View::copy_building_vertices()
 {
     m_building_vertex_count = m_toy->get_doc()->building()->vertex_count();
+    m_building_vertex_count = min(m_building_vertex_count, m_max_vertex_count - m_model_vertex_count);
     if (m_building_vertex_count == 0) {
         return;
     }
@@ -262,6 +263,7 @@ void View::copy_changed_building_vertices()
 {
     Document* doc = m_toy->get_doc();
     m_building_vertex_count = doc->building()->vertex_count(); // In case this has grown
+    m_building_vertex_count = min(m_building_vertex_count, m_max_vertex_count - m_model_vertex_count);
     int ix = doc->changed_ix();
     if (ix < doc->elements()) {
         int this_start = doc->building_index(ix);
