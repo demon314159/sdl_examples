@@ -329,7 +329,7 @@ void Toy::execute_right_menu_command()
     }
 }
 
-void Toy::try_top_face(int sx, int sy)
+bool Toy::try_top_face(int sx, int sy)
 {
     Int3 pos;
     bool gable_flag;
@@ -412,13 +412,15 @@ void Toy::try_top_face(int sx, int sy)
                 }
             }
             m_choose->select_no_choice();
+            return true;
         }
     } else {
         m_choose->select_no_choice();
+        return false;
     }
 }
 
-void Toy::try_delete_any_face(int sx, int sy)
+bool Toy::try_delete_any_face(int sx, int sy)
 {
     MouseVector mv = m_camera->new_mouse_vector(sx, sy);
     Float3 v = mv.vector();
@@ -442,6 +444,9 @@ void Toy::try_delete_any_face(int sx, int sy)
     }
     if (min_element >= 0) {
         m_history->do_command(new RemoveElementCommand(min_element, m_doc));
+        return true;
+    } else {
+        return false;
     }
 }
 
@@ -468,7 +473,7 @@ bool Toy::mouse(SDL_Event* e, bool on)
         if (on) {
             if (!try_hide_button(e->button.x, e->button.y)) {
                 if (!try_menu_button(e->button.x, e->button.y)) {
-                    try_top_face(e->button.x, e->button.y);
+                    ret_val = !try_top_face(e->button.x, e->button.y);
                 }
             }
         } else {
@@ -477,11 +482,11 @@ bool Toy::mouse(SDL_Event* e, bool on)
         }
     } else if (e->button.button == SDL_BUTTON_RIGHT) {
         if (on) {
-            try_delete_any_face(e->button.x, e->button.y);
+            ret_val = !try_delete_any_face(e->button.x, e->button.y);
         } else {
         }
     }
-    return false;
+    return ret_val;
 }
 
 bool Toy::mouse_vector_intersects_face(const MouseVector& mv, const Face& f, float& depth, Float3& ip) const

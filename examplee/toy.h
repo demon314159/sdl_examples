@@ -45,8 +45,8 @@ private:
     bool top_face_selection(int sx, int sy, Int3& pos, bool& gable_flag, int& gable_orientation) const;
     bool try_hide_button(int sx, int sy);
     bool try_menu_button(int sx, int sy);
-    void try_top_face(int sx, int sy);
-    void try_delete_any_face(int sx, int sy);
+    bool try_top_face(int sx, int sy);
+    bool try_delete_any_face(int sx, int sy);
     void adjust_table_size();
     void execute_right_menu_command();
 
