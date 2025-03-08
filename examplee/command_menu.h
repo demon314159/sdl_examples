@@ -65,7 +65,6 @@ protected:
     ImageButton* m_ibutton8;
     ImageButton* m_ibutton9;
     Float3 pos_at_zlevel(float z, const MouseVector& mv) const;
-    void update_lamp_data();
 };
 
 #endif // _COMMAND_MENU_H_
