@@ -63,7 +63,7 @@ void Choose::select_choice(Int3 p, bool gable_flag, int gable_orientation)
 
 CadModel Choose::model(float animation_id) const
 {
-    CadModel cm(CylinderShape(m_dimx * 0.45f, m_dimy / 8.0, 100), m_color, animation_id);
+    CadModel cm(CylinderShape(m_dimx * 0.45f, m_dimy / 7.0, 100), m_color, animation_id);
     return cm;
 }
 
@@ -118,7 +118,7 @@ const float* Choose::data()
             m_animation.translate(x, y, z);
         }
     } else {
-        m_animation.translate(0.0, 0.0, 0.0);
+        m_animation.translate(0.0, -m_dimy / 2.0 - m_dimy / 4.0, 0.0);
     }
     return m_animation.data();
 }
