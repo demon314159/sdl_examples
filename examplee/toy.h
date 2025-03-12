@@ -58,8 +58,17 @@ private:
     double tri_area(const Float3& v1, const Float3& v2, const Float3& v3) const;
     double quad_area(const Float3& v1, const Float3& v2, const Float3& v3, const Float3& v4) const;
 
-    void do_file_load();
-    void do_file_save();
+    void start_file_load();
+    void finish_file_load();
+    void start_file_save();
+    void finish_file_save();
+
+    static void clear_file_flags();
+    static void SDLCALL load_callback(void* userdata, const char* const* filelist, int filter);
+    static void SDLCALL save_callback(void* userdata, const char* const* filelist, int filter);
+    static bool m_load_file_flag;
+    static bool m_save_file_flag;
+    static char m_file_name[256];
 };
 
 #endif // _TOY_H_

@@ -25,7 +25,10 @@
 #include "new_document_command.h"
 #include "load_document_command.h"
 
+#include <SDL3/SDL_dialog.h>
+#include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #define HIDE_TIME 0.25
 #define THRESHOLD 0.00001
@@ -144,6 +147,14 @@ void Toy::advance(int nanoseconds)
     m_camera->update_hide_matrix();
     if (m_doc->just_one_change() || m_doc->many_changes()) {
         adjust_table_size();
+    }
+    if (m_load_file_flag) {
+        clear_file_flags();
+        finish_file_load();
+    }
+    if (m_save_file_flag) {
+        clear_file_flags();
+        finish_file_save();
     }
 }
 
@@ -305,10 +316,10 @@ void Toy::execute_right_menu_command()
                 m_history->do_command(new NewDocumentCommand(this));
                 break;
             case COMMAND_LOAD:
-                do_file_load();
+                start_file_load();
                 break;
             case COMMAND_SAVE:
-                do_file_save();
+                start_file_save();
                 break;
             case COMMAND_UNDO:
                 m_history->undo_command();
@@ -568,41 +579,70 @@ double Toy::quad_area(const Float3& v1, const Float3& v2, const Float3& v3, cons
     return sqrt(fabs(4.0 * p * p * q * q - k * k)) / 4.0;
 }
 
-void Toy::do_file_load()
+const SDL_DialogFileFilter filters[] = {
+    { "Brick designs",  "brk" },
+    { "All designs",  "brk" },
+    { "All files",   "*" }
+};
+
+bool Toy::m_load_file_flag = false;
+bool Toy::m_save_file_flag = false;
+char Toy::m_file_name[256] = "";
+
+void Toy::clear_file_flags()
 {
-#ifdef NEVERMORE
-    OPENFILENAME ofn;
-    char szFileName[MAX_PATH] = "";
-    ZeroMemory(&ofn, sizeof(ofn));
-    ofn.lStructSize = sizeof(ofn);
-    ofn.hwndOwner = NULL;
-    ofn.lpstrFilter = (LPCSTR)"Brick Files (*.brk)\0*.brk\0All Files (*.*)\0*.*\0";
-    ofn.lpstrFile = (LPSTR)szFileName;
-    ofn.nMaxFile = MAX_PATH;
-    ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
-    ofn.lpstrDefExt = (LPCSTR)"txt";
-    GetOpenFileName(&ofn);
-    m_history->do_command(new LoadDocumentCommand(ofn.lpstrFile, this));
-#endif
+    m_load_file_flag = false;
+    m_save_file_flag = false;
 }
 
-void Toy::do_file_save()
+void SDLCALL Toy::load_callback(void* userdata, const char* const* filelist, int filter)
 {
-#ifdef NEVERMORE
-    OPENFILENAME ofn;
-    char szFileName[MAX_PATH] = "";
-    ZeroMemory(&ofn, sizeof(ofn));
-    ofn.lStructSize = sizeof(ofn);
-    ofn.hwndOwner = NULL;
-    ofn.lpstrFilter = (LPCSTR)"Brick Files (*.brk)\0*.brk\0All Files (*.*)\0*.*\0";
-    ofn.lpstrFile = (LPSTR)szFileName;
-    ofn.nMaxFile = MAX_PATH;
-    ofn.Flags = OFN_EXPLORER | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY;
-    ofn.lpstrDefExt = (LPCSTR)"txt";
-    GetSaveFileName(&ofn);
-        char error_msg[256];
-    if (!m_doc->save(ofn.lpstrFile, error_msg)) {
-        printf("Toy::do_file_save(): %s\n", error_msg);
+    if (!filelist) {
+        printf("An error occured: %s\n", SDL_GetError());
+        return;
     }
-#endif
+    if (*filelist) {
+        strcpy(m_file_name, *filelist);
+        if (strstr(m_file_name, ".brk") == NULL) {
+            strcat(m_file_name, ".brk");
+        }
+        m_load_file_flag = true;
+    }
+}
+
+void SDLCALL Toy::save_callback(void* userdata, const char* const* filelist, int filter)
+{
+    if (!filelist) {
+        printf("An error occured: %s\n", SDL_GetError());
+        return;
+    }
+    if (*filelist) {
+        strcpy(m_file_name, *filelist);
+        if (strstr(m_file_name, ".brk") == NULL) {
+            strcat(m_file_name, ".brk");
+        }
+        m_save_file_flag = true;
+    }
+}
+void Toy::start_file_load()
+{
+    SDL_ShowOpenFileDialog(load_callback, NULL, NULL, filters, 3, "*.brk", false);
+}
+
+void Toy::start_file_save()
+{
+    SDL_ShowSaveFileDialog(save_callback, NULL, NULL, filters, 3, "*.brk");
+}
+
+void Toy::finish_file_load()
+{
+    m_history->do_command(new LoadDocumentCommand(m_file_name, this));
+}
+
+void Toy::finish_file_save()
+{
+    char error_msg[256];
+    if (!m_doc->save(m_file_name, error_msg)) {
+        printf("Toy::finish_file_save(): %s\n", error_msg);
+    }
 }
