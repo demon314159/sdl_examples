@@ -6,7 +6,7 @@
 
 int main(int argc, char *argv[])
 {
-    SDL_Window* window = SDL_CreateWindow("Plsy", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, INITIAL_WIDTH, INITIAL_HEIGHT, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_MAXIMIZED);
+    SDL_Window* window = SDL_CreateWindow("Plsy", INITIAL_WIDTH, INITIAL_HEIGHT, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_MAXIMIZED);
     if (window == NULL) {
         printf("Window Creation Error: %s\n", SDL_GetError());
         exit(0);
@@ -21,21 +21,21 @@ int main(int argc, char *argv[])
 
     while (host.is_running()) {
         while (SDL_PollEvent(&ev) != 0) {
-            if (ev.type == SDL_QUIT) {
+            if (ev.type == SDL_EVENT_QUIT) {
                 host.quit_event();
-            } else if (ev.type == SDL_WINDOWEVENT) {
-                host.window_event(&ev);
-            } else if (ev.type == SDL_KEYDOWN) {
+            } else if (ev.type == SDL_EVENT_WINDOW_RESIZED) {
+                host.window_resized_event(&ev);
+            } else if (ev.type == SDL_EVENT_KEY_DOWN) {
                 host.key_press_event(&ev);
-            } else if (ev.type == SDL_KEYUP) {
+            } else if (ev.type == SDL_EVENT_KEY_UP) {
                 host.key_release_event(&ev);
-            } else if (ev.type == SDL_MOUSEBUTTONDOWN) {
+            } else if (ev.type == SDL_EVENT_MOUSE_BUTTON_DOWN) {
                 host.mouse_press_event(&ev);
-            } else if (ev.type == SDL_MOUSEBUTTONUP) {
+            } else if (ev.type == SDL_EVENT_MOUSE_BUTTON_UP) {
                 host.mouse_release_event(&ev);
-            } else if (ev.type == SDL_MOUSEMOTION) {
+            } else if (ev.type == SDL_EVENT_MOUSE_MOTION) {
                 host.mouse_move_event(&ev);
-            } else if (ev.type == SDL_MOUSEWHEEL) {
+            } else if (ev.type == SDL_EVENT_MOUSE_WHEEL) {
                 host.mouse_wheel_event(&ev);
             }
         }

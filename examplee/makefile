@@ -158,9 +158,9 @@ OBJECTS = main.obj \
 #       they can be removed if toy.cpp doesn't need them anymore
           \
 
-LIBPATH = /libpath:c:/users/demon/sdl2/lib/x64 /libpath:c:/users/demon/glew/lib/Release/x64
-INCPATH = /Ic:/users/demon/sdl2/include /Ic:/users/demon/glew/include
-LIBRARIES = opengl32.lib glew32.lib SDL2main.lib SDL2.lib shell32.lib SDL2_mixer.lib comdlg32.lib
+LIBPATH = /libpath:c:/users/demon/sdl3/lib/x64 /libpath:c:/users/demon/glew/lib/Release/x64
+INCPATH = /Ic:/users/demon/sdl3/include /Ic:/users/demon/glew/include
+LIBRARIES = opengl32.lib glew32.lib SDL3.lib shell32.lib
 DEPS = $(HEADERS)
 CXX = cl
 LXX = link

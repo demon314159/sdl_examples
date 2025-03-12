@@ -45,17 +45,15 @@ void Host::quit_event()
     m_is_running = false;
 }
 
-void Host::window_event(SDL_Event* e)
+void Host::window_resized_event(SDL_Event* e)
 {
-    if (e->window.event == SDL_WINDOWEVENT_RESIZED) {
-        m_view.resize(e->window.data1, e->window.data2);
-    }
+    m_view.resize(e->window.data1, e->window.data2);
 }
 
 void Host::key_press_event(SDL_Event* e)
 {
-    unsigned int a = e->key.keysym.scancode;
-    bool shifted = (e->key.keysym.mod & KMOD_SHIFT) ? true : false;
+    unsigned int a = e->key.scancode;
+    bool shifted = (e->key.mod & SDL_KMOD_SHIFT) ? true : false;
 
     if (a == SDL_SCANCODE_Q) {
         m_is_running = false;
@@ -115,7 +113,7 @@ void Host::key_press_event(SDL_Event* e)
 
 void Host::key_release_event(SDL_Event* e)
 {
-    unsigned int a = e->key.keysym.scancode;
+    unsigned int a = e->key.scancode;
 
     m_view.button(a, false, false);
 }

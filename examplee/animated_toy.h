@@ -9,8 +9,8 @@
 #include "texture.h"
 #include "camera.h"
 #include "cad_model.h"
-#include <SDL_scancode.h>
-#include <SDL_events.h>
+#include <SDL3/SDL_scancode.h>
+#include <SDL3/SDL_events.h>
 
 class AnimatedToy
 {

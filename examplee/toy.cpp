@@ -25,7 +25,6 @@
 #include "new_document_command.h"
 #include "load_document_command.h"
 
-#include <windows.h>
 #include <stdio.h>
 
 #define HIDE_TIME 0.25
@@ -571,6 +570,7 @@ double Toy::quad_area(const Float3& v1, const Float3& v2, const Float3& v3, cons
 
 void Toy::do_file_load()
 {
+#ifdef NEVERMORE
     OPENFILENAME ofn;
     char szFileName[MAX_PATH] = "";
     ZeroMemory(&ofn, sizeof(ofn));
@@ -583,10 +583,12 @@ void Toy::do_file_load()
     ofn.lpstrDefExt = (LPCSTR)"txt";
     GetOpenFileName(&ofn);
     m_history->do_command(new LoadDocumentCommand(ofn.lpstrFile, this));
+#endif
 }
 
 void Toy::do_file_save()
 {
+#ifdef NEVERMORE
     OPENFILENAME ofn;
     char szFileName[MAX_PATH] = "";
     ZeroMemory(&ofn, sizeof(ofn));
@@ -602,4 +604,5 @@ void Toy::do_file_save()
     if (!m_doc->save(ofn.lpstrFile, error_msg)) {
         printf("Toy::do_file_save(): %s\n", error_msg);
     }
+#endif
 }

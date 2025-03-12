@@ -21,7 +21,7 @@ public:
     void initialize();
     void render();
     void quit_event();
-    void window_event(SDL_Event* e);
+    void window_resized_event(SDL_Event* e);
     void key_press_event(SDL_Event* e);
     void key_release_event(SDL_Event* e);
     void mouse_press_event(SDL_Event* e);

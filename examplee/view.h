@@ -5,9 +5,8 @@
 #ifndef _VIEW_H_
 #define _VIEW_H_
 
-#include <SDL.h>
+#include <SDL3/SDL.h>
 #include <GL/glew.h>
-#include <SDL_opengl.h>
 #include <chrono>
 
 #include "vertex_data.h"

@@ -34,7 +34,7 @@ View::View(SDL_Window* window)
     , m_building_vertex_count(0)
     , m_toy(new Toy())
 {
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+    if (!SDL_Init(SDL_INIT_VIDEO)) {
         printf("Video Initialization Error: %s\n", SDL_GetError());
         exit(0);
     }
@@ -47,7 +47,7 @@ View::View(SDL_Window* window)
         printf("Context Creation Error: %s\n", SDL_GetError());
         exit(0);
     }
-    m_renderer = SDL_CreateRenderer(m_window, -1, 0);
+    m_renderer = SDL_CreateRenderer(m_window, NULL);
     if (m_renderer == NULL) {
         printf("Renderer Creation Error: %s\n", SDL_GetError());
         exit(0);
@@ -59,7 +59,7 @@ View::~View()
 {
     delete m_toy;
     SDL_DestroyRenderer(m_renderer);
-    SDL_GL_DeleteContext(m_context);
+    SDL_GL_DestroyContext(m_context);
     SDL_Quit();
 }
 
@@ -153,7 +153,7 @@ void View::initialize()
         printf("Error initializing GLEW: %s\n", glewGetErrorString(glew_error));
         exit(0);
     }
-    if (SDL_GL_SetSwapInterval(0) < 0) {
+    if (!SDL_GL_SetSwapInterval(0)) {
         printf("Warning: Unable to set VSync. SDL Error: %s\n", SDL_GetError());
     }
     PaintCan bc = BACKGROUND_COLOR;
