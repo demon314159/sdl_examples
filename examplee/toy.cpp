@@ -35,7 +35,7 @@
 
 Toy::Toy()
     : m_table(NULL)
-    , m_doc(new Document("first.brk"))
+    , m_doc(new Document())
     , m_history(new History())
     , m_choose(new Choose(DIMX, DIMY, DIMZ, MARKER_COLOR))
     , m_seconds(0.0)
