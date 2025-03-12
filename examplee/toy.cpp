@@ -145,9 +145,6 @@ void Toy::advance(int nanoseconds)
     }
     update_uniform();
     m_camera->update_hide_matrix();
-    if (m_doc->just_one_change() || m_doc->many_changes()) {
-        adjust_table_size();
-    }
     if (m_load_file_flag) {
         clear_file_flags();
         finish_file_load();
@@ -155,6 +152,9 @@ void Toy::advance(int nanoseconds)
     if (m_save_file_flag) {
         clear_file_flags();
         finish_file_save();
+    }
+    if (m_doc->just_one_change() || m_doc->many_changes()) {
+        adjust_table_size();
     }
 }
 
