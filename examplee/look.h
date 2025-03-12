@@ -7,8 +7,7 @@
 
 #include "paint_can.h"
 
-//#define BACKGROUND_COLOR PaintCan(1.0, 0.682, 0.259)
-#define BACKGROUND_COLOR PaintCan(1.0 / 2.0, 0.682 / 2.0, 0.259 / 2.0)
+#define BACKGROUND_COLOR PaintCan(0.5, 0.5, 0.5)
 
 
 #define MARKER_COLOR PaintCan(0.0, 1.0, 0.0)
