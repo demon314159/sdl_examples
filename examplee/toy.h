@@ -35,8 +35,11 @@ private:
     Choose* m_choose;
     MaterialMenu* m_left_menu;
     CommandMenu* m_right_menu;
+    SDL_PropertiesID m_dialog_properties;
+
     bool m_quit_signal;
     float m_seconds;
+    void build_dialog_properties();
     void build_texture();
     void build_model();
     void build_uniform();

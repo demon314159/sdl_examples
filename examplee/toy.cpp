@@ -26,6 +26,7 @@
 #include "load_document_command.h"
 
 #include <SDL3/SDL_dialog.h>
+#include <SDL3/SDL_filesystem.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -42,10 +43,12 @@ Toy::Toy()
     , m_quit_signal(false)
     , m_left_menu(NULL)
     , m_right_menu(NULL)
+    , m_dialog_properties(SDL_CreateProperties())
 {
     m_left_menu = new MaterialMenu();
     m_right_menu = new CommandMenu();
     m_table = new Table(DIMX, DIMY, DIMZ);
+    build_dialog_properties();
     build_texture();
     build_model();
     build_uniform();
@@ -57,6 +60,7 @@ Toy::Toy()
 
 Toy::~Toy()
 {
+    SDL_DestroyProperties(m_dialog_properties);
     delete m_table;
     delete m_right_menu;
     delete m_left_menu;
@@ -589,6 +593,35 @@ bool Toy::m_load_file_flag = false;
 bool Toy::m_save_file_flag = false;
 char Toy::m_file_name[256] = "";
 
+void Toy::build_dialog_properties()
+{
+    if (m_dialog_properties <= 0) {
+        printf("SDL_CreateProperty() Error: '%s' \n", SDL_GetError());
+    } else {
+        char* cur_dir = SDL_GetCurrentDirectory();
+        char ipath[256];
+        strcpy(ipath, cur_dir);
+        SDL_free(cur_dir);
+        strcat(ipath, "designs");
+        if (!SDL_CreateDirectory(ipath)) {
+            printf("SDL_CreateDirectory() Error: '%s' \n", SDL_GetError());
+        }
+        strcat(ipath, "\\*.brk");
+        if (!SDL_SetStringProperty(m_dialog_properties, SDL_PROP_FILE_DIALOG_LOCATION_STRING, ipath)) {
+            printf("SDL_SetStringProperty() Error: '%s' \n", SDL_GetError());
+        } else {
+            if (!SDL_SetPointerProperty(m_dialog_properties, SDL_PROP_FILE_DIALOG_FILTERS_POINTER, (void*) filters)) {
+                printf("SDL_SetPointerProperty() Error: '%s' \n", SDL_GetError());
+            } else {
+                if (!SDL_SetNumberProperty(m_dialog_properties, SDL_PROP_FILE_DIALOG_NFILTERS_NUMBER, 3)) {
+                    printf("SDL_SetNumberProperty() Error: '%s' \n", SDL_GetError());
+                } else {
+                }
+            }
+        }
+    }
+}
+
 void Toy::clear_file_flags()
 {
     m_load_file_flag = false;
@@ -626,12 +659,12 @@ void SDLCALL Toy::save_callback(void* userdata, const char* const* filelist, int
 }
 void Toy::start_file_load()
 {
-    SDL_ShowOpenFileDialog(load_callback, NULL, NULL, filters, 3, "*.brk", false);
+    SDL_ShowFileDialogWithProperties(SDL_FILEDIALOG_OPENFILE, load_callback, NULL, m_dialog_properties);
 }
 
 void Toy::start_file_save()
 {
-    SDL_ShowSaveFileDialog(save_callback, NULL, NULL, filters, 3, "*.brk");
+    SDL_ShowFileDialogWithProperties(SDL_FILEDIALOG_SAVEFILE, save_callback, NULL, m_dialog_properties);
 }
 
 void Toy::finish_file_load()
