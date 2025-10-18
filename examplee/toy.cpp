@@ -27,6 +27,7 @@
 
 #include <SDL3/SDL_dialog.h>
 #include <SDL3/SDL_filesystem.h>
+#include <SDL3/SDL_messagebox.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -34,8 +35,9 @@
 #define HIDE_TIME 0.25
 #define THRESHOLD 0.00001
 
-Toy::Toy()
-    : m_table(NULL)
+Toy::Toy(SDL_Window* window)
+    : AnimatedToy(window)
+    , m_table(NULL)
     , m_doc(new Document())
     , m_history(new History())
     , m_choose(new Choose(DIMX, DIMY, DIMZ, MARKER_COLOR))
@@ -332,10 +334,10 @@ void Toy::execute_right_menu_command()
                 m_history->redo_command();
                 break;
             case COMMAND_HELP:
-                printf("Help command\n");
+                SDL_ShowSimpleMessageBox(0, "Help", "Help information here.\nMultiple lines.", m_window);
                 break;
             case COMMAND_ABOUT:
-                printf("About command\n");
+                SDL_ShowSimpleMessageBox(0, "About", "About information here.\nMultiple lines.", m_window);
                 break;
             default:
                 printf("Unknown command\n");
@@ -488,7 +490,11 @@ bool Toy::mouse(SDL_Event* e, bool on)
             if (!try_hide_button(e->button.x, e->button.y)) {
                 if (!try_menu_button(e->button.x, e->button.y)) {
                     ret_val = !try_top_face(e->button.x, e->button.y);
+                } else {
+                    ret_val = false;
                 }
+            } else {
+                ret_val = false;
             }
         } else {
             m_left_menu->release();
@@ -605,19 +611,24 @@ void Toy::build_dialog_properties()
         strcat(ipath, "designs");
         if (!SDL_CreateDirectory(ipath)) {
             printf("SDL_CreateDirectory() Error: '%s' \n", SDL_GetError());
+            return;
         }
         strcat(ipath, "\\*.brk");
         if (!SDL_SetStringProperty(m_dialog_properties, SDL_PROP_FILE_DIALOG_LOCATION_STRING, ipath)) {
             printf("SDL_SetStringProperty() Error: '%s' \n", SDL_GetError());
-        } else {
-            if (!SDL_SetPointerProperty(m_dialog_properties, SDL_PROP_FILE_DIALOG_FILTERS_POINTER, (void*) filters)) {
-                printf("SDL_SetPointerProperty() Error: '%s' \n", SDL_GetError());
-            } else {
-                if (!SDL_SetNumberProperty(m_dialog_properties, SDL_PROP_FILE_DIALOG_NFILTERS_NUMBER, 3)) {
-                    printf("SDL_SetNumberProperty() Error: '%s' \n", SDL_GetError());
-                } else {
-                }
-            }
+            return;
+        }
+        if (!SDL_SetPointerProperty(m_dialog_properties, SDL_PROP_FILE_DIALOG_FILTERS_POINTER, (void*) filters)) {
+            printf("SDL_SetPointerProperty() Error: '%s' \n", SDL_GetError());
+            return;
+        }
+        if (!SDL_SetNumberProperty(m_dialog_properties, SDL_PROP_FILE_DIALOG_NFILTERS_NUMBER, 3)) {
+            printf("SDL_SetNumberProperty() Error: '%s' \n", SDL_GetError());
+            return;
+        }
+        if (!SDL_SetPointerProperty(m_dialog_properties, SDL_PROP_FILE_DIALOG_WINDOW_POINTER, (void*) m_window)) {
+            printf("SDL_SetPointerProperty() Error: '%s' \n", SDL_GetError());
+            return;
         }
     }
 }

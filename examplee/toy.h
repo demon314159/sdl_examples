@@ -16,7 +16,7 @@
 class Toy: public AnimatedToy
 {
 public:
-    Toy();
+    Toy(SDL_Window* window);
     ~Toy();
 
     bool button(int code, bool shifted, bool on) override;

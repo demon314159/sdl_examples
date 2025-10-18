@@ -16,8 +16,9 @@
 #define INITIAL_XROT 30.0
 #define INITIAL_YROT 0.0
 
-AnimatedToy::AnimatedToy()
-    : m_uniform(new Uniform(MAX_UNIFORMS))
+AnimatedToy::AnimatedToy(SDL_Window* window)
+    : m_window(window)
+    , m_uniform(new Uniform(MAX_UNIFORMS))
     , m_texture(new Texture(MAX_TEXTURES))
     , m_camera(new Camera(INITIAL_WIDTH, INITIAL_HEIGHT, INITIAL_MAG, {INITIAL_XOFF, INITIAL_YOFF}, {INITIAL_XROT, INITIAL_YROT}))
     , m_model(new CadModel(CubeShape(0.1, 0.1, 0.1), PaintCan(1.0, 0.0, 0.0), 0.0))

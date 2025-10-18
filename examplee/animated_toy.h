@@ -15,7 +15,7 @@
 class AnimatedToy
 {
 public:
-    AnimatedToy();
+    AnimatedToy(SDL_Window* window);
     virtual ~AnimatedToy();
 
     virtual void resize(int w, int h);
@@ -33,6 +33,7 @@ public:
     CadModel* model() const;
 
 protected:
+    SDL_Window* m_window;
     Uniform* m_uniform;
     Texture* m_texture;
     Camera* m_camera;

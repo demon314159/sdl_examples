@@ -32,7 +32,7 @@ View::View(SDL_Window* window)
     , m_max_vertex_count(4 * 1024 * 1024)
     , m_model_vertex_count(0)
     , m_building_vertex_count(0)
-    , m_toy(new Toy())
+    , m_toy(new Toy(window))
 {
     if (!SDL_Init(SDL_INIT_VIDEO)) {
         printf("Video Initialization Error: %s\n", SDL_GetError());
