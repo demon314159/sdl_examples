@@ -73,7 +73,7 @@ OBJECTS = main.obj \
 # note: all of the files after toy.obj are there for toy.cpp only
 #       they can be removed if toy.cpp doesn't need them anymore
 
-LIBPATH = /libpath:c:/users/demon/sdl2/lib/x64 /libpath:c:/users/demon/glew/lib/Release/x64
+LIBPATH = /libpath:c:/users/demon/sdl2/lib/x86 /libpath:c:/users/demon/glew/lib/Release/Win32
 INCPATH = /Ic:/users/demon/sdl2/include /Ic:/users/demon/glew/include
 LIBRARIES = opengl32.lib glew32.lib SDL2main.lib SDL2.lib shell32.lib
 DEPS = $(HEADERS)

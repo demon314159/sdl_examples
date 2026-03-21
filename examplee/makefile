@@ -158,7 +158,7 @@ OBJECTS = main.obj \
 #       they can be removed if toy.cpp doesn't need them anymore
           \
 
-LIBPATH = /libpath:c:/users/demon/sdl3/lib/x64 /libpath:c:/users/demon/glew/lib/Release/x64
+LIBPATH = /libpath:c:/users/demon/sdl3/lib/Win32 /libpath:c:/users/demon/glew/lib/Release/Win32
 INCPATH = /Ic:/users/demon/sdl3/include /Ic:/users/demon/glew/include
 LIBRARIES = opengl32.lib glew32.lib SDL3.lib shell32.lib
 DEPS = $(HEADERS)
