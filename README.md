@@ -27,6 +27,6 @@ ExampleE: An excellent building game using bricks and doors and windows
 
 ExampleF: A viewer to look at 3D objects exported in the STL format.
 
-There is an executable folder with these examples compiled for Windows with all of the required DLLs.
+There is an executables folder with these examples compiled for Windows with all of the required DLLs.
 Each executable will run in that folder using the local copies of the DLLs.
 
