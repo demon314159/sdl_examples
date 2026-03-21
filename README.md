@@ -22,7 +22,7 @@ ExampleC: An excellent puzzle game called Hexominos.  There are 48 increasingly 
 
 ExampleD: A marble game that is not finished.
 
-ExampleE: An excellent building game using bricks and dorrs and windows
+ExampleE: An excellent building game using bricks and doors and windows
 
 ExampleF: A viewer to look at 3D objects exported in the STL format.
 
