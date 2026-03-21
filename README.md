@@ -1,6 +1,6 @@
 These examples use the SDL2 or SDL3 libraries and also the GLEW library.
 The builds are targeted for the x86 architecture.
-The files SDL2.dll, SDL2main.dll, SDL2_mixer.dll, SDL3.dll, glew32.dll files must be added to c:Windows/SysWOW64
+The files SDL2.dll, SDL2_mixer.dll, SDL3.dll, glew32.dll files must be added to c:Windows/SysWOW64
 The include path must point to SDL2, SDL3 and glew folders
 
 The first examples incrementally get control of the SDL system, and the remaining examples are more interesting.
