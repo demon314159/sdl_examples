@@ -16,7 +16,8 @@ Example9: Another study in animation with various rotating spheres
 ExampleA: Preliminary work on a pinball concept. Left and right shift keys operate the flippers.
 
 ExampleB: A fully operational Pinball Machine.  Press C to use credits and press L to launch the ball.
-          The left and right shift keys operate the flippers
+          The left and right shift keys operate the flippers.
+          This is an exact clone of the 1970's Joker Poker machine.
 
 ExampleC: An excellent puzzle game called Hexominos.  There are 48 increasingly challenging puzzles
 
@@ -26,4 +27,6 @@ ExampleE: An excellent building game using bricks and doors and windows
 
 ExampleF: A viewer to look at 3D objects exported in the STL format.
 
+There is an executable folder with these examples compiled for Windows with all of the required DLLs.
+Each executable will run in that folder using the local copies of the DLLs.
 
